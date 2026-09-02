@@ -1,18 +1,18 @@
 ---
-description: "Use when building frontend UI components, pages, client interactions, component state, accessibility, and user-facing flows."
+description: "Use ao criar componentes de IU de frontend, páginas, interações no cliente, estado de componentes, acessibilidade e fluxos voltados às pessoas usuárias."
 applyTo: "frontend/app/**,frontend/components/**,frontend/src/app/**,frontend/src/components/**"
 ---
 
-# Frontend Conventions — Component Craft and Interaction
+# Convenções de frontend — Construção de componentes e interação
 
-This file activates when you build UI under `frontend/app/**` or `frontend/components/**`. It focuses on component craft, client interaction, component state, accessibility execution, and user-facing flows. It owns how components behave for users; [`frontend-spec.instructions.md`](frontend-spec.instructions.md) owns the platform contract for Next.js 15 App Router, strict TypeScript, Tailwind/shadcn styling, Server Components, and Server Actions — follow that file for those topics and do not restate them here.
+Este arquivo é ativado quando você cria IU em `frontend/app/**` ou `frontend/components/**`. Ele se concentra na construção de componentes, interação no cliente, estado de componentes, execução de acessibilidade e fluxos voltados às pessoas usuárias. Ele rege o comportamento dos componentes; [`frontend-spec.instructions.md`](frontend-spec.instructions.md) rege o contrato de plataforma para Next.js 15 App Router, TypeScript strict, estilo Tailwind/shadcn, Server Components e Server Actions. Siga esse arquivo para esses tópicos e não os repita aqui.
 
 > [!NOTE]
-> `frontend/` does not exist yet; the team scaffolds it in Stage 3. These are the conventions the components must follow as they are written.
+> `frontend/` ainda não existe; a equipe cria sua estrutura no Estágio 3. Estas são as convenções que os componentes devem seguir desde sua criação.
 
-## Component Craft
+## Construção de componentes
 
-Build small, single-responsibility components with named exports and typed props. Prefer composition over a growing prop list, and keep presentational components free of data fetching.
+Crie componentes pequenos e com responsabilidade única, exports nomeados e props tipadas. Prefira composição a uma lista crescente de props e mantenha componentes de apresentação sem busca de dados.
 
 ```tsx
 import type { ResourceDto } from '@/types/resource';
@@ -27,11 +27,11 @@ export function ResourceCard({ resource }: { resource: ResourceDto }) {
 }
 ```
 
-Keep the `'use client'` surface as small as possible: a Server Component fetches the data and passes it to a small Client Component that handles interaction (see [`frontend-spec.instructions.md`](frontend-spec.instructions.md)).
+Mantenha a superfície `'use client'` o menor possível: um Server Component busca os dados e os passa a um Client Component pequeno que trata a interação (consulte [`frontend-spec.instructions.md`](frontend-spec.instructions.md)).
 
-## Component State
+## Estado de componentes
 
-Default to local `useState`. Lift state to the nearest common parent when siblings must share it. Reach for Context **only** for genuinely shared client state, and add a state-management library only with an ADR that justifies the dependency.
+Use `useState` local por padrão. Eleve o estado ao ancestral comum mais próximo quando componentes irmãos precisarem compartilhá-lo. Use Context **somente** para estado de cliente realmente compartilhado e adicione uma biblioteca de gerenciamento de estado apenas com um ADR que justifique a dependência.
 
 ```tsx
 'use client';
@@ -42,7 +42,7 @@ export function ResourceFilter({ onFilter }: { onFilter: (term: string) => void 
   const [term, setTerm] = useState('');
   return (
     <label className="flex flex-col gap-1">
-      <span>Filter resources</span>
+      <span>Filtrar recursos</span>
       <input
         value={term}
         onChange={(event) => { setTerm(event.target.value); onFilter(event.target.value); }}
@@ -52,11 +52,11 @@ export function ResourceFilter({ onFilter }: { onFilter: (term: string) => void 
 }
 ```
 
-Inputs are controlled (`value` + `onChange`). Derive values during render instead of mirroring props into state.
+As entradas são controladas (`value` + `onChange`). Derive valores durante a renderização em vez de espelhar props no estado.
 
-## Client Interaction and Async Flows
+## Interação no cliente e fluxos assíncronos
 
-Mutations go through server actions, not client `fetch` (see [`frontend-spec.instructions.md`](frontend-spec.instructions.md)). Wrap the call in `useTransition` to drive a disabled/pending state, and reflect it with `aria-busy`.
+As mutações passam por server actions, não por `fetch` no cliente (consulte [`frontend-spec.instructions.md`](frontend-spec.instructions.md)). Envolva a chamada em `useTransition` para controlar o estado desabilitado/pendente e reflita-o com `aria-busy`.
 
 ```tsx
 'use client';
@@ -73,59 +73,59 @@ export function ArchiveButton({ id, onArchive }: { id: string; onArchive: (id: s
       aria-busy={isPending}
       onClick={() => startTransition(() => onArchive(id))}
     >
-      {isPending ? 'Archiving…' : 'Archive'}
+      {isPending ? 'Arquivando…' : 'Arquivar'}
     </Button>
   );
 }
 ```
 
-## User-Facing Flows
+## Fluxos voltados às pessoas usuárias
 
-Every async view renders three explicit states — **loading**, **empty**, and **error** — never a blank screen. Confirm destructive actions, and format money and dates with an explicit locale so output is deterministic.
+Toda tela assíncrona renderiza três estados explícitos, **carregamento**, **vazio** e **erro**, nunca uma tela em branco. Confirme ações destrutivas e formate valores e datas com um locale explícito para que a saída seja determinística.
 
 ```tsx
-if (isLoading) return <Spinner aria-label="Loading resources" />;
-if (resources.length === 0) return <EmptyState message="No resources yet" />;
+if (isLoading) return <Spinner aria-label="Carregando recursos" />;
+if (resources.length === 0) return <EmptyState message="Ainda não há recursos" />;
 if (error) return <ErrorState onRetry={refetch} />;
 ```
 
-## Accessibility (WCAG 2.1 AA)
+## Acessibilidade (WCAG 2.1 AA)
 
-| Requirement | How to satisfy it |
+| Requisito | Como atendê-lo |
 |---|---|
-| Labels | Every input has a `<label htmlFor>` or `aria-label` |
-| Keyboard | All interactive elements reachable and operable via Tab/Enter/Space |
-| Focus | Move focus into a dialog on open; return it to the trigger on close |
-| Contrast | Text ≥ 4.5:1, large text ≥ 3:1 |
-| Structure | One `<h1>` per page, logical heading order, landmark regions |
-| Color | Never the only signal — pair it with text or an icon |
+| Labels | Toda entrada possui `<label htmlFor>` ou `aria-label` |
+| Teclado | Todos os elementos interativos podem ser alcançados e operados por Tab/Enter/Espaço |
+| Foco | Mova o foco para o diálogo ao abrir e devolva-o ao acionador ao fechar |
+| Contraste | Texto ≥ 4,5:1, texto grande ≥ 3:1 |
+| Estrutura | Um `<h1>` por página, ordem lógica de títulos e regiões de referência |
+| Cor | Nunca é o único sinal; combine-a com texto ou ícone |
 
-Use semantic elements (`<button>`, `<nav>`, `<table>`) before reaching for ARIA; add ARIA only when native semantics are missing.
+Use elementos semânticos (`<button>`, `<nav>`, `<table>`) antes de recorrer a ARIA; adicione ARIA somente quando faltar semântica nativa.
 
-## Conventions
+## Convenções
 
-| Rule | Rationale |
+| Regra | Justificativa |
 |---|---|
-| Named exports for components | Consistent imports; tree-shakeable |
-| Typed props, no `any` | Failures surface at compile time |
-| Local `useState`, Context only when shared | Minimal, predictable state graph |
-| Colocate the test beside the component | Behavior and coverage stay together |
-| Explicit loading/empty/error states | No dead ends in the UI |
+| Exports nomeados para componentes | Imports consistentes e compatíveis com tree shaking |
+| Props tipadas, sem `any` | Falhas aparecem na compilação |
+| `useState` local, Context somente quando compartilhado | Grafo de estado mínimo e previsível |
+| Coloque o teste ao lado do componente | Comportamento e cobertura permanecem juntos |
+| Estados explícitos de carregamento/vazio/erro | Sem becos sem saída na IU |
 
-## Do / Do Not
+## Faça / Não faça
 
-| Do | Do not |
+| Faça | Não faça |
 |---|---|
-| Push `'use client'` to the smallest leaf | Mark a whole page `'use client'` |
-| Mutate through a server action | `fetch` a mutation from the client |
-| Label every control | Rely on placeholder text as the label |
-| Format money/dates with a locale | Render raw numbers or ISO strings to users |
+| Leve `'use client'` à menor folha | Marque uma página inteira com `'use client'` |
+| Faça mutações por uma server action | Use `fetch` para uma mutação no cliente |
+| Rotule todo controle | Use o texto de placeholder como rótulo |
+| Formate valores/datas com um locale | Renderize números brutos ou strings ISO para as pessoas usuárias |
 
-## Checklist Before Opening a PR
+## Lista de verificação antes de abrir uma PR
 
-- [ ] Components use named exports and fully typed props
-- [ ] `'use client'` is confined to the smallest interactive component
-- [ ] Shared state uses Context only when justified; no unapproved state library
-- [ ] Async views render loading, empty, and error states
-- [ ] Inputs are labeled, keyboard-operable, and meet AA contrast
-- [ ] A colocated Testing Library test covers the interaction (see [`tests.instructions.md`](tests.instructions.md))
+- [ ] Os componentes usam exports nomeados e props totalmente tipadas
+- [ ] `'use client'` fica restrito ao menor componente interativo
+- [ ] O estado compartilhado usa Context somente quando justificado; não há biblioteca de estado não aprovada
+- [ ] As telas assíncronas renderizam estados de carregamento, vazio e erro
+- [ ] As entradas possuem rótulos, funcionam por teclado e atendem ao contraste AA
+- [ ] Um teste Testing Library ao lado do componente cobre a interação (consulte [`tests.instructions.md`](tests.instructions.md))

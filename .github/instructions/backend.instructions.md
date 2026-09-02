@@ -1,26 +1,26 @@
 ---
-description: "Use when implementing backend APIs, services, controllers, request validation, error handling, and business service boundaries."
+description: "Use ao implementar APIs de backend, serviços, controllers, validação de solicitações, tratamento de erros e limites de serviços de negócio."
 applyTo: "backend/src/main/java/**,backend/src/test/java/**"
 ---
 
-# Backend Conventions — Controllers, Services, and Validation
+# Convenções de backend — Controllers, serviços e validação
 
-This file activates when you edit Java sources or tests under `backend/`. It teaches how to shape controllers, DTOs, the service layer, request validation, and error responses for a Java 21 + Spring Boot 3.3 application. It does **not** decide module boundaries or JPA/FDT mapping — those belong to [`modular-monolith.instructions.md`](modular-monolith.instructions.md) — and it does not cover authentication, which belongs to [`security.instructions.md`](security.instructions.md).
+Este arquivo é ativado quando você edita código-fonte ou testes Java em `backend/`. Ele ensina como estruturar controllers, DTOs, a camada de serviço, a validação de solicitações e as respostas de erro de uma aplicação Java 21 + Spring Boot 3.3. Ele **não** decide limites de módulos nem mapeamento JPA/FDT, que pertencem a [`modular-monolith.instructions.md`](modular-monolith.instructions.md), e não aborda autenticação, que pertence a [`security.instructions.md`](security.instructions.md).
 
 > [!NOTE]
-> `backend/` does not exist yet. The team creates it from scratch in Stage 3. Treat the rules below as the conventions the code must follow the moment it is written.
+> `backend/` ainda não existe. A equipe o cria do zero no Estágio 3. Trate as regras abaixo como as convenções que o código deve seguir desde o momento em que for escrito.
 
-## Layering and Boundaries
+## Camadas e limites
 
-Requests flow one direction: `Controller → Service → Repository`. Keep controllers thin (HTTP mapping only) and put every business rule in the service.
+As solicitações fluem em uma direção: `Controller → Service → Repository`. Mantenha os controllers enxutos (somente mapeamento HTTP) e coloque todas as regras de negócio no serviço.
 
-- `@Transactional` lives **only** in the service layer — never in a controller or repository; reads use `@Transactional(readOnly = true)`.
-- Public methods never return `null`; model absence with `Optional`.
-- Keep controllers and services package-private to their module so no other module imports internals.
+- `@Transactional` fica **somente** na camada de serviço, nunca em um controller ou repositório; as leituras usam `@Transactional(readOnly = true)`.
+- Métodos públicos nunca retornam `null`; represente ausência com `Optional`.
+- Mantenha controllers e serviços package-private em seus módulos para que nenhum outro módulo importe internos.
 
-## Controllers and REST Endpoints
+## Controllers e endpoints REST
 
-Paths follow `/api/v1/{resource}` (plural, kebab-case for multi-word resources). Every endpoint carries OpenAPI annotations and returns the correct status code — `201` on create, `204` on delete, `409` on conflict, and `PATCH` for partial updates.
+Os paths seguem `/api/v1/{resource}` (plural e kebab-case para recursos com várias palavras). Todo endpoint possui anotações OpenAPI e retorna o status correto: `201` na criação, `204` na exclusão, `409` em conflito e `PATCH` para atualizações parciais.
 
 ```java
 @RestController
@@ -31,19 +31,19 @@ class ResourceController {
     private final ResourceService resourceService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED) // 201 on creation
-    @Operation(summary = "Register a resource")
-    @ApiResponse(responseCode = "201", description = "Created")
-    @ApiResponse(responseCode = "409", description = "Duplicate resource")
+    @ResponseStatus(HttpStatus.CREATED) // 201 na criação
+    @Operation(summary = "Cadastrar um recurso")
+    @ApiResponse(responseCode = "201", description = "Criado")
+    @ApiResponse(responseCode = "409", description = "Recurso duplicado")
     ResourceResponse create(@Valid @RequestBody CreateResourceRequest request) {
         return resourceService.create(request);
     }
 }
 ```
 
-## DTOs and Validation
+## DTOs e validação
 
-Expose Java 21 `record` DTOs, never JPA entities. Validate at the controller boundary with Bean Validation on the request record.
+Exponha DTOs `record` do Java 21, nunca entidades JPA. Valide no limite do controller com Bean Validation no record da solicitação.
 
 ```java
 public record CreateResourceRequest(
@@ -51,9 +51,9 @@ public record CreateResourceRequest(
     @NotNull @Positive BigDecimal amount) {}
 ```
 
-## Service Layer
+## Camada de serviço
 
-The service coordinates the transaction, enforces invariants, and translates persistence results into DTOs.
+O serviço coordena a transação, impõe invariantes e transforma resultados de persistência em DTOs.
 
 ```java
 @Service
@@ -79,9 +79,9 @@ class ResourceService {
 }
 ```
 
-## Error Handling
+## Tratamento de erros
 
-Return RFC 7807 `ProblemDetail` from a single `@RestControllerAdvice`, map validation failures to `400`, and attach a correlation ID so logs and responses can be joined.
+Retorne `ProblemDetail` da RFC 7807 por um único `@RestControllerAdvice`, mapeie falhas de validação para `400` e anexe um ID de correlação para relacionar logs e respostas.
 
 ```java
 @RestControllerAdvice
@@ -100,41 +100,41 @@ class GlobalExceptionHandler {
 }
 ```
 
-## Logging and Sensitive Data
+## Logs e dados sensíveis
 
 > [!WARNING]
-> Never log CPF, benefit amounts, tokens, or other sensitive values. Log identifiers and the correlation ID instead, and mask any regulated field before it reaches a log or error message.
+> Nunca registre CPF, valores de benefícios, tokens ou outros dados sensíveis. Registre identificadores e o ID de correlação e mascare todo campo regulamentado antes que chegue a um log ou mensagem de erro.
 
 ```java
-// Wrong: log.info("payment for CPF {} amount {}", cpf, amount);
-log.info("payment processed correlationId={} resourceId={}", correlationId, id);
+// Errado: log.info("pagamento para CPF {} no valor {}", cpf, amount);
+log.info("pagamento processado correlationId={} resourceId={}", correlationId, id);
 ```
 
-## Conventions
+## Convenções
 
-| Rule | Rationale |
+| Regra | Justificativa |
 |---|---|
-| Controllers `PascalCase`; routes `/api/v1/{resource}` in kebab-case | Predictable, versioned HTTP surface |
-| `@Transactional` only in services | Repositories and controllers stay side-effect-honest |
-| Records for request/response DTOs | Immutable, boundary-explicit contracts |
-| `@Valid` + Bean Validation in controllers | Reject bad input before it reaches business logic |
-| `Optional` for absent results | Eliminates `NullPointerException` from public APIs |
-| `ProblemDetail` (RFC 7807) for every error | One machine-readable error shape |
+| Controllers em `PascalCase`; rotas `/api/v1/{resource}` em kebab-case | Superfície HTTP previsível e versionada |
+| `@Transactional` somente em serviços | Repositórios e controllers representam efeitos colaterais com honestidade |
+| Records para DTOs de solicitação/resposta | Contratos imutáveis e com limites explícitos |
+| `@Valid` + Bean Validation em controllers | Rejeita entradas inválidas antes da lógica de negócio |
+| `Optional` para resultados ausentes | Elimina `NullPointerException` em APIs públicas |
+| `ProblemDetail` (RFC 7807) para todo erro | Um único formato de erro legível por máquina |
 
-## Do / Do Not
+## Faça / Não faça
 
-| Do | Do not |
+| Faça | Não faça |
 |---|---|
-| Return `201`/`204`/`409` where they apply | Return `200` for every outcome |
-| Throw domain exceptions mapped in the advice | Return raw stack traces or `Map<String,Object>` errors |
-| Inject dependencies by constructor | Use field `@Autowired` |
-| Mask CPF and amounts in logs | Log entities, request bodies, or tokens |
+| Retorne `201`/`204`/`409` quando aplicável | Retorne `200` para todo resultado |
+| Lance exceções de domínio mapeadas no advice | Retorne stack traces brutos ou erros `Map<String,Object>` |
+| Injete dependências pelo construtor | Use `@Autowired` em campo |
+| Mascare CPF e valores nos logs | Registre entidades, corpos de solicitações ou tokens |
 
-## Checklist Before Opening a PR
+## Lista de verificação antes de abrir uma PR
 
-- [ ] Every endpoint uses `/api/v1/{resource}`, the right verb, and the right status code
-- [ ] Every endpoint has OpenAPI annotations and a validated `record` request body
-- [ ] `@Transactional` appears only in services; no public method returns `null`
-- [ ] Errors flow through the `@RestControllerAdvice` as `ProblemDetail` with a correlation ID
-- [ ] No sensitive data (CPF, amounts, tokens) reaches logs or error payloads
-- [ ] Tests cover the happy path, a validation failure, and an auth failure (see [`tests.instructions.md`](tests.instructions.md))
+- [ ] Todo endpoint usa `/api/v1/{resource}`, o verbo correto e o status correto
+- [ ] Todo endpoint possui anotações OpenAPI e um corpo de solicitação `record` validado
+- [ ] `@Transactional` aparece somente em serviços; nenhum método público retorna `null`
+- [ ] Os erros passam pelo `@RestControllerAdvice` como `ProblemDetail` com um ID de correlação
+- [ ] Nenhum dado sensível (CPF, valores, tokens) chega aos logs ou payloads de erro
+- [ ] Os testes cobrem o fluxo de sucesso, uma falha de validação e uma falha de autenticação (consulte [`tests.instructions.md`](tests.instructions.md))

@@ -1,119 +1,117 @@
 ---
 name: "write-ears-spec"
-description: "Guides the team in recording confirmed EARS requirements in spec.md with mandatory traceability."
+description: "Orienta a equipe no registro de requisitos EARS confirmados em spec.md, com rastreabilidade obrigatória."
 argument-hint: "feature=NNN-feature-name rules=01-archaeology/business-rules-catalog.md"
 agent: "architect"
 tools: ["read", "search", "edit"]
 ---
 # /write-ears-spec
 
-## Objective
+## Objetivo
 
-Transform only confirmed Stage 1 rules into formal EARS requirements in `specs/<NNN>-<feature>/spec.md`. Open questions remain questions; the prompt does not fill in requirements, acceptance criteria, or architecture through assumptions.
+Transformar somente regras confirmadas da Etapa 1 em requisitos EARS formais em `specs/<NNN>-<feature>/spec.md`. Questões em aberto permanecem como perguntas; não preencha requisitos, critérios ou arquitetura por suposição.
 
-## When to Invoke
+## Quando usar
 
-At the start of Stage 2, once Pair 2 has selected the narrow feature and completed the H1 handoff, working on the `spec/<NNN>-<feature>` branch cut from `develop`.
+No início da Etapa 2, após a Dupla 2 selecionar a funcionalidade restrita e concluir a transição H1, na branch `spec/<NNN>-<feature>` criada de `develop`.
 
 > [!NOTE]
-> Do not invoke this prompt to explore the legacy system, to catalog open questions (use `/catalog-mysteries`), or to design modules (use `/design-modular-monolith`). It records requirements that already have confirmed evidence — nothing else.
+> Não use para explorar o legado, catalogar questões (`/catalog-mysteries`) ou projetar módulos (`/design-modular-monolith`). Registre somente requisitos com evidências confirmadas.
 
-## Preconditions
+## Pré-condições
 
-- `01-archaeology/business-rules-catalog.md` contains the scope evidence
-- The team identified the `specs/<NNN>-<feature>/` folder
-- The team read each legacy source before drafting
+- `01-archaeology/business-rules-catalog.md` contém as evidências
+- A equipe identificou `specs/<NNN>-<feature>/`
+- A equipe leu cada origem legada citada
 
-## Inputs the Team Must Provide
+## Entradas que a equipe deve fornecer
 
-- `feature=<NNN>-<feature-name>` — the folder under `specs/` that receives `spec.md` (for example, `feature=001-benefit-calculation`)
-- `rules=01-archaeology/business-rules-catalog.md` — the catalog whose **Confirmed** rows are the only promotion candidates
-- The subset of confirmed rules the team agrees belong to this narrow feature
-- For any capability with no legacy equivalent, the `[GREENFIELD]` justification the team stands behind
+- `feature=<NNN>-<feature-name>`
+- `rules=01-archaeology/business-rules-catalog.md`
+- O subconjunto de regras **Confirmed** pertencente à funcionalidade
+- Justificativa `[GREENFIELD]` confirmada para capacidades sem equivalente legado
 
-## What I Will Do
+## O que farei
 
-- Confirm with the team which catalog rules belong to the narrow feature; record deferrals in `02-modern-spec/scope-decisions.md`
-- Validate the `.NSP`, `.NSN`, `.NSC`, `.NSA`, `.NSL`, `.jcl`, or `.ddm` source of each confirmed rule before proposing a testable EARS requirement
-- Assign a unique REQ-ID and attach `source_legacy:` with the path and, when available, the line range; use `[GREENFIELD]` plus the team's justification when no legacy equivalent exists
-- Record Given/When/Then criteria only for behaviors the evidence or a scope decision supports
-- Preserve every not-yet-validated item from `01-archaeology/mysteries-found.md` under "Open Questions" with its evidence, impact, unconfirmed hypothesis, owner, and status
-- Maintain a traceability matrix in `spec.md`
+- Confirmarei o escopo e registrarei adiamentos em `02-modern-spec/scope-decisions.md`
+- Validarei a origem `.NSP`, `.NSN`, `.NSC`, `.NSA`, `.NSL`, `.jcl` ou `.ddm`
+- Atribuirei REQ-ID exclusivo e `source_legacy:` com caminho e linhas; usarei `[GREENFIELD]` somente com justificativa fornecida
+- Registrarei Dado/Quando/Então somente quando apoiado por evidência ou decisão de escopo
+- Preservarei questões não validadas de `mysteries-found.md`, com todos os campos
+- Manterei uma matriz de rastreabilidade
 
-## What I Will NOT Do
+## O que não farei
 
-- Create a requirement without `source_legacy:` or a justified `[GREENFIELD]`
-- Promote a hypothesis or open question into a requirement, answer it, or change its status
-- Require a fixed number of requirements, C4 diagrams, ADRs, or endpoints — reduce scope if Stage 2 runs short on time
-- Write formal artifacts in `02-modern-spec/` — Spec-Kit artifacts live in `specs/<NNN>-<feature>/`
-- Invent SIFAP business facts — I record only what the reviewed legacy source shows
+- Criar requisito sem `source_legacy:` ou `[GREENFIELD]` justificado
+- Promover, responder ou alterar o status de hipóteses e questões
+- Exigir quantidade fixa de requisitos, diagramas C4, ADRs ou endpoints
+- Colocar artefatos Spec-Kit em `02-modern-spec/`
+- Inventar fatos de negócio do SIFAP
 
-## Output Format
-
-Append each requirement to `specs/<NNN>-<feature>/spec.md` in this shape (values are illustrative — use the team's confirmed evidence):
+## Formato da saída
 
 ```markdown
-### REQ-007 — Short imperative title of the behavior
+### REQ-007 — Título imperativo curto do comportamento
 
-If <unwanted condition from the confirmed rule>, then the system shall <required behavior>.
+SE <condição indesejada da regra confirmada>, ENTÃO o sistema DEVE <comportamento exigido>.
 
-- source_legacy: 01-archaeology/legacy-sifap/natural-programs/<PROGRAM>.NSN:Lstart-Lend
-- Acceptance (Given/When/Then):
-  - Given <precondition the evidence supports>
-  - When <trigger>
-  - Then <observable, testable outcome>
+- source_legacy: 01-archaeology/legacy-sifap/natural-programs/<PROGRAMA>.NSN:L<início>-L<fim>
+- Aceitação (Dado/Quando/Então):
+  - Dado <pré-condição apoiada pela evidência>
+  - Quando <gatilho>
+  - Então <resultado observável e testável>
 ```
 
-Keep a traceability matrix in the same `spec.md`:
+Mantenha no mesmo `spec.md`:
 
-| REQ-ID | EARS Pattern | source_legacy | Source Rule | Source File |
+| REQ-ID | Padrão EARS | source_legacy | Regra de origem | Arquivo de origem |
 |---|---|---|---|---|
-| REQ-007 | Unwanted | `<PROGRAM>.NSN:Lstart-Lend` | Rule 4 | `business-rules-catalog.md` |
+| REQ-007 | Indesejado | `<PROGRAMA>.NSN:L<início>-L<fim>` | Regra 4 | `business-rules-catalog.md` |
 
-## Definition of Done
+## Definição de pronto
 
-- [ ] `specs/<NNN>-<feature>/spec.md` contains only the feature requirements
-- [ ] Every requirement has EARS wording, a verifiable criterion, and a valid `source_legacy:` or justified `[GREENFIELD]`
-- [ ] Open questions remain outside the requirements, unchanged in status
-- [ ] The traceability matrix links each REQ-ID to the reviewed evidence
+- [ ] `spec.md` contém somente requisitos da funcionalidade
+- [ ] Cada requisito tem formulação EARS, critério verificável e `source_legacy:` válido ou `[GREENFIELD]` justificado
+- [ ] Questões em aberto permanecem fora dos requisitos e sem mudança de status
+- [ ] A matriz relaciona cada REQ-ID às evidências revisadas
 
-## Prompt Body
+## Corpo do prompt
 
-You are the `@architect`. The team is in Stage 2 and needs to promote confirmed Stage 1 rules into formal EARS requirements. You transcribe evidence into requirements; you never invent it.
+Você é `@architect`. Promova regras confirmadas da Etapa 1 a requisitos EARS formais sem inventar evidências.
 
-**Step 1 — Confirm the feature scope.**
-Open `01-archaeology/business-rules-catalog.md`. List only the rows classified as **Confirmed** that the team assigns to feature `<NNN>-<feature>`. For every confirmed rule the team defers, record it in `02-modern-spec/scope-decisions.md` with a one-line reason. Do not pull in **Inferred** or **Mystery** rows.
+**Etapa 1 — Confirmar o escopo.**
+Liste somente linhas **Confirmed** atribuídas pela equipe à funcionalidade. Registre adiamentos em `scope-decisions.md`. Não inclua **Inferred** ou **Mystery**.
 
-**Step 2 — Validate each source before writing.**
-For each candidate rule, open the cited legacy member (`.NSP`, `.NSN`, `.NSC`, `.NSA`, `.NSL`, `.jcl`, or a `.ddm` DDM) and confirm the line range actually contains the logic. If the citation does not resolve, stop and return the rule to the team as an open question. Never cite a `.NSD` file — none exists in this corpus.
+**Etapa 2 — Validar cada origem.**
+Abra cada membro citado e confirme as linhas. Se a referência falhar, devolva a regra como questão em aberto. Nunca cite `.NSD`; não há esse arquivo no corpus.
 
-**Step 3 — Write the EARS requirement.**
-For each validated rule, assign the next sequential `REQ-NNN` and write one EARS sentence using the matching pattern:
+**Etapa 3 — Escrever o requisito EARS.**
+Atribua `REQ-NNN` e preserve os padrões necessários:
 
-- Ubiquitous — "The system shall..."
-- Event-driven — "When [event], the system shall..."
-- State-driven — "While [state], the system shall..."
-- Optional — "Where [feature], the system shall..."
-- Unwanted — "If [unwanted condition], then the system shall..."
+- Ubíquo: `O sistema DEVE...`
+- Orientado a evento: `QUANDO [evento], o sistema DEVE...`
+- Orientado a estado: `ENQUANTO [estado], o sistema DEVE...`
+- Opcional: `ONDE [funcionalidade], o sistema DEVE...`
+- Indesejado: `SE [condição indesejada], ENTÃO o sistema DEVE...`
 
-Attach `source_legacy:` with the path and line range. For a capability with no legacy equivalent, write `[GREENFIELD]` followed by the justification the team provided — never one you invented.
+Anexe `source_legacy:`. Para capacidade nova, use `[GREENFIELD]` seguido somente da justificativa fornecida pela equipe.
 
-**Step 4 — Record acceptance criteria.**
-Add Given/When/Then criteria only for behavior the evidence or a recorded scope decision supports. Do not specify acceptance for anything the source does not show.
+**Etapa 4 — Registrar critérios.**
+Adicione Dado/Quando/Então somente para comportamento apoiado por evidências.
 
-**Step 5 — Carry open questions through untouched.**
-Open `01-archaeology/mysteries-found.md`. For every item not yet validated, copy it into an "Open Questions" section of `spec.md`, preserving its evidence in `path:line` form, impact, unconfirmed hypothesis, owner, and status. Do not answer it, propose an answer, or change its status. A question is never a requirement.
+**Etapa 5 — Preservar questões em aberto.**
+Copie itens não validados para “Questões em aberto”, preservando evidência `path:line`, impacto, hipótese não confirmada, pessoa responsável e status. Não responda nem altere.
 
-**Step 6 — Build the traceability matrix.**
-Maintain a `REQ-ID | EARS Pattern | source_legacy | Source Rule | Source File` table in `spec.md` with one row per requirement.
+**Etapa 6 — Construir a matriz.**
+Mantenha a tabela `REQ-ID | EARS Pattern | source_legacy | Source Rule | Source File`.
 
-**Step 7 — Write the output.**
-Write everything to `specs/<NNN>-<feature>/spec.md`. Do not place `spec.md`, `plan.md`, or `tasks.md` in `02-modern-spec/`. Do not require a fixed count of requirements; if Stage 2 is short on time, reduce scope rather than pad the spec. You record confirmed evidence in EARS form — you never fill gaps with assumptions or fabricate SIFAP business facts.
+**Etapa 7 — Escrever.**
+Grave em `specs/<NNN>-<feature>/spec.md`. Não infle o escopo quando faltar tempo.
 
-## Invocation Example
+## Exemplo de chamada
 
 ```text
 /write-ears-spec feature=001-benefit-calculation rules=01-archaeology/business-rules-catalog.md
 ```
 
-Expect a `specs/001-benefit-calculation/spec.md` containing only evidence-backed EARS requirements, each with `source_legacy:`, plus a traceability matrix; open questions are copied through untouched.
+Espere um `spec.md` com requisitos EARS apoiados por evidências, `source_legacy:`, matriz de rastreabilidade e questões em aberto preservadas.

@@ -1,214 +1,214 @@
 # Architecture Decision Records (ADR)
 
-> **Path:** [Team Kit](../README.md) › [Concepts](00-README.md) › **Architecture Decision Records**
+> **Trilha:** [Kit do Time](../README.md) › [Conceitos](00-README.md) › **Architecture Decision Records**
 
-**An Architecture Decision Record (ADR) is a short document that records a significant architecture decision: the context that prompted it, the decision made, the alternatives considered, and the consequences. It ensures that today's reasoning remains understandable to anyone who works on the system in the future.**
+**Um Architecture Decision Record (ADR) é um documento curto que registra uma decisão de arquitetura relevante: o contexto que a motivou, a decisão tomada, as alternativas consideradas e as consequências. Ele garante que o raciocínio de hoje continue compreensível para quem trabalhar no sistema no futuro.**
 
-![Concept 06](https://img.shields.io/badge/Concept-06-171717?style=flat-square) ![Stage 2](https://img.shields.io/badge/Stage-2%20%C2%B7%20Specification-737373?style=flat-square) ![Duration 20 min](https://img.shields.io/badge/Duration-20%20min-A3A3A3?style=flat-square)
+![Conceito 06](https://img.shields.io/badge/Conceito-06-171717?style=flat-square) ![Estágio 2](https://img.shields.io/badge/Est%C3%A1gio-2%20%C2%B7%20Especifica%C3%A7%C3%A3o-737373?style=flat-square) ![Duração 20 min](https://img.shields.io/badge/Dura%C3%A7%C3%A3o-20%20min-A3A3A3?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Software Architect, Enterprise Architect, Technical Lead, Product Owner |
-| **Prerequisites** | [Spec-Driven Development](01-spec-driven-development.md) |
-| **Estimated time** | 20 minutes |
-| **Stage** | Stage 2 — Specification |
-| **Expected outcome** | Know when and how to write a valid ADR for SIFAP 2.0 |
+| **Público-alvo** | Software Architect, Enterprise Architect, Technical Lead, Product Owner |
+| **Pré-requisitos** | [Spec-Driven Development](01-spec-driven-development.md) |
+| **Tempo estimado** | 20 minutos |
+| **Estágio** | Estágio 2 — Especificação |
+| **Resultado esperado** | Saber quando e como escrever um ADR válido para o SIFAP 2.0 |
 
 ---
 
-## Concept
+## Conceito
 
-An architecture decision is any technical choice that affects the system's structure, contracts, or long-term operation. Examples include selecting an architecture pattern, defining how to represent Adabas multiple-value fields in the relational model, or choosing an authentication strategy.
+Uma decisão de arquitetura é qualquer escolha técnica que afeta a estrutura, os contratos ou a operação de longo prazo do sistema. Exemplos incluem selecionar um padrão de arquitetura, definir como representar campos de valores múltiplos do Adabas no modelo relacional ou escolher uma estratégia de autenticação.
 
-Undocumented technical decisions become "tribal knowledge" that depends on who was in the room. When this knowledge is not recorded, future teams make contradictory decisions, introduce redundancy, or discard work because they lack context.
+Decisões técnicas não documentadas viram "conhecimento tribal", dependente de quem estava na sala. Quando esse conhecimento não é registrado, times futuros tomam decisões contraditórias, introduzem redundância ou descartam trabalho por falta de contexto.
 
-An ADR formalizes the reasoning in a Markdown file stored in the repository alongside the code it governs.
-
----
-
-## Why it matters in SIFAP
-
-SIFAP is 29 years old. SIFAP 2.0 must last at least as long. Decisions made during the workshop—such as how to represent Adabas periodic groups (PE), structure bounded contexts, or version the API—must be recorded so that future maintainers understand why the system was built this way.
-
-Without ADRs, maintenance costs increase every time the team changes.
+Um ADR formaliza o raciocínio em um arquivo Markdown guardado no repositório, ao lado do código que ele governa.
 
 ---
 
-## ADR anatomy
+## Por que isso importa no SIFAP
+
+O SIFAP tem 29 anos. O SIFAP 2.0 precisa durar pelo menos o mesmo tempo. Decisões tomadas durante a imersão — como representar grupos periódicos (PE) do Adabas, estruturar bounded contexts ou versionar a API — precisam ser registradas para que quem mantiver o sistema no futuro entenda por que ele foi construído assim.
+
+Sem ADRs, o custo de manutenção aumenta a cada troca de time.
+
+---
+
+## Anatomia de um ADR
 
 ```markdown
-# ADR-NNN: Decision title
+# ADR-NNN: Título da decisão
 
 **Status:** Proposed | Accepted | Rejected | Superseded by ADR-NNN
-**Date:** YYYY-MM-DD
-**Authors:** [names]
+**Data:** YYYY-MM-DD
+**Autores:** [nomes]
 
-## Context
+## Contexto
 
-Describe the situation requiring a decision: evidence, constraints,
-risks, and what happens if no decision is made now.
+Descreva a situação que exige uma decisão: evidências, restrições,
+riscos e o que acontece se nenhuma decisão for tomada agora.
 
-## Decision
+## Decisão
 
-One sentence. "We chose X using Y."
+Uma frase. "Escolhemos X usando Y."
 
-## Alternatives considered
+## Alternativas consideradas
 
-- **Alternative A:** <description and reason to accept or reject>
-- **Alternative B:** <description and reason to accept or reject>
+- **Alternativa A:** <descrição e motivo para aceitar ou rejeitar>
+- **Alternativa B:** <descrição e motivo para aceitar ou rejeitar>
 
-## Consequences
+## Consequências
 
-- Positive: <expected benefit>
-- Negative: <accepted cost or risk>
-- Note: <condition that would make this decision obsolete>
+- Positiva: <benefício esperado>
+- Negativa: <custo ou risco aceito>
+- Observação: <condição que tornaria esta decisão obsoleta>
 ```
 
 ---
 
-## ADR lifecycle
+## Ciclo de vida de um ADR
 
 ```mermaid
 %%{init: {'theme':'neutral','themeVariables':{'fontFamily':'ui-sans-serif, system-ui, sans-serif','primaryColor':'#F5F5F5','primaryTextColor':'#171717','primaryBorderColor':'#171717','lineColor':'#525252','secondaryColor':'#FFFFFF','tertiaryColor':'#FAFAFA','background':'#FFFFFF'}}}%%
 stateDiagram-v2
-    [*] --> Proposed : team identifies a required decision
-    Proposed --> Accepted : consensus recorded
-    Proposed --> Rejected : alternative selected
-    Accepted --> Superseded : new decision replaces this one
+    [*] --> Proposed : o time identifica uma decisão necessária
+    Proposed --> Accepted : consenso registrado
+    Proposed --> Rejected : alternativa escolhida
+    Accepted --> Superseded : nova decisão substitui esta
     Superseded --> [*]
     Rejected --> [*]
 ```
 
 > [!IMPORTANT]
-> Never delete an ADR. When a decision is replaced, update its status to `Superseded by ADR-NNN` and create a new ADR explaining the new decision. The reasoning history is valuable.
+> Nunca apague um ADR. Quando uma decisão é substituída, atualize o status dele para `Superseded by ADR-NNN` e crie um novo ADR explicando a nova decisão. O histórico do raciocínio é valioso.
 
 ---
 
-## When to write an ADR
+## Quando escrever um ADR
 
-Use the three-question test:
+Use o teste das três perguntas:
 
-1. Does the decision **affect multiple files, modules, or people**?
-2. Would **reversing** the decision cost more than one day of work?
-3. Would someone on the team ask, "Why did we do it this way?" six months from now?
+1. A decisão **afeta vários arquivos, módulos ou pessoas**?
+2. **Reverter** a decisão custaria mais de um dia de trabalho?
+3. Alguém do time perguntaria "por que fizemos assim?" daqui a seis meses?
 
-If two or more answers are yes, write an ADR.
+Se duas ou mais respostas forem sim, escreva um ADR.
 
-### Examples
+### Exemplos
 
-| Decision | ADR required | Rationale |
+| Decisão | Precisa de ADR | Justificativa |
 |---|---|---|
-| Use Spring Boot 3.3 instead of Quarkus | Yes | Affects every module and is irreversible within the workshop timeframe |
-| Represent Adabas MU fields as a child table | Yes | Affects the data model and JPA mappings in multiple modules |
-| Adopt a Modular Monolith instead of microservices | Yes | Structural decision with project-wide impact |
-| Version the API with the `/api/v1` prefix | Yes | Affects every API contract |
-| Replace `final` with `var` in a local variable | No | Local, reversible, and has no external impact |
-| Add Lombok as a dependency | Yes | Affects every module that adopts it |
-| Use `@Autowired` versus constructor injection | Yes, if it becomes the team standard | Affects every Spring component |
+| Usar Spring Boot 3.3 em vez de Quarkus | Sim | Afeta todos os módulos e é irreversível dentro do tempo da imersão |
+| Representar campos MU do Adabas como tabela filha | Sim | Afeta o modelo de dados e os mapeamentos JPA em vários módulos |
+| Adotar um Modular Monolith em vez de microsserviços | Sim | Decisão estrutural com impacto em todo o projeto |
+| Versionar a API com o prefixo `/api/v1` | Sim | Afeta todos os contratos de API |
+| Trocar `final` por `var` em uma variável local | Não | Local, reversível e sem impacto externo |
+| Adicionar o Lombok como dependência | Sim | Afeta todos os módulos que o adotarem |
+| Usar `@Autowired` em vez de injeção por construtor | Sim, se virar o padrão do time | Afeta todos os componentes Spring |
 
 ---
 
-## SIFAP example
+## Exemplo no SIFAP
 
-The following is a realistic ADR that the team could write in Stage 2 for a data-mapping decision:
+O texto a seguir é um ADR realista que o time poderia escrever no Estágio 2 para uma decisão de mapeamento de dados:
 
 ```markdown
-# ADR-003: Representing Adabas Periodic Groups (PE) in the relational model
+# ADR-003: Representação de grupos periódicos (PE) do Adabas no modelo relacional
 
 **Status:** Accepted
-**Date:** 2026-08-12
-**Authors:** Software Architect, DBA
+**Data:** 2026-08-12
+**Autores:** Software Architect, DBA
 
-## Context
+## Contexto
 
-The HISTORICO_PAYMENTS.ddm DDM defines a periodic group (PE) with up to
-12 monthly occurrences within each beneficiary record.
-The PostgreSQL 16 relational model does not support periodic groups natively.
-We must decide how to preserve the occurrences and their order in the modern model.
+O DDM HISTORICO_PAYMENTS.ddm define um grupo periódico (PE) com até
+12 ocorrências mensais dentro de cada registro de beneficiário.
+O modelo relacional do PostgreSQL 16 não suporta grupos periódicos nativamente.
+Precisamos decidir como preservar as ocorrências e a ordem delas no modelo moderno.
 
-## Decision
+## Decisão
 
-Map each PE occurrence to a row in the historico_pagamentos table,
-with a foreign key to beneficiarios and a competencia (DATE) column
-to preserve chronological order.
+Mapear cada ocorrência do PE para uma linha na tabela historico_pagamentos,
+com chave estrangeira para beneficiarios e uma coluna competencia (DATE)
+para preservar a ordem cronológica.
 
-## Alternatives considered
+## Alternativas consideradas
 
-- **JSONB column:** Store the 12 occurrences as a JSON array.
-  Rejected: makes querying and indexing by period difficult and violates the principle
-  of not reproducing legacy complexity in the new model.
-- **Child table (selected):** Each occurrence becomes a row with an FK.
-  Accepted: simple queries, indexable, and compatible with JPA.
+- **Coluna JSONB:** armazenar as 12 ocorrências como um array JSON.
+  Rejeitada: dificulta consultar e indexar por período e viola o princípio
+  de não reproduzir a complexidade do legado no novo modelo.
+- **Tabela filha (escolhida):** cada ocorrência vira uma linha com FK.
+  Aceita: consultas simples, indexável e compatível com JPA.
 
-## Consequences
+## Consequências
 
-- Positive: efficient queries by period; natural JPA mapping.
-- Negative: beneficiary records with complete histories generate 12 rows per
-  beneficiary—a higher row count than in Adabas.
-- Note: if the volume exceeds 10 million rows, evaluate partitioning
-  by year in a future ADR.
+- Positiva: consultas eficientes por período; mapeamento JPA natural.
+- Negativa: registros de beneficiário com histórico completo geram 12 linhas por
+  beneficiário — uma contagem de linhas maior que no Adabas.
+- Observação: se o volume passar de 10 milhões de linhas, avaliar particionamento
+  por ano em um ADR futuro.
 ```
 
 ---
 
-## Completed ADR checklist
+## Checklist de ADR concluído
 
-- [ ] **Sequential number** in the `ADR-NNN` format.
-- [ ] **Declared status:** Proposed, Accepted, Rejected, or Superseded.
-- [ ] **Date and authors** recorded.
-- [ ] **Context** explains why the decision is needed now, not only what was decided.
-- [ ] **Decision in one sentence**—objective and unambiguous.
-- [ ] **At least two alternatives** listed with reasons for rejection.
-- [ ] **Consequences** include negatives as well as positives.
-- [ ] **Fits on one page**—if it does not, it probably contains two separate decisions.
-- [ ] **The Product Owner can read and understand** the context and decision without technical expertise.
+- [ ] **Número sequencial** no formato `ADR-NNN`.
+- [ ] **Status declarado:** Proposed, Accepted, Rejected ou Superseded.
+- [ ] **Data e autores** registrados.
+- [ ] **Contexto** explica por que a decisão é necessária agora, não apenas o que foi decidido.
+- [ ] **Decisão em uma frase** — objetiva e sem ambiguidade.
+- [ ] **Pelo menos duas alternativas** listadas, com os motivos da rejeição.
+- [ ] **Consequências** incluem as negativas, além das positivas.
+- [ ] **Cabe em uma página** — se não couber, provavelmente contém duas decisões separadas.
+- [ ] **O Product Owner consegue ler e entender** o contexto e a decisão sem conhecimento técnico.
 
 ---
 
-## Common mistakes and how to avoid them
+## Erros comuns e como evitá-los
 
-| Symptom | Cause | Correction |
+| Sintoma | Causa | Correção |
 |---|---|---|
-| ADR does not list alternatives | Time pressure | List at least two, even briefly. Without alternatives, the reader cannot understand the trade-off. |
-| ADR describes only benefits | Confirmation bias | Every decision has a cost. If there are no negative consequences, the reasoning is incomplete. |
-| Decision without context | Started with the decision instead of the problem | Write the context first. "Why now?" matters more than "what?" |
-| ADR is five pages long | Multiple decisions are mixed together | Split it. One ADR = one decision. |
-| ADR deleted when superseded | Manual file management | Mark it as `Superseded by ADR-NNN`. Never delete it. |
+| O ADR não lista alternativas | Pressão de tempo | Liste pelo menos duas, mesmo que brevemente. Sem alternativas, quem lê não entende o trade-off. |
+| O ADR descreve apenas benefícios | Viés de confirmação | Toda decisão tem um custo. Se não há consequências negativas, o raciocínio está incompleto. |
+| Decisão sem contexto | Começou pela decisão em vez do problema | Escreva o contexto primeiro. "Por que agora?" importa mais que "o quê?". |
+| O ADR tem cinco páginas | Várias decisões estão misturadas | Divida. Um ADR = uma decisão. |
+| O ADR foi apagado quando substituído | Gestão manual de arquivos | Marque como `Superseded by ADR-NNN`. Nunca apague. |
 
 ---
 
-## Useful prompts in Copilot Chat
+## Prompts úteis no modo Ask do GitHub Copilot
 
 ```text
-# Structure an ADR
-"@architect, record an ADR about <open decision>.
-Use the alternatives and evidence provided by the team.
-DO NOT choose for the team—present the trade-offs."
+# Estruturar um ADR
+"@architect, registre um ADR sobre <decisão em aberto>.
+Use as alternativas e evidências fornecidas pelo time.
+NÃO escolha pelo time — apresente os trade-offs."
 
-# Challenge a decision before accepting it
-"@architect, read ADR-002 and play devil's advocate.
-What are the three strongest arguments for REJECTING this decision?"
+# Questionar uma decisão antes de aceitá-la
+"@architect, leia o ADR-002 e faça o papel de advogado do diabo.
+Quais são os três argumentos mais fortes para REJEITAR esta decisão?"
 
-# Resolve a team deadlock
+# Resolver um impasse do time
 /speckit.clarify
-"There is no consensus between a Modular Monolith and microservices.
-List objective pros and cons for each in the SIFAP context."
+"Não há consenso entre um Modular Monolith e microsserviços.
+Liste prós e contras objetivos de cada um no contexto do SIFAP."
 ```
 
 ---
 
-## References
+## Referências
 
-- [Blank ADR template](../02-modern-spec/ADR-TEMPLATE.md)
-- [Stage 2 Guide](../02-modern-spec/GUIDE.md)
-- [adr.github.io — official pattern](https://adr.github.io)
+- [Template de ADR em branco](../02-modern-spec/ADR-TEMPLATE.md)
+- [Guia do Estágio 2](../02-modern-spec/GUIDE.md)
+- [adr.github.io — padrão oficial](https://adr.github.io)
 
 ---
 
-### Continue reading
+### Continue lendo
 
-| Previous | Next |
+| Anterior | Próximo |
 |---|---|
-| [EARS Notation](05-ears-notation.md)<br/><sub>How to write unambiguous requirements.</sub> | [Personas (Overview)](../05-personas/OVERVIEW.md)<br/><sub>Choose your two workshop roles.</sub> |
+| [Notação EARS](05-ears-notation.md)<br/><sub>Como escrever requisitos sem ambiguidade.</sub> | [Personas (visão geral)](../05-personas/OVERVIEW.md)<br/><sub>Escolha os seus dois papéis na imersão.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Voltar ao índice do kit](../README.md)</sub>

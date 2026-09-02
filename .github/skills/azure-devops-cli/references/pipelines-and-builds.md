@@ -1,20 +1,20 @@
-# Pipelines, Builds & Releases
+# Pipelines, compilações e lançamentos
 
-## Table of Contents
+## Sumário
 
 - [Pipelines](#pipelines)
-- [Pipeline Runs](#pipeline-runs)
-- [Builds](#builds)
-- [Build Definitions](#build-definitions)
-- [Releases](#releases)
-- [Release Definitions](#release-definitions)
-- [Universal Packages (Artifacts)](#universal-packages-artifacts)
+- [Execuções de pipeline](#execuções-de-pipeline)
+- [Compilações](#compilações)
+- [Definições de compilação](#definições-de-compilação)
+- [Lançamentos](#lançamentos)
+- [Definições de lançamento](#definições-de-lançamento)
+- [Pacotes universais (artefatos)](#pacotes-universais-artefatos)
 
 ---
 
 ## Pipelines
 
-### List Pipelines
+### Listar pipelines
 
 ```bash
 az pipelines list --output table
@@ -22,72 +22,72 @@ az pipelines list --query "[?name=='myPipeline']"
 az pipelines list --folder-path 'folder/subfolder'
 ```
 
-### Create Pipeline
+### Criar pipeline
 
 ```bash
-# From local repository context (auto-detects settings)
-az pipelines create --name 'ContosoBuild' --description 'Pipeline for contoso project'
+# A partir do contexto do repositório local (detecta as configurações automaticamente)
+az pipelines create --name 'ContosoBuild' --description 'Pipeline do projeto Contoso'
 
-# With specific branch and YAML path
+# Com uma branch e um caminho YAML específicos
 az pipelines create \
   --name {pipeline-name} \
   --repository {repo} \
   --branch main \
   --yaml-path azure-pipelines.yml \
-  --description "My CI/CD pipeline"
+  --description "Meu pipeline de CI/CD"
 
-# For GitHub repository
+# Para um repositório do GitHub
 az pipelines create \
   --name 'GitHubPipeline' \
   --repository https://github.com/Org/Repo \
   --branch main \
   --repository-type github
 
-# Skip first run
+# Ignorar a primeira execução
 az pipelines create --name 'MyPipeline' --skip-run true
 ```
 
-### Show Pipeline
+### Exibir pipeline
 
 ```bash
 az pipelines show --id {pipeline-id}
 az pipelines show --name {pipeline-name}
 ```
 
-### Update Pipeline
+### Atualizar pipeline
 
 ```bash
-az pipelines update --id {pipeline-id} --name "New name" --description "Updated description"
+az pipelines update --id {pipeline-id} --name "Novo nome" --description "Descrição atualizada"
 ```
 
-### Delete Pipeline
+### Excluir pipeline
 
 ```bash
 az pipelines delete --id {pipeline-id} --yes
 ```
 
-### Run Pipeline
+### Executar pipeline
 
 ```bash
-# Run by name
+# Executar por nome
 az pipelines run --name {pipeline-name} --branch main
 
-# Run by ID
+# Executar por ID
 az pipelines run --id {pipeline-id} --branch refs/heads/main
 
-# With parameters
+# Com parâmetros
 az pipelines run --name {pipeline-name} --parameters version=1.0.0 environment=prod
 
-# With variables
+# Com variáveis
 az pipelines run --name {pipeline-name} --variables buildId=123 configuration=release
 
-# Open results in browser
+# Abrir os resultados no navegador
 az pipelines run --name {pipeline-name} --open
 ```
 
-## Pipeline Runs
+## Execuções de pipeline
 
-### List Runs
+### Listar execuções
 
 ```bash
 az pipelines runs list --pipeline {pipeline-id}
@@ -95,45 +95,45 @@ az pipelines runs list --name {pipeline-name} --top 10
 az pipelines runs list --branch main --status completed
 ```
 
-### Show Run Details
+### Exibir detalhes da execução
 
 ```bash
 az pipelines runs show --run-id {run-id}
 az pipelines runs show --run-id {run-id} --open
 ```
 
-### Pipeline Artifacts
+### Artefatos do pipeline
 
 ```bash
-# List artifacts for a run
+# Listar artefatos de uma execução
 az pipelines runs artifact list --run-id {run-id}
 
-# Download artifact
+# Baixar artefato
 az pipelines runs artifact download \
   --artifact-name '{artifact-name}' \
   --path {local-path} \
   --run-id {run-id}
 
-# Upload artifact
+# Enviar artefato
 az pipelines runs artifact upload \
   --artifact-name '{artifact-name}' \
   --path {local-path} \
   --run-id {run-id}
 ```
 
-### Pipeline Run Tags
+### Tags de execução do pipeline
 
 ```bash
-# Add tag to run
+# Adicionar tag à execução
 az pipelines runs tag add --run-id {run-id} --tags production v1.0
 
-# List run tags
+# Listar tags da execução
 az pipelines runs tag list --run-id {run-id} --output table
 ```
 
-## Builds
+## Compilações
 
-### List Builds
+### Listar compilações
 
 ```bash
 az pipelines build list
@@ -141,89 +141,89 @@ az pipelines build list --definition {build-definition-id}
 az pipelines build list --status completed --result succeeded
 ```
 
-### Queue Build
+### Colocar compilação na fila
 
 ```bash
 az pipelines build queue --definition {build-definition-id} --branch main
 az pipelines build queue --definition {build-definition-id} --parameters version=1.0.0
 ```
 
-### Show Build Details
+### Exibir detalhes da compilação
 
 ```bash
 az pipelines build show --id {build-id}
 ```
 
-### Cancel Build
+### Cancelar compilação
 
 ```bash
 az pipelines build cancel --id {build-id}
 ```
 
-### Build Tags
+### Tags de compilação
 
 ```bash
-# Add tag to build
+# Adicionar tag à compilação
 az pipelines build tag add --build-id {build-id} --tags prod release
 
-# Delete tag from build
+# Excluir tag da compilação
 az pipelines build tag delete --build-id {build-id} --tag prod
 ```
 
-## Build Definitions
+## Definições de compilação
 
-### List Build Definitions
+### Listar definições de compilação
 
 ```bash
 az pipelines build definition list
 az pipelines build definition list --name {definition-name}
 ```
 
-### Show Build Definition
+### Exibir definição de compilação
 
 ```bash
 az pipelines build definition show --id {definition-id}
 ```
 
-## Releases
+## Lançamentos
 
-### List Releases
+### Listar lançamentos
 
 ```bash
 az pipelines release list
 az pipelines release list --definition {release-definition-id}
 ```
 
-### Create Release
+### Criar lançamento
 
 ```bash
 az pipelines release create --definition {release-definition-id}
 az pipelines release create --definition {release-definition-id} --description "Release v1.0"
 ```
 
-### Show Release
+### Exibir lançamento
 
 ```bash
 az pipelines release show --id {release-id}
 ```
 
-## Release Definitions
+## Definições de lançamento
 
-### List Release Definitions
+### Listar definições de lançamento
 
 ```bash
 az pipelines release definition list
 ```
 
-### Show Release Definition
+### Exibir definição de lançamento
 
 ```bash
 az pipelines release definition show --id {definition-id}
 ```
 
-## Universal Packages (Artifacts)
+## Pacotes universais (artefatos)
 
-### Publish Package
+### Publicar pacote
 
 ```bash
 az artifacts universal publish \
@@ -234,7 +234,7 @@ az artifacts universal publish \
   --project {project}
 ```
 
-### Download Package
+### Baixar pacote
 
 ```bash
 az artifacts universal download \

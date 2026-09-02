@@ -1,118 +1,118 @@
-# Persona-Agent Matrix
+# Matriz persona-agente
 
-![Reference Type](https://img.shields.io/badge/Type-Reference-171717?style=flat-square)
-![Use Who does what](https://img.shields.io/badge/Use-Who%20does%20what-737373?style=flat-square)
+![Tipo: referência](https://img.shields.io/badge/Tipo-Refer%C3%AAncia-171717?style=flat-square)
+![Uso: quem faz o quê](https://img.shields.io/badge/Uso-Quem%20faz%20o%20qu%C3%AA-737373?style=flat-square)
 
-> **Path:** [Team Kit](../README.md) › [Docs](README.md) › **Persona-Agent Matrix**
+> **Trilha:** [Kit do Time](../README.md) › [Documentação](README.md) › **Matriz persona-agente**
 
-**Maps each persona to every stage agent** — shows who leads, supports, or observes at each point in the day.
+**Relaciona cada persona a todos os agentes de estágio** — mostra quem lidera, apoia ou observa em cada momento do dia.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | The entire team |
-| **When to consult** | At the start of each stage and when forming pairs |
-| **Expected outcome** | Clarity about the expected engagement level for each persona |
+| **Público-alvo** | O time inteiro |
+| **Quando consultar** | No início de cada estágio e ao formar as duplas |
+| **Resultado esperado** | Clareza sobre o nível de participação esperado de cada persona |
 
 ---
 
-## How to read this matrix
+## Como ler esta matriz
 
-1. Find the row for your persona.
-2. Read across to see your intensity level at each stage.
-3. For stages where you are the **Lead** or **Support**, read the detailed guidance below.
-4. Open the README for the current stage's agent kit to see the complete flow.
+1. Encontre a linha da sua persona.
+2. Leia as colunas para ver seu nível de participação em cada estágio.
+3. Nos estágios em que você for **Líder** ou **Apoio**, leia as orientações detalhadas abaixo.
+4. Abra o README do kit de agente do estágio atual para ver o fluxo completo.
 
 ---
 
-## The matrix
+## A matriz
 
 | # | Persona | @archaeologist | @architect | @builder | @evolution |
 |---|---|---|---|---|---|
-| 01 | Product Owner | Observer | Support | Observer | Support |
-| 02 | Requirements Engineer | **Lead** | Support | Observer | Observer |
-| 03 | Enterprise Architect | Support | Support | Observer | Observer |
-| 04 | Software Architect | Observer | **Lead** | Support | Observer |
-| 05 | Technical Lead | Observer | Support | Support | **Lead** |
-| 06 | Developer | Observer | Observer | **Lead** | Support |
-| 07 | DBA | Support | Observer | Support | Observer |
-| 08 | QA Engineer | Observer | Observer | Support | Support |
-| 09 | DevOps Engineer | Observer | Observer | Support | Support |
-| 10 | Tech Writer | Support | Observer | Observer | Support |
+| 01 | Product Owner | Observador | Apoio | Observador | Apoio |
+| 02 | Requirements Engineer | **Líder** | Apoio | Observador | Observador |
+| 03 | Enterprise Architect | Apoio | Apoio | Observador | Observador |
+| 04 | Software Architect | Observador | **Líder** | Apoio | Observador |
+| 05 | Technical Lead | Observador | Apoio | Apoio | **Líder** |
+| 06 | Developer | Observador | Observador | **Líder** | Apoio |
+| 07 | DBA | Apoio | Observador | Apoio | Observador |
+| 08 | QA Engineer | Observador | Observador | Apoio | Apoio |
+| 09 | DevOps Engineer | Observador | Observador | Apoio | Apoio |
+| 10 | Tech Writer | Apoio | Observador | Observador | Apoio |
 
-**Lead** — directs use of the agent and is responsible for stage deliverables.
-**Support** — contributes actively and works with the lead.
-**Observer** — follows the chat and is ready to help when their specialty is needed.
-
----
-
-## Guidance by cell
-
-### Stage 1 — @archaeologist
-
-| Persona | What you do |
-|---|---|
-| **Requirements Engineer (Lead)** | Leads exploration. Opens each Natural program, asks the agent to help decode it, and captures business rules as draft requirements. Owns the rule drafts. |
-| Tech Writer (Support) | Builds the domain glossary in real time. Every new term — variable name, field label, or subroutine purpose — enters the glossary with a definition. |
-| Enterprise Architect (Support) | Focuses on the big picture: which external systems does the legacy code call? Where do batch inputs originate? Starts drafting the system context. |
-| DBA (Support) | Focuses on Adabas DDMs (Data Definition Modules). Documents field types, descriptors, MU/PE structures, and file relationships for the data map. |
-| Product Owner (Observer) | Listens and validates. When the team proposes an interpretation of a business rule, confirms or challenges it based on domain knowledge. |
-| Other personas (Observers) | Follow the chat. Contribute when someone asks about a pattern in your area, such as a Developer recognizing a calculation. |
-
-### Stage 2 — @architect
-
-| Persona | What you do |
-|---|---|
-| **Software Architect (Lead)** | Leads bounded-context definition. Uses the Stage 1 data map and call graph to identify natural boundaries. Draws C4 diagrams. Writes the first ADRs. |
-| Requirements Engineer (Support) | Converts Stage 1 business rules into formal EARS requirements with `REQ-NNN` IDs. Every requirement needs acceptance criteria. Works with the Software Architect to map requirements to bounded contexts. |
-| Enterprise Architect (Support) | Validates the system-context diagram. Ensures integration points — batch feeds, external APIs, and authentication — are captured. Reviews ADRs for architectural consistency. |
-| Product Owner (Support) | Prioritizes requirements. With limited time, helps decide what is mandatory versus desirable. |
-| Technical Lead (Observer) | Starts considering implementation order. Which bounded context should be built first? What are the dependencies? |
-| Other personas (Observers) | Review the emerging specification and flag inconsistencies from their specialties. |
-
-### Stage 3 — @builder
-
-| Persona | What you do |
-|---|---|
-| **Developer (Lead)** | Writes code. Uses the builder agent to generate JPA entities, Spring services, REST controllers, and Next.js pages. Every code segment traces to a `REQ-NNN`. |
-| DBA (Support) | Owns the database layer. Reviews entity mappings, writes Flyway migrations, and validates that the PostgreSQL schema correctly represents the Stage 2 data model. |
-| QA Engineer (Support) | Writes tests with the Developer. For each service, produces at least one happy-path test and one error-path test. Monitors coverage and flags gaps. |
-| Technical Lead (Support) | Reviews code as it is produced. Checks for standard violations: no field `@Autowired`, no `null` returns, and no TypeScript `any`. Merges pull requests. |
-| Software Architect (Support) | Validates that implementation matches design. Flags early deviations from bounded-context boundaries. |
-| Other personas (Observers) | Remain available for questions. The Developer may need domain clarification that only the Product Owner or Requirements Engineer can provide. |
-
-### Stage 4 — @evolution
-
-| Persona | What you do |
-|---|---|
-| **Technical Lead (Lead)** | Writes GitHub Issues for Copilot Agent. Reviews AI-generated pull requests. Decides what to merge and reject. Owns integration and demo readiness. |
-| DevOps Engineer (Support) | Writes the GitHub Actions workflow and Terraform modules. Ensures correct tags, secret management, and resource configuration. |
-| QA Engineer (Support) | Validates that CI includes every quality gate: lint, build, and test. Reviews test results for AI-generated pull requests. |
-| Developer (Support) | Reviews AI-generated code for correctness. Knows the codebase and detects logical errors that automated checks may miss. |
-| Tech Writer (Support) | Refines the README, documents the demo script, and ensures retrospective notes capture team learning. |
-| Product Owner (Support) | Helps prioritize what must work for the demo versus what can be deferred. Prepares the presentation narrative. |
-| Other personas (Observers) | Contribute retrospective observations: what surprised them and what they would do differently. |
+**Líder** — orienta o uso do agente e responde pelos entregáveis do estágio.
+**Apoio** — contribui ativamente e trabalha com a liderança.
+**Observador** — acompanha o GitHub Copilot e está pronto para ajudar quando sua especialidade for necessária.
 
 ---
 
-## Suggested reading order
+## Orientações por célula
 
-- [ ] Read the `PERSONA.md` for your role in [`05-personas/`](../05-personas/) — understand your responsibilities.
-- [ ] Read your row in this matrix — understand your intensity at each stage.
-- [ ] At the start of each stage, open the agent-kit README in [`06-stage-agents/`](../06-stage-agents/).
-- [ ] Activate the current stage agent in Copilot Chat and begin working.
+### Estágio 1 — @archaeologist
 
-## References
+| Persona | O que você faz |
+|---|---|
+| **Requirements Engineer (Líder)** | Lidera a exploração. Abre cada programa Natural, pede ajuda ao agente para decodificá-lo e captura regras de negócio como rascunhos de requisitos. Responde pelos rascunhos das regras. |
+| Tech Writer (Apoio) | Constrói o glossário do domínio em tempo real. Cada novo termo, nome de variável, rótulo de campo ou finalidade de sub-rotina entra no glossário com uma definição. |
+| Enterprise Architect (Apoio) | Concentra-se na visão geral: quais sistemas externos o código legado chama? De onde vêm as entradas batch? Começa a rascunhar o contexto do sistema. |
+| DBA (Apoio) | Concentra-se nos DDMs (Data Definition Modules) do Adabas. Documenta tipos de campo, descritores, estruturas MU/PE e relações entre arquivos para o mapa de dados. |
+| Product Owner (Observador) | Escuta e valida. Quando o time propõe uma interpretação de uma regra de negócio, confirma ou questiona com base no conhecimento do domínio. |
+| Outras personas (Observadores) | Acompanham o GitHub Copilot. Contribuem quando alguém pergunta sobre um padrão de sua área, como um Developer que reconhece um cálculo. |
 
-- [Agent kits](../06-stage-agents/README.md)
-- [Agent architecture](4-agents-explained.md)
-- [Consolidated persona kits](../05-personas/)
+### Estágio 2 — @architect
+
+| Persona | O que você faz |
+|---|---|
+| **Software Architect (Líder)** | Lidera a definição dos contextos delimitados. Usa o mapa de dados e o grafo de chamadas do Estágio 1 para identificar fronteiras naturais. Desenha diagramas C4. Escreve os primeiros ADRs. |
+| Requirements Engineer (Apoio) | Converte as regras de negócio do Estágio 1 em requisitos EARS formais com IDs `REQ-NNN`. Todo requisito precisa de critérios de aceitação. Trabalha com o Software Architect para mapear requisitos para contextos delimitados. |
+| Enterprise Architect (Apoio) | Valida o diagrama de contexto do sistema. Garante que pontos de integração, feeds batch, APIs externas e autenticação sejam capturados. Revisa a consistência arquitetural dos ADRs. |
+| Product Owner (Apoio) | Prioriza requisitos. Com tempo limitado, ajuda a decidir o que é obrigatório e o que é desejável. |
+| Technical Lead (Observador) | Começa a considerar a ordem de implementação. Qual contexto delimitado deve ser construído primeiro? Quais são as dependências? |
+| Outras personas (Observadores) | Revisam a especificação em formação e sinalizam inconsistências de suas especialidades. |
+
+### Estágio 3 — @builder
+
+| Persona | O que você faz |
+|---|---|
+| **Developer (Líder)** | Escreve código. Usa o agente builder para gerar entidades JPA, serviços Spring, controllers REST e páginas Next.js. Cada segmento de código é rastreável a um `REQ-NNN`. |
+| DBA (Apoio) | Responde pela camada de banco de dados. Revisa mapeamentos de entidades, escreve migrações Flyway e valida se o schema PostgreSQL representa corretamente o modelo de dados do Estágio 2. |
+| QA Engineer (Apoio) | Escreve testes com o Developer. Para cada serviço, produz pelo menos um teste do caminho feliz e um do caminho de erro. Monitora a cobertura e sinaliza lacunas. |
+| Technical Lead (Apoio) | Revisa o código à medida que é produzido. Verifica violações dos padrões: sem `@Autowired` em campo, sem retornos `null` e sem `any` em TypeScript. Integra pull requests. |
+| Software Architect (Apoio) | Valida se a implementação corresponde ao design. Sinaliza cedo os desvios das fronteiras dos contextos delimitados. |
+| Outras personas (Observadores) | Permanecem disponíveis para perguntas. O Developer pode precisar de um esclarecimento do domínio que somente o Product Owner ou o Requirements Engineer pode fornecer. |
+
+### Estágio 4 — @evolution
+
+| Persona | O que você faz |
+|---|---|
+| **Technical Lead (Líder)** | Escreve GitHub Issues para o Copilot Agent. Revisa pull requests gerados por IA. Decide o que integrar e rejeitar. Responde pela integração e pela preparação da demonstração. |
+| DevOps Engineer (Apoio) | Escreve o workflow do GitHub Actions e os módulos Terraform. Garante tags corretas, gestão de segredos e configuração de recursos. |
+| QA Engineer (Apoio) | Valida se a CI inclui todos os gates de qualidade: lint, build e teste. Revisa os resultados dos testes dos pull requests gerados por IA. |
+| Developer (Apoio) | Revisa a correção do código gerado por IA. Conhece a base de código e detecta erros lógicos que as verificações automatizadas podem não encontrar. |
+| Tech Writer (Apoio) | Refina o README, documenta o roteiro da demonstração e garante que as notas da retrospectiva capturem o aprendizado do time. |
+| Product Owner (Apoio) | Ajuda a priorizar o que deve funcionar na demonstração e o que pode ser adiado. Prepara a narrativa da apresentação. |
+| Outras personas (Observadores) | Contribuem com observações para a retrospectiva: o que surpreendeu e o que fariam de outra forma. |
 
 ---
 
-### Continue reading
+## Ordem de leitura sugerida
 
-| Previous | Next |
+- [ ] Leia o `PERSONA.md` do seu papel em [`05-personas/`](../05-personas/) — entenda suas responsabilidades.
+- [ ] Leia sua linha nesta matriz — entenda sua intensidade em cada estágio.
+- [ ] No início de cada estágio, abra o README do kit de agente em [`06-stage-agents/`](../06-stage-agents/).
+- [ ] Ative o agente do estágio atual no GitHub Copilot e comece a trabalhar.
+
+## Referências
+
+- [Kits de agentes](../06-stage-agents/README.md)
+- [Arquitetura dos agentes](4-agents-explained.md)
+- [Kits de persona consolidados](../05-personas/)
+
+---
+
+### Continue lendo
+
+| Anterior | Próximo |
 |---|---|
-| [Four Agents Explained](4-agents-explained.md)<br/><sub>Why there are four agents.</sub> | [SDLC Flow](sdlc-flow-guide.md)<br/><sub>Contracts between pairs.</sub> |
+| [Quatro agentes explicados](4-agents-explained.md)<br/><sub>Por que há quatro agentes.</sub> | [Fluxo do SDLC](sdlc-flow-guide.md)<br/><sub>Contratos entre duplas.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Voltar ao índice do kit](../README.md)</sub>

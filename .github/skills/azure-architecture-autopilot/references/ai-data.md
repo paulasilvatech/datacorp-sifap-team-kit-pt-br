@@ -1,43 +1,43 @@
-# Domain Pack: AI/Data (v1)
+# Pacote de domínio: IA/dados (v1)
 
-Service configuration guide specialized for Azure AI/Data workloads.
-v1 scope: Foundry, AI Search, ADLS Gen2, Key Vault, Fabric, ADF, VNet/PE.
+Guia de configuração de serviços especializado em cargas de trabalho de IA/dados do Azure.
+Escopo da v1: Foundry, AI Search, ADLS Gen2, Key Vault, Fabric, ADF e VNet/PE.
 
-> Required properties/common mistakes → `service-gotchas.md`
-> Dynamic information (API version, SKU, region) → `azure-dynamic-sources.md`
-> Common patterns (PE, security, naming) → `azure-common-patterns.md`
+> Propriedades obrigatórias e erros comuns → `service-gotchas.md`
+> Informações dinâmicas (versão da API, SKU e região) → `azure-dynamic-sources.md`
+> Padrões comuns (PE, segurança e nomenclatura) → `azure-common-patterns.md`
 
 ---
 
 ## 1. Microsoft Foundry (CognitiveServices)
 
-### Resource Hierarchy
+### Hierarquia de recursos
 
 ```
 Microsoft.CognitiveServices/accounts (kind: 'AIServices')
-├── /projects          — Foundry Project (required for portal access)
-└── /deployments       — Model deployments (GPT-4o, embedding, etc.)
+├── /projects          — Foundry Project (obrigatório para acessar o portal)
+└── /deployments       — Implantações de modelos (GPT-4o, incorporação vetorial, `embedding`, etc.)
 ```
 
-### Bicep Core Structure — 1. Microsoft Foundry (CognitiveServices)
+### Estrutura principal do Bicep: 1. Microsoft Foundry (CognitiveServices)
 
 ```bicep
-// Foundry resource
+// Recurso Foundry
 resource foundry 'Microsoft.CognitiveServices/accounts@<fetch>' = {
   name: foundryName
   location: location
   kind: 'AIServices'
-  sku: { name: '<confirm with user>' }               // ← SKU confirmed after MS Docs check in Phase 1
+  sku: { name: '<confirm with user>' }               // ← SKU confirmada após consulta ao Microsoft Docs na Fase 1
   identity: { type: 'SystemAssigned' }
   properties: {
-    customSubDomainName: foundryName  // ← Required, globally unique. Cannot change after creation — must delete and recreate if omitted
+    customSubDomainName: foundryName  // ← Obrigatório e globalmente exclusivo. Não pode ser alterado após a criação; se ausente, exclua e recrie
     allowProjectManagement: true
     publicNetworkAccess: 'Disabled'
     networkAcls: { defaultAction: 'Deny' }
   }
 }
 
-// Foundry Project — Must be created as a set with Foundry
+// Foundry Project: deve ser criado em conjunto com o Foundry
 resource project 'Microsoft.CognitiveServices/accounts/projects@<fetch>' = {
   parent: foundry
   name: '${foundryName}-project'
@@ -48,32 +48,32 @@ resource project 'Microsoft.CognitiveServices/accounts/projects@<fetch>' = {
   properties: {}
 }
 
-// Model deployment — At Foundry resource level
+// Implantação de modelo: no nível do recurso Foundry
 resource deployment 'Microsoft.CognitiveServices/accounts/deployments@<fetch>' = {
   parent: foundry
-  name: '<model-name>'                              // ← Confirmed with user in Phase 1
+  name: '<model-name>'                              // ← Confirmado na Fase 1
   sku: {
-    name: '<deployment-type>'                        // ← GlobalStandard, Standard, etc. — MS Docs fetch
-    capacity: <confirm with user>                    // ← Capacity units — verify available range from MS Docs
+    name: '<deployment-type>'                        // ← GlobalStandard, Standard etc.; consulte o Microsoft Docs
+    capacity: <confirm with user>                    // ← Unidades de capacidade; verifique o intervalo no Microsoft Docs
   }
   properties: {
     model: {
       format: 'OpenAI'
-      name: '<model-name>'                           // ← Must verify availability (fetch)
-      version: '<fetch>'                             // ← Version also fetched
+      name: '<model-name>'                           // ← É obrigatório verificar a disponibilidade
+      version: '<fetch>'                             // ← Consulte também a versão
     }
   }
 }
 ```
 
-> `@<fetch>`: Verify API version from the URLs in `azure-dynamic-sources.md`.
-> Model name/version/deployment type/capacity: All Dynamic — Confirmed with user after MS Docs fetch in Phase 1.
+> `@<fetch>`: verifique a versão da API nas URLs de `azure-dynamic-sources.md`.
+> Nome/versão do modelo, tipo de implantação e capacidade: todos são dinâmicos. Confirme-os após consultar o Microsoft Docs na Fase 1.
 
 ---
 
 ## 2. Azure AI Search
 
-### Bicep Core Structure — 2. Azure AI Search
+### Estrutura principal do Bicep: 2. Azure AI Search
 
 ```bicep
 resource search 'Microsoft.Search/searchServices@<fetch>' = {
@@ -84,32 +84,32 @@ resource search 'Microsoft.Search/searchServices@<fetch>' = {
   properties: {
     hostingMode: 'default'
     publicNetworkAccess: 'disabled'
-    semanticSearch: '<confirm with user>'    // disabled | free | standard — verify in MS Docs
+    semanticSearch: '<confirm with user>'    // disabled | free | standard; verifique no Microsoft Docs
   }
 }
 ```
 
-### Design Notes — 2. Azure AI Search
+### Observações de projeto: 2. Azure AI Search
 
-- PE support: Basic SKU or higher (verify latest constraints in MS Docs)
-- Semantic Ranker: Activated via `semanticSearch` property (`disabled` | `free` | `standard`) — verify per-SKU support in MS Docs
-- Vector search: Supported on paid SKUs (verify in MS Docs)
-- Commonly used together with Foundry for RAG configurations
+- Suporte a PE: SKU Basic ou superior (verifique as restrições mais recentes no Microsoft Docs)
+- Classificador semântico (Semantic Ranker): ativado pela propriedade `semanticSearch` (`disabled` | `free` | `standard`); verifique o suporte por SKU no Microsoft Docs
+- Pesquisa vetorial: disponível nas SKUs pagas (verifique no Microsoft Docs)
+- Geralmente usado com o Foundry em configurações RAG
 
 ---
 
 ## 3. ADLS Gen2 (Storage Account)
 
-### Bicep Core Structure — 3. ADLS Gen2 (Storage Account)
+### Estrutura principal do Bicep: 3. ADLS Gen2 (Storage Account)
 
 ```bicep
 resource storage 'Microsoft.Storage/storageAccounts@<fetch>' = {
-  name: storageName        // Lowercase+numbers only, no hyphens
+  name: storageName        // Somente letras minúsculas e números, sem hifens
   location: location
   kind: 'StorageV2'
   sku: { name: 'Standard_LRS' }
   properties: {
-    isHnsEnabled: true                 // ← Never omit this
+    isHnsEnabled: true                 // ← Nunca omita esta propriedade
     accessTier: 'Hot'
     allowBlobPublicAccess: false
     minimumTlsVersion: 'TLS1_2'
@@ -118,23 +118,23 @@ resource storage 'Microsoft.Storage/storageAccounts@<fetch>' = {
   }
 }
 
-// Container
+// Contêiner
 resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@<fetch>' = {
   name: '${storage.name}/default/raw'
 }
 ```
 
-### Design Notes — 3. ADLS Gen2 (Storage Account)
+### Observações de projeto: 3. ADLS Gen2 (Storage Account)
 
-- `isHnsEnabled` cannot be changed after creation → Resource must be recreated if omitted
-- PE: May need both `blob` and `dfs` PEs depending on use case
-- Common containers: `raw`, `processed`, `curated`
+- `isHnsEnabled` não pode ser alterado após a criação → recrie o recurso se a propriedade tiver sido omitida
+- PE: o caso de uso pode exigir PEs `blob` e `dfs`
+- Contêineres comuns: `raw`, `processed`, `curated`
 
 ---
 
 ## 4. Microsoft Fabric
 
-### Bicep Core Structure — 4. Microsoft Fabric
+### Estrutura principal do Bicep: 4. Microsoft Fabric
 
 ```bicep
 resource fabric 'Microsoft.Fabric/capacities@<fetch>' = {
@@ -143,32 +143,32 @@ resource fabric 'Microsoft.Fabric/capacities@<fetch>' = {
   sku: { name: '<confirm with user>', tier: 'Fabric' }
   properties: {
     administration: {
-      members: [ '<admin-email>' ]    // ← Required, deployment fails without it
+      members: [ '<admin-email>' ]    // ← Obrigatório; sem este valor, a implantação falha
     }
   }
 }
 ```
 
-### Design Notes — 4. Microsoft Fabric
+### Observações de projeto: 4. Microsoft Fabric
 
-- Only Capacity can be provisioned via Bicep
-- Workspace, Lakehouse, Warehouse, etc. must be created manually in the portal
-- Confirm admin email with the user (`ask_user`)
+- Somente Capacity (capacidade) pode ser provisionado pelo Bicep
+- Workspace (espaço de trabalho), Lakehouse (repositório analítico unificado), Warehouse (armazém de dados) etc. devem ser criados manualmente no portal
+- Confirme o e-mail do administrador com `ask_user`
 
-### Required Confirmation Items When Adding in Phase 1
+### Itens de confirmação obrigatória ao adicionar na Fase 1
 
-When Fabric is added during conversation, the following items must be confirmed via ask_user before updating the diagram:
+Quando o Fabric for adicionado durante a conversa, confirme os itens abaixo por `ask_user` antes de atualizar o diagrama:
 
-- [ ] **SKU/Capacity**: F2, F4, F8, ... — Provide choices after fetching available SKUs from MS Docs
-- [ ] **administration.members**: Admin email — Deployment fails without it
+- [ ] **SKU/Capacity**: F2, F4, F8...; ofereça opções após consultar as SKUs disponíveis no Microsoft Docs
+- [ ] **administration.members**: e-mail do administrador; sem ele, a implantação falha
 
-> Do not arbitrarily include sub-workloads (OneLake, data pipelines, Warehouse, etc.) that the user did not specify. Only Capacity can be provisioned via Bicep.
+> Não inclua arbitrariamente subcargas de trabalho (OneLake, fluxos de dados, Warehouse etc.) que não tenham sido especificadas. Somente Capacity pode ser provisionado pelo Bicep.
 
 ---
 
 ## 5. Azure Data Factory
 
-### Bicep Core Structure — 5. Azure Data Factory
+### Estrutura principal do Bicep: 5. Azure Data Factory
 
 ```bicep
 resource adf 'Microsoft.DataFactory/factories@<fetch>' = {
@@ -181,75 +181,75 @@ resource adf 'Microsoft.DataFactory/factories@<fetch>' = {
 }
 ```
 
-### Design Notes — 5. Azure Data Factory
+### Observações de projeto: 5. Azure Data Factory
 
-- Self-hosted Integration Runtime requires manual setup outside Bicep
-- Primarily used for on-premises data ingestion scenarios
-- PE groupId: `dataFactory`
+- O ambiente de execução de integração auto-hospedado (Self-hosted Integration Runtime) exige configuração manual fora do Bicep
+- Usado principalmente em cenários de ingestão de dados locais
+- `groupId` do PE: `dataFactory`
 
 ---
 
 ## 6. AML / AI Hub (MachineLearningServices)
 
-### When to Use
+### Quando usar
 
 ```
-Decision Rule:
-├─ General AI/RAG → Use Foundry (AIServices)
-└─ ML training, open-source models needed → Consider AI Hub
-    └─ Only when the user explicitly requests it
+Regra de decisão:
+├─ IA/RAG em geral → use Foundry (AIServices)
+└─ Treinamento de ML ou modelos de código aberto necessários → considere AI Hub
+    └─ Somente mediante solicitação explícita
 ```
 
-### Bicep Core Structure — 6. AML / AI Hub (MachineLearningServices)
+### Estrutura principal do Bicep: 6. AML / AI Hub (MachineLearningServices)
 
 ```bicep
 resource hub 'Microsoft.MachineLearningServices/workspaces@<fetch>' = {
   name: hubName
   location: location
   kind: 'Hub'
-  sku: { name: '<confirm with user>', tier: '<confirm with user>' }  // e.g., Basic/Basic — verify available SKUs in MS Docs
+  sku: { name: '<confirm with user>', tier: '<confirm with user>' }  // por exemplo, Basic/Basic; verifique as SKUs no Microsoft Docs
   identity: { type: 'SystemAssigned' }
   properties: {
     friendlyName: hubName
     storageAccount: storage.id
     keyVault: keyVault.id
-    applicationInsights: appInsights.id    // Required for Hub
+    applicationInsights: appInsights.id    // Obrigatório para o Hub
     publicNetworkAccess: 'Disabled'
   }
 }
 ```
 
-### AI Hub Dependencies
+### Dependências do AI Hub
 
-Additional resources needed when using Hub:
+Recursos adicionais necessários ao usar o Hub:
 
 - Storage Account
 - Key Vault
 - Application Insights + Log Analytics Workspace
-- Container Registry (optional)
+- Container Registry (opcional)
 
 ---
 
-## 7. Common AI/Data Architecture Combinations
+## 7. Combinações comuns de arquitetura de IA/dados
 
-### RAG Chatbot
+### Assistente de conversa RAG
 
 ```
 Foundry (AIServices) + Project
-├── <chat-model> (chat)              — Confirmed after availability check in Phase 1
-├── <embedding-model> (embedding)    — Confirmed after availability check in Phase 1
-├── AI Search (vector + semantic)
-├── ADLS Gen2 (document store)
-└── Key Vault (secrets)
-+ Full VNet/PE configuration
+├── <chat-model> (bate-papo)              — Confirmado após verificar a disponibilidade na Fase 1
+├── <embedding-model> (incorporação vetorial) — Confirmado após verificar a disponibilidade na Fase 1
+├── AI Search (vetorial + semântica)
+├── ADLS Gen2 (armazenamento de documentos)
+└── Key Vault (segredos)
++ Configuração completa de VNet/PE
 ```
 
-### Data Platform
+### Plataforma de dados
 
 ```
-Fabric Capacity (analytics)
-├── ADLS Gen2 (data lake)
-├── ADF (ingestion)
-└── Key Vault (secrets)
-+ VNet/PE configuration
+Fabric Capacity (análise)
+├── ADLS Gen2 (lago de dados)
+├── ADF (ingestão)
+└── Key Vault (segredos)
++ Configuração de VNet/PE
 ```

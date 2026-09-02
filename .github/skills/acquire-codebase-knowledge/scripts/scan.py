@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 """
-scan.py — Collect project discovery information for the acquire-codebase-knowledge skill.
-Run from the project root directory.
+scan.py: coleta informações de descoberta do projeto para a habilidade
+acquire-codebase-knowledge.
+Execute no diretório raiz do projeto.
 
-Usage: python3 scan.py [OPTIONS]
+Uso: python3 scan.py [OPÇÕES]
 
-Options:
-  --output FILE   Write output to FILE instead of stdout
-  --help          Show this message and exit
+Opções:
+  --output ARQUIVO   Grava a saída no ARQUIVO em vez de stdout
+  --help             Exibe esta mensagem e encerra
 
-Exit codes:
-  0  Success
-  1  Usage error
+Códigos de saída:
+  0  Sucesso
+  1  Erro de uso
 """
 
 import os
@@ -77,7 +78,7 @@ MANIFESTS = [
     "DESCRIPTION", "renv.lock",
     # Julia
     "Project.toml", "Manifest.toml",
-    # Build systems
+    # Sistemas de compilação
     "CMakeLists.txt", "Makefile", "GNUmakefile",
     "SConstruct", "build.xml",
     "BUILD", "BUILD.bazel", "WORKSPACE", "bazel.lock",
@@ -185,27 +186,35 @@ PERFORMANCE_MARKERS = [
 
 
 def parse_args():
-    """Parse command-line arguments."""
+    """Analisa os argumentos da linha de comando."""
     parser = argparse.ArgumentParser(
-        description="Scan the current directory (project root) and output discovery information "
-                    "for the acquire-codebase-knowledge skill.",
-        add_help=True
+        usage="%(prog)s [OPÇÕES]",
+        description="Varre o diretório atual (raiz do projeto) e gera informações de descoberta "
+                    "para a habilidade acquire-codebase-knowledge.",
+        add_help=False
     )
+    parser._optionals.title = "opções"
     parser.add_argument(
         "--output",
         type=str,
-        help="Write output to FILE instead of stdout"
+        metavar="ARQUIVO",
+        help="Grava a saída em ARQUIVO em vez de stdout"
+    )
+    parser.add_argument(
+        "-h", "--help",
+        action="help",
+        help="Exibe esta mensagem e encerra"
     )
     return parser.parse_args()
 
 
 def should_exclude(path: Path) -> bool:
-    """Check if a path should be excluded from scanning."""
+    """Verifica se um caminho deve ser excluído da varredura."""
     return any(part in EXCLUDE_DIRS for part in path.parts)
 
 
 def get_directory_tree(max_depth: int = TREE_MAX_DEPTH) -> List[str]:
-    """Get directory tree up to max_depth."""
+    """Obtém a árvore de diretórios até max_depth."""
     files = []
 
     def walk(path: Path, depth: int):
@@ -227,11 +236,11 @@ def get_directory_tree(max_depth: int = TREE_MAX_DEPTH) -> List[str]:
 
 
 def find_manifest_files() -> List[str]:
-    """Find manifest files matching patterns."""
+    """Localiza arquivos de manifesto que correspondem aos padrões."""
     found = []
     for pattern in MANIFESTS:
         if "*" in pattern:
-            # Handle glob patterns
+            # Trata padrões glob
             for path in Path.cwd().glob(pattern):
                 if path.is_file() and not should_exclude(path):
                     found.append(path.name)
@@ -243,24 +252,24 @@ def find_manifest_files() -> List[str]:
 
 
 def read_file_preview(filepath: Path, max_lines: int = MANIFEST_PREVIEW_LINES) -> str:
-    """Read file with line limit."""
+    """Lê o arquivo com um limite de linhas."""
     try:
         with open(filepath, 'r', encoding='utf-8', errors='replace') as f:
             lines = f.readlines()
 
         if not lines:
-            return "None found."
+            return "Nada encontrado."
 
         preview = ''.join(lines[:max_lines])
         if len(lines) > max_lines:
-            preview += f"\n[TRUNCATED] Showing first {max_lines} of {len(lines)} lines."
+            preview += f"\n[TRUNCADO] Exibindo as primeiras {max_lines} de {len(lines)} linhas."
         return preview
     except Exception as e:
-        return f"[Error reading file: {e}]"
+        return f"[Erro ao ler o arquivo: {e}]"
 
 
 def find_entry_points() -> List[str]:
-    """Find entry point candidates."""
+    """Localiza possíveis pontos de entrada."""
     found = []
     for candidate in ENTRY_CANDIDATES:
         if Path(candidate).exists():
@@ -269,7 +278,7 @@ def find_entry_points() -> List[str]:
 
 
 def find_lint_config() -> List[str]:
-    """Find linting and formatting config files."""
+    """Localiza arquivos de configuração de análise estática e formatação."""
     found = []
     for filename in LINT_FILES:
         if Path(filename).exists():
@@ -278,7 +287,7 @@ def find_lint_config() -> List[str]:
 
 
 def find_env_templates() -> List[tuple]:
-    """Find environment variable templates."""
+    """Localiza modelos de variáveis de ambiente."""
     found = []
     for filename in ENV_TEMPLATES:
         path = Path(filename)
@@ -288,18 +297,18 @@ def find_env_templates() -> List[tuple]:
 
 
 def search_todos() -> List[str]:
-    """Search for TODO/FIXME/HACK comments."""
+    """Procura comentários TODO/FIXME/HACK."""
     todos = []
     patterns = ["TODO", "FIXME", "HACK"]
     exclude_dirs_str = "|".join(EXCLUDE_DIRS | {"test", "tests", "__tests__", "spec", "__mocks__", "fixtures"})
 
     try:
         for root, dirs, files in os.walk(Path.cwd()):
-            # Remove excluded directories from dirs to prevent os.walk from descending
+            # Remove diretórios excluídos de dirs para impedir que os.walk entre neles
             dirs[:] = [d for d in dirs if d not in EXCLUDE_DIRS and d not in {"test", "tests", "__tests__", "spec", "__mocks__", "fixtures"}]
 
             for file in files:
-                # Check file extension
+                # Verifica a extensão do arquivo
                 ext = Path(file).suffix.lstrip('.')
                 if ext not in SOURCE_EXTS:
                     continue
@@ -321,7 +330,7 @@ def search_todos() -> List[str]:
 
 
 def get_git_commits() -> List[str]:
-    """Get recent git commits."""
+    """Obtém os commits recentes do git."""
     try:
         result = subprocess.run(
             ["git", "log", "--oneline", "-n", str(RECENT_COMMITS_LIMIT)],
@@ -337,7 +346,7 @@ def get_git_commits() -> List[str]:
 
 
 def get_git_churn() -> List[str]:
-    """Get high-churn files from last 90 days."""
+    """Obtém os arquivos com mais alterações nos últimos 90 dias."""
     try:
         result = subprocess.run(
             ["git", "log", "--since=90 days ago", "--name-only", "--pretty=format:"],
@@ -347,7 +356,7 @@ def get_git_churn() -> List[str]:
         )
         if result.returncode == 0:
             files = [f.strip() for f in result.stdout.split('\n') if f.strip()]
-            # Count occurrences
+            # Conta as ocorrências
             from collections import Counter
             counts = Counter(files)
             churn = sorted(counts.items(), key=lambda x: x[1], reverse=True)
@@ -358,7 +367,7 @@ def get_git_churn() -> List[str]:
 
 
 def is_git_repo() -> bool:
-    """Check if current directory is a git repository."""
+    """Verifica se o diretório atual é um repositório git."""
     try:
         subprocess.run(
             ["git", "rev-parse", "--git-dir"],
@@ -372,24 +381,24 @@ def is_git_repo() -> bool:
 
 
 def detect_monorepo() -> List[str]:
-    """Detect monorepo signals."""
+    """Detecta sinais de monorepositório."""
     signals = []
 
     for filename in MONOREPO_FILES:
         if Path(filename).exists():
-            signals.append(f"Monorepo tool detected: {filename}")
+            signals.append(f"Ferramenta de monorepositório detectada: {filename}")
 
     for dirname in MONOREPO_DIRS:
         if Path(dirname).is_dir():
-            signals.append(f"Sub-package directory found: {dirname}/")
+            signals.append(f"Diretório de subpacote encontrado: {dirname}/")
 
-    # Check package.json workspaces
+    # Verifica os workspaces de package.json
     if Path("package.json").exists():
         try:
             with open("package.json", 'r') as f:
                 content = f.read()
                 if '"workspaces"' in content:
-                    signals.append("package.json has 'workspaces' field (npm/yarn workspaces monorepo)")
+                    signals.append("package.json tem o campo 'workspaces' (monorepositório com espaços de trabalho npm/yarn)")
         except Exception:
             pass
 
@@ -397,7 +406,7 @@ def detect_monorepo() -> List[str]:
 
 
 def detect_ci_cd_pipelines() -> List[str]:
-    """Detect CI/CD pipeline configurations."""
+    """Detecta configurações de fluxos automatizados de CI/CD."""
     pipelines = []
 
     for config_path, pipeline_name in CI_CD_CONFIGS.items():
@@ -405,7 +414,7 @@ def detect_ci_cd_pipelines() -> List[str]:
         if path.is_file():
             pipelines.append(f"CI/CD: {pipeline_name}")
         elif path.is_dir():
-            # Check for workflow files in directory
+            # Verifica arquivos de workflow no diretório
             try:
                 if list(path.glob("*.yml")) or list(path.glob("*.yaml")):
                     pipelines.append(f"CI/CD: {pipeline_name}")
@@ -416,24 +425,24 @@ def detect_ci_cd_pipelines() -> List[str]:
 
 
 def detect_containers() -> List[str]:
-    """Detect containerization and orchestration configs."""
+    """Detecta configurações de conteinerização e orquestração."""
     containers = []
 
     for config in CONTAINER_FILES:
         path = Path(config)
         if path.is_file():
             if "Dockerfile" in config:
-                containers.append("Container: Docker found")
+                containers.append("Contêiner: Docker encontrado")
             elif "docker-compose" in config:
-                containers.append("Orchestration: Docker Compose found")
+                containers.append("Orquestração: Docker Compose encontrado")
             elif config.endswith(".yaml") or config.endswith(".yml"):
-                containers.append(f"Container/Orchestration: {config}")
+                containers.append(f"Contêiner/orquestração: {config}")
         elif path.is_dir():
             if config in ["k8s", "kubernetes"]:
-                containers.append("Orchestration: Kubernetes configs found")
+                containers.append("Orquestração: configurações do Kubernetes encontradas")
             try:
                 if list(path.glob("*.yml")) or list(path.glob("*.yaml")):
-                    containers.append(f"Container/Orchestration: {config}/ directory found")
+                    containers.append(f"Contêiner/orquestração: diretório {config}/ encontrado")
             except Exception:
                 pass
 
@@ -441,29 +450,29 @@ def detect_containers() -> List[str]:
 
 
 def detect_security_configs() -> List[str]:
-    """Detect security and compliance configurations."""
+    """Detecta configurações de segurança e conformidade."""
     security = []
 
     for config in SECURITY_CONFIGS:
         if Path(config).exists():
             config_name = config.replace(".yml", "").replace(".yaml", "").lstrip(".")
-            security.append(f"Security: {config_name}")
+            security.append(f"Segurança: {config_name}")
 
     return security
 
 
 def detect_performance_markers() -> List[str]:
-    """Detect performance testing and profiling markers."""
+    """Detecta marcadores de testes e análise de desempenho."""
     performance = []
 
     for marker in PERFORMANCE_MARKERS:
         if Path(marker).exists():
-            performance.append(f"Performance: {marker} found")
+            performance.append(f"Desempenho: {marker} encontrado")
         else:
-            # Check for directories
+            # Verifica diretórios
             try:
                 if Path(marker).is_dir():
-                    performance.append(f"Performance: {marker}/ directory found")
+                    performance.append(f"Desempenho: diretório {marker}/ encontrado")
             except Exception:
                 pass
 
@@ -471,7 +480,7 @@ def detect_performance_markers() -> List[str]:
 
 
 def collect_code_metrics() -> dict:
-    """Collect code metrics: file counts by extension, total LOC."""
+    """Coleta métricas de código: arquivos por extensão e total de linhas."""
     metrics = {
         "total_files": 0,
         "by_extension": {},
@@ -480,14 +489,14 @@ def collect_code_metrics() -> dict:
         "largest_files": []
     }
 
-    # Language mapping
+    # Mapeamento de linguagens
     lang_map = {
         "ts": "TypeScript", "tsx": "TypeScript/React", "js": "JavaScript",
         "jsx": "JavaScript/React", "py": "Python", "go": "Go",
         "java": "Java", "kt": "Kotlin", "rs": "Rust",
         "cs": "C#", "rb": "Ruby", "php": "PHP",
         "swift": "Swift", "scala": "Scala", "ex": "Elixir",
-        "cpp": "C++", "c": "C", "h": "C Header",
+        "cpp": "C++", "c": "C", "h": "Cabeçalho C",
         "clj": "Clojure", "lua": "Lua", "hs": "Haskell"
     }
 
@@ -511,11 +520,11 @@ def collect_code_metrics() -> dict:
                     metrics["total_files"] += 1
                     metrics["by_extension"][ext] = metrics["by_extension"].get(ext, 0) + 1
 
-                    lang = lang_map.get(ext, "Other")
+                    lang = lang_map.get(ext, "Outros")
                     metrics["by_language"][lang] = metrics["by_language"].get(lang, 0) + 1
 
-                    # Count lines for text files
-                    if ext in SOURCE_EXTS and size < 1_000_000:  # Skip huge files
+                    # Conta linhas de arquivos de texto
+                    if ext in SOURCE_EXTS and size < 1_000_000:  # Ignora arquivos enormes
                         try:
                             with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
                                 metrics["total_lines"] += len(f.readlines())
@@ -524,7 +533,7 @@ def collect_code_metrics() -> dict:
                 except Exception:
                     pass
 
-        # Top 10 largest files
+        # Dez maiores arquivos
         file_sizes.sort(key=lambda x: x[1], reverse=True)
         metrics["largest_files"] = [
             f"{str(f)}: {s/1024:.1f}KB" for f, s in file_sizes[:10]
@@ -537,11 +546,11 @@ def collect_code_metrics() -> dict:
 
 
 def print_section(title: str, content: List[str], output_file=None) -> None:
-    """Print a section with title and content."""
+    """Imprime uma seção com título e conteúdo."""
     lines = [f"\n=== {title} ==="]
 
     if isinstance(content, list):
-        lines.extend(content if content else ["None found."])
+        lines.extend(content if content else ["Nada encontrado."])
     elif isinstance(content, str):
         lines.append(content)
 
@@ -554,7 +563,7 @@ def print_section(title: str, content: List[str], output_file=None) -> None:
 
 
 def main():
-    """Main entry point."""
+    """Ponto de entrada principal."""
     args = parse_args()
 
     output_file = None
@@ -562,17 +571,17 @@ def main():
         output_dir = Path(args.output).parent
         output_dir.mkdir(parents=True, exist_ok=True)
         output_file = open(args.output, 'w', encoding='utf-8')
-        print(f"Writing output to: {args.output}", file=sys.stderr)
+        print(f"Gravando a saída em: {args.output}", file=sys.stderr)
 
     try:
-        # Directory tree
+        # Árvore de diretórios
         print_section(
-            f"DIRECTORY TREE (max depth {TREE_MAX_DEPTH}, source files only)",
+            f"ÁRVORE DE DIRETÓRIOS (profundidade máxima {TREE_MAX_DEPTH}, somente arquivos-fonte)",
             get_directory_tree(),
             output_file
         )
 
-        # Stack detection
+        # Detecção do conjunto de tecnologias
         manifests = find_manifest_files()
         if manifests:
             manifest_content = [""]
@@ -580,118 +589,118 @@ def main():
                 manifest_path = Path(manifest)
                 manifest_content.append(f"--- {manifest} ---")
                 if manifest == "bun.lockb":
-                    manifest_content.append("[Binary lockfile — see package.json for dependency details.]")
+                    manifest_content.append("[Arquivo de bloqueio binário; consulte package.json para obter detalhes das dependências.]")
                 else:
                     manifest_content.append(read_file_preview(manifest_path))
-            print_section("STACK DETECTION (manifest files)", manifest_content, output_file)
+            print_section("DETECÇÃO DO CONJUNTO DE TECNOLOGIAS (arquivos de manifesto)", manifest_content, output_file)
         else:
-            print_section("STACK DETECTION (manifest files)", ["No recognized manifest files found in project root."], output_file)
+            print_section("DETECÇÃO DO CONJUNTO DE TECNOLOGIAS (arquivos de manifesto)", ["Nenhum arquivo de manifesto reconhecido foi encontrado na raiz do projeto."], output_file)
 
-        # Entry points
+        # Pontos de entrada
         entries = find_entry_points()
         if entries:
-            entry_content = [f"Found: {e}" for e in entries]
-            print_section("ENTRY POINTS", entry_content, output_file)
+            entry_content = [f"Encontrado: {e}" for e in entries]
+            print_section("PONTOS DE ENTRADA", entry_content, output_file)
         else:
-            print_section("ENTRY POINTS", ["No common entry points found. Check 'main' or 'scripts.start' in manifest files above."], output_file)
+            print_section("PONTOS DE ENTRADA", ["Nenhum ponto de entrada comum foi encontrado. Verifique 'main' ou 'scripts.start' nos arquivos de manifesto acima."], output_file)
 
-        # Linting config
+        # Configuração de análise estática
         lint = find_lint_config()
         if lint:
-            lint_content = [f"Found: {l}" for l in lint]
-            print_section("LINTING AND FORMATTING CONFIG", lint_content, output_file)
+            lint_content = [f"Encontrado: {l}" for l in lint]
+            print_section("CONFIGURAÇÃO DE ANÁLISE ESTÁTICA E FORMATAÇÃO", lint_content, output_file)
         else:
-            print_section("LINTING AND FORMATTING CONFIG", ["No linting or formatting config files found in project root."], output_file)
+            print_section("CONFIGURAÇÃO DE ANÁLISE ESTÁTICA E FORMATAÇÃO", ["Nenhum arquivo de configuração de análise estática ou formatação foi encontrado na raiz do projeto."], output_file)
 
-        # Environment templates
+        # Modelos de ambiente
         envs = find_env_templates()
         if envs:
             env_content = []
             for filename, filepath in envs:
                 env_content.append(f"--- {filename} ---")
                 env_content.append(read_file_preview(filepath))
-            print_section("ENVIRONMENT VARIABLE TEMPLATES", env_content, output_file)
+            print_section("MODELOS DE VARIÁVEIS DE AMBIENTE", env_content, output_file)
         else:
-            print_section("ENVIRONMENT VARIABLE TEMPLATES", ["No .env.example or .env.template found. Identify required environment variables by searching the code and config for environment variable reads."], output_file)
+            print_section("MODELOS DE VARIÁVEIS DE AMBIENTE", ["Nenhum .env.example ou .env.template foi encontrado. Identifique as variáveis de ambiente obrigatórias procurando leituras dessas variáveis no código e na configuração."], output_file)
 
         # TODOs
         todos = search_todos()
         if todos:
-            print_section("TODO / FIXME / HACK (production code only, test dirs excluded)", todos, output_file)
+            print_section("TODO / FIXME / HACK (somente código de produção, diretórios de teste excluídos)", todos, output_file)
         else:
-            print_section("TODO / FIXME / HACK (production code only, test dirs excluded)", ["None found."], output_file)
+            print_section("TODO / FIXME / HACK (somente código de produção, diretórios de teste excluídos)", ["Nada encontrado."], output_file)
 
-        # Git info
+        # Informações do git
         if is_git_repo():
             commits = get_git_commits()
             if commits:
-                print_section("GIT RECENT COMMITS (last 20)", commits, output_file)
+                print_section("COMMITS RECENTES DO GIT (últimos 20)", commits, output_file)
             else:
-                print_section("GIT RECENT COMMITS (last 20)", ["No commits found."], output_file)
+                print_section("COMMITS RECENTES DO GIT (últimos 20)", ["Nenhum commit encontrado."], output_file)
 
             churn = get_git_churn()
             if churn:
-                print_section("HIGH-CHURN FILES (last 90 days, top 20)", churn, output_file)
+                print_section("ARQUIVOS COM MAIS ALTERAÇÕES (últimos 90 dias, 20 principais)", churn, output_file)
             else:
-                print_section("HIGH-CHURN FILES (last 90 days, top 20)", ["None found."], output_file)
+                print_section("ARQUIVOS COM MAIS ALTERAÇÕES (últimos 90 dias, 20 principais)", ["Nada encontrado."], output_file)
         else:
-            print_section("GIT RECENT COMMITS (last 20)", ["Not a git repository or no commits yet."], output_file)
-            print_section("HIGH-CHURN FILES (last 90 days, top 20)", ["Not a git repository."], output_file)
+            print_section("COMMITS RECENTES DO GIT (últimos 20)", ["Não é um repositório git ou ainda não há commits."], output_file)
+            print_section("ARQUIVOS COM MAIS ALTERAÇÕES (últimos 90 dias, 20 principais)", ["Não é um repositório git."], output_file)
 
-        # Monorepo detection
+        # Detecção de monorepositório
         monorepo = detect_monorepo()
         if monorepo:
-            print_section("MONOREPO SIGNALS", monorepo, output_file)
+            print_section("SINAIS DE MONOREPOSITÓRIO", monorepo, output_file)
         else:
-            print_section("MONOREPO SIGNALS", ["No monorepo signals detected."], output_file)
+            print_section("SINAIS DE MONOREPOSITÓRIO", ["Nenhum sinal de monorepositório foi detectado."], output_file)
 
-        # Code metrics
+        # Métricas de código
         metrics = collect_code_metrics()
         metrics_output = [
-            f"Total files scanned: {metrics['total_files']}",
-            f"Total lines of code: {metrics['total_lines']}",
+            f"Total de arquivos verificados: {metrics['total_files']}",
+            f"Total de linhas de código: {metrics['total_lines']}",
             ""
         ]
         if metrics["by_language"]:
-            metrics_output.append("Files by language:")
+            metrics_output.append("Arquivos por linguagem:")
             for lang, count in sorted(metrics["by_language"].items(), key=lambda x: x[1], reverse=True):
                 metrics_output.append(f"  {lang}: {count}")
         if metrics["largest_files"]:
             metrics_output.append("")
-            metrics_output.append("Top 10 largest files:")
+            metrics_output.append("Dez maiores arquivos:")
             metrics_output.extend(metrics["largest_files"])
-        print_section("CODE METRICS", metrics_output, output_file)
+        print_section("MÉTRICAS DE CÓDIGO", metrics_output, output_file)
 
-        # CI/CD Detection
+        # Detecção de CI/CD
         ci_cd = detect_ci_cd_pipelines()
         if ci_cd:
-            print_section("CI/CD PIPELINES", ci_cd, output_file)
+            print_section("FLUXOS AUTOMATIZADOS DE CI/CD", ci_cd, output_file)
         else:
-            print_section("CI/CD PIPELINES", ["No CI/CD pipelines detected."], output_file)
+            print_section("FLUXOS AUTOMATIZADOS DE CI/CD", ["Nenhum fluxo automatizado de CI/CD foi detectado."], output_file)
 
-        # Container Detection
+        # Detecção de contêineres
         containers = detect_containers()
         if containers:
-            print_section("CONTAINERS & ORCHESTRATION", containers, output_file)
+            print_section("CONTÊINERES E ORQUESTRAÇÃO", containers, output_file)
         else:
-            print_section("CONTAINERS & ORCHESTRATION", ["No containerization configs detected."], output_file)
+            print_section("CONTÊINERES E ORQUESTRAÇÃO", ["Nenhuma configuração de conteinerização foi detectada."], output_file)
 
-        # Security Configs
+        # Configurações de segurança
         security = detect_security_configs()
         if security:
-            print_section("SECURITY & COMPLIANCE", security, output_file)
+            print_section("SEGURANÇA E CONFORMIDADE", security, output_file)
         else:
-            print_section("SECURITY & COMPLIANCE", ["No security configs detected."], output_file)
+            print_section("SEGURANÇA E CONFORMIDADE", ["Nenhuma configuração de segurança foi detectada."], output_file)
 
-        # Performance Markers
+        # Marcadores de desempenho
         performance = detect_performance_markers()
         if performance:
-            print_section("PERFORMANCE & TESTING", performance, output_file)
+            print_section("DESEMPENHO E TESTES", performance, output_file)
         else:
-            print_section("PERFORMANCE & TESTING", ["No performance testing configs detected."], output_file)
+            print_section("DESEMPENHO E TESTES", ["Nenhuma configuração de teste de desempenho foi detectada."], output_file)
 
-        # Final message
-        final_msg = "\n=== SCAN COMPLETE ===\n"
+        # Mensagem final
+        final_msg = "\n=== VARREDURA CONCLUÍDA ===\n"
         if output_file:
             output_file.write(final_msg)
         else:
@@ -700,7 +709,7 @@ def main():
         return 0
 
     except Exception as e:
-        print(f"Error: {e}", file=sys.stderr)
+        print(f"Erro: {e}", file=sys.stderr)
         return 1
 
     finally:

@@ -1,23 +1,23 @@
-# Runbook
+# Runbook operacional
 
-![Runbook Type](https://img.shields.io/badge/Type-Runbook-171717?style=flat-square)
-![Owner DevOps](https://img.shields.io/badge/Owner-DevOps-737373?style=flat-square)
+![Tipo: runbook](https://img.shields.io/badge/Tipo-Manual%20operacional-171717?style=flat-square)
+![Responsável: DevOps](https://img.shields.io/badge/Respons%C3%A1vel-DevOps-737373?style=flat-square)
 
-> **Path:** [Team Kit](../README.md) › [Docs](README.md) › **Runbook**
+> **Trilha:** [Kit do Time](../README.md) › [Documentação](README.md) › **Runbook**
 
-**Operational guide for running, verifying, and diagnosing the workshop environment.**
+**Guia operacional para executar, verificar e diagnosticar o ambiente da imersão.**
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | DevOps Engineer and the entire team |
-| **Prerequisites** | Local setup completed according to [`00-SETUP.md`](../00-SETUP.md) |
-| **Expected outcome** | Working local environment, readable CI, and correct escalation |
+| **Público-alvo** | DevOps Engineer e o time inteiro |
+| **Pré-requisitos** | Setup local concluído conforme [`00-SETUP.md`](../00-SETUP.md) |
+| **Resultado esperado** | Ambiente local funcionando, CI compreensível e escalonamento correto |
 
 ---
 
-## Initial checks (first use)
+## Verificações iniciais (primeiro uso)
 
-- [ ] **Verify prerequisites** — run each line and confirm that no errors occur:
+- [ ] **Verifique os pré-requisitos** — execute cada linha e confirme que nenhum erro ocorre:
 
 ```bash
 git --version
@@ -28,34 +28,34 @@ specify version
 ```
 
 > [!NOTE]
-> The kit does not include a ready-made prototype. When the team creates `backend/`, `frontend/`, and, if needed, `infra/`, record the actual execution commands here.
+> O kit não inclui um protótipo pronto. Quando o time criar `backend/`, `frontend/` e, se necessário, `infra/`, registre aqui os comandos reais de execução.
 
-After creating the prototype, document:
+Depois de criar o protótipo, documente:
 
-| Service | URL / Command |
+| Serviço | URL / Comando |
 |---|---|
-| Backend health | — |
+| Health do backend | — |
 | Swagger UI | — |
-| Local frontend | — |
-| Demonstration credentials | — |
+| Frontend local | — |
+| Credenciais da demonstração | — |
 
 ---
 
-## Daily routine
+## Rotina diária
 
-- [ ] **Check repository state:**
+- [ ] **Verifique o estado do repositório:**
 
 ```bash
 git status
 ```
 
-- [ ] **Run backend tests** (when `backend/` exists):
+- [ ] **Execute os testes do backend** (quando `backend/` existir):
 
 ```bash
 cd backend && ./mvnw test
 ```
 
-- [ ] **Run frontend tests** (when `frontend/` exists):
+- [ ] **Execute os testes do frontend** (quando `frontend/` existir):
 
 ```bash
 cd frontend && npm test
@@ -63,26 +63,26 @@ cd frontend && npm test
 
 ---
 
-## CI — Understand the workflows
+## CI — Entenda os fluxos de trabalho
 
-CI runs automatically on pushes to `main`, `develop`, `spec/**`, and `impl/**`.
+A CI é executada automaticamente em pushes para `main`, `develop`, `spec/**` e `impl/**`.
 
-| Workflow file | What it verifies | When it runs |
+| Arquivo de fluxo de trabalho | O que verifica | Quando é executado |
 |---|---|---|
-| `ci.yml` | Backend `mvn verify`, frontend lint + test + typecheck, Terraform fmt + validate | Every push and PR |
-| `spec-quality.yml` | markdownlint and REQ-ID traceability | When `.md` files or `specs/` change |
+| `ci.yml` | Backend `mvn verify`, frontend lint + test + typecheck, Terraform fmt + validate | Em cada push e PR |
+| `spec-quality.yml` | markdownlint e rastreabilidade dos REQ-IDs | Quando arquivos `.md` ou `specs/` mudam |
 
-- [ ] **When CI fails** — open the Actions tab on GitHub, select the failed run, and read the log.
-- [ ] **Fix locally** — reproduce the error with the commands for the prototype created by the team before pushing again.
+- [ ] **Quando a CI falhar** — abra a aba Actions no GitHub, selecione a execução que falhou e leia o log.
+- [ ] **Corrija localmente** — reproduza o erro com os comandos do protótipo criado pelo time antes de fazer outro push.
 
 ---
 
-## Azure — Stage 4
+## Azure — Estágio 4
 
-Stage 4 is when the team applies Terraform to a sandbox subscription provided by the facilitators.
+O Estágio 4 é o momento em que o time aplica o Terraform a uma assinatura de sandbox fornecida pelos facilitadores.
 
 > [!CAUTION]
-> Each team has a single subscription quota. Tag every resource with `team=workshop-XX` or `apply` will fail.
+> Cada time tem uma única cota de assinatura. Marque todos os recursos com `team=workshop-XX` ou `apply` falhará.
 
 ```bash
 cd infra
@@ -93,32 +93,32 @@ terraform apply -var-file=envs/dev/terraform.tfvars
 
 ---
 
-## Common problems
+## Problemas comuns
 
-| Symptom | Likely cause | Fix | How to confirm |
+| Sintoma | Causa provável | Correção | Como confirmar |
 |---|---|---|---|
-| Local environment hangs | Port 5432, 8080, or 3000 is already in use | Run `lsof -i :5432` and stop the process | Service starts without a port error |
-| `mvn verify` fails in Testcontainers | Docker is not running | Start Docker Desktop | Tests pass on the next run |
-| `pnpm test` fails on snapshots | Component was intentionally changed | Run `pnpm test -- -u` to update snapshots | Tests pass after the update |
-| `terraform apply` is rejected | The resource lacks the `team=` tag | Add the tag to the failing resource | `terraform plan` has no validation errors |
-| GitHub Actions cannot access Azure | OIDC subject declaration mismatch | Run `az ad sp create-for-rbac` again for the team | Workflow passes on the next run |
+| O ambiente local trava | A porta 5432, 8080 ou 3000 já está em uso | Execute `lsof -i :5432` e encerre o processo | O serviço inicia sem erro de porta |
+| `mvn verify` falha no Testcontainers | O Docker não está em execução | Inicie o Docker Desktop | Os testes passam na próxima execução |
+| `pnpm test` falha nos snapshots | O componente foi alterado intencionalmente | Execute `pnpm test -- -u` para atualizar os snapshots | Os testes passam após a atualização |
+| `terraform apply` é rejeitado | O recurso não tem a tag `team=` | Adicione a tag ao recurso que falhou | `terraform plan` não apresenta erros de validação |
+| O GitHub Actions não consegue acessar o Azure | Divergência na declaração do subject OIDC | Execute `az ad sp create-for-rbac` novamente para o time | O fluxo de trabalho passa na próxima execução |
 
 ---
 
-## When to escalate to the facilitator
+## Quando escalar para o facilitador
 
-- [ ] Build has failed for more than 20 minutes without a solution.
-- [ ] Azure subscription appears to be suspended.
-- [ ] Any irreversible action was run by mistake, such as `terraform destroy`.
+- [ ] O build falha há mais de 20 minutos sem solução.
+- [ ] A assinatura do Azure parece estar suspensa.
+- [ ] Uma ação irreversível foi executada por engano, como `terraform destroy`.
 
-Use the three-line escalation format described in [`00-TEAM-FLOW.md §4`](../00-TEAM-FLOW.md).
+Use o formato de escalonamento em três linhas descrito em [`00-TEAM-FLOW.md §4`](../00-TEAM-FLOW.md).
 
 ---
 
-### Continue reading
+### Continue lendo
 
-| Previous | Next |
+| Anterior | Próximo |
 |---|---|
-| [FAQ](FAQ.md)<br/><sub>Frequently asked questions.</sub> | [Troubleshooting](troubleshooting.md)<br/><sub>Common errors and solutions.</sub> |
+| [FAQ](FAQ.md)<br/><sub>Perguntas frequentes.</sub> | [Solução de problemas](troubleshooting.md)<br/><sub>Erros comuns e soluções.</sub> |
 
-<sub>[Back to the kit index](README.md)</sub>
+<sub>[Voltar ao índice do kit](README.md)</sub>

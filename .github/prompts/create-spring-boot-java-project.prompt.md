@@ -1,85 +1,85 @@
 ---
 name: "create-spring-boot-java-project"
-description: "Scaffold the SIFAP 2.0 Spring Boot backend skeleton (Java 21 + PostgreSQL 16), deferring the mechanics to the create-spring-boot-java-project skill."
+description: "Crie a estrutura inicial do backend Spring Boot do SIFAP 2.0 (Java 21 + PostgreSQL 16), delegando a mecânica à skill create-spring-boot-java-project."
 argument-hint: "projectName=<artifactId>"
 agent: "implementer"
 tools: ["read", "edit", "search", "execute"]
 ---
 # /create-spring-boot-java-project
 
-## Objective
+## Objetivo
 
-Scaffold a fresh Spring Boot backend skeleton for SIFAP 2.0 and wire its baseline configuration, pinned to the kit's fixed stack (Java 21 + Spring Boot 3.3 + PostgreSQL 16). The step-by-step mechanics live in the [`create-spring-boot-java-project`](../skills/create-spring-boot-java-project/SKILL.md) skill; this prompt applies them without restating them and overrides the skill's generic defaults.
+Criar uma nova estrutura de backend Spring Boot para o SIFAP 2.0 e configurar sua base, fixada na stack do kit: Java 21 + Spring Boot 3.3 + PostgreSQL 16. A mecânica detalhada está na skill [`create-spring-boot-java-project`](../skills/create-spring-boot-java-project/SKILL.md). Este prompt a aplica sem repeti-la e substitui os padrões genéricos da skill.
 
 > [!IMPORTANT]
-> `backend/` does not exist yet — this command creates it from scratch in Stage 3. Do not assume an inherited prototype.
+> `backend/` ainda não existe. Este comando o cria do zero na Etapa 3. Não pressuponha um protótipo herdado.
 
-## When to Invoke
+## Quando usar
 
-At the start of Stage 3, when the team creates the `backend/` module for the first time.
+No início da Etapa 3, quando a equipe criar o módulo `backend/` pela primeira vez.
 
-## Preconditions
+## Pré-condições
 
-- Java 21, Docker, and Docker Compose are installed
-- The team agreed on the artifact name and base package
-- No `backend/` module exists yet
+- Java 21, Docker e Docker Compose estão instalados
+- A equipe concordou com o nome do artefato e o pacote-base
+- Ainda não existe um módulo `backend/`
 
-## Inputs the Team Must Provide
+## Entradas que a equipe deve fornecer
 
-- `projectName` — the Maven `artifactId` for the new module
-- The base package (for example, `com.sifap.<context>`)
-- Ask the user for anything that is missing.
+- `projectName`: o `artifactId` Maven do novo módulo
+- O pacote-base, por exemplo, `com.sifap.<context>`
+- Solicite à pessoa usuária qualquer informação ausente.
 
-## What I Will Do
+## O que farei
 
-- Follow the scaffolding steps in the [`create-spring-boot-java-project`](../skills/create-spring-boot-java-project/SKILL.md) skill
-- Override its defaults for this kit: Spring Boot 3.3.x, PostgreSQL 16, no Redis, no MongoDB
-- Generate into `backend/` with starters `web, data-jpa, postgresql, validation, testcontainers` plus `springdoc-openapi-starter-webmvc-ui`
-- Run `./mvnw clean test` to confirm the skeleton builds
+- Seguirei as etapas de criação da skill [`create-spring-boot-java-project`](../skills/create-spring-boot-java-project/SKILL.md)
+- Substituirei os padrões para este kit: Spring Boot 3.3.x, PostgreSQL 16, sem Redis e sem MongoDB
+- Gerarei o projeto em `backend/` com os starters `web, data-jpa, postgresql, validation, testcontainers` e `springdoc-openapi-starter-webmvc-ui`
+- Executarei `./mvnw clean test` para confirmar que a estrutura compila
 
-## What I Will NOT Do
+## O que não farei
 
-- Add `data-redis` or `data-mongodb`, or their configuration blocks
-- Scaffold into the repository root, or use Spring Boot 3.4.x
-- Create Docker Compose services other than PostgreSQL 16
-- Commit secrets (credentials live in environment variables / Azure Key Vault)
+- Adicionar `data-redis`, `data-mongodb` ou seus blocos de configuração
+- Criar a estrutura na raiz do repositório ou usar Spring Boot 3.4.x
+- Criar serviços do Docker Compose diferentes do PostgreSQL 16
+- Versionar segredos; as credenciais ficam em variáveis de ambiente ou no Azure Key Vault
 
-## Output Format
+## Formato da saída
 
 ```markdown
-### Created
-- `backend/` Spring Boot 3.3 skeleton (Java 21, PostgreSQL 16)
-- Dependencies: web, data-jpa, postgresql, validation, testcontainers, springdoc
-- `docker-compose.yaml` (PostgreSQL 16 only) — optional
+### Criado
+- Estrutura Spring Boot 3.3 em `backend/` (Java 21, PostgreSQL 16)
+- Dependências: web, data-jpa, postgresql, validation, testcontainers, springdoc
+- `docker-compose.yaml` (somente PostgreSQL 16) — opcional
 
 ### Build
 `./mvnw clean test` → BUILD SUCCESS
 ```
 
-## Definition of Done
+## Definição de pronto
 
-- [ ] `backend/` contains a Spring Boot 3.3 skeleton on Java 21
-- [ ] Dependencies are the kit set; no Redis or MongoDB is present
-- [ ] Any Docker Compose contains only PostgreSQL 16
-- [ ] `./mvnw clean test` passes and no secret is committed
+- [ ] `backend/` contém uma estrutura Spring Boot 3.3 em Java 21
+- [ ] As dependências são as definidas pelo kit; Redis e MongoDB não estão presentes
+- [ ] Qualquer Docker Compose contém somente PostgreSQL 16
+- [ ] `./mvnw clean test` passa e nenhum segredo foi versionado
 
-## Prompt Body
+## Corpo do prompt
 
-The [`create-spring-boot-java-project`](../skills/create-spring-boot-java-project/SKILL.md) skill owns the start.spring.io download and configuration steps — read it, then apply it with the kit overrides below.
+A skill [`create-spring-boot-java-project`](../skills/create-spring-boot-java-project/SKILL.md) define as etapas de download no start.spring.io e de configuração. Leia-a e aplique-a com as substituições do kit abaixo.
 
-**Step 1 — Confirm inputs.**
-Fix the `artifactId` and base package with the team; verify Java 21 is available.
+**Etapa 1 — Confirmar entradas.**
+Defina o `artifactId` e o pacote-base com a equipe. Verifique se o Java 21 está disponível.
 
-**Step 2 — Apply the skill.**
-Generate the project per the skill, then narrow the dependency set to the kit stack and drop Redis/MongoDB.
+**Etapa 2 — Aplicar a skill.**
+Gere o projeto conforme a skill, restrinja as dependências à stack do kit e remova Redis e MongoDB.
 
-**Step 3 — Respect the kit rules.**
-Target Spring Boot 3.3.x and PostgreSQL 16, scaffold into `backend/`, and keep Docker Compose (if any) to PostgreSQL 16 only.
+**Etapa 3 — Respeitar as regras do kit.**
+Use Spring Boot 3.3.x e PostgreSQL 16, crie a estrutura em `backend/` e limite o Docker Compose, se houver, ao PostgreSQL 16.
 
-**Step 4 — Verify.**
-Run `./mvnw clean test` and confirm a green build before handing off.
+**Etapa 4 — Verificar.**
+Execute `./mvnw clean test` e confirme um build bem-sucedido antes da entrega.
 
-## Invocation Example
+## Exemplo de chamada
 
 ```
 /create-spring-boot-java-project projectName=sifap-backend

@@ -1,34 +1,34 @@
 # azure-cloud-development
 
-Azure cloud development skills: cost optimization, pricing, and resource health.
+Habilidades de desenvolvimento em nuvem no Azure: otimização de custos, preços e integridade de recursos.
 
-## What this plugin bundles
+## O que esta extensão reúne
 
-The manifest references skills that live at the repository level under
-`.github/skills/`. They are maintained once there and shared across the kit.
+O manifesto referencia habilidades que ficam no nível do repositório em
+`.github/skills/`. Elas são mantidas uma única vez nesse local e compartilhadas em todo o kit.
 
-| Component | Type | Location |
+| Componente | Tipo | Localização |
 |-----------|------|----------|
-| `az-cost-optimize` | Skill | [`.github/skills/az-cost-optimize/`](../../skills/az-cost-optimize/) |
-| `azure-pricing` | Skill | [`.github/skills/azure-pricing/`](../../skills/azure-pricing/) |
-| `azure-resource-health-diagnose` | Skill | [`.github/skills/azure-resource-health-diagnose/`](../../skills/azure-resource-health-diagnose/) |
+| `az-cost-optimize` | Habilidade | [`.github/skills/az-cost-optimize/`](../../skills/az-cost-optimize/) |
+| `azure-pricing` | Habilidade | [`.github/skills/azure-pricing/`](../../skills/azure-pricing/) |
+| `azure-resource-health-diagnose` | Habilidade | [`.github/skills/azure-resource-health-diagnose/`](../../skills/azure-resource-health-diagnose/) |
 
-## Upstream references not included
+## Referências originais não incluídas
 
-The upstream `azure-cloud-development` plugin also listed the items below. They
-are not present in this kit's consolidated `.github/skills/` and
-`.github/agents/`, so the manifest omits them:
+A extensão `azure-cloud-development` original também listava os itens abaixo. Eles
+não estão presentes em `.github/skills/` e `.github/agents/` consolidados deste
+kit, portanto o manifesto os omite:
 
-- `import-infrastructure-as-code` (skill)
+- `import-infrastructure-as-code` (habilidade)
 - `azure-logic-apps-expert`, `azure-principal-architect`, `azure-saas-architect`,
   `azure-verified-modules-bicep`, `azure-verified-modules-terraform`,
-  `terraform-azure-implement`, `terraform-azure-planning` (agents)
+  `terraform-azure-implement`, `terraform-azure-planning` (agentes)
 
-## How it is enabled
+## Como é habilitado
 
-Content under `.github/skills/` is discovered natively by Copilot in this
-repository, so these skills work here without any plugin install. The plugin
-layer packages them as a named bundle in the local `datacorp-mm-team-kit`
-marketplace ([`marketplace.json`](../marketplace.json)) and is declared in
-[`.github/copilot/settings.json`](../../copilot/settings.json). See the
-[plugins index](../README.md) for the mechanism and its limitations.
+O conteúdo em `.github/skills/` é descoberto nativamente pelo Copilot neste
+repositório, portanto estas habilidades funcionam aqui sem instalar nenhuma extensão. A
+camada de extensões as empacota como um conjunto nomeado no catálogo local
+`datacorp-mm-team-kit` ([`marketplace.json`](../marketplace.json)) e é declarada
+em [`.github/copilot/settings.json`](../../copilot/settings.json). Consulte o
+[índice de extensões](../README.md) para conhecer o mecanismo e suas limitações.

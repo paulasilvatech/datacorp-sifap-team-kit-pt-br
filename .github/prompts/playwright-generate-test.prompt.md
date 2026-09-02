@@ -1,83 +1,83 @@
 ---
 name: "playwright-generate-test"
-description: "Generate a Playwright end-to-end test from a scenario using Playwright MCP, deferring the procedure to the playwright-generate-test skill."
+description: "Gere um teste de ponta a ponta com Playwright a partir de um cenário usando Playwright MCP, delegando o procedimento à skill playwright-generate-test."
 argument-hint: "scenario=\"<user flow to test>\""
 agent: "qa-engineer"
 tools: ["read", "search", "edit", "execute"]
 ---
 # /playwright-generate-test
 
-## Objective
+## Objetivo
 
-Explore a described user flow with Playwright MCP and emit a passing `@playwright/test` TypeScript end-to-end test for the SIFAP 2.0 frontend. The full procedure lives in the [`playwright-generate-test`](../skills/playwright-generate-test/SKILL.md) skill; this prompt applies it to the Next.js 15 frontend without restating it.
+Explorar um fluxo de usuário descrito com Playwright MCP e produzir um teste de ponta a ponta TypeScript aprovado com `@playwright/test` para o frontend do SIFAP 2.0. O procedimento completo está na skill [`playwright-generate-test`](../skills/playwright-generate-test/SKILL.md). Este prompt o aplica ao frontend Next.js 15 sem repeti-lo.
 
 > [!IMPORTANT]
-> Do not write test code from the scenario alone — run the flow step by step with Playwright MCP first, then generate the test from the observed steps.
+> Não escreva código de teste somente com base no cenário. Primeiro execute o fluxo etapa por etapa com Playwright MCP e depois gere o teste a partir das etapas observadas.
 
-## When to Invoke
+## Quando usar
 
-During Stage 3/4, when the team wants an end-to-end regression test for a user-facing flow in the Next.js 15 frontend.
+Durante as Etapas 3 ou 4, quando a equipe quiser um teste de regressão de ponta a ponta para um fluxo visível à pessoa usuária no frontend Next.js 15.
 
-## Preconditions
+## Pré-condições
 
-- The `frontend/` app is running and reachable
-- Playwright and the Playwright MCP server are available
-- The scenario to test is described (or will be provided on request)
+- A aplicação `frontend/` está em execução e acessível
+- O Playwright e o servidor Playwright MCP estão disponíveis
+- O cenário de teste foi descrito ou será fornecido quando solicitado
 
-## Inputs the Team Must Provide
+## Entradas que a equipe deve fornecer
 
-- `scenario` — the user flow to test (ask for one if it is missing)
-- The base URL of the running frontend
-- Ask the user for anything that is missing.
+- `scenario`: o fluxo de usuário a testar; solicite-o se estiver ausente
+- A URL-base do frontend em execução
+- Solicite à pessoa usuária qualquer informação ausente.
 
-## What I Will Do
+## O que farei
 
-- Follow the explore-then-generate procedure in the [`playwright-generate-test`](../skills/playwright-generate-test/SKILL.md) skill
-- Drive the scenario one step at a time through Playwright MCP before writing code
-- Emit a `@playwright/test` TypeScript spec into the frontend's `tests/` directory
-- Run the test and iterate until it passes
+- Seguirei o procedimento de explorar e depois gerar da skill [`playwright-generate-test`](../skills/playwright-generate-test/SKILL.md)
+- Conduzirei o cenário uma etapa por vez pelo Playwright MCP antes de escrever código
+- Produzirei uma especificação TypeScript com `@playwright/test` no diretório `tests/` do frontend
+- Executarei e ajustarei o teste até que passe
 
-## What I Will NOT Do
+## O que não farei
 
-- Generate test code prematurely from the scenario alone
-- Cover unit/component behavior here (that stays in Vitest + Testing Library)
-- Leave a failing or flaky test behind
-- Hardcode secrets or environment-specific data into the spec
+- Gerar código de teste prematuramente somente com base no cenário
+- Cobrir aqui o comportamento de unidade ou componente; isso permanece no Vitest + Testing Library
+- Deixar um teste com falha ou instável
+- Fixar segredos ou dados específicos de um ambiente na especificação
 
-## Output Format
+## Formato da saída
 
 ```markdown
-### Generated
+### Gerado
 `frontend/tests/payment-approval.spec.ts` — @playwright/test
 
-### Run
+### Execução
 `npx playwright test payment-approval` → 1 passed
 ```
 
-## Definition of Done
+## Definição de pronto
 
-- [ ] The flow was explored step by step with Playwright MCP before code was written
-- [ ] The spec uses `@playwright/test` and lives in the frontend `tests/` directory
-- [ ] The test runs green and is not flaky
-- [ ] Unit/component coverage remains in Vitest + Testing Library
+- [ ] O fluxo foi explorado etapa por etapa com Playwright MCP antes da escrita do código
+- [ ] A especificação usa `@playwright/test` e está no diretório `tests/` do frontend
+- [ ] O teste passa e não é instável
+- [ ] A cobertura de unidade ou componente permanece no Vitest + Testing Library
 
-## Prompt Body
+## Corpo do prompt
 
-The [`playwright-generate-test`](../skills/playwright-generate-test/SKILL.md) skill owns the MCP-driven exploration and generation procedure — read it, then apply it to the scenario.
+A skill [`playwright-generate-test`](../skills/playwright-generate-test/SKILL.md) define o procedimento de exploração e geração orientado por MCP. Leia-a e aplique-a ao cenário.
 
-**Step 1 — Get the scenario.**
-If none was provided, ask for one. Confirm the frontend URL.
+**Etapa 1 — Obter o cenário.**
+Se nenhum cenário foi fornecido, solicite um. Confirme a URL do frontend.
 
-**Step 2 — Apply the skill.**
-Run the scenario one step at a time with Playwright MCP, then emit the `@playwright/test` spec from the recorded steps.
+**Etapa 2 — Aplicar a skill.**
+Execute o cenário uma etapa por vez com Playwright MCP e gere a especificação `@playwright/test` a partir das etapas registradas.
 
-**Step 3 — Respect the kit rules.**
-Target the Next.js 15 App Router frontend, save the spec under `frontend/tests/`, and keep secrets out of the file.
+**Etapa 3 — Respeitar as regras do kit.**
+Use como destino o frontend Next.js 15 com App Router, salve a especificação em `frontend/tests/` e não inclua segredos no arquivo.
 
-**Step 4 — Verify.**
-Execute the test and iterate until it passes.
+**Etapa 4 — Verificar.**
+Execute o teste e ajuste-o até que passe.
 
-## Invocation Example
+## Exemplo de chamada
 
 ```
 /playwright-generate-test scenario="approve a pending payment as an analyst"

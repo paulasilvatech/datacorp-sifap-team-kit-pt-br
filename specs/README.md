@@ -1,33 +1,33 @@
 # specs/
 
-> **Path:** [Team Kit](../README.md) › **Specs**
+> **Trilha:** [Kit do Time](../README.md) › **Especificações**
 
-**This folder stores GitHub Spec-Kit artifacts. For each feature, the team records what it wants to build (`spec.md`), how to build it (`plan.md`), and in which order (`tasks.md`) before writing any code.**
+**Esta pasta armazena os artefatos do GitHub Spec-Kit. Para cada feature, o time registra o que deseja construir (`spec.md`), como construir (`plan.md`) e em qual ordem (`tasks.md`) antes de escrever código.**
 
-![Specs folder](https://img.shields.io/badge/Folder-specs-171717?style=flat-square) ![Engine Spec-Kit](https://img.shields.io/badge/Engine-Spec--Kit-737373?style=flat-square) ![Stage 2](https://img.shields.io/badge/Stage-2%20%C2%B7%20Specification-A3A3A3?style=flat-square)
+![Pasta specs](https://img.shields.io/badge/Pasta-specs-171717?style=flat-square) ![Mecanismo Spec-Kit](https://img.shields.io/badge/Mecanismo-Spec--Kit-737373?style=flat-square) ![Estágio 2](https://img.shields.io/badge/Est%C3%A1gio-2%20%C2%B7%20Especifica%C3%A7%C3%A3o-A3A3A3?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | All pairs; Pair 2 creates the artifacts in Stage 2 |
-| **Prerequisites** | Feature selected in Stage 2; H1 handoff completed |
-| **Stage** | Stage 2 — Specification |
-| **Expected outcome** | An `NNN-short-name` folder with traceable `spec.md`, `plan.md`, and `tasks.md` |
+| **Público-alvo** | Todas as duplas; a Dupla 2 cria os artefatos no Estágio 2 |
+| **Pré-requisitos** | Feature selecionada no Estágio 2; handoff H1 concluído |
+| **Estágio** | Estágio 2 — Especificação |
+| **Resultado esperado** | Uma pasta `NNN-short-name` com `spec.md`, `plan.md` e `tasks.md` rastreáveis |
 
 ---
 
-## Concept: Spec-Driven Development
+## Conceito: Spec-Driven Development
 
-Spec-Driven Development (SDD) is the practice of fully specifying a feature, including requirements, a technical plan, and tasks, before implementation. GitHub Spec-Kit automates this flow with slash commands in Copilot Chat.
+Spec-Driven Development (SDD) é a prática de especificar uma feature por completo, incluindo requisitos, plano técnico e tarefas, antes da implementação. O GitHub Spec-Kit automatiza esse fluxo com comandos de barra no GitHub Copilot.
 
-**Why it matters:** without an upfront specification, code grows without traceable direction. Workshop CI verifies that every REQ-ID has `source_legacy:` pointing to the actual legacy system. This ensures that SIFAP 2.0 implements the rules of the original SIFAP (Payment Inspection and Administration System).
+**Por que isso importa:** sem uma especificação antecipada, o código cresce sem uma direção rastreável. A CI da imersão verifica se cada REQ-ID tem um `source_legacy:` que aponta para o sistema legado real. Isso garante que o SIFAP 2.0 implemente as regras do SIFAP original (Sistema de Fiscalização e Administração de Pagamentos).
 
-**Use case:** in Stage 1, the team identifies that `CALCCORR.NSP` contains annual adjustment calculation logic. In Stage 2, that logic becomes `REQ-015` in `spec.md` with `source_legacy: 01-archaeology/legacy-sifap/natural-programs/CALCCORR.NSP`. In Stage 3, the test either passes or fails, completing the traceability chain.
+**Caso de uso:** no Estágio 1, o time identifica que `CALCCORR.NSP` contém a lógica de cálculo do reajuste anual. No Estágio 2, essa lógica se torna o `REQ-015` em `spec.md`, com `source_legacy: 01-archaeology/legacy-sifap/natural-programs/CALCCORR.NSP`. No Estágio 3, o teste passa ou falha, completando a cadeia de rastreabilidade.
 
 ---
 
-## Folder structure
+## Estrutura de pastas
 
-Each feature has its own folder:
+Cada feature tem sua própria pasta:
 
 ```text
 specs/
@@ -37,11 +37,11 @@ specs/
     └── tasks.md
 ```
 
-The number (`NNN`) defines creation order. The name (`feature-name`) describes the scope in behavioral terms. Avoid generic names such as `system` or `backend`.
+O número (`NNN`) define a ordem de criação. O nome (`feature-name`) descreve o escopo em termos comportamentais. Evite nomes genéricos como `system` ou `backend`.
 
 ---
 
-## Spec-Kit flow
+## Fluxo do Spec-Kit
 
 ```mermaid
 %%{init: {'theme':'neutral','themeVariables':{'fontFamily':'ui-sans-serif, system-ui, sans-serif','primaryColor':'#F5F5F5','primaryTextColor':'#171717','primaryBorderColor':'#171717','lineColor':'#525252','secondaryColor':'#FFFFFF','tertiaryColor':'#FAFAFA','background':'#FFFFFF'}}}%%
@@ -54,84 +54,84 @@ flowchart LR
     C --> D["/speckit.tasks"]:::step
     D --> E["/speckit.analyze"]:::step
     E --> F["/speckit.implement"]:::step
-    F --> G["Code traced<br/>to REQ-IDs"]:::result
+    F --> G["Código rastreado<br/>até os REQ-IDs"]:::result
 ```
 
-| Command | Generated artifact | What to verify |
+| Comando | Artefato gerado | O que verificar |
 |---|---|---|
-| `/speckit.constitution` | `.specify/memory/constitution.md` | Non-negotiable project rules |
-| `/speckit.specify` | `spec.md` | REQ-IDs, EARS patterns, acceptance criteria, and `source_legacy:` |
-| `/speckit.clarify` | Questions resolved in the specification | Ambiguities closed |
-| `/speckit.plan` | `plan.md` | Architecture, data, risks, and contracts |
-| `/speckit.tasks` | `tasks.md` | Execution order, tests, and dependencies |
-| `/speckit.analyze` | Gap report | Inconsistencies resolved |
-| `/speckit.implement` | Code in `backend/` and `frontend/` | Implementation follows the specification |
+| `/speckit.constitution` | `.specify/memory/constitution.md` | Regras não negociáveis do projeto |
+| `/speckit.specify` | `spec.md` | REQ-IDs, padrões EARS, critérios de aceitação e `source_legacy:` |
+| `/speckit.clarify` | Questões resolvidas na especificação | Ambiguidades eliminadas |
+| `/speckit.plan` | `plan.md` | Arquitetura, dados, riscos e contratos |
+| `/speckit.tasks` | `tasks.md` | Ordem de execução, testes e dependências |
+| `/speckit.analyze` | Relatório de lacunas | Inconsistências resolvidas |
+| `/speckit.implement` | Código em `backend/` e `frontend/` | A implementação segue a especificação |
 
 ---
 
-## Step by step
+## Passo a passo
 
-- [ ] **Select a Stage 1 discovery.** The feature must have legacy evidence.
-- [ ] **Create the feature folder.** Use the `NNN-short-name` pattern in `specs/`.
-- [ ] **Run `/speckit.specify`.** Generate `spec.md` with user stories, EARS requirements, acceptance criteria, and `source_legacy:`.
-- [ ] **Run `/speckit.clarify`.** Resolve questions before planning.
-- [ ] **Run `/speckit.plan`.** Generate the technical plan, risks, data, and contracts in `plan.md`.
-- [ ] **Run `/speckit.tasks`.** Break the plan into small, testable, traceable tasks in `tasks.md`.
-- [ ] **Run `/speckit.analyze`.** Fix inconsistencies before implementation.
-- [ ] **Run `/speckit.implement`.** Implement only after the specification, plan, and tasks are consistent.
+- [ ] **Selecione uma descoberta do Estágio 1.** A feature precisa ter evidência do legado.
+- [ ] **Crie a pasta da feature.** Use o padrão `NNN-short-name` em `specs/`.
+- [ ] **Execute `/speckit.specify`.** Gere o `spec.md` com histórias de usuário, requisitos EARS, critérios de aceitação e `source_legacy:`.
+- [ ] **Execute `/speckit.clarify`.** Resolva as questões antes do planejamento.
+- [ ] **Execute `/speckit.plan`.** Gere o plano técnico, os riscos, os dados e os contratos em `plan.md`.
+- [ ] **Execute `/speckit.tasks`.** Divida o plano em tarefas pequenas, testáveis e rastreáveis em `tasks.md`.
+- [ ] **Execute `/speckit.analyze`.** Corrija as inconsistências antes da implementação.
+- [ ] **Execute `/speckit.implement`.** Implemente somente depois que a especificação, o plano e as tarefas estiverem consistentes.
 
 ---
 
-## Branch convention
+## Convenção de branches
 
 > [!IMPORTANT]
-> The correct branch flow is `spec/<NNN>-<feature>` → `develop` → `main`. There is no `stage` branch.
+> O fluxo correto de branches é `spec/<NNN>-<feature>` → `develop` → `main`. Não existe branch `stage`.
 
-- One branch per specification: `spec/<NNN>-<feature>`, created from `develop`.
-- After merging the specification, create `impl/<NNN>-<feature>` implementation branches from `develop`, never from the specification branch.
-- Commits that implement behavior must cite the REQ-ID: `Implements REQ-XXX`.
-
----
-
-## Completion criteria
-
-- [ ] Every feature has an `NNN-short-name` folder.
-- [ ] Every legacy requirement has `source_legacy:` pointing to `.NSN` or `.ddm`.
-- [ ] Every greenfield requirement has a `[GREENFIELD]` rationale.
-- [ ] `tasks.md` places tests before implementation for business rules.
+- Uma branch por especificação: `spec/<NNN>-<feature>`, criada a partir de `develop`.
+- Depois do merge da especificação, crie as branches de implementação `impl/<NNN>-<feature>` a partir de `develop`, nunca a partir da branch de especificação.
+- Os commits que implementam comportamento devem citar o REQ-ID: `Implements REQ-XXX`.
 
 ---
 
-## Relationship to `02-modern-spec/`
+## Critérios de conclusão
 
-`02-modern-spec/` does not contain a second specification. Use it to record scope decisions and Stage 2 supporting material. The feature's EARS requirements, technical plan, and tasks belong in `specs/<NNN>-<feature>/spec.md`, `plan.md`, and `tasks.md`.
+- [ ] Cada feature tem uma pasta `NNN-short-name`.
+- [ ] Cada requisito do legado tem `source_legacy:` apontando para `.NSN` ou `.ddm`.
+- [ ] Cada requisito greenfield tem uma justificativa `[GREENFIELD]`.
+- [ ] O `tasks.md` coloca os testes antes da implementação das regras de negócio.
 
 ---
 
-## Common mistakes and how to avoid them
+## Relação com `02-modern-spec/`
 
-| Symptom | Cause | Correction |
+`02-modern-spec/` não contém uma segunda especificação. Use essa pasta para registrar decisões de escopo e materiais de apoio do Estágio 2. Os requisitos EARS, o plano técnico e as tarefas da feature pertencem a `specs/<NNN>-<feature>/spec.md`, `plan.md` e `tasks.md`.
+
+---
+
+## Erros comuns e como evitá-los
+
+| Sintoma | Causa | Correção |
 |---|---|---|
-| CI rejects the PR because `source_legacy:` is missing | Requirement written without consulting the legacy system | Reread the corresponding `.NSN` and add `source_legacy:` |
-| `spec.md` approved without acceptance criteria | EARS requirement written without the correct patterns | Rewrite it using one of the 5 EARS patterns |
-| `tasks.md` has no tests | Tasks created without considering verification | Add at least one test for each business rule |
-| Folder has a generic name (`backend-features`) | Name does not reflect behavior | Rename it to reflect the actual feature |
+| A CI rejeita o PR porque falta `source_legacy:` | Requisito escrito sem consultar o sistema legado | Releia o `.NSN` correspondente e adicione `source_legacy:` |
+| `spec.md` aprovado sem critérios de aceitação | Requisito EARS escrito sem os padrões corretos | Reescreva-o usando um dos cinco padrões EARS |
+| `tasks.md` não tem testes | Tarefas criadas sem considerar a verificação | Adicione pelo menos um teste para cada regra de negócio |
+| A pasta tem um nome genérico (`backend-features`) | O nome não representa o comportamento | Renomeie-a para representar a feature real |
 
 ---
 
-## References
+## Referências
 
-- [Spec-Kit reference card](../09-cheat-sheets/spec-kit-workflow.md)
-- [EARS notation](../07-concepts/05-ears-notation.md)
-- [Official Spec-Kit](https://github.com/github/spec-kit)
+- [Cartão de referência do Spec-Kit](../09-cheat-sheets/spec-kit-workflow.md)
+- [Notação EARS](../07-concepts/05-ears-notation.md)
+- [Spec-Kit oficial](https://github.com/github/spec-kit)
 - [Spec-Driven Development](https://github.com/github/spec-kit/blob/main/spec-driven.md)
 
 ---
 
-### Continue reading
+### Continue lendo
 
-| Previous | Next |
+| Anterior | Próximo |
 |---|---|
-| [Spec-Kit in 1 page](../09-cheat-sheets/spec-kit-workflow.md)<br/><sub>Sequence: specify → clarify → plan → tasks → analyze.</sub> | [Stage 2 — Specification](../02-modern-spec/GUIDE.md)<br/><sub>Create the specification from the team's discovery.</sub> |
+| [Spec-Kit em 1 página](../09-cheat-sheets/spec-kit-workflow.md)<br/><sub>Sequência: specify → clarify → plan → tasks → analyze.</sub> | [Estágio 2 — Especificação](../02-modern-spec/GUIDE.md)<br/><sub>Crie a especificação a partir da descoberta do time.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Voltar ao índice do kit](../README.md)</sub>

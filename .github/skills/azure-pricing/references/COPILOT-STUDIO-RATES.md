@@ -1,87 +1,87 @@
-# Copilot Studio — Billing Rates & Estimation
+# Copilot Studio: tarifas de cobrança e estimativa
 
-> Source: [Billing rates and management](https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management)
-> Estimator: [Microsoft agent usage estimator](https://microsoft.github.io/copilot-studio-estimator/)
-> Licensing Guide: [Copilot Studio Licensing Guide](https://go.microsoft.com/fwlink/?linkid=2320995)
+> Fonte: [Tarifas e gerenciamento de cobrança](https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management)
+> Estimador: [Estimador de uso de agentes da Microsoft](https://microsoft.github.io/copilot-studio-estimator/)
+> Guia de licenciamento: [Guia de licenciamento do Copilot Studio](https://go.microsoft.com/fwlink/?linkid=2320995)
 
-## Copilot Credit Rate
+## Tarifa do Copilot Credit
 
 **1 Copilot Credit = $0.01 USD**
 
-## Billing Rates (cached snapshot — last updated March 2026)
+## Tarifas de cobrança (registro instantâneo em cache, atualizado em março de 2026)
 
-**IMPORTANT: Always prefer fetching live rates from the source URLs below. Use this table only as a fallback if web fetch is unavailable.**
+**IMPORTANTE: sempre prefira obter as tarifas atuais nas URLs de origem abaixo. Use esta tabela somente como alternativa se a consulta à Web não estiver disponível.**
 
-| Feature | Rate | Unit |
+| Funcionalidade | Tarifa | Unidade |
 |---|---|---|
-| Classic answer | 1 | per response |
-| Generative answer | 2 | per response |
-| Agent action | 5 | per action (triggers, deep reasoning, topic transitions, computer use) |
-| Tenant graph grounding | 10 | per message |
-| Agent flow actions | 13 | per 100 flow actions |
-| Text & gen AI tools (basic) | 1 | per 10 responses |
-| Text & gen AI tools (standard) | 15 | per 10 responses |
-| Text & gen AI tools (premium) | 100 | per 10 responses |
-| Content processing tools | 8 | per page |
+| Resposta clássica | 1 | por resposta |
+| Resposta generativa | 2 | por resposta |
+| Ação do agente | 5 | por ação (gatilhos, raciocínio aprofundado, transições de tópico, uso do computador) |
+| Fundamentação no grafo do locatário | 10 | por mensagem |
+| Ações de fluxo do agente | 13 | por 100 ações de fluxo |
+| Ferramentas de texto e IA generativa (básicas) | 1 | por 10 respostas |
+| Ferramentas de texto e IA generativa (padrão) | 15 | por 10 respostas |
+| Ferramentas de texto e IA generativa (premium) | 100 | por 10 respostas |
+| Ferramentas de processamento de conteúdo | 8 | por página |
 
-### Notes
+### Observações
 
-- **Classic answers**: Predefined, manually authored responses. Static — don't change unless updated by the maker.
-- **Generative answers**: Dynamically generated using AI models (GPTs). Adapt based on context and knowledge sources.
-- **Tenant graph grounding**: RAG over tenant-wide Microsoft Graph, including external data via connectors. Optional per agent.
-- **Agent actions**: Steps like triggers, deep reasoning, topic transitions visible in the activity map. Includes Computer-Using Agents.
-- **Text & gen AI tools**: Prompt tools embedded in agents. Three tiers (basic/standard/premium) based on the underlying language model.
-- **Agent flow actions**: Predefined flow action sequences executed without agent reasoning/orchestration at each step.
+- **Respostas clássicas**: respostas predefinidas e escritas manualmente. São estáticas e só mudam quando quem as criou as atualiza.
+- **Respostas generativas**: geradas dinamicamente por modelos de IA (GPTs). Adaptam-se ao contexto e às fontes de conhecimento.
+- **Fundamentação no grafo do locatário**: geração aumentada por recuperação (RAG) no Microsoft Graph de todo o locatário, incluindo dados externos por conectores. É opcional por agente.
+- **Ações do agente**: etapas como gatilhos, raciocínio aprofundado e transições de tópico visíveis no mapa de atividades. Inclui agentes que usam computador (Computer-Using Agents).
+- **Ferramentas de texto e IA generativa**: ferramentas de instrução incorporadas aos agentes. Há três camadas (básica, padrão e premium), conforme o modelo de linguagem subjacente.
+- **Ações de fluxo do agente**: sequências predefinidas de ações de fluxo executadas sem raciocínio ou orquestração do agente em cada etapa.
 
-### Reasoning Model Billing
+### Cobrança de modelos de raciocínio
 
-When using a reasoning-capable model:
+Ao usar um modelo com capacidade de raciocínio:
 
 ```
-Total cost = feature rate for operation + text & gen AI tools (premium) per 10 responses
+Custo total = tarifa da funcionalidade por operação + ferramentas de texto e IA generativa (premium) a cada 10 respostas
 ```
 
-Example: A generative answer using a reasoning model costs **2 credits** (generative answer) **+ 10 credits** (premium per response, prorated from 100/10).
+Exemplo: uma resposta generativa que usa um modelo de raciocínio custa **2 créditos** (resposta generativa) **+ 10 créditos** (premium por resposta, rateado de 100/10).
 
-## Estimation Formula
+## Fórmula de estimativa
 
-### Inputs
+### Entradas
 
-| Parameter | Description |
+| Parâmetro | Descrição |
 |---|---|
-| `users` | Number of end users |
-| `interactions_per_month` | Average interactions per user per month |
-| `knowledge_pct` | % of responses from knowledge sources (0-100) |
-| `tenant_graph_pct` | Of knowledge responses, % using tenant graph grounding (0-100) |
-| `tool_prompt` | Average Prompt tool calls per session |
-| `tool_agent_flow` | Average Agent flow calls per session |
-| `tool_computer_use` | Average Computer use calls per session |
-| `tool_custom_connector` | Average Custom connector calls per session |
-| `tool_mcp` | Average MCP (Model Context Protocol) calls per session |
-| `tool_rest_api` | Average REST API calls per session |
-| `prompts_basic` | Average basic AI prompt uses per session |
-| `prompts_standard` | Average standard AI prompt uses per session |
-| `prompts_premium` | Average premium AI prompt uses per session |
+| `users` | Quantidade de usuários finais |
+| `interactions_per_month` | Média mensal de interações por usuário |
+| `knowledge_pct` | Percentual de respostas provenientes de fontes de conhecimento (0 a 100) |
+| `tenant_graph_pct` | Entre as respostas de conhecimento, percentual que usa fundamentação no grafo do locatário (0 a 100) |
+| `tool_prompt` | Média de chamadas à ferramenta de instrução por sessão |
+| `tool_agent_flow` | Média de chamadas a fluxos do agente por sessão |
+| `tool_computer_use` | Média de chamadas de uso do computador por sessão |
+| `tool_custom_connector` | Média de chamadas a conectores personalizados por sessão |
+| `tool_mcp` | Média de chamadas MCP (Model Context Protocol) por sessão |
+| `tool_rest_api` | Média de chamadas à API REST por sessão |
+| `prompts_basic` | Média de usos de instruções básicas de IA por sessão |
+| `prompts_standard` | Média de usos de instruções padrão de IA por sessão |
+| `prompts_premium` | Média de usos de instruções premium de IA por sessão |
 
-### Calculation
+### Cálculo
 
 ```
 total_sessions = users × interactions_per_month
 
-── Knowledge Credits ──
+── Créditos de conhecimento ──
 tenant_graph_credits    = total_sessions × (knowledge_pct/100) × (tenant_graph_pct/100) × 10
 generative_answer_credits = total_sessions × (knowledge_pct/100) × (1 - tenant_graph_pct/100) × 2
 classic_answer_credits  = total_sessions × (1 - knowledge_pct/100) × 1
 
-── Agent Tools Credits ──
+── Créditos de ferramentas do agente ──
 tool_calls = total_sessions × (prompt + computer_use + custom_connector + mcp + rest_api)
 tool_credits = tool_calls × 5
 
-── Agent Flow Credits ──
+── Créditos de fluxo do agente ──
 flow_calls = total_sessions × tool_agent_flow
 flow_credits = ceil(flow_calls / 100) × 13
 
-── Prompt Modifier Credits ──
+── Créditos de modificação de prompt ──
 basic_credits    = ceil(total_sessions × prompts_basic / 10) × 1
 standard_credits = ceil(total_sessions × prompts_standard / 10) × 15
 premium_credits  = ceil(total_sessions × prompts_premium / 10) × 100
@@ -91,45 +91,45 @@ total_credits = knowledge + tools + flows + prompts
 cost_usd = total_credits × 0.01
 ```
 
-## Billing Examples (from Microsoft Docs)
+## Exemplos de cobrança (da documentação da Microsoft)
 
-### Customer Support Agent
+### Agente de suporte ao cliente
 
-- 4 classic answers + 2 generative answers per session
-- 900 customers/day
-- **Daily**: `[(4×1) + (2×2)] × 900 = 7,200 credits`
-- **Monthly (30d)**: ~216,000 credits = **~$2,160**
+- 4 respostas clássicas + 2 respostas generativas por sessão
+- 900 clientes/dia
+- **Diário**: `[(4×1) + (2×2)] × 900 = 7.200 créditos`
+- **Mensal (30 dias)**: cerca de 216.000 créditos = **cerca de $2.160**
 
-### Sales Performance Agent (Tenant Graph Grounded)
+### Agente de desempenho de vendas (fundamentado no grafo do locatário)
 
-- 4 generative answers + 4 tenant graph grounded responses per session
-- 100 unlicensed users
-- **Daily**: `[(4×2) + (4×10)] × 100 = 4,800 credits`
-- **Monthly (30d)**: ~144,000 credits = **~$1,440**
+- 4 respostas generativas + 4 respostas fundamentadas no grafo do locatário por sessão
+- 100 usuários não licenciados
+- **Diário**: `[(4×2) + (4×10)] × 100 = 4.800 créditos`
+- **Mensal (30 dias)**: cerca de 144.000 créditos = **cerca de $1.440**
 
-### Order Processing Agent
+### Agente de processamento de pedidos
 
-- 4 action calls per trigger (autonomous)
-- **Per trigger**: `4 × 5 = 20 credits`
+- 4 chamadas de ação por gatilho (autônomo)
+- **Por gatilho**: `4 × 5 = 20 créditos`
 
-## Employee vs Customer Agent Types
+## Tipos de agentes para funcionários e clientes
 
-| Agent Type | Included with M365 Copilot? |
+| Tipo de agente | Incluído no M365 Copilot? |
 |---|---|
-| Employee-facing (BtoE) | Classic answers, generative answers, and tenant graph grounding are included at zero cost when the user has a Microsoft 365 Copilot license |
-| Customer/partner-facing | All usage is billed normally |
+| Voltado a funcionários (BtoE) | Respostas clássicas, respostas generativas e fundamentação no grafo do locatário estão incluídas sem custo quando o usuário tem uma licença do Microsoft 365 Copilot |
+| Voltado a clientes/parceiros | Todo o uso é cobrado normalmente |
 
-## Overage Enforcement
+## Aplicação do limite excedente
 
-- Triggered at **125%** of prepaid capacity
-- Custom agents are disabled (ongoing conversations continue)
-- Email notification sent to tenant admin
-- Resolution: reallocate capacity, purchase more, or enable pay-as-you-go
+- Acionada ao atingir **125%** da capacidade pré-paga
+- Os agentes personalizados são desativados (as conversas em andamento continuam)
+- Uma notificação por email é enviada à administração do locatário
+- Resolução: realocar capacidade, comprar mais ou ativar o pagamento conforme o uso
 
-## Live Source URLs
+## URLs de fontes atuais
 
-For the latest rates, fetch content from these pages:
+Para obter as tarifas mais recentes, consulte estas páginas:
 
-- [Billing rates and management](https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management)
-- [Copilot Studio licensing](https://learn.microsoft.com/en-us/microsoft-copilot-studio/billing-licensing)
-- [Copilot Studio Licensing Guide (PDF)](https://go.microsoft.com/fwlink/?linkid=2320995)
+- [Tarifas e gerenciamento de cobrança](https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management)
+- [Licenciamento do Copilot Studio](https://learn.microsoft.com/en-us/microsoft-copilot-studio/billing-licensing)
+- [Guia de licenciamento do Copilot Studio (PDF)](https://go.microsoft.com/fwlink/?linkid=2320995)

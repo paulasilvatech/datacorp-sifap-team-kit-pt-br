@@ -1,31 +1,31 @@
 # Persona — QA Engineer
 
-> **Track:** [Team Kit](../../README.md) › [Personas](../OVERVIEW.md) › [QA Engineer](README.md) › **PERSONA**
+> **Trilha:** [Kit do Time](../../README.md) › [Personas](../OVERVIEW.md) › [QA Engineer](README.md) › **PERSONA**
 
-**Reference profile for the QA Engineer persona in the SIFAP modernization workshop.**
+**Perfil de referência da persona QA Engineer na imersão de modernização do SIFAP.**
 
-![Pair 4](https://img.shields.io/badge/Par-4%20%C2%B7%20Qualidade-171717?style=flat-square) ![Leads Stages 3 and 4](https://img.shields.io/badge/Lidera-Est%C3%A1gios%203%20e%204-404040?style=flat-square) ![Supports all](https://img.shields.io/badge/Apoia-Todos%20os%20est%C3%A1gios-737373?style=flat-square)
+![Dupla 4](https://img.shields.io/badge/Dupla-4%20%C2%B7%20Qualidade-171717?style=flat-square) ![Colabora nos Estágios 3 e 4](https://img.shields.io/badge/Colabora-Est%C3%A1gios%203%20e%204-404040?style=flat-square) ![Apoia todos](https://img.shields.io/badge/Apoia-Todos%20os%20est%C3%A1gios-737373?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Role** | QA Engineer (Quality Assurance Engineer) |
-| **Pair** | Pair 4 — Quality (with DBA) |
-| **Active stages** | Stage 1 (critical scenarios), Stage 2 (acceptance criteria), Stage 3 (leads testing), Stage 4 (validates coverage) |
-| **Artifacts produced** | Test suite (JUnit 5 + Testcontainers + Vitest), test strategy, acceptance criteria per REQ-ID, green CI pipeline |
-| **Artifacts consumed** | EARS requirements with REQ-IDs (Requirements Engineer), testable code (Developer), seed data (DBA) |
-| **Handoff to** | DevOps Engineer — reliable CI; entire team — green pipeline |
+| **Papel** | QA Engineer (Quality Assurance Engineer) |
+| **Dupla** | Dupla 4 — Qualidade (com DBA) |
+| **Estágios ativos** | Estágio 1 (cenários críticos), Estágio 2 (critérios de aceitação), Estágio 3 (colabora nos testes), Estágio 4 (valida a cobertura) |
+| **Artefatos produzidos** | Suíte de testes (JUnit 5 + Testcontainers + Vitest), estratégia de testes, critérios de aceitação por REQ-ID, pipeline de CI verde |
+| **Artefatos consumidos** | Requisitos EARS com REQ-IDs (Requirements Engineer), código testável (Developer), dados iniciais (DBA) |
+| **Entrega para** | DevOps Engineer — CI confiável; time inteiro — pipeline verde |
 
 ---
 
-## What this persona is
+## O que é esta persona
 
-The QA Engineer transforms EARS requirements into executable tests that prove functional equivalence between legacy Natural/Adabas behavior and modern Java 21 code. In the SIFAP (Payment Inspection and Administration System) modernization, this persona defines the test strategy, writes the tests that matter rather than every possible test, and keeps the CI pipeline green throughout Stage 3.
+O QA Engineer transforma requisitos EARS em testes executáveis que comprovam a equivalência funcional entre o comportamento legado em Natural/Adabas e o código moderno em Java 21. Na modernização do SIFAP (Sistema de Fiscalização e Administração de Pagamentos), esta persona define a estratégia de testes, escreve os testes relevantes em vez de todos os testes possíveis e mantém o pipeline de CI verde durante todo o Estágio 3.
 
-Why it matters: in legacy modernization, functional equivalence between old and new systems can only be proven by tests traceable to requirements. Without the QA Engineer, the team cannot know whether the Natural-to-Java translation preserved correct business behavior.
+Por que isso importa: na modernização de legado, somente testes rastreáveis aos requisitos comprovam a equivalência funcional entre os sistemas antigo e novo. Sem o QA Engineer, o time não consegue saber se a tradução de Natural para Java preservou o comportamento correto do negócio.
 
-Within the Agentic Legacy Modernization framework, the QA Engineer works with the Test Gen Agent and Security Agent in Stage 3 and validates coverage in Copilot Agent PRs during Stage 4.
+No framework Agentic Legacy Modernization, o QA Engineer trabalha com o Test Gen Agent e o Security Agent no Estágio 3 e valida a cobertura nos PRs do Copilot Agent durante o Estágio 4.
 
-## Where you work in the SDLC
+## Onde você atua no SDLC
 
 ```mermaid
 %%{init: {'theme':'neutral','themeVariables':{'fontFamily':'ui-sans-serif, system-ui, sans-serif','primaryColor':'#F5F5F5','primaryTextColor':'#171717','primaryBorderColor':'#171717','lineColor':'#525252','secondaryColor':'#FFFFFF','tertiaryColor':'#FAFAFA','background':'#FFFFFF'}}}%%
@@ -33,115 +33,115 @@ flowchart LR
     classDef step fill:#F5F5F5,stroke:#171717,color:#171717
     classDef active fill:#FFFFFF,stroke:#171717,color:#171717,stroke-width:2px
     classDef muted fill:#FAFAFA,stroke:#A3A3A3,color:#404040
-    S1["Stage 1<br/>Archaeology"]:::step --> S2["Stage 2<br/>Specification"]:::step
-    S2 --> S3["Stage 3<br/>Implementation"]:::active
-    S3 --> S4["Stage 4<br/>Evolution"]:::active
+    S1["Estágio 1<br/>Arqueologia"]:::step --> S2["Estágio 2<br/>Especificação"]:::step
+    S2 --> S3["Estágio 3<br/>Implementação"]:::active
+    S3 --> S4["Estágio 4<br/>Evolução"]:::active
 ```
 
-| Stage | Responsibility | Deliverable |
+| Estágio | Responsabilidade | Entrega |
 |---|---|---|
-| **1 — Archaeology** | Identify critical scenarios in the assigned Natural programs | Critical scenarios by program |
-| **2 — Specification** | Validate that every EARS requirement is testable and propose concrete acceptance criteria | Test criteria per REQ-ID |
-| **3 — Implementation** | Write unit and integration tests for prioritized behavior; keep CI green | Test suite + green pipeline |
-| **4 — Evolution** | Require Copilot Agent PRs to include tests and validate coverage of new scenarios | Coverage aligned with the feature |
+| **1 — Arqueologia** | Identificar cenários críticos nos programas Natural atribuídos | Cenários críticos por programa |
+| **2 — Especificação** | Validar se todos os requisitos EARS são testáveis e propor critérios de aceitação concretos | Critérios de teste por REQ-ID |
+| **3 — Implementação** | Escrever testes unitários e de integração para o comportamento priorizado; manter a CI verde | Suíte de testes + pipeline verde |
+| **4 — Evolução** | Exigir que os PRs do Copilot Agent incluam testes e validar a cobertura dos novos cenários | Cobertura alinhada à feature |
 
-## Core responsibility
+## Responsabilidade principal
 
-Define the project's test strategy. Write the critical tests—not to chase 100% coverage, but to cover the paths that matter. Validate spec-to-test traceability. Protect the team from a falsely green CI pipeline whose tests always pass regardless of behavior.
+Definir a estratégia de testes do projeto. Escrever os testes críticos, não para perseguir 100% de cobertura, mas para cobrir os caminhos relevantes. Validar a rastreabilidade da especificação aos testes. Proteger o time contra um pipeline de CI falsamente verde, cujos testes sempre passam independentemente do comportamento.
 
-## Key skills
+## Competências principais
 
 - JUnit 5: `@Test`, `@DisplayName`, `@ParameterizedTest`, AssertJ
-- Testcontainers for real PostgreSQL 16 integration
-- Vitest + Testing Library for Next.js 15 components
-- Test-to-REQ-ID traceability through inline comments
-- Risk-driven coverage analysis rather than percentage-driven coverage
+- Testcontainers para integração com uma instância real do PostgreSQL 16
+- Vitest + Testing Library para componentes do Next.js 15
+- Rastreabilidade dos testes aos REQ-IDs por meio de comentários inline
+- Análise de cobertura orientada a riscos, não a percentuais
 
-## Persona kit
+## Kit de persona
 
-| Artifact | Path | Use |
+| Artefato | Caminho | Uso |
 |---|---|---|
-| QA Engineer agent | `.github/agents/qa-engineer.agent.md` | Test generation, coverage analysis, and quality gates |
-| Prompt `/create-tests` | `.github/prompts/persona-qa-engineer-create-tests.prompt.md` | Generate tests from an EARS requirement |
-| Prompt `/coverage-gaps` | `.github/prompts/persona-qa-engineer-coverage-gaps.prompt.md` | Identify coverage gaps |
-| Prompt `/test-strategy` | `.github/prompts/persona-qa-engineer-test-strategy.prompt.md` | Define the project's test strategy |
-| Testing instructions | `.github/instructions/tests.instructions.md` | Mandatory testing conventions |
+| Agente QA Engineer | `.github/agents/qa-engineer.agent.md` | Geração de testes, análise de cobertura e gates de qualidade |
+| Prompt `/create-tests` | `.github/prompts/persona-qa-engineer-create-tests.prompt.md` | Gerar testes a partir de um requisito EARS |
+| Prompt `/coverage-gaps` | `.github/prompts/persona-qa-engineer-coverage-gaps.prompt.md` | Identificar lacunas de cobertura |
+| Prompt `/test-strategy` | `.github/prompts/persona-qa-engineer-test-strategy.prompt.md` | Definir a estratégia de testes do projeto |
+| Instruções de testes | `.github/instructions/tests.instructions.md` | Convenções obrigatórias de testes |
 
-## Copilot tools and modes
+## Ferramentas e modos do Copilot
 
-| Tool / Mode | When to use |
+| Ferramenta / modo | Quando usar |
 |---|---|
-| **Copilot Ask** | Generate test scenarios from EARS requirements; discuss missing coverage |
-| **Copilot Plan** | Plan JUnit skeletons in batches for an entire slice |
-| **Testcontainers** | Integrate with real PostgreSQL—prefer it to Mockito for repository layers |
-| **Spec-Kit** (`/speckit.analyze`) | Review test tasks derived from `tasks.md` |
-| **GitHub Actions MCP** | Monitor CI without leaving VS Code |
+| **Modo Ask do GitHub Copilot** | Gerar cenários de teste a partir de requisitos EARS; discutir lacunas de cobertura |
+| **Copilot Plan** | Planejar esqueletos JUnit em lotes para uma fatia inteira |
+| **Testcontainers** | Integrar com uma instância real do PostgreSQL; prefira-o ao Mockito nas camadas de repositório |
+| **Spec-Kit** (`/speckit.analyze`) | Revisar tarefas de teste derivadas de `tasks.md` |
+| **GitHub Actions MCP** | Monitorar a CI sem sair do VS Code |
 
-## Recommended cheat sheets
+## Cartões de referência recomendados
 
-- [`09-cheat-sheets/spec-kit-workflow.md`](../../09-cheat-sheets/spec-kit-workflow.md) — `/speckit.analyze` and test tasks in `tasks.md`
-- [`09-cheat-sheets/copilot-3-modes.md`](../../09-cheat-sheets/copilot-3-modes.md) — use Plan for coverage planning and Ask to discuss gaps
+- [`09-cheat-sheets/spec-kit-workflow.md`](../../09-cheat-sheets/spec-kit-workflow.md) — `/speckit.analyze` e tarefas de teste em `tasks.md`
+- [`09-cheat-sheets/copilot-3-modes.md`](../../09-cheat-sheets/copilot-3-modes.md) — use Plan para planejar a cobertura e Ask para discutir lacunas
 
-## How to perform well
+## Como ter um bom desempenho
 
-- [ ] **Cover the paths that matter.** Use REQ-IDs and legacy evidence, not a coverage percentage.
-- [ ] **Keep the test suite fast.** The full suite must run in under two minutes.
-- [ ] **Write tests that fail on the first bug.** Tests that always pass do not validate behavior.
-- [ ] **Maintain traceability.** Add `// REQ-NNN` to every test method.
+- [ ] **Cubra os caminhos relevantes.** Use REQ-IDs e evidências do legado, não um percentual de cobertura.
+- [ ] **Mantenha a suíte de testes rápida.** A suíte completa deve ser executada em menos de dois minutos.
+- [ ] **Escreva testes que falhem no primeiro bug.** Testes que sempre passam não validam o comportamento.
+- [ ] **Mantenha a rastreabilidade.** Adicione `// REQ-NNN` a cada método de teste.
 
-## Common mistakes and how to avoid them
+## Erros comuns e como evitá-los
 
-| Symptom | Cause | Correction |
+| Sintoma | Causa | Correção |
 |---|---|---|
-| Chasing 100% coverage and missing the deadline | Treating the metric as the goal | Prioritize risk paths identified by the team |
-| Tests validate the framework rather than the domain | Infrastructure focus instead of behavior | Ask whether the assertion fails when business behavior changes |
-| Mock used where Testcontainers was needed | Convenience | Use Testcontainers for repositories and Mockito for domain services |
-| Red CI ignored for 20 minutes | No owner | The QA Engineer owns green CI; do not delegate this responsibility |
+| Perseguir 100% de cobertura e perder o prazo | Tratar a métrica como objetivo | Priorize os caminhos de risco identificados pelo time |
+| Os testes validam o framework em vez do domínio | Foco na infraestrutura em vez do comportamento | Pergunte se a asserção falha quando o comportamento do negócio muda |
+| Uso de mock quando Testcontainers era necessário | Conveniência | Use Testcontainers para repositórios e Mockito para serviços de domínio |
+| CI vermelha ignorada por 20 minutos | Falta de responsável | O QA Engineer é responsável pela CI verde; não delegue essa responsabilidade |
 
-## Combinations with other personas
+## Combinações com outras personas
 
-| Combination | Note |
+| Combinação | Observação |
 |---|---|
-| **QA + Developer** | Most common and productive; write the feature and tests in the same session |
-| **QA + Requirements Engineer** | Write the requirement and its matching test |
-| **QA + DevOps Engineer** | Avoid when possible—it overloads Stage 3 |
+| **QA + Developer** | Combinação mais comum e produtiva; escreva a feature e os testes na mesma sessão |
+| **QA + Requirements Engineer** | Escreva o requisito e o teste correspondente |
+| **QA + DevOps Engineer** | Evite quando possível; essa combinação sobrecarrega o Estágio 3 |
 
-## Ready-to-use prompts
+## Prompts prontos para uso
 
-1. **(Ask)** _"For this EARS requirement, generate test scenarios covering the main behavior, boundaries, and relevant failures."_
-2. **(Plan)** _"For the prioritized feature class, plan integration tests with the required data and verifications."_
-3. **(Ask)** _"Analyze current coverage and identify the highest-risk untested paths. Prioritize them using team evidence."_
+1. **(Ask)** _"Para este requisito EARS, gere cenários de teste que cubram o comportamento principal, os limites e as falhas relevantes."_
+2. **(Plan)** _"Para a classe da feature priorizada, planeje testes de integração com os dados e as verificações necessários."_
+3. **(Ask)** _"Analise a cobertura atual e identifique os caminhos não testados de maior risco. Priorize-os usando as evidências do time."_
 
-## Emergency defaults
+## Padrões para situações de emergência
 
-| Situation | What to do |
+| Situação | O que fazer |
 |---|---|
-| JUnit 5 is unfamiliar | Use the existing pattern: `@Test`, `@DisplayName`, and AssertJ assertions |
-| Testcontainers does not work | Check whether Docker is running; fallback: unit test with Mockito |
-| Too many scenarios, too little time | Focus on the highest-risk behavior identified by the team |
-| CI is red while local tests pass | Environment issue—check Docker/Testcontainers and the runner's Docker version |
+| JUnit 5 não é familiar | Use o padrão existente: `@Test`, `@DisplayName` e asserções AssertJ |
+| Testcontainers não funciona | Verifique se o Docker está em execução; alternativa: teste unitário com Mockito |
+| Muitos cenários e pouco tempo | Concentre-se no comportamento de maior risco identificado pelo time |
+| A CI está vermelha, mas os testes locais passam | Problema de ambiente; verifique Docker/Testcontainers e a versão do Docker no runner |
 
-## Dependencies
+## Dependências
 
-| Persona | Relationship | Artifact |
+| Persona | Relação | Artefato |
 |---|---|---|
-| Requirements Engineer | You depend on them | Testable requirements with acceptance criteria |
-| Developer | You depend on them | Testable code |
-| Technical Lead | Depends on you | Green pipeline |
-| DevOps Engineer | Depends on you | Reliable CI |
+| Requirements Engineer | Você depende desta persona | Requisitos testáveis com critérios de aceitação |
+| Developer | Você depende desta persona | Código testável |
+| Technical Lead | Depende de você | Pipeline verde |
+| DevOps Engineer | Depende de você | CI confiável |
 
-## How you are evaluated
+## Como você é avaliado
 
-- **Rubric A3 — Technical Integrity:** passing tests, green CI
-- **Rubric A2 — Spec:** every requirement has verification criteria
-- **Criterion:** tests fail on the first bug rather than always passing
+- **Rubrica A3 — Integridade técnica:** testes aprovados, CI verde
+- **Rubrica A2 — Especificação:** todos os requisitos têm critérios de verificação
+- **Critério:** os testes falham no primeiro bug em vez de sempre passarem
 
 ---
 
-### Continue reading
+### Continue lendo
 
-| Previous | Next |
+| Anterior | Próximo |
 |---|---|
-| [DBA — PERSONA](../07-dba/PERSONA.md)<br/><sub>Pair 4 — Quality — Flyway migrations and query optimization.</sub> | [DevOps Engineer — PERSONA](../09-devops-engineer/PERSONA.md)<br/><sub>Pair 5 — Operations — Terraform, GitHub Actions, and runbook.</sub> |
+| [DBA — PERSONA](../07-dba/PERSONA.md)<br/><sub>Dupla 4 — Qualidade — migrações Flyway e otimização de consultas.</sub> | [DevOps Engineer — PERSONA](../09-devops-engineer/PERSONA.md)<br/><sub>Dupla 5 — Operações — Terraform, GitHub Actions e runbook.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Voltar ao índice do kit](../../README.md)</sub>

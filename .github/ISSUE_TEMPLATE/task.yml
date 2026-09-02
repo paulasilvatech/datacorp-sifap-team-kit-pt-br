@@ -1,5 +1,5 @@
-name: ✅ Implementation Task
-description: A single, scoped implementation task derived from a spec
+name: ✅ Tarefa de implementação
+description: Uma única tarefa de implementação com escopo definido, derivada de uma especificação
 title: "[T-NNN] "
 labels: [ "task", "stage-3" ]
 projects: []
@@ -8,13 +8,13 @@ body:
   - type: markdown
     attributes:
       value: |
-        > Use this template for one implementation task at a time.
-        > Tasks come from `specs/<NNN>-<feature>/tasks.md`.
+        > Use este modelo para uma tarefa de implementação por vez.
+        > As tarefas vêm de `specs/<NNN>-<feature>/tasks.md`.
 
   - type: input
     id: task-id
     attributes:
-      label: Task ID
+      label: ID da tarefa
       placeholder: "T-007"
     validations:
       required: true
@@ -22,7 +22,7 @@ body:
   - type: input
     id: feature-folder
     attributes:
-      label: Feature folder
+      label: Pasta da funcionalidade
       placeholder: "specs/<NNN>-<feature>/"
     validations:
       required: true
@@ -30,8 +30,8 @@ body:
   - type: input
     id: req-ids
     attributes:
-      label: REQ-IDs implemented
-      description: Comma-separated list of all requirement IDs this task satisfies.
+      label: REQ-IDs implementados
+      description: Lista separada por vírgulas de todos os IDs de requisitos atendidos por esta tarefa.
       placeholder: "REQ-XXX, REQ-YYY"
     validations:
       required: true
@@ -39,58 +39,58 @@ body:
   - type: textarea
     id: acceptance-criteria
     attributes:
-      label: Acceptance criteria (from the spec)
-      description: Copy from `spec.md` so the implementer doesn't need to
-        switch files.
+      label: Critérios de aceitação (da especificação)
+      description: Copie de `spec.md` para que a pessoa responsável pela implementação não precise
+        alternar entre arquivos.
       placeholder: |
-        - When <event>, the system shall <verifiable behavior>.
-        - If <condition>, the system shall NOT <prohibited behavior>.
+        - Quando <evento>, o sistema deve <comportamento verificável>.
+        - Se <condição>, o sistema NÃO deve <comportamento proibido>.
     validations:
       required: true
 
   - type: dropdown
     id: complexity
     attributes:
-      label: Complexity estimate
+      label: Estimativa de complexidade
       options:
         - XS (<1h)
         - S (1-2h)
         - M (2-4h)
         - L (4-8h)
-        - XL (>1 day)
+        - XL (>1 dia)
     validations:
       required: true
 
   - type: dropdown
     id: lead-persona
     attributes:
-      label: Lead persona
+      label: Persona líder
       options:
-        - Developer
+        - Desenvolvedor
         - DBA
-        - QA Engineer
-        - DevOps Engineer
+        - Engenheiro de QA
+        - Engenheiro de DevOps
     validations:
       required: true
 
   - type: textarea
     id: dependencies
     attributes:
-      label: Depends on
+      label: Depende de
       placeholder: |
-        - T-XXX (prerequisite task)
-        - ADR-XXXX (relevant decision)
+        - T-XXX (tarefa pré-requisito)
+        - ADR-XXXX (decisão relevante)
 
   - type: textarea
     id: definition-of-done
     attributes:
-      label: Definition of Done
+      label: Definição de pronto
       value: |
-        - [ ] At least one test per acceptance criterion (red → green → refactor)
-        - [ ] All public methods that satisfy a `REQ-ID` have `@implements REQ-NNN` Javadoc
-        - [ ] CI is green (build, lint, type-check, tests, coverage)
-        - [ ] The corresponding box in `tasks.md` is checked
-        - [ ] PR title uses Conventional Commits and links this issue
-        - [ ] At least one persona-pair review on the PR
+        - [ ] Pelo menos um teste por critério de aceitação (vermelho → verde → refatorar)
+        - [ ] Todos os métodos públicos que atendem a um `REQ-ID` têm Javadoc com `@implements REQ-NNN`
+        - [ ] A CI está verde (compilação, análise estática, verificação de tipos, testes e cobertura)
+        - [ ] A caixa correspondente em `tasks.md` está marcada
+        - [ ] O título da solicitação de alteração (PR) usa o padrão Conventional Commits e vincula esta solicitação
+        - [ ] Pelo menos uma revisão do par de personas na solicitação de alteração
     validations:
       required: true

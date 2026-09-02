@@ -1,87 +1,87 @@
 ---
 name: "postgresql-optimization"
-description: "Author and optimize PostgreSQL using its advanced features — JSONB, array/range/geometric types, custom types, full-text search, window functions, indexing, and the extensions ecosystem. Use when the user wants to write, tune, or speed up PostgreSQL queries, schema, or performance. To review existing PostgreSQL code, use postgresql-code-review."
+description: "Cria e otimiza PostgreSQL usando seus recursos avançados: JSONB, tipos array, intervalo e geométricos, tipos personalizados, busca textual, funções de janela, indexação e extensões. Use quando a pessoa quiser escrever, ajustar ou acelerar consultas, esquemas ou o desempenho do PostgreSQL. Para revisar código existente, use postgresql-code-review."
 ---
-# PostgreSQL development and optimization
+# Desenvolvimento e otimização de PostgreSQL
 
-Expert PostgreSQL guidance for `${selection}` (or the entire project when nothing is selected). It covers PostgreSQL-specific features and optimization patterns: JSONB, arrays, ranges, geometric types, full-text search, window functions, indexing, and the extensions ecosystem. To review existing PostgreSQL code instead of authoring it, use [`postgresql-code-review`](../postgresql-code-review/SKILL.md).
+Orientação especializada em PostgreSQL para `${selection}` (ou para todo o projeto quando nada estiver selecionado). Abrange recursos e padrões de otimização específicos do PostgreSQL: JSONB, arrays, intervalos, tipos geométricos, busca textual, funções de janela, indexação e o ecossistema de extensões. Para revisar código PostgreSQL existente em vez de criá-lo, use [`postgresql-code-review`](../postgresql-code-review/SKILL.md).
 
 > [!IMPORTANT]
-> The SIFAP 2.0 backend runs **PostgreSQL 16** through **JPA/Hibernate**. Author application queries as JPQL, Spring Data derived queries, or bound native parameters — never string-concatenated SQL. Schema changes ship as forward-only Flyway migrations under `backend/src/main/resources/db/migration/`. For generic execution-plan and index analysis see [`query-optimization`](../query-optimization/SKILL.md); for migration safety see [`database.instructions.md`](../../instructions/database.instructions.md). Those files are authoritative where they overlap.
+> A camada de servidor do SIFAP 2.0 executa o **PostgreSQL 16** por **JPA/Hibernate**. Crie consultas da aplicação com JPQL, consultas derivadas do Spring Data ou parâmetros nativos vinculados, nunca SQL concatenado em textos. As alterações de esquema são entregues como migrações somente de avanço do Flyway em `backend/src/main/resources/db/migration/`. Para análises genéricas de planos de execução e índices, consulte [`query-optimization`](../query-optimization/SKILL.md). Para a segurança das migrações, consulte [`database.instructions.md`](../../instructions/database.instructions.md). Esses arquivos são autoritativos quando houver sobreposição.
 
-## When to invoke
+## Quando invocar
 
-- "Write a fast JSONB containment query for this table."
-- "Speed up this aggregation — it does a sequential scan."
-- "Design the right index for this filter and sort."
-- "Model this with a range type and an exclusion constraint."
+- "Escreva uma consulta rápida de contenção JSONB para esta tabela."
+- "Acelere esta agregação; ela faz uma varredura sequencial."
+- "Projete o índice adequado para este filtro e esta ordenação."
+- "Modele isto com um tipo de intervalo e uma restrição de exclusão."
 
-## PostgreSQL-Specific Features
+## Recursos específicos do PostgreSQL
 
-### JSONB Operations
+### Operações JSONB
 
 ```sql
--- Advanced JSONB queries
+-- Consultas JSONB avançadas
 CREATE TABLE events (
     id SERIAL PRIMARY KEY,
     data JSONB NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- GIN index for JSONB performance
+-- Índice GIN para desempenho de JSONB
 CREATE INDEX idx_events_data_gin ON events USING gin(data);
 
--- JSONB containment and path queries
+-- Consultas de contenção e path em JSONB
 SELECT * FROM events
 WHERE data @> '{"type": "login"}'
   AND data #>> '{user,role}' = 'admin';
 
--- JSONB aggregation
+-- Agregação JSONB
 SELECT jsonb_agg(data) FROM events WHERE data ? 'user_id';
 ```
 
-### Array Operations
+### Operações com arrays
 
 ```sql
--- PostgreSQL arrays
+-- Arrays do PostgreSQL
 CREATE TABLE posts (
     id SERIAL PRIMARY KEY,
     tags TEXT[],
     categories INTEGER[]
 );
 
--- Array queries and operations
+-- Consultas e operações com arrays
 SELECT * FROM posts WHERE 'postgresql' = ANY(tags);
 SELECT * FROM posts WHERE tags && ARRAY['database', 'sql'];
 SELECT * FROM posts WHERE array_length(tags, 1) > 3;
 
--- Array aggregation
+-- Agregação de arrays
 SELECT array_agg(DISTINCT category) FROM posts, unnest(categories) as category;
 ```
 
-### Window Functions & Analytics
+### Funções de janela e análise
 
 ```sql
--- Advanced window functions
+-- Funções de janela avançadas
 SELECT
     product_id,
     sale_date,
     amount,
-    -- Running totals
+    -- Totais acumulados
     SUM(amount) OVER (PARTITION BY product_id ORDER BY sale_date) as running_total,
-    -- Moving averages
+    -- Médias móveis
     AVG(amount) OVER (PARTITION BY product_id ORDER BY sale_date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as moving_avg,
-    -- Rankings
+    -- Classificações
     DENSE_RANK() OVER (PARTITION BY EXTRACT(month FROM sale_date) ORDER BY amount DESC) as monthly_rank,
-    -- Lag/Lead for comparisons
+    -- Lag/Lead para comparações
     LAG(amount, 1) OVER (PARTITION BY product_id ORDER BY sale_date) as prev_amount
 FROM sales;
 ```
 
-### Full-Text Search
+### Busca textual
 
 ```sql
--- PostgreSQL full-text search
+-- Busca textual do PostgreSQL
 CREATE TABLE documents (
     id SERIAL PRIMARY KEY,
     title TEXT,
@@ -89,30 +89,30 @@ CREATE TABLE documents (
     search_vector tsvector
 );
 
--- Update search vector
+-- Atualiza o vetor de busca
 UPDATE documents
 SET search_vector = to_tsvector('english', title || ' ' || content);
 
--- GIN index for search performance
+-- Índice GIN para desempenho da busca
 CREATE INDEX idx_documents_search ON documents USING gin(search_vector);
 
--- Search queries
+-- Consultas de busca
 SELECT * FROM documents
 WHERE search_vector @@ plainto_tsquery('english', 'postgresql database');
 
--- Ranking results
+-- Classifica os resultados
 SELECT *, ts_rank(search_vector, plainto_tsquery('postgresql')) as rank
 FROM documents
 WHERE search_vector @@ plainto_tsquery('postgresql')
 ORDER BY rank DESC;
 ```
 
-## PostgreSQL Performance Tuning
+## Ajuste de desempenho do PostgreSQL
 
-### Query Optimization
+### Otimização de consultas
 
 ```sql
--- EXPLAIN ANALYZE for performance analysis
+-- EXPLAIN ANALYZE para análise de desempenho
 EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
 SELECT u.name, COUNT(o.id) as order_count
 FROM users u
@@ -120,7 +120,7 @@ LEFT JOIN orders o ON u.id = o.user_id
 WHERE u.created_at > '2024-01-01'::date
 GROUP BY u.id, u.name;
 
--- Identify slow queries from pg_stat_statements
+-- Identifica consultas lentas em pg_stat_statements
 SELECT query, calls, total_time, mean_time, rows,
        100.0 * shared_blks_hit / nullif(shared_blks_hit + shared_blks_read, 0) AS hit_percent
 FROM pg_stat_statements
@@ -128,42 +128,42 @@ ORDER BY total_time DESC
 LIMIT 10;
 ```
 
-### Index Strategies
+### Estratégias de índices
 
 ```sql
--- Composite indexes for multi-column queries
+-- Índices compostos para consultas com várias colunas
 CREATE INDEX idx_orders_user_date ON orders(user_id, order_date);
 
--- Partial indexes for filtered queries
+-- Índices parciais para consultas filtradas
 CREATE INDEX idx_active_users ON users(created_at) WHERE status = 'active';
 
--- Expression indexes for computed values
+-- Índices de expressão para valores calculados
 CREATE INDEX idx_users_lower_email ON users(lower(email));
 
--- Covering indexes to avoid table lookups
+-- Índices de cobertura para evitar consultas à tabela
 CREATE INDEX idx_orders_covering ON orders(user_id, status) INCLUDE (total, created_at);
 ```
 
-### Connection & Memory Management
+### Gerenciamento de conexões e memória
 
 ```sql
--- Check connection usage
+-- Verifica o uso de conexões
 SELECT count(*) as connections, state
 FROM pg_stat_activity
 GROUP BY state;
 
--- Monitor memory usage
+-- Monitora o uso de memória
 SELECT name, setting, unit
 FROM pg_settings
 WHERE name IN ('shared_buffers', 'work_mem', 'maintenance_work_mem');
 ```
 
-## PostgreSQL Advanced Data Types
+## Tipos de dados avançados do PostgreSQL
 
-### Custom Types & Domains
+### Tipos e domínios personalizados
 
 ```sql
--- Create custom types
+-- Cria tipos personalizados
 CREATE TYPE address_type AS (
     street TEXT,
     city TEXT,
@@ -173,11 +173,11 @@ CREATE TYPE address_type AS (
 
 CREATE TYPE order_status AS ENUM ('pending', 'processing', 'shipped', 'delivered', 'cancelled');
 
--- Use domains for data validation
+-- Usa domínios para validar dados
 CREATE DOMAIN email_address AS TEXT
 CHECK (VALUE ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$');
 
--- Table using custom types
+-- Tabela que usa tipos personalizados
 CREATE TABLE customers (
     id SERIAL PRIMARY KEY,
     email email_address NOT NULL,
@@ -186,10 +186,10 @@ CREATE TABLE customers (
 );
 ```
 
-### Range Types
+### Tipos de intervalo
 
 ```sql
--- PostgreSQL range types
+-- Tipos de intervalo do PostgreSQL
 CREATE TABLE reservations (
     id SERIAL PRIMARY KEY,
     room_id INTEGER,
@@ -197,20 +197,20 @@ CREATE TABLE reservations (
     price_range numrange
 );
 
--- Range queries
+-- Consultas de intervalo
 SELECT * FROM reservations
 WHERE reservation_period && tstzrange('2024-07-20', '2024-07-25');
 
--- Exclude overlapping ranges
+-- Exclui intervalos sobrepostos
 ALTER TABLE reservations
 ADD CONSTRAINT no_overlap
 EXCLUDE USING gist (room_id WITH =, reservation_period WITH &&);
 ```
 
-### Geometric Types
+### Tipos geométricos
 
 ```sql
--- PostgreSQL geometric types
+-- Tipos geométricos do PostgreSQL
 CREATE TABLE locations (
     id SERIAL PRIMARY KEY,
     name TEXT,
@@ -219,108 +219,108 @@ CREATE TABLE locations (
     service_area POLYGON
 );
 
--- Geometric queries
+-- Consultas geométricas
 SELECT name FROM locations
-WHERE coordinates <-> point(40.7128, -74.0060) < 10; -- Within 10 units
+WHERE coordinates <-> point(40.7128, -74.0060) < 10; -- Dentro de 10 unidades
 
--- GiST index for geometric data
+-- Índice GiST para dados geométricos
 CREATE INDEX idx_locations_coords ON locations USING gist(coordinates);
 ```
 
-## PostgreSQL Extensions & Tools
+## Extensões e ferramentas do PostgreSQL
 
-### Useful Extensions
+### Extensões úteis
 
 ```sql
--- Enable commonly used extensions
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";    -- UUID generation
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";     -- Cryptographic functions
-CREATE EXTENSION IF NOT EXISTS "unaccent";     -- Remove accents from text
-CREATE EXTENSION IF NOT EXISTS "pg_trgm";      -- Trigram matching
-CREATE EXTENSION IF NOT EXISTS "btree_gin";    -- GIN indexes for btree types
+-- Habilita extensões usadas com frequência
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";    -- Geração de UUID
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";     -- Funções criptográficas
+CREATE EXTENSION IF NOT EXISTS "unaccent";     -- Remove acentos do texto
+CREATE EXTENSION IF NOT EXISTS "pg_trgm";      -- Correspondência por trigramas
+CREATE EXTENSION IF NOT EXISTS "btree_gin";    -- Índices GIN para tipos btree
 
--- Using extensions
-SELECT uuid_generate_v4();                     -- Generate UUIDs
-SELECT crypt('password', gen_salt('bf'));      -- Hash passwords
-SELECT similarity('postgresql', 'postgersql'); -- Fuzzy matching
+-- Uso das extensões
+SELECT uuid_generate_v4();                     -- Gera UUIDs
+SELECT crypt('password', gen_salt('bf'));      -- Aplica hash às senhas
+SELECT similarity('postgresql', 'postgersql'); -- Correspondência aproximada
 ```
 
-### Monitoring & Maintenance
+### Consultas de monitoramento
 
 ```sql
--- Database size and growth
+-- Tamanho e crescimento do banco de dados
 SELECT pg_size_pretty(pg_database_size(current_database())) as db_size;
 
--- Table and index sizes
+-- Tamanhos das tabelas e dos índices
 SELECT schemaname, tablename,
        pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename)) as size
 FROM pg_tables
 ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;
 
--- Index usage statistics
+-- Estatísticas de uso dos índices
 SELECT schemaname, tablename, indexname, idx_scan, idx_tup_read, idx_tup_fetch
 FROM pg_stat_user_indexes
-WHERE idx_scan = 0;  -- Unused indexes
+WHERE idx_scan = 0;  -- Índices não usados
 ```
 
-### PostgreSQL-Specific Optimization Tips
+### Dicas de otimização específicas do PostgreSQL
 
-- **Use EXPLAIN (ANALYZE, BUFFERS)** for detailed query analysis
-- **Configure postgresql.conf** for your workload (OLTP vs OLAP)
-- **Use connection pooling** (pgbouncer) for high-concurrency applications
-- **Regular VACUUM and ANALYZE** for optimal performance
-- **Partition large tables** using PostgreSQL 10+ declarative partitioning
-- **Use pg_stat_statements** for query performance monitoring
+- **Use EXPLAIN (ANALYZE, BUFFERS)** para uma análise detalhada das consultas
+- **Configure postgresql.conf** para a carga de trabalho (OLTP versus OLAP)
+- **Use pool de conexões** (pgbouncer) em aplicações com alta concorrência
+- **Execute VACUUM e ANALYZE regularmente** para obter o melhor desempenho
+- **Particione tabelas grandes** com o particionamento declarativo do PostgreSQL 10+
+- **Use pg_stat_statements** para monitorar o desempenho das consultas
 
-## Monitoring and Maintenance
+## Monitoramento e manutenção
 
-### Query Performance Monitoring
+### Monitoramento do desempenho das consultas
 
 ```sql
--- Identify slow queries
+-- Identifica consultas lentas
 SELECT query, calls, total_time, mean_time, rows
 FROM pg_stat_statements
 ORDER BY total_time DESC
 LIMIT 10;
 
--- Check index usage
+-- Verifica o uso dos índices
 SELECT schemaname, tablename, indexname, idx_scan, idx_tup_read, idx_tup_fetch
 FROM pg_stat_user_indexes
 WHERE idx_scan = 0;
 ```
 
-### Database Maintenance
+### Manutenção do banco de dados
 
-- **VACUUM and ANALYZE**: Regular maintenance for performance
-- **Index Maintenance**: Monitor and rebuild fragmented indexes
-- **Statistics Updates**: Keep query planner statistics current
-- **Log Analysis**: Regular review of PostgreSQL logs
+- **VACUUM e ANALYZE**: manutenção regular do desempenho
+- **Manutenção de índices**: monitore e reconstrua índices fragmentados
+- **Atualização de estatísticas**: mantenha atuais as estatísticas do planejador de consultas
+- **Análise de registros de eventos**: revise regularmente os registros do PostgreSQL
 
-## Common Query Patterns
+## Padrões comuns de consulta
 
-### Pagination
+### Paginação
 
 ```sql
--- BAD: OFFSET for large datasets
+-- RUIM: OFFSET para conjuntos de dados grandes
 SELECT * FROM products ORDER BY id OFFSET 10000 LIMIT 20;
 
--- GOOD: Cursor-based pagination
+-- BOM: paginação baseada em cursor
 SELECT * FROM products
 WHERE id > $last_id
 ORDER BY id
 LIMIT 20;
 ```
 
-### Aggregation
+### Agregação
 
 ```sql
--- BAD: Inefficient grouping
+-- RUIM: agrupamento ineficiente
 SELECT user_id, COUNT(*)
 FROM orders
 WHERE order_date >= '2024-01-01'
 GROUP BY user_id;
 
--- GOOD: Optimized with partial index
+-- BOM: otimizado com índice parcial
 CREATE INDEX idx_orders_recent ON orders(user_id)
 WHERE order_date >= '2024-01-01';
 
@@ -330,58 +330,58 @@ WHERE order_date >= '2024-01-01'
 GROUP BY user_id;
 ```
 
-### JSON Queries
+### Consultas JSON
 
 ```sql
--- BAD: Inefficient JSON querying
+-- RUIM: consulta JSON ineficiente
 SELECT * FROM users WHERE data::text LIKE '%admin%';
 
--- GOOD: JSONB operators and GIN index
+-- BOM: operadores JSONB e índice GIN
 CREATE INDEX idx_users_data_gin ON users USING gin(data);
 
 SELECT * FROM users WHERE data @> '{"role": "admin"}';
 ```
 
-## Optimization Checklist
+## Lista de verificação da otimização
 
-### Query Analysis
+### Análise de consultas
 
-- [ ] Run EXPLAIN ANALYZE for expensive queries
-- [ ] Check for sequential scans on large tables
-- [ ] Verify appropriate join algorithms
-- [ ] Review WHERE clause selectivity
-- [ ] Analyze sort and aggregation operations
+- [ ] Executar EXPLAIN ANALYZE em consultas caras
+- [ ] Procurar varreduras sequenciais em tabelas grandes
+- [ ] Verificar se os algoritmos de junção são adequados
+- [ ] Revisar a seletividade da cláusula WHERE
+- [ ] Analisar operações de ordenação e agregação
 
-### Index Strategy
+### Estratégia de índices
 
-- [ ] Create indexes for frequently queried columns
-- [ ] Use composite indexes for multi-column searches
-- [ ] Consider partial indexes for filtered queries
-- [ ] Remove unused or duplicate indexes
-- [ ] Monitor index bloat and fragmentation
+- [ ] Criar índices para colunas consultadas com frequência
+- [ ] Usar índices compostos em buscas com várias colunas
+- [ ] Considerar índices parciais para consultas filtradas
+- [ ] Remover índices não usados ou duplicados
+- [ ] Monitorar o inchaço e a fragmentação dos índices
 
-### Security Review
+### Revisão de segurança
 
-- [ ] Use parameterized queries exclusively
-- [ ] Implement proper access controls
-- [ ] Enable row-level security where needed
-- [ ] Audit sensitive data access
-- [ ] Use secure connection methods
+- [ ] Usar exclusivamente consultas parametrizadas
+- [ ] Implementar controles de acesso adequados
+- [ ] Habilitar segurança no nível de linha quando necessário
+- [ ] Auditar o acesso a dados sensíveis
+- [ ] Usar métodos de conexão seguros
 
-### Performance Monitoring
+### Monitoramento de desempenho
 
-- [ ] Set up query performance monitoring
-- [ ] Configure appropriate log settings
-- [ ] Monitor connection pool usage
-- [ ] Track database growth and maintenance needs
-- [ ] Set up alerting for performance degradation
+- [ ] Configurar o monitoramento do desempenho das consultas
+- [ ] Definir configurações adequadas de registro de eventos
+- [ ] Monitorar o uso do pool de conexões
+- [ ] Acompanhar o crescimento do banco e as necessidades de manutenção
+- [ ] Configurar alertas de degradação de desempenho
 
-## Advanced PostgreSQL Features
+## Recursos avançados do PostgreSQL
 
-### Window Functions
+### Funções de janela
 
 ```sql
--- Running totals and rankings
+-- Totais acumulados e classificações
 SELECT
     product_id,
     order_date,
@@ -391,10 +391,10 @@ SELECT
 FROM sales;
 ```
 
-### Common Table Expressions (CTEs)
+### Expressões de tabela comuns (Common Table Expressions, CTEs)
 
 ```sql
--- Recursive queries for hierarchical data
+-- Consultas recursivas para dados hierárquicos
 WITH RECURSIVE category_tree AS (
     SELECT id, name, parent_id, 1 as level
     FROM categories
@@ -409,31 +409,31 @@ WITH RECURSIVE category_tree AS (
 SELECT * FROM category_tree ORDER BY level, name;
 ```
 
-Focus on providing specific, actionable PostgreSQL optimizations that improve query performance, security, and maintainability while leveraging PostgreSQL's advanced features.
+Forneça otimizações específicas e práticas do PostgreSQL que melhorem o desempenho, a segurança e a manutenibilidade das consultas e aproveitem seus recursos avançados.
 
-## Output template
+## Modelo de saída
 
-Report each optimization as a before/after with the plan change and the exact DDL.
+Informe cada otimização como antes/depois, com a alteração do plano e o DDL exato.
 
 ```markdown
-## PostgreSQL optimization — <query or object>
+## Otimização de PostgreSQL — <consulta ou objeto>
 
-| Field | Before | After |
+| Campo | Antes | Depois |
 |---|---|---|
-| p95 latency | <ms> | <ms> |
-| Plan | Seq Scan on `orders` | Index Scan on `idx_orders_data` |
-| Rows examined | <n> | <n> |
+| Latência p95 | <ms> | <ms> |
+| Plano | Seq Scan on `orders` | Index Scan on `idx_orders_data` |
+| Linhas examinadas | <n> | <n> |
 
-**Change**: index | rewrite | type/constraint | configuration
+**Alteração**: índice | reescrita | tipo/restrição | configuração
 **DDL**: CREATE INDEX idx_orders_data ON orders USING gin(data);
-**Validation**: EXPLAIN (ANALYZE, BUFFERS) rerun confirms the new plan and lower latency
+**Validação**: a nova execução de EXPLAIN (ANALYZE, BUFFERS) confirma o novo plano e a latência menor
 ```
 
-## Quality gate
+## Critérios de qualidade
 
-- [ ] A baseline plan and latency were captured with `EXPLAIN (ANALYZE, BUFFERS)` before any change.
-- [ ] The chosen PostgreSQL feature (JSONB, array, range, full-text search, window function) fits the access pattern.
-- [ ] Indexes match the filters, joins, and sorts; each new index is justified against its write cost.
-- [ ] Application access stays parameterized (JPQL, derived query, or bound native) — no string-built SQL.
-- [ ] Schema changes are forward-only Flyway migrations and remain rollback-safe.
-- [ ] `EXPLAIN (ANALYZE, BUFFERS)` confirms the plan changed and latency dropped.
+- [ ] Um plano e uma latência de referência foram capturados com `EXPLAIN (ANALYZE, BUFFERS)` antes de qualquer alteração.
+- [ ] O recurso escolhido do PostgreSQL (JSONB, array, intervalo, busca textual ou função de janela) é adequado ao padrão de acesso.
+- [ ] Os índices correspondem aos filtros, junções e ordenações; cada novo índice está justificado em relação ao custo de escrita.
+- [ ] O acesso da aplicação permanece parametrizado (JPQL, consulta derivada ou nativa vinculada), sem SQL criado por textos.
+- [ ] As alterações de esquema são migrações somente de avanço do Flyway e podem ser revertidas com segurança.
+- [ ] `EXPLAIN (ANALYZE, BUFFERS)` confirma a alteração do plano e a redução da latência.

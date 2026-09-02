@@ -1,16 +1,16 @@
-# Azure Dynamic Sources Registry
+# Registro de fontes dinâmicas do Azure
 
-This file manages **only the sources (URLs) for frequently changing information**.
-Actual values (API version, SKU, region, etc.) are not recorded here.
-Always fetch the URLs below to verify the latest information before generating Bicep.
+Este arquivo gerencia **somente as fontes (URLs) de informações que mudam com frequência**.
+Os valores reais (versão da API, SKU, região etc.) não são registrados aqui.
+Sempre consulte as URLs abaixo para verificar as informações mais recentes antes de gerar Bicep.
 
 ---
 
-## 1. Bicep API Version (Always Must Fetch)
+## 1. Versão da API do Bicep (consulta obrigatória)
 
-Per-service MS Docs Bicep reference. Verify the latest stable apiVersion from these URLs before use.
+Referência do Bicep no Microsoft Docs por serviço. Verifique a `apiVersion` estável mais recente nessas URLs antes de usá-la.
 
-| Service | MS Docs URL |
+| Serviço | URL do Microsoft Docs |
 |---------|-------------|
 | CognitiveServices (Foundry/OpenAI) | https://learn.microsoft.com/en-us/azure/templates/microsoft.cognitiveservices/accounts |
 | AI Search | https://learn.microsoft.com/en-us/azure/templates/microsoft.search/searchservices |
@@ -24,11 +24,11 @@ Per-service MS Docs Bicep reference. Verify the latest stable apiVersion from th
 | Application Insights | https://learn.microsoft.com/en-us/azure/templates/microsoft.insights/components |
 | ML Workspace (Hub) | https://learn.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces |
 
-> **Always verify child resources as well**: Child resources such as `accounts/projects`, `accounts/deployments`, `privateDnsZones/virtualNetworkLinks` may have different API versions from their parent. Follow child resource links from the parent page to verify.
+> **Sempre verifique também os recursos filhos**: recursos como `accounts/projects`, `accounts/deployments` e `privateDnsZones/virtualNetworkLinks` podem ter versões da API diferentes das do recurso pai. Siga os links dos recursos filhos na página do recurso pai para verificar.
 
-### Services Not in the Table Above
+### Serviços ausentes da tabela
 
-The table above includes only v1 scope services. For other services, construct the URL in this format and fetch:
+A tabela inclui somente os serviços do escopo da v1. Para outros serviços, monte e consulte a URL neste formato:
 
 ```
 https://learn.microsoft.com/en-us/azure/templates/microsoft.{provider}/{resourceType}
@@ -36,59 +36,59 @@ https://learn.microsoft.com/en-us/azure/templates/microsoft.{provider}/{resource
 
 ---
 
-## 2. Model Availability (Required When Using Foundry/OpenAI Models)
+## 2. Disponibilidade de modelos (obrigatória ao usar modelos do Foundry/OpenAI)
 
-Verify whether the model name is deployable in the target region. Do not rely on static knowledge.
+Verifique se o modelo pode ser implantado na região de destino. Não dependa de conhecimento estático.
 
-| Verification Method | URL / Command |
+| Método de verificação | URL / comando |
 |--------------------|---------------|
-| MS Docs model availability | https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models |
-| Azure CLI (existing resources) | `az cognitiveservices account list-models --name "<NAME>" --resource-group "<RG>" -o table` |
+| Disponibilidade do modelo no Microsoft Docs | https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models |
+| Interface de linha de comando (CLI) do Azure, para recursos existentes | `az cognitiveservices account list-models --name "<NAME>" --resource-group "<RG>" -o table` |
 
-> If the model is unavailable in the target region → Notify the user and suggest available regions/alternative models. Do not substitute without user approval.
+> Se o modelo não estiver disponível na região de destino → informe a pessoa e sugira regiões ou modelos alternativos disponíveis. Não faça substituições sem aprovação.
 
 ---
 
-## 3. Private Endpoint Mapping (When Adding New Services)
+## 3. Mapeamento de endpoint privado (Private Endpoint) ao adicionar novos serviços
 
-PE groupId and DNS Zone mappings can be changed by Azure. When adding new services or verification is needed:
+O Azure pode alterar os mapeamentos de `groupId` de PE e de DNS Zone. Ao adicionar novos serviços ou quando for necessário verificar:
 
-| Verification Method | URL |
+| Método de verificação | URL |
 |--------------------|-----|
-| PE DNS integration official docs | https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns |
+| Documentação oficial da integração de DNS de PE | https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns |
 
-> Key service mappings in `service-gotchas.md` are stable, but always re-verify from the URL above when adding new services.
+> Os mapeamentos dos principais serviços em `service-gotchas.md` são estáveis, mas sempre confirme novamente na URL acima ao adicionar novos serviços.
 
 ---
 
-## 4. Service Region Availability
+## 4. Disponibilidade regional dos serviços
 
-Verify whether a specific service is available in a specific region:
+Verifique se um serviço específico está disponível em determinada região:
 
-| Verification Method | URL |
+| Método de verificação | URL |
 |--------------------|-----|
-| Azure service-by-region availability | https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/ |
+| Disponibilidade dos serviços do Azure por região | https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/ |
 
 ---
 
-## 5. Azure Updates (Secondary Awareness)
+## 5. Azure Updates (fonte secundária)
 
-The sources below are for **reference only**. The primary source is always MS Docs official documentation.
+As fontes abaixo servem **somente como referência**. A fonte principal é sempre a documentação oficial do Microsoft Docs.
 
-| Source | URL | Purpose |
+| Fonte | URL | Finalidade |
 |--------|-----|---------|
-| Azure Updates | https://azure.microsoft.com/en-us/updates/ | Service change awareness |
-| What's New in Azure | Per-service What's New pages in Docs | Feature change verification |
+| Azure Updates | https://azure.microsoft.com/en-us/updates/ | Acompanhar alterações dos serviços |
+| Novidades no Azure | Páginas oficiais What's New ("Novidades") de cada serviço no Microsoft Docs | Verificar alterações de funcionalidades |
 
 ---
 
-## Decision Rule: When to Fetch?
+## Regra de decisão: quando consultar?
 
-| Information Type | Must Fetch? | Rationale |
+| Tipo de informação | Consulta obrigatória? | Motivo |
 |-----------------|-------------|-----------|
-| API version | **Always fetch** | Changes frequently; incorrect values cause deployment failure |
-| Model availability (name, region) | **Always fetch** | Varies by region and changes frequently |
-| SKU list | **Always fetch** | Can change per service |
-| Region availability | **Always fetch** | Per-service region support changes frequently. Always verify that the user-specified region is available for the service |
-| PE groupId & DNS Zone | Can reference `service-gotchas.md` for v1 key services; **must fetch for new services or complex configurations (Monitor, etc.)** | Key service mappings are stable, but new/complex services are risky |
-| Required property patterns | Reference files first | Near-immutable (isHnsEnabled, etc.) |
+| Versão da API | **Sempre** | Muda com frequência; valores incorretos causam falha na implantação |
+| Disponibilidade do modelo (nome, região) | **Sempre** | Varia por região e muda com frequência |
+| Lista de SKUs | **Sempre** | Pode mudar por serviço |
+| Disponibilidade regional | **Sempre** | O suporte regional de cada serviço muda com frequência. Sempre verifique se o serviço está disponível na região informada |
+| `groupId` de PE e DNS Zone | Pode consultar `service-gotchas.md` para os principais serviços da v1; **deve consultar para novos serviços ou configurações complexas (Monitor etc.)** | Os principais mapeamentos são estáveis, mas serviços novos ou complexos apresentam riscos |
+| Padrões de propriedades obrigatórias | Consulte primeiro os arquivos de referência | Quase imutáveis (`isHnsEnabled` etc.) |

@@ -1,32 +1,32 @@
 # context-engineering
 
-Context mapping for maximizing GitHub Copilot effectiveness.
+Mapeamento de contexto para maximizar a eficácia do GitHub Copilot.
 
-## What this plugin bundles
+## O que esta extensão reúne
 
-| Component | Type | Location |
+| Componente | Tipo | Localização |
 |-----------|------|----------|
-| `context-map` | Skill | [`.github/skills/context-map/`](../../skills/context-map/) |
+| `context-map` | Habilidade | [`.github/skills/context-map/`](../../skills/context-map/) |
 
-## Related kit content
+## Conteúdo relacionado do kit
 
-The workshop also maintains
-[`.github/skills/context-audit/`](../../skills/context-audit/) and
-[`.github/skills/refactor-safely/`](../../skills/refactor-safely/), which are the
-kit's own equivalents of the upstream `what-context-needed` and `refactor-plan`
-skills.
+A imersão também mantém
+[`.github/skills/context-audit/`](../../skills/context-audit/) e
+[`.github/skills/refactor-safely/`](../../skills/refactor-safely/), que são os
+equivalentes próprios do kit às habilidades originais `what-context-needed` e
+`refactor-plan`.
 
-## Upstream references not included
+## Referências originais não incluídas
 
-- `refactor-plan`, `what-context-needed` (skills) — the kit uses
-  `refactor-safely` and `context-audit` instead.
-- `context-architect` (agent) — not present in this kit.
+- `refactor-plan`, `what-context-needed` (habilidades) — o kit usa
+  `refactor-safely` e `context-audit` no lugar delas.
+- `context-architect` (agente) — não está presente neste kit.
 
-## How it is enabled
+## Como é habilitado
 
-Content under `.github/skills/` is discovered natively by Copilot in this
-repository, so this skill works here without any plugin install. The plugin
-layer packages it as a named bundle in the local `datacorp-mm-team-kit`
-marketplace ([`marketplace.json`](../marketplace.json)) and is declared in
-[`.github/copilot/settings.json`](../../copilot/settings.json). See the
-[plugins index](../README.md) for the mechanism and its limitations.
+O conteúdo em `.github/skills/` é descoberto nativamente pelo Copilot neste
+repositório, portanto esta habilidade funciona aqui sem instalar nenhuma extensão. A
+camada de extensões a empacota como um conjunto nomeado no catálogo local
+`datacorp-mm-team-kit` ([`marketplace.json`](../marketplace.json)) e é declarada
+em [`.github/copilot/settings.json`](../../copilot/settings.json). Consulte o
+[índice de extensões](../README.md) para conhecer o mecanismo e suas limitações.

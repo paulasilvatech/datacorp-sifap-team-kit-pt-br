@@ -1,49 +1,49 @@
-# GitHub Copilot in 3 Modes — Reference Card
+# GitHub Copilot em 3 modos — cartão de referência
 
-> **Path:** [Team Kit](../README.md) › [Reference Cards](README.md) › **Copilot's 3 Modes**
+> **Trilha:** [Kit do Time](../README.md) › [Cartões de referência](README.md) › **Os 3 modos do Copilot**
 
-**Choose the right Copilot mode before opening chat: Ask to explore, Plan to design changes, and Agent to delegate complete tasks.**
+**Escolha o modo certo do Copilot antes de abrir o chat: Ask para explorar, Plan para desenhar mudanças e Agent para delegar tarefas completas.**
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Any team member before starting a conversation with Copilot |
-| **Prerequisites** | GitHub Copilot active in VS Code |
-| **Estimated time** | 2 min |
-| **Stage** | All |
-| **Expected outcome** | Know which mode to use for the current situation |
+| **Público-alvo** | Qualquer pessoa do time antes de iniciar uma conversa com o Copilot |
+| **Pré-requisitos** | GitHub Copilot ativo no VS Code |
+| **Tempo estimado** | 2 min |
+| **Estágio** | Todos |
+| **Resultado esperado** | Saber qual modo usar na situação atual |
 
-![Card 01 of 03](https://img.shields.io/badge/Card-01%20of%2003-171717?style=flat-square)
-![Topic: Copilot's 3 Modes](https://img.shields.io/badge/Topic-Copilot%203%20modes-404040?style=flat-square)
-
----
-
-## What are Copilot's 3 modes?
-
-GitHub Copilot Chat operates in three distinct modes with different levels of autonomy and context cost:
-
-- **Ask** — conversational mode. You ask; Copilot answers. It does not change files automatically. Ideal for understanding, exploring, and discussing.
-- **Plan** — planning mode. Copilot proposes a change plan with explicit scope, files, and sequence. You validate it before execution.
-- **Agent** — autonomous mode. Copilot receives a complete task, typically through an Issue, and works independently until it produces a PR. You review the result.
-
-**Why this matters in the SIFAP workshop:** The wrong mode wastes time. Using Ask for a multi-file implementation can take hours; using Agent for a five-minute task is wasteful. The table below resolves this choice in seconds.
+![Cartão 01 de 03](https://img.shields.io/badge/Cart%C3%A3o-01%20de%2003-171717?style=flat-square)
+![Tema: os 3 modos do Copilot](https://img.shields.io/badge/Tema-3%20modos%20do%20Copilot-404040?style=flat-square)
 
 ---
 
-## Quick decision table
+## O que são os 3 modos do Copilot?
 
-| Situation | Mode | Why |
+O GitHub Copilot opera em três modos distintos, com níveis diferentes de autonomia e custo de contexto:
+
+- **Ask** — modo conversacional. Você pergunta; o Copilot responde. Ele não altera arquivos automaticamente. Ideal para entender, explorar e discutir.
+- **Plan** — modo de planejamento. O Copilot propõe um plano de mudança com escopo, arquivos e sequência explícitos. Você valida antes da execução.
+- **Agent** — modo autônomo. O Copilot recebe uma tarefa completa, normalmente por uma Issue, e trabalha de forma independente até produzir um PR. Você revisa o resultado.
+
+**Por que isso importa na imersão do SIFAP:** o modo errado desperdiça tempo. Usar Ask para uma implementação em vários arquivos pode levar horas; usar Agent para uma tarefa de cinco minutos é desperdício. A tabela abaixo resolve essa escolha em segundos.
+
+---
+
+## Tabela rápida de decisão
+
+| Situação | Modo | Por quê |
 |---|---|---|
-| Understand legacy Natural/Adabas code | **Ask** | Conversational, low cost, reversible |
-| Discuss design or a trade-off | **Ask** | Exploratory, without committing file changes |
-| Evaluate an ADR before recording it | **Ask** | Feedback before deciding |
-| Design a change across several files | **Plan** | Explicit plan with clear scope and sequence |
-| List required tests before implementation | **Plan** | Visible scope before execution |
-| Delegate a well-described Issue (issue → PR) | **Agent** | Works independently; you review at the end |
-| Automate a long CI/IaC chain | **Agent** | Repetitive task with clear criteria |
+| Entender código legado Natural/Adabas | **Ask** | Conversacional, baixo custo, reversível |
+| Discutir design ou um trade-off | **Ask** | Exploratório, sem comprometer mudanças em arquivos |
+| Avaliar um ADR antes de registrá-lo | **Ask** | Feedback antes de decidir |
+| Desenhar uma mudança em vários arquivos | **Plan** | Plano explícito com escopo e sequência claros |
+| Listar os testes necessários antes da implementação | **Plan** | Escopo visível antes da execução |
+| Delegar uma Issue bem descrita (issue → PR) | **Agent** | Trabalha de forma independente; você revisa no fim |
+| Automatizar uma cadeia longa de CI/IaC | **Agent** | Tarefa repetitiva com critérios claros |
 
 ---
 
-## Visual decision flow
+## Fluxo visual de decisão
 
 ```mermaid
 %%{init: {'theme':'neutral','themeVariables':{'fontFamily':'ui-sans-serif, system-ui, sans-serif','primaryColor':'#F5F5F5','primaryTextColor':'#171717','primaryBorderColor':'#171717','lineColor':'#525252','secondaryColor':'#FFFFFF','tertiaryColor':'#FAFAFA','background':'#FFFFFF'}}}%%
@@ -51,10 +51,10 @@ flowchart TD
     classDef step fill:#F5F5F5,stroke:#171717,color:#171717
     classDef result fill:#FFFFFF,stroke:#171717,color:#171717,stroke-width:2px
 
-    Q["What is my goal right now?"]:::step
-    Q --> E["Understand, explore,<br/>or discuss"]:::step
-    Q --> D["Design a change<br/>across several files"]:::step
-    Q --> G["Delegate a complete<br/>task with an Issue"]:::step
+    Q["Qual é o meu objetivo agora?"]:::step
+    Q --> E["Entender, explorar<br/>ou discutir"]:::step
+    Q --> D["Projetar uma mudança<br/>em vários arquivos"]:::step
+    Q --> G["Delegar uma tarefa<br/>completa com uma Issue"]:::step
 
     E --> Ask["Ask"]:::result
     D --> Plan["Plan"]:::result
@@ -63,90 +63,90 @@ flowchart TD
 
 ---
 
-## Ask — Question and explore
+## Ask — perguntar e explorar
 
-**Use it when** you do not yet know exactly what you want, or when you want to understand, discuss, or evaluate a trade-off.
+**Use quando** você ainda não sabe exatamente o que quer, ou quando quer entender, discutir ou avaliar um trade-off.
 
-**Examples in the SIFAP context:**
+**Exemplos no contexto do SIFAP:**
 
-- `"Explain what this Natural program does line by line."`
-- `"What are the risks of using JSONB to store bank account history?"`
-- `"Summarize this DDM in five lines for someone unfamiliar with Adabas."`
-- `"Challenge this ADR: {paste the ADR}."`
+- `"Explique o que este programa Natural faz, linha a linha."`
+- `"Quais são os riscos de usar JSONB para armazenar o histórico de contas bancárias?"`
+- `"Resuma este DDM em cinco linhas para alguém que não conhece Adabas."`
+- `"Questione este ADR: {cole o ADR}."`
 
-**Common mistakes:**
+**Erros comuns:**
 
-- Using Ask to make changes across several files—use Plan or Agent.
-- Accepting an answer without validation—Copilot can hallucinate; verify it.
-- Writing a prompt that is too short ("help")—provide context: what you have, what you want, and what you have tried.
-
----
-
-## Plan — Plan changes
-
-**Use it when** you know what you want, need to involve several files, and want to validate scope, sequence, and risks before execution.
-
-**Examples in the SIFAP context:**
-
-- `"Plan the creation of the <feature> module using the package structure agreed by the team."`
-- `"List the tests required for every public method in <Service> before implementation."`
-- `"Plan the project-wide rename from <legacy-term> to <modern-term> in a safe order."`
-- `"Review the existing Flyway migrations and propose a sequence for adding documented rollback."`
-
-**Common mistakes:**
-
-- Scope is too broad—split it into smaller stages.
-- Failing to review the plan before execution—adjust it before authorizing.
-- Mixing logic changes with renames—one PR per purpose.
+- Usar Ask para fazer mudanças em vários arquivos — use Plan ou Agent.
+- Aceitar uma resposta sem validação — o Copilot pode alucinar; verifique.
+- Escrever um prompt curto demais ("ajuda") — dê contexto: o que você tem, o que quer e o que já tentou.
 
 ---
 
-## Agent — Autonomous delegation
+## Plan — planejar mudanças
 
-**Use it when** you have a well-described Issue, accept that the task will take time, and are prepared to review an autonomously generated PR.
+**Use quando** você sabe o que quer, precisa envolver vários arquivos e quer validar escopo, sequência e riscos antes da execução.
 
-**How to prepare the Issue:**
+**Exemplos no contexto do SIFAP:**
 
-- [ ] **Write the context**—what exists today and what should exist afterward.
-- [ ] **Define acceptance criteria**—the expected verifiable behavior.
-- [ ] **Set boundaries**—what Agent should and should NOT change.
-- [ ] **Identify relevant files**—`"read docs/adr/001.md before starting"`.
+- `"Planeje a criação do módulo <feature> usando a estrutura de pacotes acordada pelo time."`
+- `"Liste os testes necessários para cada método público de <Service> antes da implementação."`
+- `"Planeje a renomeação de <termo-legado> para <termo-moderno> em todo o projeto, em uma ordem segura."`
+- `"Revise as migrações Flyway existentes e proponha uma sequência para adicionar rollback documentado."`
 
-**Monitoring:** Do not interfere while Agent is running. Let it finish. Check progress every 10 minutes if needed.
+**Erros comuns:**
 
-**Reviewing Agent's PR:** Review it exactly as you would a human PR. A fast review is still a review.
-
-**Common mistakes:**
-
-- Vague Issue—Agent delivers an out-of-scope result.
-- Starting Agent for a five-minute task that Ask or Plan could handle.
-- Merging without review because the PR was generated automatically.
+- Escopo amplo demais — divida em estágios menores.
+- Não revisar o plano antes da execução — ajuste antes de autorizar.
+- Misturar mudanças de lógica com renomeações — um PR por propósito.
 
 ---
 
-## Modes by persona
+## Agent — delegação autônoma
 
-| Persona | Primary mode | Secondary mode |
+**Use quando** você tem uma Issue bem descrita, aceita que a tarefa vai levar tempo e está preparado para revisar um PR gerado de forma autônoma.
+
+**Como preparar a Issue:**
+
+- [ ] **Escreva o contexto** — o que existe hoje e o que deve existir depois.
+- [ ] **Defina critérios de aceitação** — o comportamento verificável esperado.
+- [ ] **Estabeleça limites** — o que o Agent deve e o que NÃO deve alterar.
+- [ ] **Identifique os arquivos relevantes** — `"leia docs/adr/001.md antes de começar"`.
+
+**Acompanhamento:** não interfira enquanto o Agent estiver rodando. Deixe-o terminar. Verifique o progresso a cada 10 minutos, se precisar.
+
+**Revisão do PR do Agent:** revise exatamente como você revisaria um PR humano. Uma revisão rápida ainda é uma revisão.
+
+**Erros comuns:**
+
+- Issue vaga — o Agent entrega um resultado fora do escopo.
+- Acionar o Agent para uma tarefa de cinco minutos que Ask ou Plan resolveriam.
+- Fazer merge sem revisão porque o PR foi gerado automaticamente.
+
+---
+
+## Modos por persona
+
+| Persona | Modo principal | Modo secundário |
 |---|---|---|
-| Product Owner | Ask (refine stories) | Plan (prioritize scope) |
-| Requirements Engineer | Ask (validate EARS) | Plan (organize requirements) |
-| Software Architect | Ask (select a pattern) | Plan (design a module) |
-| Developer | Plan (multi-file changes) | Ask, Agent |
-| QA Engineer | Plan (coverage and scenarios) | Ask (discuss gaps) |
-| DevOps Engineer | Agent (long CI chains) | Plan (Terraform) |
-| Tech Writer | Ask (style review) | Plan (restructure an ADR) |
+| Product Owner | Ask (refinar histórias) | Plan (priorizar escopo) |
+| Requirements Engineer | Ask (validar EARS) | Plan (organizar requisitos) |
+| Software Architect | Ask (escolher um padrão) | Plan (desenhar um módulo) |
+| Developer | Plan (mudanças em vários arquivos) | Ask, Agent |
+| QA Engineer | Plan (cobertura e cenários) | Ask (discutir lacunas) |
+| DevOps Engineer | Agent (cadeias longas de CI) | Plan (Terraform) |
+| Tech Writer | Ask (revisão de estilo) | Plan (reestruturar um ADR) |
 
 ---
 
 > [!TIP]
-> **Rule of thumb.** If you did not know AI generated the code, would you accept it into your project? If not, reject or refine it. Copilot accelerates knowledgeable people; it does not replace judgment.
+> **Regra prática.** Se você não soubesse que uma IA gerou o código, você o aceitaria no seu projeto? Se não, rejeite ou refine. O Copilot acelera quem tem conhecimento; ele não substitui o julgamento.
 
 ---
 
-### Continue reading
+### Continue lendo
 
-| Previous | Next |
+| Anterior | Próximo |
 |---|---|
-| [Reference Cards](README.md)<br/><sub>Index of the three quick reference cards.</sub> | [Spec-Kit on 1 Page](spec-kit-workflow.md)<br/><sub>Sequence: specify — clarify — plan — tasks — analyze.</sub> |
+| [Cartões de referência](README.md)<br/><sub>Índice dos três cartões de referência rápida.</sub> | [Spec-Kit em 1 página](spec-kit-workflow.md)<br/><sub>Sequência: specify — clarify — plan — tasks — analyze.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Voltar ao índice do kit](../README.md)</sub>

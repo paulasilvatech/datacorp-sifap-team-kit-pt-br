@@ -1,30 +1,30 @@
-# Stage 2 — Specification (60 min)
+# Estágio 2 — Especificação (60 min)
 
-> **Path:** [Team Kit](../README.md) › [Stage 2](README.md) › **GUIDE**
+> **Trilha:** [Kit do Time](../README.md) › [Estágio 2](README.md) › **GUIDE**
 
-**This guide leads Pair 2 step by step through creating the Spec-Kit artifacts: traceable EARS requirements, a technical plan, and implementable tasks, from the start through the H2 handoff.**
+**Este guia conduz a Dupla 2, passo a passo, pela criação dos artefatos do Spec-Kit: requisitos EARS rastreáveis, um plano técnico e tarefas implementáveis, desde o início até o handoff H2.**
 
-![Stage 2](https://img.shields.io/badge/Stage-2%20%C2%B7%20Specification-171717?style=flat-square) ![Duration 60 min](https://img.shields.io/badge/Duration-60%20min-737373?style=flat-square) ![Time 14:00–15:00](https://img.shields.io/badge/Time-14%3A00--15%3A00-A3A3A3?style=flat-square)
+![Estágio 2](https://img.shields.io/badge/Est%C3%A1gio-2%20%C2%B7%20Especifica%C3%A7%C3%A3o-171717?style=flat-square) ![Duração: 60 min](https://img.shields.io/badge/Dura%C3%A7%C3%A3o-60%20min-737373?style=flat-square) ![Horário: 14:00–15:00](https://img.shields.io/badge/Hor%C3%A1rio-14%3A00--15%3A00-A3A3A3?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Pair 2 (Enterprise Architect + Software Architect); Pair 1 validates the scope; Pair 5 reviews clarity |
-| **Prerequisites** | H1 handoff accepted; legacy `.NSN` programs and DDMs read |
-| **Estimated time** | 60 min |
-| **Stage** | Stage 2 — Specification |
-| **Expected outcome** | `specs/<NNN>-<feature>/spec.md`, `plan.md`, and `tasks.md` with complete traceability |
+| **Público-alvo** | Dupla 2 (Enterprise Architect + Software Architect); a Dupla 1 valida o escopo; a Dupla 5 revisa a clareza |
+| **Pré-requisitos** | Handoff H1 aceito; programas `.NSN` legados e DDMs lidos |
+| **Tempo estimado** | 60 min |
+| **Estágio** | Estágio 2 — Especificação |
+| **Resultado esperado** | `specs/<NNN>-<feature>/spec.md`, `plan.md` e `tasks.md` com rastreabilidade completa |
 
 ---
 
-## Concept: Spec-Driven Development
+## Conceito: desenvolvimento guiado por especificação
 
-Spec-Driven Development (SDD) is the practice of writing the feature specification, requirements, technical plan, and tasks, before writing any code. The goal is to ensure that everyone on the team understands what must be built, why, and how to verify that it was built correctly.
+O Spec-Driven Development (SDD), ou desenvolvimento guiado por especificação, é a prática de escrever a especificação da feature, os requisitos, o plano técnico e as tarefas antes de escrever qualquer código. O objetivo é garantir que todas as pessoas do time entendam o que deve ser construído, por quê e como verificar se foi construído corretamente.
 
-For SIFAP, this means that before creating the benefit calculation endpoint, the team documents exactly which rule from the original `.NSN` program is being modernized, the acceptance criteria, and the tests that validate the behavior.
+No SIFAP, isso significa que, antes de criar o endpoint de cálculo de benefício, o time documenta exatamente qual regra do programa `.NSN` original será modernizada, os critérios de aceitação e os testes que validam o comportamento.
 
-GitHub Spec-Kit automates this flow with slash commands in Copilot Chat.
+O GitHub Spec-Kit automatiza esse fluxo com comandos de barra no GitHub Copilot.
 
-### Spec-Kit flow
+### Fluxo do Spec-Kit
 
 ```mermaid
 %%{init: {'theme':'neutral','themeVariables':{'fontFamily':'ui-sans-serif, system-ui, sans-serif','primaryColor':'#F5F5F5','primaryTextColor':'#171717','primaryBorderColor':'#171717','lineColor':'#525252','secondaryColor':'#FFFFFF','tertiaryColor':'#FAFAFA','background':'#FFFFFF'}}}%%
@@ -41,9 +41,9 @@ flowchart LR
 
 ---
 
-## Artifact location rule
+## Regra de localização dos artefatos
 
-Formal GitHub Spec-Kit deliverables live exclusively in:
+Os entregáveis formais do GitHub Spec-Kit ficam exclusivamente em:
 
 ```text
 specs/<NNN>-<feature>/
@@ -52,140 +52,140 @@ specs/<NNN>-<feature>/
 └── tasks.md
 ```
 
-`spec.md` contains the EARS requirements, `plan.md` records the technical plan, and `tasks.md` orders the implementable work. Do not create parallel files with legacy names in `02-modern-spec/`.
+O `spec.md` contém os requisitos EARS, o `plan.md` registra o plano técnico e o `tasks.md` ordena o trabalho implementável. Não crie arquivos paralelos com nomes legados em `02-modern-spec/`.
 
-`02-modern-spec/` contains supporting material for the stage. Its templates and [`scope-decisions.md`](scope-decisions.md) record scope decisions, trade-offs, and references for the conversation. They do not replace the feature's three formal artifacts.
+`02-modern-spec/` contém o material de apoio do estágio. Seus templates e o [`scope-decisions.md`](scope-decisions.md) registram decisões de escopo, trade-offs e referências para a conversa. Eles não substituem os três artefatos formais da feature.
 
 > [!CAUTION]
-> **Traceability HARD GATE.** Before drafting any EARS requirement, read the program or DDM that supports it. Every REQ-ID in `specs/<NNN>-<feature>/spec.md` needs a `source_legacy:` line pointing to `01-archaeology/legacy-sifap/.../*.NSN` or `*.ddm`. A capability with no legacy equivalent uses `[GREENFIELD]` with a rationale. Without this, CI rejects the PR.
+> **GATE OBRIGATÓRIO de rastreabilidade.** Antes de redigir qualquer requisito EARS, leia o membro Natural ou DDM que o sustenta. Cada REQ-ID em `specs/<NNN>-<feature>/spec.md` precisa de uma linha `source_legacy:` que aponte para um membro Natural válido (`.NSP`, `.NSN`, `.NSA`, `.NSL`, `.NSC` ou `.jcl`) ou para um artefato Adabas válido (`.ddm` ou `.txt`) em `01-archaeology/legacy-sifap/`. Uma capacidade sem equivalente no legado usa `[GREENFIELD]` com uma justificativa. Sem isso, a CI rejeita o PR.
 
 ---
 
-## Concept: EARS notation
+## Conceito: notação EARS
 
-EARS (Easy Approach to Requirements Syntax) is a structured notation for writing unambiguous software requirements. Each requirement starts with a keyword that classifies the type of behavior.
+EARS (Easy Approach to Requirements Syntax) é uma notação estruturada para escrever requisitos de software sem ambiguidade. Cada requisito começa com uma palavra-chave que classifica o tipo de comportamento.
 
-**Why it matters:** natural-language requirements are ambiguous. "The system shall calculate the benefit" does not say when, for whom, or what happens if it fails. EARS notation removes this ambiguity.
+**Por que isso importa:** requisitos em linguagem natural são ambíguos. "O sistema SHALL calcular o benefício" não informa quando, para quem nem o que acontece em caso de falha. A notação EARS remove essa ambiguidade.
 
-**The 5 EARS patterns:**
+**Os cinco padrões EARS:**
 
-| Pattern | Keyword | Structure | SIFAP example |
+| Padrão | Palavra-chave | Estrutura | Exemplo do SIFAP |
 |---|---|---|---|
-| **Ubiquitous** | (none) | The `<system>` shall `<action>`. | The system shall record the date and time of every benefit change. |
-| **Event-driven** | When | When `<event>`, the `<system>` shall `<action>`. | When the payment is processed, the system shall issue a receipt. |
-| **State-driven** | While | While `<state>`, the `<system>` shall `<action>`. | While the beneficiary has suspended status, the system shall block payments. |
-| **Unwanted behavior** | If / Then | If `<condition>`, then the `<system>` shall `<handling action>`. | If the provided CPF does not exist in the database, then the system shall return HTTP 422 with an error message. |
-| **Optional feature** | Where | Where `<feature is active>`, the `<system>` shall `<action>`. | Where advanced auditing is enabled, the system shall record the IP address of each access. |
+| **Ubíquo** | (nenhuma) | O `<sistema>` SHALL `<ação>`. | O sistema SHALL registrar a data e a hora de cada alteração de benefício. |
+| **Orientado a evento** | Quando | Quando `<evento>`, o `<sistema>` SHALL `<ação>`. | Quando o pagamento for processado, o sistema SHALL emitir um recibo. |
+| **Orientado a estado** | Enquanto | Enquanto `<estado>`, o `<sistema>` SHALL `<ação>`. | Enquanto o beneficiário estiver com status suspenso, o sistema SHALL bloquear pagamentos. |
+| **Comportamento indesejado** | Se / Então | Se `<condição>`, então o `<sistema>` SHALL `<ação de tratamento>`. | Se o CPF informado não existir no banco de dados, então o sistema SHALL retornar HTTP 422 com uma mensagem de erro. |
+| **Feature opcional** | Onde | Onde `<feature está ativa>`, o `<sistema>` SHALL `<ação>`. | Onde a auditoria avançada estiver habilitada, o sistema SHALL registrar o endereço IP de cada acesso. |
 
-**REQ-ID:** each requirement receives a unique identifier in the `REQ-NNN` format (for example, `REQ-001`). This ID appears in commits (`Implements REQ-001`), PRs, and tests to trace code behavior back to the specification.
-
----
-
-## Concept: ADR (Architecture Decision Record)
-
-An ADR is a short document that records an architectural decision: the selected option, the alternatives considered, and the rationale. An ADR is not bureaucracy; it is institutional memory. Without it, in six months no one will remember why PostgreSQL was selected instead of MongoDB.
-
-**When to create an ADR in Stage 2:** only when a decision blocks `plan.md`. Use the template in [`templates/ADR.template.md`](templates/ADR.template.md) or run `/generate-adr` in Copilot Chat.
-
-**Common mistake:** creating ADRs for obvious decisions or decisions already documented elsewhere. If the decision fits in a commit comment, it does not need an ADR.
+**REQ-ID:** cada requisito recebe um identificador único no formato `REQ-NNN` (por exemplo, `REQ-001`). Esse ID aparece em commits (`Implements REQ-001`), PRs e testes para rastrear o comportamento do código até a especificação.
 
 ---
 
-## Concept: Bounded Context
+## Conceito: ADR (Architecture Decision Record)
 
-A bounded context is an explicit boundary within which a domain model is valid and consistent. It is the central Domain-Driven Design concept that allows a large system to be divided into smaller, cohesive parts.
+Uma ADR é um documento curto que registra uma decisão de arquitetura: a opção escolhida, as alternativas consideradas e a justificativa. Uma ADR não é burocracia; é memória institucional. Sem ela, em seis meses ninguém se lembrará por que o PostgreSQL foi escolhido em vez do MongoDB.
 
-**In SIFAP:** the payments module has its own rules, entities, and vocabulary. The inspection module has its own. When the two need to communicate, they do so through a well-defined interface rather than sharing tables or internal objects.
+**Quando criar uma ADR no Estágio 2:** somente quando uma decisão bloquear o `plan.md`. Use o template em [`templates/ADR.template.md`](templates/ADR.template.md) ou execute `/generate-adr` no GitHub Copilot.
 
-**For the workshop:** use `/carve-bounded-contexts` in Copilot Chat and fill in [`templates/bounded-contexts.template.md`](templates/bounded-contexts.template.md) as a reference for `plan.md`.
+**Erro comum:** criar ADRs para decisões óbvias ou já documentadas em outro lugar. Se a decisão couber em um comentário de commit, ela não precisa de uma ADR.
 
 ---
 
-## Timed schedule
+## Conceito: bounded context
 
-| Time | Activity | Output |
+Um bounded context é uma fronteira explícita dentro da qual um modelo de domínio é válido e consistente. É o conceito central do Domain-Driven Design que permite dividir um sistema grande em partes menores e coesas.
+
+**No SIFAP:** o módulo de pagamentos tem suas próprias regras, entidades e vocabulário. O módulo de fiscalização também. Quando os dois precisam se comunicar, fazem isso por uma interface bem definida, em vez de compartilhar tabelas ou objetos internos.
+
+**Para a imersão:** use `/carve-bounded-contexts` no GitHub Copilot e preencha [`templates/bounded-contexts.template.md`](templates/bounded-contexts.template.md) como referência para o `plan.md`.
+
+---
+
+## Cronograma
+
+| Horário | Atividade | Saída |
 |---|---|---|
-| 14:00–14:05 | Confirm the H1 handoff evidence and select a thin feature. | `NNN-<feature>` name and PO-approved scope. |
-| 14:05–14:25 | Run `/speckit.specify` and `/speckit.clarify`. | `specs/<NNN>-<feature>/spec.md` with traceable requirements. |
-| 14:25–14:40 | Run `/speckit.plan`. | `plan.md` with decisions and risks needed for implementation. |
-| 14:40–14:50 | Run `/speckit.tasks`. | Prioritized `tasks.md`, including business-rule tests. |
-| 14:50–14:55 | Run `/speckit.analyze` and fix blocking gaps. | Consistent references and artifacts. |
-| 14:55–15:00 | Conduct the H2 handoff. | Scope, formal files, and first task for Pairs 3 and 4. |
+| 14:00–14:05 | Confirmar as evidências do handoff H1 e selecionar uma feature fina. | Nome `NNN-<feature>` e escopo aprovado pelo PO. |
+| 14:05–14:25 | Executar `/speckit.specify` e `/speckit.clarify`. | `specs/<NNN>-<feature>/spec.md` com requisitos rastreáveis. |
+| 14:25–14:40 | Executar `/speckit.plan`. | `plan.md` com as decisões e os riscos necessários para a implementação. |
+| 14:40–14:50 | Executar `/speckit.tasks`. | `tasks.md` priorizado, incluindo testes das regras de negócio. |
+| 14:50–14:55 | Executar `/speckit.analyze` e corrigir lacunas bloqueantes. | Referências e artefatos consistentes. |
+| 14:55–15:00 | Fazer o handoff H2. | Escopo, arquivos formais e primeira tarefa para as Duplas 3 e 4. |
 
 > [!WARNING]
-> If a step consumes the available time, reduce the feature. Do not fill in requirements, contracts, architecture, or acceptance criteria based on assumptions.
+> Se uma etapa consumir o tempo disponível, reduza a feature. Não preencha requisitos, contratos, arquitetura nem critérios de aceitação com base em suposições.
 
 ---
 
-## Step by step
+## Passo a passo
 
-- [ ] **Confirm evidence.** Reread the findings recorded in Stage 1 before selecting the feature.
-- [ ] **Name the folder.** Create `specs/<NNN>-<feature>/` with a name that reflects the behavior, not the technical solution.
-- [ ] **Run `/speckit.specify`.** Generate `spec.md` with REQ-IDs, EARS patterns, and `source_legacy:`.
-- [ ] **Run `/speckit.clarify`.** Resolve ambiguities before planning.
-- [ ] **Run `/speckit.plan`.** Document architecture, data, risks, and contracts in `plan.md`.
-- [ ] **Run `/speckit.tasks`.** Break the plan into small tasks with tests in `tasks.md`.
-- [ ] **Run `/speckit.analyze`.** Fix gaps between the spec, plan, and tasks.
-- [ ] **Record scope decisions.** Fill in [`scope-decisions.md`](scope-decisions.md) with what was selected, deferred, or marked greenfield.
-- [ ] **Conduct the H2 handoff.** Present live to Pairs 3 and 4 (see below).
-
----
-
-## Scope support and decisions
-
-- Record what was selected, deferred, or marked greenfield in [`scope-decisions.md`](scope-decisions.md), linking the decision to the folder in `specs/`.
-- Use [`ADR-TEMPLATE.md`](ADR-TEMPLATE.md) only for a decision that blocks the plan. The stage has no ADR quantity target.
-- A context sketch or diagram may support the conversation, but C4 L1/L2/L3 and a complete architecture are not prerequisites for the H2 handoff. The necessary technical rationale belongs in `plan.md`.
+- [ ] **Confirme as evidências.** Releia os achados registrados no Estágio 1 antes de selecionar a feature.
+- [ ] **Nomeie a pasta.** Crie `specs/<NNN>-<feature>/` com um nome que represente o comportamento, não a solução técnica.
+- [ ] **Execute `/speckit.specify`.** Gere o `spec.md` com REQ-IDs, padrões EARS e `source_legacy:`.
+- [ ] **Execute `/speckit.clarify`.** Resolva as ambiguidades antes do planejamento.
+- [ ] **Execute `/speckit.plan`.** Documente arquitetura, dados, riscos e contratos no `plan.md`.
+- [ ] **Execute `/speckit.tasks`.** Divida o plano em tarefas pequenas com testes no `tasks.md`.
+- [ ] **Execute `/speckit.analyze`.** Corrija lacunas entre a spec, o plano e as tarefas.
+- [ ] **Registre as decisões de escopo.** Preencha [`scope-decisions.md`](scope-decisions.md) com o que foi selecionado, adiado ou marcado como greenfield.
+- [ ] **Faça o handoff H2.** Apresente ao vivo para as Duplas 3 e 4 (veja abaixo).
 
 ---
 
-## H2 handoff
+## Apoio e decisões de escopo
 
-Pair 2 presents live to Pairs 3 and 4:
-
-1. The `specs/<NNN>-<feature>/` folder path.
-2. The selected feature, requirements, and their `source_legacy:` entries.
-3. The first implementable task and expected tests.
-4. Risks, scope decisions, and questions that still need answers.
+- Registre o que foi selecionado, adiado ou marcado como greenfield em [`scope-decisions.md`](scope-decisions.md), vinculando a decisão à pasta em `specs/`.
+- Use [`ADR-TEMPLATE.md`](ADR-TEMPLATE.md) somente para uma decisão que bloqueia o plano. O estágio não tem meta de quantidade de ADRs.
+- Um esboço ou diagrama de contexto pode apoiar a conversa, mas C4 L1/L2/L3 e uma arquitetura completa não são pré-requisitos para o handoff H2. A justificativa técnica necessária pertence ao `plan.md`.
 
 ---
 
-## Completion criteria
+## Handoff H2
 
-- [ ] A small feature has `spec.md`, `plan.md`, and `tasks.md` in `specs/<NNN>-<feature>/`.
-- [ ] Every requirement has a valid `source_legacy:` or a justified `[GREENFIELD]`.
-- [ ] `tasks.md` includes tests alongside business-rule implementation.
-- [ ] Scope decisions are recorded in `02-modern-spec/`.
-- [ ] The PO confirmed the scope and the H2 handoff occurred by 15:00.
+A Dupla 2 apresenta ao vivo para as Duplas 3 e 4:
+
+1. O caminho da pasta `specs/<NNN>-<feature>/`.
+2. A feature selecionada, os requisitos e suas entradas `source_legacy:`.
+3. A primeira tarefa implementável e os testes esperados.
+4. Os riscos, as decisões de escopo e as questões que ainda precisam de respostas.
 
 ---
 
-## Common mistakes and how to avoid them
+## Critérios de conclusão
 
-| Symptom | Cause | Correction |
+- [ ] Uma feature pequena tem `spec.md`, `plan.md` e `tasks.md` em `specs/<NNN>-<feature>/`.
+- [ ] Cada requisito tem um `source_legacy:` válido ou um `[GREENFIELD]` justificado.
+- [ ] O `tasks.md` inclui testes junto com a implementação das regras de negócio.
+- [ ] As decisões de escopo estão registradas em `02-modern-spec/`.
+- [ ] O PO confirmou o escopo e o handoff H2 ocorreu até as 15:00.
+
+---
+
+## Erros comuns e como evitá-los
+
+| Sintoma | Causa | Correção |
 |---|---|---|
-| Missing `source_legacy:` in `spec.md` | Requirement written without consulting the legacy system | Reread the corresponding `.NSN` program before writing the EARS requirement |
-| `spec.md` contains vague requirements ("the system shall work correctly") | EARS notation was not used | Rewrite with one of the 5 EARS patterns |
-| Empty `plan.md` or one copied from another project | Plan based on assumptions | Run `/speckit.plan` with the feature's actual context |
-| ADR created for every decision | Confusion between an ADR and a code comment | Reserve ADRs for decisions that would block the plan without a record |
-| CI rejects the PR | Missing or invalid `source_legacy:` | Correct the path to the corresponding `.NSN` or `.ddm` file |
+| `source_legacy:` ausente no `spec.md` | Requisito escrito sem consultar o sistema legado | Releia o programa `.NSN` correspondente antes de escrever o requisito EARS |
+| O `spec.md` contém requisitos vagos ("o sistema SHALL funcionar corretamente") | A notação EARS não foi usada | Reescreva com um dos cinco padrões EARS |
+| `plan.md` vazio ou copiado de outro projeto | Plano baseado em suposições | Execute `/speckit.plan` com o contexto real da feature |
+| ADR criada para cada decisão | Confusão entre uma ADR e um comentário de código | Reserve ADRs para decisões que bloqueariam o plano sem um registro |
+| A CI rejeita o PR | `source_legacy:` ausente ou inválido | Corrija o caminho para o arquivo `.NSN` ou `.ddm` correspondente |
 
 ---
 
-## References
+## Referências
 
-- [Spec-Kit reference card](../09-cheat-sheets/spec-kit-workflow.md)
-- [EARS notation](../07-concepts/05-ears-notation.md)
-- [Architecture Decision Records](../07-concepts/06-architecture-decision-records.md)
-- [Official Spec-Kit](https://github.com/github/spec-kit)
-- [SIFAP legacy system](../01-archaeology/legacy-sifap/)
+- [Cartão de referência do Spec-Kit](../09-cheat-sheets/spec-kit-workflow.md)
+- [Notação EARS](../07-concepts/05-ears-notation.md)
+- [Registros de decisão de arquitetura](../07-concepts/06-architecture-decision-records.md)
+- [Spec-Kit oficial](https://github.com/github/spec-kit)
+- [Sistema legado SIFAP](../01-archaeology/legacy-sifap/)
 
 ---
 
-### Continue reading
+### Continue lendo
 
-| Previous | Next |
+| Anterior | Próximo |
 |---|---|
-| [Stage 1 — Archaeology](../01-archaeology/README.md)<br/><sub>Archaeology summary and links to the detailed GUIDE.</sub> | [Stage 3 — Implementation](../03-implementation/GUIDE.md)<br/><sub>15:00–16:10 · Java 21 + Spring Boot + Next.js, with tests.</sub> |
+| [Estágio 1 — Arqueologia](../01-archaeology/README.md)<br/><sub>Resumo da arqueologia e links para o GUIDE detalhado.</sub> | [Estágio 3 — Implementação](../03-implementation/GUIDE.md)<br/><sub>15:00–16:10 · Java 21 + Spring Boot + Next.js, com testes.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Voltar ao índice do kit](../README.md)</sub>

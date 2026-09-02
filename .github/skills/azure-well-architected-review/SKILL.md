@@ -1,169 +1,169 @@
 ---
 name: "azure-well-architected-review"
-description: "Use when the user asks for an Azure Well-Architected Framework review, an architecture assessment, or a reliability, security, cost, performance, or operational-excellence audit of an Azure workload. Reviews the five WAF pillars against the workload's IaC (Terraform for this kit; Bicep/ARM also readable) and deployed resources, then opens GitHub issues for the findings. Triggers include \"WAF review\", \"well-architected\", \"architecture assessment\", \"reliability audit\", and \"security review of Azure\"."
+description: "Use quando a pessoa pedir uma revisão do Azure Well-Architected Framework, uma avaliação de arquitetura ou uma auditoria de confiabilidade, segurança, custo, desempenho ou excelência operacional de uma carga de trabalho do Azure. Revisa os cinco pilares do WAF em relação à IaC da carga de trabalho (Terraform neste kit; Bicep/ARM também podem ser lidos) e aos recursos implantados e abre itens no GitHub Issues para as constatações. Os gatilhos incluem \"revisão WAF\", \"Well-Architected\", \"avaliação de arquitetura\", \"auditoria de confiabilidade\" e \"revisão de segurança do Azure\"."
 ---
-# Azure Well-Architected Review
+# Revisão do Azure Well-Architected
 
-This workflow performs a structured Azure Well-Architected Framework (WAF) review against a workload's IaC files and deployed infrastructure. It identifies risks across all five WAF pillars and creates GitHub issues to track remediation.
+Este fluxo de trabalho executa uma revisão estruturada do Azure Well-Architected Framework (WAF) nos arquivos de IaC e na infraestrutura implantada de uma carga de trabalho. Ele identifica riscos nos cinco pilares do WAF e cria itens no GitHub Issues para acompanhar as correções.
 
 > [!NOTE]
-> This kit's IaC is **Terraform (`azurerm ~> 3.x`)**. The review reads whatever IaC exists (Terraform, Bicep, or ARM), but remediation examples are written as Terraform. Bicep/ARM snippets are illustrative only and out of scope for the kit's deliverables. This skill also depends on the **`az` CLI** and the **GitHub MCP server** (or `gh`) being authenticated.
+> A IaC deste kit é **Terraform (`azurerm ~> 3.x`)**. A revisão lê qualquer IaC existente (Terraform, Bicep ou ARM), mas os exemplos de correção são escritos em Terraform. Os trechos em Bicep/ARM são apenas ilustrativos e estão fora do escopo das entregas do kit. Esta habilidade também depende da autenticação da **CLI `az`** e do **servidor MCP do GitHub** (ou `gh`).
 
-## When to invoke
+## Quando usar
 
-- "Run a Well-Architected review on our Azure workload."
-- "Audit this architecture for reliability and security risks."
-- "Are we following Azure best practices across the five pillars?"
-- "Open GitHub issues for the WAF gaps in our infrastructure."
+- "Execute uma revisão Well-Architected em nossa carga de trabalho do Azure."
+- "Audite esta arquitetura em busca de riscos de confiabilidade e segurança."
+- "Estamos seguindo as práticas recomendadas do Azure nos cinco pilares?"
+- "Abra itens no GitHub Issues para as lacunas do WAF em nossa infraestrutura."
 
-## Prerequisites
+## Pré-requisitos
 
-- Azure CLI (`az`) configured and authenticated.
-- IaC files present in the repository (Terraform preferred; Bicep or ARM also readable).
-- GitHub MCP server (or `gh`) configured and authenticated.
+- CLI do Azure (`az`) configurada e autenticada.
+- Arquivos de IaC presentes no repositório (preferencialmente Terraform; Bicep ou ARM também podem ser lidos).
+- Servidor MCP do GitHub (ou `gh`) configurado e autenticado.
 
-## Workflow steps
+## Etapas do fluxo de trabalho
 
-### Step 1: Load Well-Architected Framework reference
+### Etapa 1: Carregar a referência do Well-Architected Framework
 
-Fetch current Azure WAF best practices:
+Consulte as práticas recomendadas atuais do WAF do Azure:
 
 - `https://learn.microsoft.com/en-us/azure/well-architected/`
-- Service guides for the Azure services in use (`https://learn.microsoft.com/en-us/azure/well-architected/service-guides/`)
-- Workload-specific guidance relevant to the workload type (SaaS, mission-critical, AI, and similar)
+- Guias dos serviços do Azure em uso (`https://learn.microsoft.com/en-us/azure/well-architected/service-guides/`)
+- Orientações específicas relevantes para o tipo de carga de trabalho (SaaS, missão crítica, IA e semelhantes)
 
-If the `microsoft.docs.mcp` MCP server is available, use it to query the latest pillar checklists and service-specific recommendations.
+Se o servidor MCP `microsoft.docs.mcp` estiver disponível, use-o para consultar as listas de verificação mais recentes dos pilares e as recomendações específicas dos serviços.
 
-### Step 2: Discover IaC and architecture
+### Etapa 2: Descobrir a IaC e a arquitetura
 
-Establish the review scope, then inventory both the code and the live environment:
+Defina o escopo da revisão e inventarie o código e o ambiente ativo:
 
-1. **Confirm the Azure scope**: ask the user which subscription(s)/resource group(s) are in scope, or infer them from IaC parameters and confirm.
-2. **Scan the repository for IaC files**:
-   - Terraform: `**/*.tf` (azurerm/azapi providers) — this kit's primary IaC
+1. **Confirme o escopo do Azure**: pergunte quais assinaturas e grupos de recursos estão no escopo ou infira-os dos parâmetros de IaC e confirme.
+2. **Examine o repositório em busca de arquivos de IaC**:
+   - Terraform: `**/*.tf` (provedores azurerm/azapi), a IaC principal deste kit
    - Bicep: `**/*.bicep`, `bicepconfig.json`
-   - ARM templates: `**/azuredeploy*.json`, `**/*.template.json`, files with `$schema` containing `deploymentTemplate`
-3. **Inventory live resources** (always, even when IaC exists): `az resource list --resource-group <rg> --output json` (or subscription-wide), plus targeted `az <service> show` calls for the configuration details the pillar checks need.
-4. **Compare IaC with live inventory**: flag drift — resources present in Azure but absent from IaC (portal-created), resources defined in IaC but not deployed, and configuration mismatches. Record drift findings for Step 3 (they typically map to the Operational Excellence pillar).
+   - Modelos ARM: `**/azuredeploy*.json`, `**/*.template.json`, arquivos cujo `$schema` contenha `deploymentTemplate`
+3. **Inventarie os recursos ativos** sempre, mesmo quando houver IaC: `az resource list --resource-group <rg> --output json` (ou em toda a assinatura), além de chamadas direcionadas a `az <service> show` para obter os detalhes de configuração necessários às verificações dos pilares.
+4. **Compare a IaC com o inventário ativo**: sinalize desvios, como recursos presentes no Azure e ausentes da IaC (criados pelo portal), recursos definidos na IaC mas não implantados e diferenças de configuração. Registre as constatações de desvio para a Etapa 3. Em geral, elas correspondem ao pilar Excelência operacional.
 
-Identify the key Azure services in use (compute, data, networking, security, observability) and generate a Mermaid architecture diagram.
+Identifique os principais serviços do Azure em uso (computação, dados, rede, segurança e observabilidade) e gere um diagrama de arquitetura Mermaid.
 
-### Step 3: Pillar-by-pillar review
+### Etapa 3: Revisão por pilar
 
-#### Pillar 1: Reliability
+#### Pilar 1: Confiabilidade
 
-- [ ] Availability zones enabled for zonal services (VMs, VMSS, AKS node pools, App Service, SQL, Storage ZRS)
-- [ ] Production SKUs support the required SLA (no Basic/Free tiers on critical paths)
-- [ ] Azure SQL / Cosmos DB backup and point-in-time restore configured with appropriate retention
-- [ ] Geo-redundancy configured where RPO requires it (GRS/RA-GRS storage, SQL failover groups, Cosmos DB multi-region)
-- [ ] Autoscale rules configured for App Service plans, VMSS, AKS (no fixed single instance for production)
-- [ ] Health probes configured on Load Balancer / Application Gateway / Front Door backends
-- [ ] Dead-lettering enabled for Service Bus queues/subscriptions and Event Grid subscriptions
-- [ ] Retry policies with exponential backoff implemented for transient fault handling
-- [ ] Disaster recovery plan defined (documented RTO/RPO, tested failover)
+- [ ] Zonas de disponibilidade ativadas para serviços zonais (VMs, VMSS, conjuntos de nós do AKS, App Service, SQL, Storage ZRS)
+- [ ] SKUs de produção compatíveis com o SLA necessário (sem camadas Basic/Free em caminhos críticos)
+- [ ] Cópia de segurança e restauração pontual do Azure SQL/Cosmos DB configuradas com retenção adequada
+- [ ] Redundância geográfica configurada quando exigida pelo RPO (armazenamento GRS/RA-GRS, grupos de comutação por falha do SQL, Cosmos DB em várias regiões)
+- [ ] Regras de dimensionamento automático configuradas para planos do App Service, VMSS e AKS (sem instância única fixa em produção)
+- [ ] Investigações de integridade configuradas nos serviços de destino do Load Balancer/Application Gateway/Front Door
+- [ ] Filas de mensagens mortas ativadas em filas/assinaturas do Service Bus e assinaturas do Event Grid
+- [ ] Políticas de repetição com espera exponencial implementadas para tratar falhas transitórias
+- [ ] Plano de recuperação de desastre definido (RTO/RPO documentados e comutação por falha testada)
 
-#### Pillar 2: Security
+#### Pilar 2: Segurança
 
-- [ ] Managed identities used instead of service principals with secrets or connection strings
-- [ ] No hardcoded credentials, keys, or connection strings in IaC or code
-- [ ] Secrets stored in Azure Key Vault with RBAC authorization (not access policies)
-- [ ] Storage accounts deny public blob access and disallow shared key access where possible
-- [ ] Private endpoints (or at minimum service endpoints + firewall rules) for PaaS data services
-- [ ] NSGs restrict inbound traffic to the minimum required ports/CIDRs (no `*` to `*` allow rules)
-- [ ] TLS 1.2+ enforced on all endpoints (`minimumTlsVersion`, `httpsOnly`)
-- [ ] Azure RBAC follows least privilege (no Owner/Contributor at subscription scope for workload identities)
-- [ ] Microsoft Defender for Cloud enabled on relevant resource types (`az security pricing list`)
-- [ ] Azure WAF (Application Gateway or Front Door) configured for public-facing web endpoints
-- [ ] Diagnostic settings send security logs to Log Analytics / Microsoft Sentinel
+- [ ] Identidades gerenciadas usadas em vez de entidades de serviço com segredos ou cadeias de conexão
+- [ ] Nenhuma credencial, chave ou cadeia de conexão fixada na IaC ou no código
+- [ ] Segredos armazenados no Azure Key Vault com autorização RBAC (não políticas de acesso)
+- [ ] Contas de armazenamento negam acesso público a blobs e desativam o acesso por chave compartilhada quando possível
+- [ ] Pontos de extremidade privados (ou, no mínimo, pontos de extremidade de serviço com regras de firewall) para serviços de dados PaaS
+- [ ] NSGs restringem o tráfego de entrada às portas/CIDRs mínimos necessários (sem regras de permissão de `*` para `*`)
+- [ ] TLS 1.2 ou superior aplicado em todos os pontos de extremidade (`minimumTlsVersion`, `httpsOnly`)
+- [ ] Azure RBAC segue o privilégio mínimo (sem Owner/Contributor no escopo da assinatura para identidades de carga de trabalho)
+- [ ] Microsoft Defender for Cloud ativado nos tipos de recurso relevantes (`az security pricing list`)
+- [ ] Azure WAF (Application Gateway ou Front Door) configurado para pontos de extremidade Web públicos
+- [ ] Configurações de diagnóstico enviam logs de segurança ao Log Analytics/Microsoft Sentinel
 
-#### Pillar 3: Cost Optimization
+#### Pilar 3: Otimização de custos
 
-- [ ] Reservations or savings plans evaluated for steady-state compute (VMs, App Service, SQL)
-- [ ] Storage lifecycle management policies move blobs to cool/archive tiers
-- [ ] Right-sized SKUs based on actual utilization (no oversized VMs/App Service plans)
-- [ ] Dev/test environments use auto-shutdown schedules and Dev/Test pricing where eligible
-- [ ] Azure Budgets and cost alerts configured (`az consumption budget list`)
-- [ ] Unattached managed disks and orphaned public IPs identified and removed
-- [ ] Consumption/serverless tiers used for spiky or low-volume workloads (Functions, Container Apps, SQL serverless)
-- [ ] Log Analytics retention and data-cap settings tuned to avoid ingestion overruns
+- [ ] Reservas ou planos de economia avaliados para computação de uso constante (VMs, App Service, SQL)
+- [ ] Políticas de ciclo de vida do armazenamento movem blobs para camadas de acesso esporádico/arquivo
+- [ ] SKUs dimensionadas conforme a utilização real (sem VMs ou planos do App Service superdimensionados)
+- [ ] Ambientes de desenvolvimento/teste usam agendas de desligamento automático e preços de Dev/Test quando elegíveis
+- [ ] Azure Budgets e alertas de custo configurados (`az consumption budget list`)
+- [ ] Discos gerenciados não anexados e IPs públicos órfãos identificados e removidos
+- [ ] Camadas de consumo/sem servidor usadas para cargas com picos ou baixo volume (Functions, Container Apps, SQL sem servidor, identificado tecnicamente como SQL serverless)
+- [ ] Retenção e limite de dados do Log Analytics ajustados para evitar excesso de ingestão
 
-#### Pillar 4: Operational Excellence
+#### Pilar 4: Excelência operacional
 
-- [ ] All infrastructure defined as IaC (no manual portal changes; deny assignments or policy where feasible)
-- [ ] Consistent tagging strategy applied across all resources (owner, environment, cost center)
-- [ ] Azure Monitor alerts defined for key metrics and service health
-- [ ] Automated deployment pipeline present (GitHub Actions / Azure Pipelines, no manual deployments)
-- [ ] Azure Activity Log and resource diagnostic settings routed to Log Analytics
-- [ ] Application Insights (or OpenTelemetry equivalent) instrumented for application workloads
-- [ ] Azure Policy assignments enforce organizational standards (allowed locations, SKUs, tags)
-- [ ] Runbooks or operational documentation present
+- [ ] Toda a infraestrutura definida como IaC (sem alterações manuais pelo portal; atribuições de negação ou políticas quando viável)
+- [ ] Estratégia consistente de tags aplicada a todos os recursos (responsável, ambiente, centro de custo)
+- [ ] Alertas do Azure Monitor definidos para métricas principais e integridade do serviço
+- [ ] Pipeline automatizado de implantação presente (GitHub Actions/Azure Pipelines, sem implantações manuais)
+- [ ] Azure Activity Log e configurações de diagnóstico dos recursos direcionados ao Log Analytics
+- [ ] Application Insights (ou equivalente OpenTelemetry) instrumentado para cargas de aplicações
+- [ ] Atribuições do Azure Policy aplicam os padrões da organização (locais, SKUs e tags permitidos)
+- [ ] Guias operacionais ou documentação operacional presentes
 
-#### Pillar 5: Performance Efficiency
+#### Pilar 5: Eficiência de desempenho
 
-- [ ] Right-sized compute SKUs validated against load requirements
-- [ ] Caching implemented where beneficial (Azure Cache for Redis, CDN/Front Door caching)
-- [ ] Azure Front Door or CDN used for global static content delivery
-- [ ] Autoscale based on load metrics rather than fixed instance counts
-- [ ] Database performance tier appropriate (DTU vs vCore, elastic pools, Cosmos DB RU autoscale)
-- [ ] Premium/zone-redundant storage used for latency-sensitive disk workloads
-- [ ] Connection pooling and async patterns used for database and HTTP clients
+- [ ] SKUs de computação dimensionadas e validadas em relação aos requisitos de carga
+- [ ] Cache implementado onde for benéfico (Azure Cache for Redis, cache de CDN/Front Door)
+- [ ] Azure Front Door ou CDN usado para entrega global de conteúdo estático
+- [ ] Dimensionamento automático baseado em métricas de carga, não em quantidades fixas de instâncias
+- [ ] Camada de desempenho do banco de dados adequada (DTU ou vCore, conjuntos elásticos, dimensionamento automático de RU do Cosmos DB)
+- [ ] Armazenamento premium/redundante por zona usado para cargas de disco sensíveis à latência
+- [ ] Conjunto de conexões e padrões assíncronos usados em clientes de banco de dados e HTTP
 
-### Step 4: Risk classification
+### Etapa 4: Classificação de riscos
 
-For each finding, classify:
+Classifique cada constatação:
 
-| Risk | Meaning |
+| Risco | Significado |
 |---|---|
-| High | Security vulnerability, single point of failure, no backup/recovery |
-| Medium | Suboptimal reliability, cost inefficiency, performance concern |
-| Low | Best-practice deviation, minor optimization opportunity |
+| Alto | Vulnerabilidade de segurança, ponto único de falha, ausência de backup/recuperação |
+| Médio | Confiabilidade abaixo do ideal, ineficiência de custos, preocupação com desempenho |
+| Baixo | Desvio de prática recomendada, pequena oportunidade de otimização |
 
-### Step 5: User confirmation
+### Etapa 5: Confirmação da pessoa
 
-Present the summary and gate on explicit approval before creating any GitHub issues:
+Apresente o resumo e exija aprovação explícita antes de criar qualquer item no GitHub Issues:
 
 ```text
-Azure Well-Architected Review Summary
+Resumo da revisão do Azure Well-Architected
 
-Review Results:
-- IaC Files Analyzed: X
-- Azure Services Identified: Y
-- Total Findings: Z
-  - High Risk: A (immediate action required)
-  - Medium Risk: B (should address soon)
-  - Low Risk: C (nice to have)
+Resultados da revisão:
+- Arquivos de IaC analisados: X
+- Serviços do Azure identificados: Y
+- Total de constatações: Z
+  - Risco alto: A (exige ação imediata)
+  - Risco médio: B (deve ser tratado em breve)
+  - Risco baixo: C (melhoria desejável)
 
-Top High Risk Findings:
-1. [Pillar]: [Finding] - [Why it matters]
-2. [Pillar]: [Finding] - [Why it matters]
+Principais constatações de risco alto:
+1. [Pilar]: [Constatação] - [Por que é importante]
+2. [Pilar]: [Constatação] - [Por que é importante]
 
-This will create Z individual GitHub issues plus 1 EPIC issue.
+Isso criará Z itens individuais no GitHub Issues e 1 épico (EPIC).
 
-Proceed with creating GitHub issues? (y/n)
+Prosseguir com a criação dos itens no GitHub Issues? (s/n)
 ```
 
 > [!IMPORTANT]
-> Only proceed to Steps 6-7 if the user gives an explicit affirmative response (for example "y", "yes"). On a negative, ambiguous, or missing response, do **not** create any GitHub issues — output the full findings as formatted markdown to the console and stop.
+> Só prossiga para as Etapas 6 e 7 se a pessoa der uma resposta afirmativa explícita (por exemplo, "s" ou "sim"). Diante de uma resposta negativa, ambígua ou ausente, **não** crie itens no GitHub Issues. Exiba todas as constatações como Markdown formatado no console e pare.
 
-### Step 6: Create individual finding issues
+### Etapa 6: Criar itens individuais para as constatações
 
-Label with `well-architected` and the pillar name (for example `security`, `reliability`).
+Use os rótulos `well-architected` e o nome do pilar (por exemplo, `security`, `reliability`).
 
-Title: `[WAF-<PILLAR>] <Brief Finding> - <Risk Level>`
+Título: `[WAF-<PILLAR>] <Brief Finding> - <Risk Level>`
 
-Body:
+Corpo:
 
 ````markdown
-## Well-Architected Finding: <Brief Title>
+## Constatação Well-Architected: <Brief Title>
 
-**Pillar**: <Name> | **Risk Level**: <High/Medium/Low> | **Effort**: <Low/Medium/High>
+**Pilar**: <Name> | **Nível de risco**: <High/Medium/Low> | **Esforço**: <Low/Medium/High>
 
-### Description
+### Descrição
 <Clear explanation of the finding and why it matters>
 
-### Remediation
+### Correção
 
-IaC fix (preferred, Terraform — this kit's IaC):
+Correção de IaC (preferencial, Terraform, a IaC deste kit):
 ```hcl
 resource "azurerm_storage_account" "data" {
   name                            = "sifapdata"
@@ -183,66 +183,66 @@ resource "azurerm_storage_account" "data" {
 }
 ```
 
-Azure CLI fallback:
+Alternativa com a CLI do Azure:
 ```bash
 az storage account update --name <name> --resource-group <rg> \
   --min-tls-version TLS1_2 --allow-blob-public-access false --https-only true
 ```
 
-### Azure reference
+### Referência do Azure
 - <WAF best-practice link>
 - <Microsoft Learn documentation link>
 
-### Validation
-- [ ] Change implemented in Terraform and applied
-- [ ] Azure Policy compliance passes (if applicable)
-- [ ] Microsoft Defender for Cloud recommendation resolved (if applicable)
+### Validação
+- [ ] Alteração implementada em Terraform e aplicada
+- [ ] Conformidade com o Azure Policy aprovada (se aplicável)
+- [ ] Recomendação do Microsoft Defender for Cloud resolvida (se aplicável)
 
-**Well-Architected Recommendation**: <WAF checklist item this maps to>
+**Recomendação Well-Architected**: <WAF checklist item this maps to>
 ````
 
-### Step 7: Create EPIC tracking issue
+### Etapa 7: Criar o item EPIC de acompanhamento
 
-Label with `well-architected` and `epic`.
+Use os rótulos `well-architected` e `epic`.
 
-Title: `[EPIC] Azure Well-Architected Review - X findings across 5 pillars`
+Título: `[EPIC] Revisão do Azure Well-Architected - X constatações em 5 pilares`
 
-Body: an executive summary with a pillar breakdown table (finding counts by pillar and risk level), a Mermaid architecture diagram, a prioritized checklist linking all individual issues (High to Medium to Low), and success criteria:
+Corpo: um resumo executivo com uma tabela por pilar (quantidade de constatações por pilar e nível de risco), um diagrama de arquitetura Mermaid, uma lista de verificação priorizada com links para todos os itens individuais (Alto, Médio e Baixo) e os critérios de sucesso:
 
-- All High-risk findings resolved
-- Medium findings have accepted mitigation plans
-- No regression in existing Azure Monitor alerts or Azure Policy compliance
+- Todas as constatações de risco Alto resolvidas
+- Constatações de risco Médio com planos de mitigação aceitos
+- Nenhuma regressão nos alertas existentes do Azure Monitor nem na conformidade com o Azure Policy
 
-## Error handling
+## Tratamento de erros
 
-| Situation | Action |
+| Situação | Ação |
 |---|---|
-| No IaC files found | Limit the review to live resource discovery via `az resource list` and note the gap |
-| Insufficient Azure permissions | List the required read-only roles (Reader, Security Reader) |
-| GitHub creation failure | Output all findings as formatted markdown to the console |
+| Nenhum arquivo de IaC encontrado | Limite a revisão à descoberta de recursos ativos por `az resource list` e registre a lacuna |
+| Permissões insuficientes no Azure | Liste as funções somente leitura necessárias (Reader, Security Reader) |
+| Falha na criação no GitHub | Exiba todas as constatações como Markdown formatado no console |
 
-## Output template
+## Modelo de saída
 
-When issue creation is skipped (or as the console summary), deliver the findings as a table grouped by pillar:
+Quando a criação de itens for ignorada (ou no resumo do console), entregue as constatações em uma tabela agrupada por pilar:
 
 ```markdown
-## Well-Architected Review — <workload>
+## Revisão Well-Architected: <workload>
 
-| Pillar | Finding | Risk | Remediation |
+| Pilar | Constatação | Risco | Correção |
 |---|---|---|---|
-| Security | Storage allows public blob access | High | Set allow_nested_items_to_be_public = false |
-| Reliability | App Service runs a single instance | Medium | Enable autoscale, minimum 2 instances |
-| Cost | Log Analytics has no data cap | Low | Set a daily cap and retention policy |
+| Segurança | O Storage permite acesso público a blobs | Alto | Definir allow_nested_items_to_be_public = false |
+| Confiabilidade | O App Service executa uma única instância | Médio | Ativar dimensionamento automático, com no mínimo 2 instâncias |
+| Custo | O Log Analytics não tem limite de dados | Baixo | Definir um limite diário e uma política de retenção |
 
-Totals: High 1, Medium 1, Low 1 across 5 pillars.
-Verdict: address High-risk security finding before the next release.
+Totais: 1 Alto, 1 Médio e 1 Baixo nos 5 pilares.
+Conclusão: trate a constatação de segurança de risco Alto antes do próximo lançamento.
 ```
 
-## Quality gate
+## Critérios de qualidade
 
-- [ ] All five WAF pillars reviewed against both IaC and live infrastructure.
-- [ ] Every finding classified by risk level and mapped to a pillar.
-- [ ] Each finding has an actionable Terraform remediation (Bicep/ARM only as illustration).
-- [ ] Drift between IaC and deployed resources recorded as Operational Excellence findings.
-- [ ] GitHub issues created only after explicit user approval; otherwise findings printed to the console.
-- [ ] A Mermaid architecture diagram and Microsoft Learn references are included.
+- [ ] Os cinco pilares do WAF foram revisados em relação à IaC e à infraestrutura ativa.
+- [ ] Cada constatação está classificada por nível de risco e associada a um pilar.
+- [ ] Cada constatação tem uma correção acionável em Terraform (Bicep/ARM apenas como ilustração).
+- [ ] Os desvios entre a IaC e os recursos implantados foram registrados como constatações de Excelência operacional.
+- [ ] Os itens no GitHub Issues só foram criados após aprovação explícita da pessoa. Caso contrário, as constatações foram exibidas no console.
+- [ ] Um diagrama de arquitetura Mermaid e referências do Microsoft Learn estão incluídos.

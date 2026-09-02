@@ -1,15 +1,15 @@
 # Instancio
 
-Generate complex test objects automatically. Use when entities/DTOs have 3+ properties.
+Gere automaticamente objetos de teste complexos. Use quando entidades ou DTOs tiverem três ou mais propriedades.
 
-## When to Use
+## Quando usar
 
-- Objects with **3 or more properties**
-- Setting up test data for repositories
-- Creating DTOs for controller tests
-- Avoiding repetitive builder/setter calls
+- Objetos com **três ou mais propriedades**
+- Preparação de dados de teste para repositórios
+- Criação de DTOs para testes de controladores
+- Redução de chamadas repetitivas a construtores ou métodos de definição
 
-## Dependency
+## Dependência
 
 ```xml
 <dependency>
@@ -20,25 +20,25 @@ Generate complex test objects automatically. Use when entities/DTOs have 3+ prop
 </dependency>
 ```
 
-## Basic Usage
+## Uso básico
 
-### Simple Object
+### Objeto simples
 
 ```java
 final var order = Instancio.create(Order.class);
-// All fields populated with random data
+// Todos os campos são preenchidos com dados aleatórios
 ```
 
-### List of Objects
+### Lista de objetos
 
 ```java
 final var orders = Instancio.ofList(Order.class).size(5).create();
-// 5 orders with random data
+// Cinco pedidos com dados aleatórios
 ```
 
-## Customizing Values
+## Personalização de valores
 
-### Set Specific Fields
+### Definição de campos específicos
 
 ```java
 final var order = Instancio.of(Order.class)
@@ -47,7 +47,7 @@ final var order = Instancio.of(Order.class)
   .create();
 ```
 
-### Supply Generated Values
+### Fornecimento de valores gerados
 
 ```java
 final var order = Instancio.of(Order.class)
@@ -55,17 +55,17 @@ final var order = Instancio.of(Order.class)
   .create();
 ```
 
-### Ignore Fields
+### Campos ignorados
 
 ```java
 final var order = Instancio.of(Order.class)
-  .ignore(field(Order::getId)) // Let DB generate
+  .ignore(field(Order::getId)) // Deixa o banco gerar
   .create();
 ```
 
-## Complex Objects
+## Objetos complexos
 
-### Nested Objects
+### Objetos aninhados
 
 ```java
 final var order = Instancio.of(Order.class)
@@ -74,17 +74,17 @@ final var order = Instancio.of(Order.class)
   .create();
 ```
 
-### All Fields Random
+### Todos os campos aleatórios
 
 ```java
-// When you need fully random but valid data
+// Quando forem necessários dados totalmente aleatórios, mas válidos
 final var randomOrder = Instancio.create(Order.class);
-// Customer, items, addresses - all populated
+// Cliente, itens e endereços: todos preenchidos
 ```
 
-## Spring Boot Integration
+## Integração com Spring Boot
 
-### Repository Test Setup
+### Configuração do teste de repositório
 
 ```java
 @DataJpaTest
@@ -101,7 +101,7 @@ class OrderRepositoryTest {
 
   @Test
   void shouldFindOrdersByStatus() {
-    // Given: Create 10 random orders with PENDING status
+    // Dado: cria dez pedidos aleatórios com status PENDING
     final var orders = Instancio.ofList(Order.class)
       .size(10)
       .set(field(Order::getStatus), "PENDING")
@@ -109,16 +109,16 @@ class OrderRepositoryTest {
 
     orderRepository.saveAll(orders);
 
-    // When
+    // Quando
     final var found = orderRepository.findByStatus("PENDING");
 
-    // Then
+    // Então
     assertThat(found).hasSize(10);
   }
 }
 ```
 
-### Controller Test Setup
+### Configuração do teste de controlador
 
 ```java
 @WebMvcTest(OrderController.class)
@@ -132,14 +132,14 @@ class OrderControllerTest {
 
   @Test
   void shouldReturnOrder() {
-    // Given: Random order with specific ID
+    // Dado: pedido aleatório com um ID específico
     Order order = Instancio.of(Order.class)
       .set(field(Order::getId), 1L)
       .create();
 
     given(orderService.findById(1L)).willReturn(order);
 
-    // When/Then
+    // Quando/Então
     assertThat(mvc.get().uri("/orders/1"))
       .hasStatus(HttpStatus.OK)
       .bodyJson()
@@ -151,12 +151,12 @@ class OrderControllerTest {
 }
 ```
 
-## Patterns
+## Padrões
 
-### Builder Pattern Alternative
+### Alternativa ao padrão Construtor (Builder)
 
 ```java
-// Instead of:
+// Em vez de:
 Order order = Order.builder()
   .id(1L)
   .status("PENDING")
@@ -172,28 +172,28 @@ Order order = Instancio.of(Order.class)
   .set(field(Order::getId), 1L)
   .set(field(Order::getStatus), "PENDING")
   .create();
-// Customer and items auto-generated
+// Cliente e itens gerados automaticamente
 ```
 
-### Seeded Data
+### Dados com semente de geração
 
 ```java
-// Consistent "random" data for reproducible tests
+// Dados "aleatórios" consistentes para testes reproduzíveis
 Order order = Instancio.of(Order.class)
   .withSeed(12345L)
   .create();
-// Same data every test run with seed 12345
+// Os mesmos dados em cada execução com a semente 12345
 ```
 
-## Common Patterns
+## Padrões comuns
 
-### Email Generation
+### Geração de e-mail
 
 ```java
 String email = Instancio.gen().net().email();
 ```
 
-### Date Generation
+### Geração de data
 
 ```java
 LocalDateTime createdAt = Instancio.gen().temporal()
@@ -202,29 +202,29 @@ LocalDateTime createdAt = Instancio.gen().temporal()
   .create();
 ```
 
-### String Patterns
+### Padrões de texto
 
 ```java
 String phone = Instancio.gen().text().pattern("+1-###-###-####");
 ```
 
-## Comparison
+## Comparação
 
-| Approach | Lines of Code | Maintainability |
+| Abordagem | Linhas de código | Manutenibilidade |
 | -------- | ------------- | --------------- |
-| Manual setters | 10-20 | Low |
-| Builder pattern | 5-10 | Medium |
-| **Instancio** | 2-5 | **High** |
+| Métodos de definição manuais | 10-20 | Baixa |
+| Padrão Construtor | 5-10 | Média |
+| **Instancio** | 2-5 | **Alta** |
 
-## Best Practices
+## Práticas recomendadas
 
-1. **Use for 3+ property objects** - Not worth it for simple objects
-2. **Set only what's relevant** - Let Instancio fill the rest
-3. **Use with Testcontainers** - Great for database seeding
-4. **Set IDs explicitly** - When testing specific scenarios
-5. **Ignore auto-generated fields** - Like createdAt, updatedAt
+1. **Use em objetos com três ou mais propriedades**: não compensa para objetos simples
+2. **Defina apenas o que for relevante**: deixe o Instancio preencher o restante
+3. **Use com Testcontainers**: adequado para semear o banco de dados
+4. **Defina os IDs explicitamente**: ao testar cenários específicos
+5. **Ignore campos gerados automaticamente**: como createdAt e updatedAt
 
-## Links
+## Referências
 
-- [Instancio Documentation](https://www.instancio.org/)
-- [JUnit 5 Extension](https://www.instancio.org/user-guide/#junit-integration)
+- [Documentação do Instancio](https://www.instancio.org/)
+- [Extensão do JUnit 5](https://www.instancio.org/user-guide/#junit-integration)

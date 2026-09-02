@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Azure Interactive Architecture Diagram Generator v3
-Generates interactive HTML diagrams with Azure official icons (Base64 inline).
+Gerador de diagramas interativos de arquitetura do Azure v3.
+Gera diagramas HTML interativos com ícones oficiais do Azure (Base64 embutido).
 """
 
 import json
@@ -10,9 +10,9 @@ from datetime import datetime
 from icons import get_icon_data_uri
 
 _HAS_OFFICIAL_ICONS = True
-# Azure service icons: SVG, colors + official icon key mapping
-# icon: 48x48 viewBox SVG path (fallback)
-# azure_icon_key: key in icons.py (official Azure icon)
+# Ícones de serviços do Azure: SVG, cores e mapeamento da chave do ícone oficial
+# icon: caminho SVG com viewBox 48x48 (alternativa)
+# azure_icon_key: chave em icons.py (ícone oficial do Azure)
 SERVICE_ICONS = {
     "openai": {
         "icon_svg": '<circle cx="24" cy="24" r="18" fill="#0078D4"/><text x="24" y="30" text-anchor="middle" font-size="18" fill="white" font-weight="700">AI</text>',
@@ -408,8 +408,8 @@ CONNECTION_STYLES = {
 
 
 _TYPE_ALIASES = {
-    # Azure ARM resource names → canonical diagram type
-    # Network
+    # Nomes de recursos ARM do Azure → tipo canônico do diagrama
+    # Rede
     "private_endpoints": "pe", "private_endpoint": "pe",
     "virtual_networks": "vnet", "virtual_network": "vnet",
     "network_security_groups": "nsg", "network_security_group": "nsg",
@@ -422,7 +422,7 @@ _TYPE_ALIASES = {
     "expressroute_circuits": "expressroute",
     "firewalls": "firewall",
     "cdn_profiles": "cdn",
-    # Data
+    # Dados
     "data_factories": "adf", "data_factory": "adf",
     "storage_accounts": "storage", "storage_account": "storage",
     "data_lake": "adls", "adls_gen2": "adls", "data_lake_storage": "adls",
@@ -437,17 +437,17 @@ _TYPE_ALIASES = {
     "data_explorer_clusters": "data_explorer", "azure_data_explorer": "data_explorer",
     "postgresql_server": "postgresql", "postgresql_servers": "postgresql",
     "mysql_server": "mysql", "mysql_servers": "mysql",
-    # AI
+    # IA
     "cognitive_services": "ai_foundry", "ai_services": "ai_foundry", "foundry": "ai_foundry",
     "azure_openai": "openai",
     "cognitive_search": "search", "search_services": "search", "search_service": "search",
     "machine_learning": "aml", "ml": "aml", "machine_learning_workspaces": "aml",
     "form_recognizers": "document_intelligence",
     "ai_studio": "ai_hub", "foundry_project": "ai_hub",
-    # Security
+    # Segurança
     "key_vault": "keyvault", "key_vaults": "keyvault",
     "sentinel": "sentinel", "azure_sentinel": "sentinel",
-    # Compute
+    # Computação
     "virtual_machines": "vm", "virtual_machine": "vm",
     "app_services": "appservice", "web_apps": "appservice", "web_app": "appservice",
     "function_apps": "function_app", "functions": "function_app",
@@ -456,19 +456,19 @@ _TYPE_ALIASES = {
     "container_apps_environments": "container_apps",
     "spring_apps": "spring_apps", "azure_spring_apps": "spring_apps",
     "static_apps": "static_web_app", "static_web_apps": "static_web_app",
-    # Integration
+    # Integração
     "event_hubs": "event_hub",
     "event_grid_topics": "event_grid", "event_grid_domains": "event_grid",
     "api_management_services": "apim",
     "service_bus_namespaces": "service_bus",
     "logic_app": "logic_apps",
     "notification_hubs": "notification_hub",
-    # Monitoring
+    # Monitoramento
     "log_analytics_workspaces": "log_analytics",
     "application_insights": "appinsights", "app_insight": "appinsights",
     # IoT
     "iot_hubs": "iot_hub",
-    # Management
+    # Gerenciamento
     "backup_vaults": "backup", "backup_vault": "backup",
 }
 
@@ -476,7 +476,7 @@ def get_service_info(svc_type: str) -> dict:
     t = svc_type.lower().replace("-", "_").replace(" ", "_")
     t = _TYPE_ALIASES.get(t, t)
     info = SERVICE_ICONS.get(t, SERVICE_ICONS["default"]).copy()
-    # Add official Azure icon data URI if available
+    # Adiciona o URI de dados do ícone oficial do Azure, se disponível
     azure_key = info.get("azure_icon_key", t)
     icon_uri = get_icon_data_uri(azure_key)
     info["icon_data_uri"] = icon_uri
@@ -521,7 +521,7 @@ def generate_html(services: list, connections: list, title: str, vnet_info: str 
     vnet_info_js = json.dumps(vnet_info, ensure_ascii=False)
 
     html = f"""<!DOCTYPE html>
-<html lang="ko">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -580,7 +580,7 @@ def generate_html(services: list, connections: list, title: str, vnet_info: str 
     padding: 3px 8px; font-size: 10px; color: #a19f9d; z-index: 10;
   }}
 
-  /* ── Sidebar ── */
+  /* ── Barra lateral ── */
   .sidebar {{
     width: 272px; background: #faf9f8; border-left: 1px solid #edebe9;
     overflow-y: auto; display: flex; flex-direction: column;
@@ -628,14 +628,14 @@ def generate_html(services: list, connections: list, title: str, vnet_info: str 
   .legend-line {{ width: 18px; height: 2px; border-radius: 1px; }}
   .legend-line-dash {{ width: 18px; height: 0; border-top: 2px dashed; }}
 
-  /* ── SVG styles ── */
+  /* ── Estilos SVG ── */
   .node {{ cursor: grab; pointer-events: all; }}
   .node:active {{ cursor: grabbing; }}
   .node .node-bg {{ pointer-events: all; }}
   .node.selected .node-bg {{ stroke: #0078D4; stroke-width: 2.5; }}
   .node.selected {{ filter: drop-shadow(0 0 6px rgba(0,120,212,0.4)); }}
 
-  /* ── Edge highlight on node select ── */
+  /* ── Destaque de arestas ao selecionar um nó ── */
   .edge-path {{ transition: opacity 0.2s, stroke-width 0.2s; }}
   .edge-label {{ transition: opacity 0.2s; }}
   .edge-path.highlight {{ opacity: 1 !important; stroke-width: 2.5 !important; filter: drop-shadow(0 0 4px rgba(0,120,212,0.5)); }}
@@ -679,27 +679,27 @@ def generate_html(services: list, connections: list, title: str, vnet_info: str 
   </div>
   <div>
     <h1>{title}</h1>
-    <div class="meta">Azure Architecture &middot; {generated_at}</div>
+    <div class="meta">Arquitetura do Azure &middot; {generated_at}</div>
   </div>
   <div class="header-right">
-    <div class="stat"><b>{svc_count}</b> Services</div>
+    <div class="stat"><b>{svc_count}</b> serviços</div>
     <div class="stat"><b>{pe_count}</b> Private Endpoints</div>
-    <div class="stat"><b>{len(connections)}</b> Connections</div>
+    <div class="stat"><b>{len(connections)}</b> conexões</div>
   </div>
 </div>
 
 <div class="container">
   <div class="canvas-area">
     <div class="toolbar">
-      <button class="tool-btn" onclick="fitToScreen()">Fit</button>
+      <button class="tool-btn" onclick="fitToScreen()">Ajustar</button>
       <div class="tool-sep"></div>
       <button class="tool-btn" onclick="zoomIn()">+</button>
       <button class="tool-btn" onclick="zoomOut()">&minus;</button>
       <div class="tool-sep"></div>
-      <button class="tool-btn" onclick="textBigger()" title="Bigger text" style="font-size:13px;">A+</button>
-      <button class="tool-btn" onclick="textSmaller()" title="Smaller text" style="font-size:10px;">A&minus;</button>
+      <button class="tool-btn" onclick="textBigger()" title="Aumentar texto" style="font-size:13px;">A+</button>
+      <button class="tool-btn" onclick="textSmaller()" title="Diminuir texto" style="font-size:10px;">A&minus;</button>
       <div class="tool-sep"></div>
-      <button class="tool-btn" onclick="downloadPNG()" title="Download PNG">&#128247; PNG</button>
+      <button class="tool-btn" onclick="downloadPNG()" title="Baixar PNG">&#128247; PNG</button>
     </div>
     <div class="zoom-indicator" id="zoom-level">100%</div>
     <svg id="canvas">
@@ -723,17 +723,17 @@ def generate_html(services: list, connections: list, title: str, vnet_info: str 
       <g id="diagram-root"></g>
     </svg>
     <div id="tooltip" class="tooltip"></div>
-    <div class="status-bar">Drag nodes &middot; Scroll to zoom &middot; Drag empty space to pan</div>
+    <div class="status-bar">Arraste os nós &middot; Role para ampliar &middot; Arraste o espaço vazio para mover</div>
   </div>
 
   <div class="sidebar">
-    <div class="sidebar-header">Resources</div>
+    <div class="sidebar-header">Recursos</div>
     <div id="service-list"></div>
     <div class="legend">
-      <div class="legend-title">Connection Types</div>
+      <div class="legend-title">Tipos de conexão</div>
       <div class="legend-item"><div class="legend-line" style="background:#0078D4;"></div> API</div>
-      <div class="legend-item"><div class="legend-line" style="background:#0F9D58;"></div> Data</div>
-      <div class="legend-item"><div class="legend-line-dash" style="border-color:#E8A000;"></div> Security</div>
+      <div class="legend-item"><div class="legend-line" style="background:#0F9D58;"></div> Dados</div>
+      <div class="legend-item"><div class="legend-line-dash" style="border-color:#E8A000;"></div> Segurança</div>
       <div class="legend-item"><div class="legend-line-dash" style="border-color:#5C2D91;"></div> Private Endpoint</div>
     </div>
   </div>
@@ -744,23 +744,30 @@ const NODES = {nodes_js};
 const EDGES = {edges_js};
 const VNET_INFO = {vnet_info_js};
 const HIERARCHY = {hierarchy_js};
+const CATEGORY_LABELS = {{
+  'AI': 'IA', 'Data': 'Dados', 'Security': 'Segurança', 'Compute': 'Computação',
+  'Integration': 'Integração', 'Network': 'Rede', 'External': 'Externo',
+  'Monitor': 'Monitoramento', 'Monitoring': 'Monitoramento',
+  'Management': 'Gerenciamento', 'Azure': 'Azure', 'DevOps': 'DevOps', 'IoT': 'IoT'
+}};
+function categoryLabel(category) {{ return CATEGORY_LABELS[category] || category; }}
 
-// ── Node sizing ──
-const SVC_W = 180, SVC_H = 120;  // service node (icon above, name below) — 20% larger
-const PE_W = 120, PE_H = 84;     // pe node (smaller) — 20% larger
+// ── Dimensionamento dos nós ──
+const SVC_W = 180, SVC_H = 120;  // nó de serviço (ícone acima, nome abaixo), 20% maior
+const PE_W = 120, PE_H = 84;     // nó de PE (menor), 20% maior
 const GAP = 40;
 
-// ── Layout: Category Group Box style ──
-// Each category gets a labeled box, services arranged in a grid inside.
-// Groups arranged in 2D: main service groups on top, bottom groups below.
-// PE nodes in a separate PE subnet group.
+// ── Layout: estilo de caixa de grupo por categoria ──
+// Cada categoria recebe uma caixa rotulada, com os serviços organizados em uma grade.
+// Os grupos são organizados em 2D: serviços principais acima e demais grupos abaixo.
+// Os nós de PE ficam em um grupo separado de sub-rede de PE.
 
 const positions = {{}};
 const useRgLayout = HIERARCHY.length > 0 && NODES.some(n => n.resourceGroup);
-const peNodes = useRgLayout ? [] : NODES.filter(n => n.type === 'pe');  // RG mode: PE included in mainNodes
+const peNodes = useRgLayout ? [] : NODES.filter(n => n.type === 'pe');  // Modo RG: PE incluído em mainNodes
 const mainNodes = useRgLayout ? NODES : NODES.filter(n => n.type !== 'pe');
 
-// Group box layout parameters
+// Parâmetros de layout das caixas de grupo
 const GROUP_PAD = 24;
 const GROUP_TITLE_H = 28;
 const GROUP_GAP = 60;
@@ -778,10 +785,10 @@ function groupDimensions(nodeCount) {{
 
 const groupBoxes = [];
 
-// ── Layout strategy: RG-based (if HIERARCHY) or Category-based (default) ──
+// ── Estratégia de layout: por RG (se houver HIERARCHY) ou por categoria (padrão) ──
 
 if (useRgLayout) {{
-  // ── RG-based layout: group by Subscription > ResourceGroup ──
+  // ── Layout por RG: agrupa por assinatura > ResourceGroup ──
   let gx = 60, gy = 140;
   let subStartX = 60;
   const SUB_GAP = 80;
@@ -817,14 +824,14 @@ if (useRgLayout) {{
       rgMaxH = Math.max(rgMaxH, dim.h);
     }});
 
-    // Next subscription row
+    // Próxima linha de assinatura
     if (subIdx < HIERARCHY.length - 1) {{
       gy += rgMaxH + SUB_GAP;
       gx = subStartX;
     }}
   }});
 
-  // Place unassigned main nodes (no subscription/RG) in a generic group
+  // Coloca os nós principais sem atribuição (sem assinatura/RG) em um grupo genérico
   const unassigned = mainNodes.filter(n => !positions[n.id]);
   if (unassigned.length > 0) {{
     const allY = Object.values(positions).map(p => p.y);
@@ -839,13 +846,13 @@ if (useRgLayout) {{
       }};
     }});
     groupBoxes.push({{
-      cat: 'Other', x: 60, y: bottomY, w: dim.w, h: dim.h,
+      cat: 'Outros', x: 60, y: bottomY, w: dim.w, h: dim.h,
       color: '#666'
     }});
   }}
 
 }} else {{
-  // ── Category-based layout (original) ──
+  // ── Layout por categoria (original) ──
   const bottomCategories = ['Network', 'External', 'Monitor', 'Monitoring'];
   const catOrder = ['AI', 'Data', 'Security', 'Compute', 'Integration', 'DevOps', 'IoT', 'Azure'];
 
@@ -856,11 +863,11 @@ if (useRgLayout) {{
     catGroups[cat].push(n);
   }});
 
-// Dynamically include any categories not in catOrder or bottomCategories
+// Inclui dinamicamente categorias que não estejam em catOrder nem em bottomCategories
 const extraCats = Object.keys(catGroups).filter(cat => !catOrder.includes(cat) && !bottomCategories.includes(cat));
 const fullCatOrder = [...catOrder, ...extraCats];
 
-// ── Place main service groups in a flowing grid ──
+// ── Posiciona os grupos de serviços principais em uma grade fluida ──
 const serviceGroups = fullCatOrder.filter(cat => catGroups[cat] && catGroups[cat].length > 0
   && !bottomCategories.includes(cat));
 
@@ -873,14 +880,14 @@ serviceGroups.forEach(cat => {{
   const nodes = catGroups[cat];
   const dim = groupDimensions(nodes.length);
 
-  // Wrap to next row if too wide
+  // Quebra para a próxima linha se ficar muito largo
   if (gx + dim.w > rowStartX + MAX_ROW_W && gx > rowStartX) {{
     gx = rowStartX;
     gy += rowMaxH + GROUP_GAP;
     rowMaxH = 0;
   }}
 
-  // Place nodes inside group grid
+  // Posiciona os nós na grade do grupo
   nodes.forEach((n, i) => {{
     const col = i % dim.cols;
     const row = Math.floor(i / dim.cols);
@@ -899,7 +906,7 @@ serviceGroups.forEach(cat => {{
   rowMaxH = Math.max(rowMaxH, dim.h);
 }});
 
-// ── Place bottom groups (Network, External, Monitor) ──
+// ── Posiciona os grupos inferiores (Rede, Externo, Monitoramento) ──
 const bottomGroupY = gy + rowMaxH + GROUP_GAP + 20;
 let bgx = 60;
 bottomCategories.forEach(cat => {{
@@ -925,16 +932,16 @@ bottomCategories.forEach(cat => {{
   bgx += dim.w + GROUP_GAP;
 }});
 
-}} // end of else (category-based layout)
+}} // fim do else (layout por categoria)
 
-// ── PE nodes placement ──
+// ── Posicionamento dos nós de PE ──
 if (useRgLayout) {{
-  // RG mode: PE nodes go inside their respective RG boxes
-  // PE positions are already set by the RG layout if they have subscription/resourceGroup
-  // For PEs without RG assignment, place them in a separate group
+  // Modo RG: os nós de PE ficam dentro das respectivas caixas de RG
+  // O layout de RG já define as posições dos PEs que têm subscription/resourceGroup
+  // Coloca os PEs sem atribuição de RG em um grupo separado
   const unplacedPEs = peNodes.filter(pe => !positions[pe.id]);
   if (unplacedPEs.length > 0) {{
-    // Find the rightmost RG box position
+    // Localiza a caixa de RG mais à direita
     const allGbRight = groupBoxes.length > 0 ? Math.max(...groupBoxes.map(gb => gb.x + gb.w)) : 0;
     const peStartX = allGbRight + GROUP_GAP;
     const peStartY = 140;
@@ -959,7 +966,7 @@ if (useRgLayout) {{
     }});
   }}
 }} else {{
-  // Category mode: PE nodes in separate group above service groups
+  // Modo de categoria: nós de PE em grupo separado acima dos grupos de serviços
   const PE_Y = 40;
   if (peNodes.length > 0) {{
     const peCols = Math.min(peNodes.length, 6);
@@ -998,7 +1005,7 @@ if (useRgLayout) {{
   }}
 }}
 
-// ── Node → Group mapping (for edge routing) ──
+// ── Mapeamento de nó para grupo (para roteamento de arestas) ──
 const nodeGroupMap = {{}};
 groupBoxes.forEach((gb, idx) => {{
   NODES.forEach(n => {{
@@ -1013,50 +1020,50 @@ groupBoxes.forEach((gb, idx) => {{
     }}
   }});
 }});
-// Routing corridor margins (outside all group boxes)
+// Margens do corredor de roteamento (fora de todas as caixas de grupo)
 const _rightMarginBase = groupBoxes.length > 0 ? Math.max(...groupBoxes.map(g => g.x + g.w)) + 40 : 800;
 const _leftMarginBase = groupBoxes.length > 0 ? Math.min(...groupBoxes.map(g => g.x)) - 40 : -40;
 
-// ── State ──
+// ── Estado ──
 let dragging = null, dragOffX = 0, dragOffY = 0;
-let draggingGroup = null, groupDragNodes = [];  // for RG/group box dragging
-let _dragStartX = 0, _dragStartY = 0, _didDrag = false;  // global so renderDiagram rebuilding DOM mid-drag doesn't reset them
+let draggingGroup = null, groupDragNodes = [];  // para arrastar o RG/a caixa de grupo
+let _dragStartX = 0, _dragStartY = 0, _didDrag = false;  // global para que a reconstrução do DOM por renderDiagram durante o arraste não redefina os valores
 let viewTransform = {{ x: 0, y: 0, scale: 1 }};
 let isPanning = false, panSX = 0, panSY = 0, panSTx = 0, panSTy = 0;
 let _routeCounter = 0;
 
-// ── Bidirectional highlight ──
+// ── Destaque bidirecional ──
 let _selectedNodeId = null;
 
 function selectNode(nodeId) {{
   const wasSelected = _selectedNodeId === nodeId;
 
-  // Clear all selections
+  // Limpa todas as seleções
   clearSelection();
 
-  // Toggle off if clicking same node
+  // Desativa ao clicar no mesmo nó
   if (wasSelected) {{ _selectedNodeId = null; return; }}
 
   _selectedNodeId = nodeId;
   applySelectionHighlight();
-  // Scroll sidebar card into view on initial selection
+  // Rola o cartão da barra lateral até ficar visível na seleção inicial
   const sCard = document.getElementById('card-' + nodeId);
   if (sCard) sCard.scrollIntoView({{ behavior: 'smooth', block: 'nearest' }});
 }}
 
-// Re-apply CSS classes for current _selectedNodeId (called after renderDiagram rebuilds DOM)
+// Reaplica as classes CSS do _selectedNodeId atual (chamado após renderDiagram reconstruir o DOM)
 function applySelectionHighlight() {{
   const nodeId = _selectedNodeId;
   if (!nodeId) return;
 
-  // Highlight diagram node
+  // Destaca o nó do diagrama
   const svgNode = document.querySelector(`.node[data-id="${{nodeId}}"]`);
   if (svgNode) svgNode.classList.add('selected');
-  // Highlight sidebar card
+  // Destaca o cartão da barra lateral
   const card = document.getElementById('card-' + nodeId);
   if (card) card.classList.add('selected');
 
-  // Find connected edges (where this node is from or to)
+  // Localiza as arestas conectadas (nas quais este nó é origem ou destino)
   const connectedNodeIds = new Set([nodeId]);
   document.querySelectorAll('.edge-path').forEach(p => {{
     const f = p.getAttribute('data-from'), t = p.getAttribute('data-to');
@@ -1078,7 +1085,7 @@ function applySelectionHighlight() {{
       g.querySelector('.edge-label-bg')?.classList.add('dimmed');
     }}
   }});
-  // Dim unconnected nodes
+  // Atenua os nós não conectados
   document.querySelectorAll('.node').forEach(n => {{
     const nid = n.getAttribute('data-id');
     if (!connectedNodeIds.has(nid)) n.classList.add('dimmed');
@@ -1104,9 +1111,9 @@ function markerFor(type) {{
 function renderDiagram() {{
   const root = document.getElementById('diagram-root');
   root.innerHTML = '';
-  _routeCounter = 0;  // reset stagger counter each render
+  _routeCounter = 0;  // redefine o contador de deslocamento a cada renderização
 
-  // ── VNet bounds (hoisted so avoidNodes can push detours outside VNet) ──
+  // ── Limites da VNet (elevados para que avoidNodes possa mover desvios para fora da VNet) ──
   let _vnetBounds = null;
   if (!useRgLayout) {{
     const _pg = groupBoxes.filter(gb => !gb.isBottom);
@@ -1122,7 +1129,7 @@ function renderDiagram() {{
     }}
   }}
 
-  // ── Draw VNet boundary (only in category-based layout, not RG layout) ──
+  // ── Desenha o limite da VNet (somente no layout por categoria, não no layout de RG) ──
   if (!useRgLayout) {{
   const privateGroups = groupBoxes.filter(gb => !gb.isBottom);
   const hasPrivateNodes = NODES.some(n => n.private && n.type !== 'pe');
@@ -1155,18 +1162,18 @@ function renderDiagram() {{
       <text x="${{vx + 34}}" y="${{vy + 20}}" font-size="12" font-weight="600" fill="#5C2D91" font-family="Segoe UI, sans-serif">${{vnetLabel}}</text>`;
       root.appendChild(vl);
 
-      // Store VNet rect reference for highlight
+      // Armazena a referência do retângulo da VNet para destaque
       vr.setAttribute('id', 'vnet-rect');
       vl.addEventListener('click', () => {{ toggleVNetHighlight(); }});
       root.appendChild(vl);
   }}
-  }} // end if(!useRgLayout) for VNet boundary
+  }} // fim de if(!useRgLayout) para o limite da VNet
 
-  // ── Draw group boxes (category or RG — depends on layout mode) ──
-  const _groupLabelElements = []; // store labels to re-render on top of edges
+  // ── Desenha as caixas de grupo (categoria ou RG, conforme o modo de layout) ──
+  const _groupLabelElements = []; // armazena rótulos para renderizá-los novamente sobre as arestas
   groupBoxes.forEach(gb => {{
     if (gb.isPE) {{
-      // PE group — always draw with dashed style
+      // Grupo de PE: sempre desenhado com estilo tracejado
       const gr = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
       gr.setAttribute('x', gb.x); gr.setAttribute('y', gb.y);
       gr.setAttribute('width', gb.w); gr.setAttribute('height', gb.h);
@@ -1175,7 +1182,7 @@ function renderDiagram() {{
       gr.setAttribute('stroke-dasharray', '4,4');
       root.appendChild(gr);
     }} else {{
-      // Service group (category or RG)
+      // Grupo de serviços (categoria ou RG)
       const gr = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
       gr.setAttribute('x', gb.x); gr.setAttribute('y', gb.y);
       gr.setAttribute('width', gb.w); gr.setAttribute('height', gb.h);
@@ -1187,7 +1194,7 @@ function renderDiagram() {{
       root.appendChild(gr);
     }}
 
-    // Title bar
+    // Barra de título
     const titleBar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     titleBar.setAttribute('x', gb.x); titleBar.setAttribute('y', gb.y);
     titleBar.setAttribute('width', gb.w); titleBar.setAttribute('height', GROUP_TITLE_H);
@@ -1201,23 +1208,23 @@ function renderDiagram() {{
     titleFill.setAttribute('fill', gb.color); titleFill.setAttribute('opacity', '0.1');
     root.appendChild(titleFill);
 
-    // Color accent line
+    // Linha de destaque colorida
     const accent = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     accent.setAttribute('x', gb.x); accent.setAttribute('y', gb.y);
     accent.setAttribute('width', gb.w); accent.setAttribute('height', '3');
     accent.setAttribute('rx', '8'); accent.setAttribute('fill', gb.color);
     root.appendChild(accent);
 
-    // Group label — RG uses 📁, PE uses "Private Endpoints", category uses category name
+    // Rótulo do grupo: RG usa 📁, PE usa "Private Endpoints" e categoria usa o nome da categoria
     const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     label.setAttribute('x', gb.x + 12); label.setAttribute('y', gb.y + 18);
     label.setAttribute('font-size', '12'); label.setAttribute('font-weight', '600');
     label.setAttribute('fill', gb.color); label.setAttribute('font-family', 'Segoe UI, sans-serif');
-    label.textContent = gb.isRG ? `📁 ${{gb.cat}}` : gb.cat;
+    label.textContent = gb.isRG ? `📁 ${{gb.cat}}` : categoryLabel(gb.cat);
     root.appendChild(label);
     _groupLabelElements.push(label);
 
-    // Make title bar draggable — drags all nodes inside
+    // Torna a barra de título arrastável e move todos os nós internos
     titleBar.style.cursor = 'grab';
     const gbIdx = groupBoxes.indexOf(gb);
     titleBar.addEventListener('mousedown', e => {{
@@ -1226,7 +1233,7 @@ function renderDiagram() {{
       draggingGroup = gbIdx;
       const svgPt = getSVGPoint(e);
       dragOffX = svgPt.x; dragOffY = svgPt.y;
-      // Find all nodes inside this group box
+      // Localiza todos os nós dentro desta caixa de grupo
       groupDragNodes = NODES.filter(n => {{
         const pos = positions[n.id];
         if (!pos) return false;
@@ -1238,10 +1245,10 @@ function renderDiagram() {{
     }});
   }});
 
-  // ── Draw Subscription boundaries (only if multiple subscriptions, rendered AFTER group boxes) ──
+  // ── Desenha os limites das assinaturas (somente para várias assinaturas, após as caixas de grupo) ──
   if (HIERARCHY.length > 1 && useRgLayout) {{
     HIERARCHY.forEach((sub, subIdx) => {{
-      // Find all RG boxes belonging to this subscription
+      // Localiza todas as caixas de RG pertencentes a esta assinatura
       const subRgBoxes = groupBoxes.filter(gb => gb.isRG && gb.subscription === sub.subscription);
       if (subRgBoxes.length === 0) return;
 
@@ -1267,8 +1274,8 @@ function renderDiagram() {{
     }});
   }}
 
-  // ── Edge routing (obstacle-free) ──
-  // Compute global bounds: the absolute bottom of ALL nodes
+  // ── Roteamento de arestas (sem obstáculos) ──
+  // Calcula os limites globais: a parte inferior absoluta de TODOS os nós
   function getGlobalBounds() {{
     let minY = Infinity, maxY = -Infinity;
     NODES.forEach(n => {{
@@ -1289,16 +1296,16 @@ function renderDiagram() {{
     return {{ x: pos.x, y: pos.y, w, h, cx: pos.x + w/2, cy: pos.y + h/2 }};
   }}
 
-  // Border point: exit/enter at edge of rectangle
+  // Ponto da borda: saída/entrada na borda do retângulo
   function borderExit(box, side) {{
-    // side: 'top', 'bottom', 'left', 'right'
+    // lado: 'top', 'bottom', 'left', 'right'
     if (side === 'top') return {{ x: box.cx, y: box.y }};
     if (side === 'bottom') return {{ x: box.cx, y: box.y + box.h }};
     if (side === 'left') return {{ x: box.x, y: box.cy }};
     if (side === 'right') return {{ x: box.x + box.w, y: box.cy }};
   }}
 
-  // Check if a line segment hits any group box (for edge routing)
+  // Verifica se um segmento de linha atinge alguma caixa de grupo (para rotear arestas)
   function hitsGroupBox(x1, y1, x2, y2, skipGroupIndices) {{
     for (let gi = 0; gi < groupBoxes.length; gi++) {{
       if (skipGroupIndices.includes(gi)) continue;
@@ -1324,20 +1331,20 @@ function renderDiagram() {{
     return false;
   }}
 
-  // Find gap between adjacent groups (same row)
+  // Localiza o espaço entre grupos adjacentes (mesma linha)
   function findGapBetween(gi1, gi2) {{
     if (gi1 < 0 || gi2 < 0) return null;
     const g1 = groupBoxes[gi1], g2 = groupBoxes[gi2];
-    // Same row: Y ranges overlap
+    // Mesma linha: os intervalos de Y se sobrepõem
     const yOverlap = g1.y < g2.y + g2.h && g2.y < g1.y + g1.h;
     if (!yOverlap) return null;
-    // Gap between them
+    // Espaço entre eles
     if (g1.x + g1.w < g2.x) return {{ x: (g1.x + g1.w + g2.x) / 2 }};
     if (g2.x + g2.w < g1.x) return {{ x: (g2.x + g2.w + g1.x) / 2 }};
     return null;
   }}
 
-  // Build orthogonal path with rounded corners
+  // Cria um caminho ortogonal com cantos arredondados
   function buildOrthoPath(pts) {{
     let d = `M ${{pts[0].x}} ${{pts[0].y}}`;
     const radius = 6;
@@ -1357,7 +1364,7 @@ function renderDiagram() {{
     return d;
   }}
 
-  // Find crossing point between two orthogonal segments (H crosses V only)
+  // Localiza o ponto de cruzamento entre dois segmentos ortogonais (somente H cruza V)
   function findSegCrossing(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2) {{
     const aIsH = Math.abs(ay1 - ay2) < 1;
     const bIsH = Math.abs(by1 - by2) < 1;
@@ -1378,12 +1385,12 @@ function renderDiagram() {{
     return null;
   }}
 
-  // Build orthogonal path with rounded corners AND bridge arcs at crossing points
+  // Cria um caminho ortogonal com cantos arredondados E arcos de ponte nos cruzamentos
   function buildPathWithBridges(pts, bridges) {{
     const CR = 6, BR = 12;
     if (pts.length <= 1) return '';
 
-    // Index bridges by segment, sort along travel direction
+    // Indexa as pontes por segmento e ordena na direção do percurso
     const bySeg = {{}};
     (bridges || []).forEach(b => {{
       if (!bySeg[b.segIdx]) bySeg[b.segIdx] = [];
@@ -1403,7 +1410,7 @@ function renderDiagram() {{
       }}
     }}
 
-    // Helper: append bridge arcs for a segment
+    // Auxiliar: adiciona arcos de ponte a um segmento
     function appendBridges(d, segIdx, segP1, segP2) {{
       const segB = bySeg[segIdx] || [];
       if (segB.length === 0) return d;
@@ -1422,7 +1429,7 @@ function renderDiagram() {{
       return d;
     }}
 
-    // 2-point path (straight line)
+    // Caminho de dois pontos (linha reta)
     if (pts.length === 2) {{
       let d = `M ${{pts[0].x}} ${{pts[0].y}}`;
       d = appendBridges(d, 0, pts[0], pts[1]);
@@ -1430,13 +1437,13 @@ function renderDiagram() {{
       return d;
     }}
 
-    // Multi-point path with corners + bridges
+    // Caminho de vários pontos com cantos e pontes
     let d = `M ${{pts[0].x}} ${{pts[0].y}}`;
     for (let i = 1; i < pts.length; i++) {{
       const prev = pts[i - 1], curr = pts[i];
       const isLast = (i === pts.length - 1);
 
-      // Compute corner trimming for non-last points
+      // Calcula o recorte do canto para pontos que não sejam o último
       let target = curr, cSuffix = '';
       if (!isLast) {{
         const next = pts[i + 1];
@@ -1455,26 +1462,26 @@ function renderDiagram() {{
         }}
       }}
 
-      // Draw bridges on segment (i-1) → i
+      // Desenha pontes no segmento (i-1) → i
       d = appendBridges(d, i - 1, prev, curr);
 
-      // Line to target + optional corner curve
+      // Linha até o destino e curva de canto opcional
       d += ` L ${{target.x}} ${{target.y}}${{cSuffix}}`;
     }}
     return d;
   }}
 
-  // ── Obstacle avoidance: route edges around nodes ──
+  // ── Desvio de obstáculos: roteia as arestas ao redor dos nós ──
   function segHitsNode(x1, y1, x2, y2, pos, nw, nh, margin) {{
     const nx1 = pos.x - margin, ny1 = pos.y - margin;
     const nx2 = pos.x + nw + margin, ny2 = pos.y + nh + margin;
     if (Math.abs(x1 - x2) < 1) {{
-      // Vertical segment
+      // Segmento vertical
       const x = x1;
       const minY = Math.min(y1, y2), maxY = Math.max(y1, y2);
       return x > nx1 && x < nx2 && maxY > ny1 && minY < ny2;
     }} else {{
-      // Horizontal segment
+      // Segmento horizontal
       const y = y1;
       const minX = Math.min(x1, x2), maxX = Math.max(x1, x2);
       return y > ny1 && y < ny2 && maxX > nx1 && minX < nx2;
@@ -1485,12 +1492,12 @@ function renderDiagram() {{
     const MARGIN = 25;
     const SECTION_MARGIN = 12;
     let points = pts.map(p => ({{...p}}));
-    // Save original anchors — these must NEVER move (they attach to nodes)
+    // Salva as âncoras originais, que NUNCA podem se mover (elas se conectam aos nós)
     const startAnchor = {{...points[0]}};
     const endAnchor = {{...points[points.length - 1]}};
 
-    // Section (groupBox) obstacles: groupBoxes containing NEITHER endpoint.
-    // Skip PE group since PE-type edges legitimately traverse into it.
+    // Obstáculos de seção (groupBox): groupBoxes que não contêm NENHUMA extremidade.
+    // Ignora o grupo de PE, pois arestas do tipo PE podem atravessá-lo legitimamente.
     const _fromGrp = _nodeGrp[fromId];
     const _toGrp = _nodeGrp[toId];
     const sectionObstacles = [];
@@ -1501,9 +1508,9 @@ function renderDiagram() {{
       sectionObstacles.push(gb);
     }}
 
-    // Helper: if the section detour coord lands inside the VNet rect while
-    // either endpoint sits outside the VNet, push the detour past the nearer
-    // VNet edge so unrelated VNet interior is not traversed.
+    // Auxiliar: se a coordenada de desvio da seção cair dentro do retângulo da VNet
+    // enquanto uma das extremidades estiver fora dela, move o desvio para além da
+    // borda mais próxima, evitando atravessar o interior não relacionado da VNet.
     function _clampOutsideVNet(val, axis) {{
       if (!_vnetBounds) return val;
       const inAnchor = (a) => (a.x > _vnetBounds.x && a.x < _vnetBounds.x + _vnetBounds.w
@@ -1527,7 +1534,7 @@ function renderDiagram() {{
       for (let i = 0; i < points.length - 1 && !found; i++) {{
         const p1 = points[i], p2 = points[i+1];
 
-        // 1) Section obstacles (larger, checked first)
+        // 1) Obstáculos de seção (maiores, verificados primeiro)
         for (const gb of sectionObstacles) {{
           const pos = {{x: gb.x, y: gb.y}};
           if (!segHitsNode(p1.x, p1.y, p2.x, p2.y, pos, gb.w, gb.h, SECTION_MARGIN)) continue;
@@ -1604,13 +1611,13 @@ function renderDiagram() {{
         }}
         if (found) break;
 
-        // 2) Service node obstacles
+        // 2) Obstáculos de nós de serviço
         for (const node of NODES) {{
           if (node.id === fromId || node.id === toId) continue;
           const pos = positions[node.id];
           if (!pos) continue;
           const nw = node.type === 'pe' ? PE_W : SVC_W;
-          const nh = (node.type === 'pe' ? PE_H : SVC_H) + 20; // include text below box
+          const nh = (node.type === 'pe' ? PE_H : SVC_H) + 20; // inclui o texto abaixo da caixa
 
           if (!segHitsNode(p1.x, p1.y, p2.x, p2.y, pos, nw, nh, MARGIN)) continue;
 
@@ -1620,7 +1627,7 @@ function renderDiagram() {{
           const isLast = (i + 1 === points.length - 1);
 
           if (points.length <= 2) {{
-            // Straight line hitting a node: convert to 4-point detour (anchors preserved)
+            // Linha reta atingindo um nó: converte em desvio de quatro pontos (âncoras preservadas)
             if (isVert) {{
               const leftX = pos.x - MARGIN;
               const rightX = pos.x + nw + MARGIN;
@@ -1633,7 +1640,7 @@ function renderDiagram() {{
               points = [points[0], {{x: p1.x, y: detourY}}, {{x: p2.x, y: detourY}}, points[points.length-1]];
             }}
           }} else if (isFirst) {{
-            // First segment collides — keep points[0] (anchor), insert detour after it
+            // O primeiro segmento colide: mantém points[0] (âncora) e insere o desvio depois
             if (isVert) {{
               const leftX = pos.x - MARGIN;
               const rightX = pos.x + nw + MARGIN;
@@ -1648,7 +1655,7 @@ function renderDiagram() {{
               points[2] = {{x: p2.x, y: detourY}};
             }}
           }} else if (isLast) {{
-            // Last segment collides — keep last point (anchor), insert detour before it
+            // O último segmento colide: mantém o último ponto (âncora) e insere o desvio antes
             if (isVert) {{
               const leftX = pos.x - MARGIN;
               const rightX = pos.x + nw + MARGIN;
@@ -1663,7 +1670,7 @@ function renderDiagram() {{
               points.splice(i + 1, 0, {{x: p2.x, y: detourY}});
             }}
           }} else {{
-            // Middle segment: safe to push both endpoints
+            // Segmento intermediário: é seguro mover as duas extremidades
             if (isVert) {{
               const leftX = pos.x - MARGIN;
               const rightX = pos.x + nw + MARGIN;
@@ -1685,19 +1692,19 @@ function renderDiagram() {{
       if (!found) break;
     }}
 
-    // Restore anchors — guarantee lines always touch source/target nodes
+    // Restaura as âncoras para garantir que as linhas sempre toquem os nós de origem/destino
     points[0] = startAnchor;
     points[points.length - 1] = endAnchor;
 
     return points;
   }}
 
-  // ── Edges: three-phase rendering ──
-  // Phase 0: pre-scan exit sides → Phase 1: compute paths with staggered anchors
-  // Phase 2: detect crossings → Phase 3: render with bridge arcs
+  // ── Arestas: renderização em três fases ──
+  // Fase 0: pré-analisa os lados de saída → Fase 1: calcula caminhos com âncoras deslocadas
+  // Fase 2: detecta cruzamentos → Fase 3: renderiza com arcos de ponte
   const _edgeLabels = [];
 
-  // PHASE 0 — pre-scan: count how many edges exit each side of each node
+  // FASE 0: pré-análise para contar quantas arestas saem de cada lado de cada nó
   const _sideTotal = {{}};
   const _edgeSides = [];
   EDGES.forEach(edge => {{
@@ -1730,8 +1737,8 @@ function renderDiagram() {{
     _edgeSides.push({{ exitSide, entrySide, isPeEdge, fromBox, toBox, edge }});
   }});
 
-  // ── RACK MARSHALLING: build channel map for inter-group edge bundling ──
-  // Step 1: map each node to its containing group box
+  // ── ORGANIZAÇÃO DAS CONEXÕES: cria o mapa de canais para agrupar arestas entre grupos ──
+  // Etapa 1: mapeia cada nó para a caixa de grupo que o contém
   const _nodeGrp = {{}};
   NODES.forEach(n => {{
     const pos = positions[n.id];
@@ -1747,9 +1754,9 @@ function renderDiagram() {{
     }}
   }});
 
-  // Step 2: identify channels between group pairs + assign slot offsets
-  const _chMap = {{}};       // key → {{ axis:'y'|'x', value: number }}
-  const _chEdges = {{}};     // key → [edgeIdx, ...]
+  // Etapa 2: identifica canais entre pares de grupos e atribui deslocamentos de posição
+  const _chMap = {{}};       // chave → {{ axis:'y'|'x', value: número }}
+  const _chEdges = {{}};     // chave → [edgeIdx, ...]
   _edgeSides.forEach((info, idx) => {{
     if (!info || info.isPeEdge) return;
     const sg = _nodeGrp[info.edge.from], tg = _nodeGrp[info.edge.to];
@@ -1768,18 +1775,18 @@ function renderDiagram() {{
         else if (b.x + b.w <= a.x) _chMap[key] = {{ axis: 'x', value: (b.x + b.w + a.x) / 2 }};
       }}
     }} else {{
-      // Intra-group edges: group by direction for slot offset assignment
+      // Arestas internas ao grupo: agrupa por direção para atribuir deslocamentos
       const dir = (info.exitSide === 'bottom' || info.exitSide === 'top') ? 'v' : 'h';
       key = 'i' + sg + dir;
       if (!_chEdges[key]) _chEdges[key] = [];
       _chEdges[key].push(idx);
-      // No fixed channel value — each edge uses its own midpoint + offset
+      // Sem valor fixo de canal: cada aresta usa seu próprio ponto médio e deslocamento
     }}
   }});
 
-  // Step 3: sort edges within each channel and assign slot offsets
-  const _chOff = {{}};  // edgeIdx → offset in px
-  const _CH_SLOT = 18;  // spacing between lines in a bundle
+  // Etapa 3: ordena as arestas em cada canal e atribui deslocamentos
+  const _chOff = {{}};  // edgeIdx → deslocamento em px
+  const _CH_SLOT = 18;  // espaçamento entre linhas de um agrupamento
   Object.keys(_chEdges).forEach(key => {{
     const ch = _chMap[key];
     const arr = _chEdges[key];
@@ -1795,7 +1802,7 @@ function renderDiagram() {{
     }});
   }});
 
-  // Staggered border exit: spread multiple edges evenly along node side
+  // Saída deslocada da borda: distribui várias arestas uniformemente pelo lado do nó
   const _sideUsed = {{}};
   function staggeredExit(nodeId, box, side) {{
     const key = `${{nodeId}}_${{side}}`;
@@ -1804,7 +1811,7 @@ function renderDiagram() {{
     _sideUsed[key] = idx + 1;
     const isH = (side === 'top' || side === 'bottom');
     const sideLen = isH ? box.w : box.h;
-    const CM = Math.max(40, sideLen * 0.3); // corner margin — 40px min or 30% of side
+    const CM = Math.max(40, sideLen * 0.3); // margem do canto: no mínimo 40 px ou 30% do lado
     const usable = Math.max(0, sideLen - 2 * CM);
     const maxSpread = Math.min(usable, total * 14);
     const step = total > 1 ? maxSpread / (total - 1) : 0;
@@ -1815,7 +1822,7 @@ function renderDiagram() {{
     return {{ x: box.x + box.w, y: Math.max(box.y + CM, Math.min(box.y + box.h - CM, box.cy + offset)) }};
   }}
 
-  // PHASE 1 — compute edge paths with staggered anchors
+  // FASE 1: calcula os caminhos das arestas com âncoras deslocadas
   const _allEdgePaths = [];
   _edgeSides.forEach((info, idx) => {{
     if (!info) return;
@@ -1839,7 +1846,7 @@ function renderDiagram() {{
       const ep = staggeredExit(edge.to, toBox, entrySide);
       const STUB = 40;
 
-      // Channel lookup for inter-group marshalling
+      // Consulta o canal para organizar arestas entre grupos
       const _sg = _nodeGrp[edge.from], _tg = _nodeGrp[edge.to];
       const _ck = _sg !== undefined && _tg !== undefined && _sg !== _tg
         ? Math.min(_sg, _tg) + '_' + Math.max(_sg, _tg) : null;
@@ -1873,15 +1880,15 @@ function renderDiagram() {{
       pts = avoidNodes(pts, edge.from, edge.to);
     }}
 
-    // POST-ROUTING: enforce perpendicular stub at exit & entry ends
-    // 3 cases: (a) already orthogonal + long enough → skip
-    //          (b) orthogonal but short → extend existing turn point
-    //          (c) non-orthogonal → insert 2-point connector
+    // APÓS O ROTEAMENTO: força um segmento perpendicular nas extremidades de saída e entrada
+    // Três casos: (a) já ortogonal e longo o bastante → ignora
+    //             (b) ortogonal, mas curto → estende o ponto de curva existente
+    //             (c) não ortogonal → insere um conector de dois pontos
     const _eSide = isPeEdge ? 'bottom' : exitSide;
     const _nSide = isPeEdge ? 'top' : entrySide;
     const _STUB = 40;
     if (pts.length >= 3) {{
-      // --- EXIT end ---
+      // --- Extremidade de SAÍDA ---
       const _p0 = pts[0], _p1 = pts[1];
       const _eH = (_eSide === 'right' || _eSide === 'left');
       if (_eH) {{
@@ -1917,7 +1924,7 @@ function renderDiagram() {{
           pts.splice(1, 0, {{x: _p0.x, y: sy}}, {{x: _p1.x, y: sy}});
         }}
       }}
-      // --- ENTRY end ---
+      // --- Extremidade de ENTRADA ---
       const _pN = pts[pts.length - 1], _pP = pts[pts.length - 2];
       const _nH = (_nSide === 'right' || _nSide === 'left');
       if (_nH) {{
@@ -1957,7 +1964,7 @@ function renderDiagram() {{
       }}
     }}
 
-    // SAFETY: break any remaining diagonal segments into orthogonal L-shapes
+    // SEGURANÇA: divide os segmentos diagonais restantes em formas de L ortogonais
     for (let _i = 0; _i < pts.length - 1; _i++) {{
       const _a = pts[_i], _b = pts[_i + 1];
       if (Math.abs(_a.x - _b.x) > 1 && Math.abs(_a.y - _b.y) > 1) {{
@@ -1965,7 +1972,7 @@ function renderDiagram() {{
       }}
     }}
 
-    // SIMPLIFY: remove duplicate & collinear middle points
+    // SIMPLIFICAÇÃO: remove pontos intermediários duplicados e colineares
     for (let _i = pts.length - 2; _i >= 1; _i--) {{
       const _a = pts[_i - 1], _b = pts[_i], _c = pts[_i + 1];
       if (Math.abs(_a.x - _b.x) <= 1 && Math.abs(_a.y - _b.y) <= 1) {{
@@ -1980,8 +1987,8 @@ function renderDiagram() {{
     _allEdgePaths.push({{ edge, pts, isPeEdge }});
   }});
 
-  // OVERLAP SEPARATION — shift collinear overlapping segments apart
-  // Only separate segments closer than OSEP — pre-marshalled edges (16px apart) are unaffected
+  // SEPARAÇÃO DE SOBREPOSIÇÕES: afasta segmentos colineares sobrepostos
+  // Separa somente segmentos mais próximos que OSEP; arestas pré-organizadas (a 16 px) não mudam
   const OSEP = 8;
   for (let pass = 0; pass < 4; pass++) {{
     for (let i = 0; i < _allEdgePaths.length; i++) {{
@@ -2023,7 +2030,7 @@ function renderDiagram() {{
     }}
   }}
 
-  // FINAL ORTHOGONALIZATION — fix diagonals introduced by overlap separation
+  // ORTOGONALIZAÇÃO FINAL: corrige diagonais introduzidas pela separação de sobreposições
   _allEdgePaths.forEach(({{ pts }}) => {{
     for (let _i = 0; _i < pts.length - 1; _i++) {{
       const _a = pts[_i], _b = pts[_i + 1];
@@ -2031,7 +2038,7 @@ function renderDiagram() {{
         pts.splice(_i + 1, 0, {{x: _a.x, y: _b.y}});
       }}
     }}
-    // Remove collinear
+    // Remove pontos colineares
     for (let _i = pts.length - 2; _i >= 1; _i--) {{
       const _a = pts[_i - 1], _b = pts[_i], _c = pts[_i + 1];
       if (Math.abs(_a.x - _b.x) <= 1 && Math.abs(_a.y - _b.y) <= 1) {{
@@ -2044,16 +2051,16 @@ function renderDiagram() {{
     }}
   }});
 
-  // ── RE-ROUTING PASS: minimize crossings by routing edges via outer margins ──
-  // Instead of shortest-path, reroute crossing edges AROUND group boxes
+  // ── ETAPA DE NOVO ROTEAMENTO: minimiza cruzamentos pelas margens externas ──
+  // Em vez do caminho mais curto, redireciona as arestas que se cruzam AO REDOR das caixas
   const _gbLeft = groupBoxes.length > 0 ? Math.min(...groupBoxes.map(g => g.x)) : 0;
   const _gbRight = groupBoxes.length > 0 ? Math.max(...groupBoxes.map(g => g.x + g.w)) : 800;
   const _gbTop = groupBoxes.length > 0 ? Math.min(...groupBoxes.map(g => g.y)) : 0;
   const _gbBottom = groupBoxes.length > 0 ? Math.max(...groupBoxes.map(g => g.y + g.h)) : 600;
-  const _RMARGIN = 50; // margin outside group bounds for rerouted edges
-  const _RM_SLOT = 14; // spacing between rerouted edges on the same margin
+  const _RMARGIN = 50; // margem fora dos limites do grupo para arestas redirecionadas
+  const _RM_SLOT = 14; // espaçamento entre arestas redirecionadas na mesma margem
 
-  // Count H×V crossings between one edge and all others
+  // Conta os cruzamentos H×V entre uma aresta e todas as outras
   function _cntCross(eIdx) {{
     let c = 0;
     const pA = _allEdgePaths[eIdx].pts;
@@ -2070,16 +2077,16 @@ function renderDiagram() {{
     return c;
   }}
 
-  // Generate a margin route: sp → stub → margin → margin → stub → ep
+  // Gera uma rota pela margem: sp → segmento → margem → margem → segmento → ep
   function _mRoute(sp, ep, exitSide, entrySide, side, slotOff) {{
-    const S = 40; // stub length
+    const S = 40; // comprimento do segmento
     const so = slotOff || 0;
-    // stub exit from source node
+    // segmento de saída do nó de origem
     const s1 = exitSide === 'bottom' ? {{x: sp.x, y: sp.y + S}}
              : exitSide === 'top'    ? {{x: sp.x, y: sp.y - S}}
              : exitSide === 'right'  ? {{x: sp.x + S, y: sp.y}}
              :                         {{x: sp.x - S, y: sp.y}};
-    // stub entry to target node
+    // segmento de entrada no nó de destino
     const s2 = entrySide === 'top'    ? {{x: ep.x, y: ep.y - S}}
              : entrySide === 'bottom' ? {{x: ep.x, y: ep.y + S}}
              : entrySide === 'left'   ? {{x: ep.x - S, y: ep.y}}
@@ -2096,16 +2103,16 @@ function renderDiagram() {{
       const my = _gbTop - _RMARGIN - so;
       return [sp, s1, {{x: s1.x, y: my}}, {{x: s2.x, y: my}}, s2, ep];
     }}
-    // bottom
+    // inferior
     const my = _gbBottom + _RMARGIN + so;
     return [sp, s1, {{x: s1.x, y: my}}, {{x: s2.x, y: my}}, s2, ep];
   }}
 
-  // Iteratively reroute edges with crossings via margins
+  // Redireciona iterativamente, pelas margens, as arestas com cruzamentos
   const _marginUsed = {{ left: 0, right: 0, top: 0, bottom: 0 }};
   const _tried = new Set();
   for (let _ri = 0; _ri < 30; _ri++) {{
-    // Find edge with most crossings that hasn't been tried
+    // Localiza a aresta ainda não testada com mais cruzamentos
     let worstIdx = -1, worstCnt = 0;
     for (let i = 0; i < _allEdgePaths.length; i++) {{
       if (_allEdgePaths[i].isPeEdge || _tried.has(i)) continue;
@@ -2121,7 +2128,7 @@ function renderDiagram() {{
     const ep = origPts[origPts.length - 1];
     let bestPts = origPts, bestCnt = worstCnt, bestSide = null;
 
-    // Calculate span width for each margin to assign proper slot depth
+    // Calcula a largura do intervalo em cada margem para atribuir a profundidade adequada
     for (const side of ['left', 'right', 'top', 'bottom']) {{
       const alt = _mRoute(sp, ep, ei.exitSide, ei.entrySide, side, _marginUsed[side]);
       _allEdgePaths[worstIdx].pts = alt;
@@ -2136,44 +2143,44 @@ function renderDiagram() {{
       _allEdgePaths[worstIdx].pts = bestPts;
       _marginUsed[bestSide] += _RM_SLOT;
     }} else {{
-      _tried.add(worstIdx); // mark as cannot-improve, try next edge
+      _tried.add(worstIdx); // marca como impossível de melhorar e tenta a próxima aresta
     }}
   }}
 
-  // POST-REROUTE: sort co-margin edges by span width (widest = outermost)
-  // Prevents vertical-segment crossings between edges on same margin side
+  // APÓS O NOVO ROTEAMENTO: ordena arestas na mesma margem pela largura (mais larga = mais externa)
+  // Evita cruzamentos de segmentos verticais entre arestas no mesmo lado da margem
   const _marginEdges = {{ left: [], right: [], top: [], bottom: [] }};
   for (let i = 0; i < _allEdgePaths.length; i++) {{
     const pts = _allEdgePaths[i].pts;
-    if (pts.length !== 6) continue; // only margin-routed edges have 6 points
-    // Detect which margin side this edge uses
+    if (pts.length !== 6) continue; // somente arestas roteadas pela margem têm seis pontos
+    // Detecta qual lado da margem esta aresta usa
     const p2 = pts[2], p3 = pts[3];
     if (p2.y === p3.y) {{
-      // horizontal segment on margin → top or bottom
+      // segmento horizontal na margem → superior ou inferior
       if (p2.y < _gbTop) {{ _marginEdges.top.push(i); }}
       else if (p2.y > _gbBottom) {{ _marginEdges.bottom.push(i); }}
     }} else if (p2.x === p3.x) {{
-      // vertical segment on margin → left or right
+      // segmento vertical na margem → esquerda ou direita
       if (p2.x < _gbLeft) {{ _marginEdges.left.push(i); }}
       else if (p2.x > _gbRight) {{ _marginEdges.right.push(i); }}
     }}
   }}
-  // Sort each margin group: widest span → outermost slot
+  // Ordena cada grupo de margem: maior intervalo → posição mais externa
   for (const side of ['left', 'right', 'top', 'bottom']) {{
     const idxs = _marginEdges[side];
     if (idxs.length < 2) continue;
     const isHoriz = (side === 'top' || side === 'bottom');
-    // Calculate span for each edge
+    // Calcula o intervalo de cada aresta
     const spans = idxs.map(i => {{
       const pts = _allEdgePaths[i].pts;
       return isHoriz
         ? Math.abs(pts[2].x - pts[3].x)
         : Math.abs(pts[2].y - pts[3].y);
     }});
-    // Sort indices by span descending (widest first → outermost)
+    // Ordena os índices pelo intervalo decrescente (mais largo primeiro → mais externo)
     const sorted = idxs.map((idx, j) => ({{ idx, span: spans[j] }}))
                        .sort((a, b) => b.span - a.span);
-    // Reassign y/x positions for sorted edges
+    // Reatribui as posições y/x das arestas ordenadas
     const baseMargin = isHoriz
       ? (side === 'top' ? _gbTop - _RMARGIN : _gbBottom + _RMARGIN)
       : (side === 'left' ? _gbLeft - _RMARGIN : _gbRight + _RMARGIN);
@@ -2189,18 +2196,18 @@ function renderDiagram() {{
     }});
   }}
 
-  // BOTTOM-LANE REROUTER — marshalled U-shape approach
-  // Reroute overlapping edges via evenly-spaced horizontal lanes below all sections.
-  // Direct vertical descent from node when possible (2 bends); offset only when blocked (4 bends).
+  // REDIRECIONADOR DE FAIXAS INFERIORES: abordagem organizada em forma de U
+  // Redireciona arestas sobrepostas por faixas horizontais uniformes abaixo de todas as seções.
+  // Desce verticalmente do nó quando possível (duas curvas); desloca somente quando bloqueado (quatro curvas).
   const OSEP2 = 14;
   const _bottomLaneBase = _gbBottom + _RMARGIN + 30;
   let _bottomSlot = 0;
-  const _LANE_SPC = OSEP2; // 14px lane spacing — precise marshalled look
-  const _COL_SPC = OSEP2; // minimum distance between vertical corridors
+  const _LANE_SPC = OSEP2; // espaçamento de 14 px entre faixas para um visual organizado
+  const _COL_SPC = OSEP2; // distância mínima entre corredores verticais
   const _rerouted = new Set();
   const _usedCols = [];
   function _colUsed(cx) {{ for (const ux of _usedCols) {{ if (Math.abs(cx - ux) < _COL_SPC) return true; }} return false; }}
-  // Check if vertical column is free of nodes and non-exempt section boxes
+  // Verifica se a coluna vertical está livre de nós e caixas de seção não isentas
   function _isColClear(cx, yMin, yMax, skipId1, skipId2, skipGbs) {{
     for (const _nd of NODES) {{
       if (_nd.id === skipId1 || _nd.id === skipId2) continue;
@@ -2222,7 +2229,7 @@ function renderDiagram() {{
     }}
     return true;
   }}
-  // Check if horizontal row is free of nodes and non-exempt section boxes
+  // Verifica se a linha horizontal está livre de nós e caixas de seção não isentas
   function _isRowClear(cy, xMin, xMax, skipId1, skipId2, skipGbs) {{
     for (const _nd of NODES) {{
       if (_nd.id === skipId1 || _nd.id === skipId2) continue;
@@ -2250,11 +2257,11 @@ function renderDiagram() {{
     }}
     return null;
   }}
-  // Find nearest clear column starting from preferred x, skipping source/dest sections
+  // Localiza a coluna livre mais próxima a partir do x preferencial, ignorando as seções de origem/destino
   function _findCol(prefX, yMin, yMax, skipId1, skipId2, skipGbs, preferDir) {{
-    // Try preferred position first (direct vertical from node)
+    // Tenta primeiro a posição preferencial (vertical direta a partir do nó)
     if (!_colUsed(prefX) && _isColClear(prefX, yMin, yMax, skipId1, skipId2, skipGbs)) return prefX;
-    // Search outward in small steps
+    // Pesquisa para fora em pequenos passos
     const _dirs = preferDir < 0 ? [-1, 1] : (preferDir > 0 ? [1, -1] : [-1, 1]);
     for (let _t = 1; _t <= 100; _t++) {{
       for (const _d of _dirs) {{
@@ -2301,14 +2308,14 @@ function renderDiagram() {{
     const _toId = _allEdgePaths[_worstEdge].edge.to;
     const start = pB[0];
     const end = pB[pB.length - 1];
-    // Source/dest sections are exempt — verticals can pass through own sections
+    // As seções de origem/destino são isentas: linhas verticais podem atravessar a própria seção
     const srcGb = _findGb(start.x, start.y);
     const dstGb = _findGb(end.x, end.y);
     const skipGbs = [srcGb, dstGb].filter(g => g !== null);
     const _yMin = Math.min(start.y, end.y);
     const _yMax = Math.max(start.y, end.y);
     const _spanX = Math.abs(end.x - start.x);
-    // Prefer a local single-column reroute first to avoid long bottom-lane detours.
+    // Prefere primeiro o redirecionamento local por uma coluna para evitar desvios inferiores longos.
     const _localPrefX = (start.x + end.x) / 2;
     const _localX = _findCol(_localPrefX, _yMin, _yMax, _fromId, _toId, skipGbs);
     const _localLimit = Math.max(_spanX + 40, 120);
@@ -2340,7 +2347,7 @@ function renderDiagram() {{
     _bottomSlot++;
     pB.length = 0;
     pB.push(start);
-    // Only add horizontal stub if exit column differs from node x
+    // Adiciona o segmento horizontal somente se a coluna de saída diferir do x do nó
     if (Math.abs(_exitX - start.x) > 2) pB.push({{ x: _exitX, y: start.y }});
     pB.push({{ x: _exitX, y: laneY }});
     pB.push({{ x: _enterX, y: laneY }});
@@ -2348,13 +2355,13 @@ function renderDiagram() {{
     pB.push(end);
     _rerouted.add(_worstEdge);
   }}
-  // POST-REROUTE OVERLAP SEPARATION — push rerouted segments apart
+  // SEPARAÇÃO DE SOBREPOSIÇÕES APÓS NOVO ROTEAMENTO: afasta os segmentos redirecionados
   for (let _rSep = 0; _rSep < 6; _rSep++) {{
     for (let i = 0; i < _allEdgePaths.length; i++) {{
       for (let j = i + 1; j < _allEdgePaths.length; j++) {{
         const pA = _allEdgePaths[i].pts;
         const pB = _allEdgePaths[j].pts;
-        // Separate all edge pairs (rerouted or not) to handle post-reroute overlaps
+        // Separa todos os pares de arestas para tratar sobreposições após o novo roteamento
         const dir = (j % 2 === 0) ? 1 : -1;
         for (let si = 0; si < pA.length - 1; si++) {{
           for (let sj = 0; sj < pB.length - 1; sj++) {{
@@ -2388,7 +2395,7 @@ function renderDiagram() {{
       }}
     }}
   }}
-  // POST-REROUTE ORTHOGONALIZATION
+  // ORTOGONALIZAÇÃO APÓS NOVO ROTEAMENTO
   _allEdgePaths.forEach(({{ pts }}) => {{
     for (let _i = 0; _i < pts.length - 1; _i++) {{
       const _a = pts[_i], _b = pts[_i + 1];
@@ -2408,7 +2415,7 @@ function renderDiagram() {{
     }}
   }});
 
-  // FINAL OVERLAP SEPARATION — catch any overlaps re-created by orthogonalization
+  // SEPARAÇÃO FINAL DE SOBREPOSIÇÕES: trata sobreposições recriadas pela ortogonalização
   for (let _fSep = 0; _fSep < 4; _fSep++) {{
     for (let i = 0; i < _allEdgePaths.length; i++) {{
       for (let j = i + 1; j < _allEdgePaths.length; j++) {{
@@ -2447,9 +2454,9 @@ function renderDiagram() {{
     }}
   }}
 
-  // FINAL DIAGONAL BREAKER — any non-orthogonal segment is split into an L-shape.
-  // Diagonals may be introduced by the separation pass above when only one
-  // endpoint of a segment is shifted. Axis-align every segment as a last safety net.
+  // DIVISOR FINAL DE DIAGONAIS: divide qualquer segmento não ortogonal em forma de L.
+  // A etapa de separação acima pode introduzir diagonais quando move somente uma
+  // extremidade. Alinha todos os segmentos aos eixos como última proteção.
   for (const _ep of _allEdgePaths) {{
     const pts = _ep.pts;
     for (let k = 0; k < pts.length - 1; k++) {{
@@ -2457,18 +2464,18 @@ function renderDiagram() {{
       const dx = q2.x - q1.x;
       const dy = q2.y - q1.y;
       if (Math.abs(dx) > 1 && Math.abs(dy) > 1) {{
-        // Insert elbow at (q2.x, q1.y) — preserves endpoints, forces L-shape.
-        // Direction heuristic: follow the dominant axis first.
+        // Insere uma curva em (q2.x, q1.y), preserva as extremidades e força a forma de L.
+        // Heurística de direção: segue primeiro o eixo dominante.
         const elbow = Math.abs(dx) >= Math.abs(dy)
           ? {{ x: q2.x, y: q1.y }}
           : {{ x: q1.x, y: q2.y }};
         pts.splice(k + 1, 0, elbow);
-        // Re-check the newly inserted segments in the next iteration
+        // Verifica novamente os segmentos recém-inseridos na próxima iteração
       }}
     }}
   }}
 
-  // CROSSING DETECTION— find which edges cross each other (for color differentiation)
+  // DETECÇÃO DE CRUZAMENTOS: localiza as arestas que se cruzam (para diferenciá-las por cor)
   const _crossNeighbors = {{}};
   for (let i = 0; i < _allEdgePaths.length; i++) {{
     for (let j = i + 1; j < _allEdgePaths.length; j++) {{
@@ -2492,7 +2499,7 @@ function renderDiagram() {{
     }}
   }}
 
-  // Greedy graph coloring — crossing edges get distinct colors
+  // Coloração gulosa do grafo: arestas que se cruzam recebem cores diferentes
   const _CROSS_COLORS = ['#0078D4', '#E3008C', '#00B7C3', '#FF8C00', '#107C10', '#881798'];
   const _edgeColor = {{}};
   const crossingEdges = Object.keys(_crossNeighbors).map(Number)
@@ -2507,7 +2514,7 @@ function renderDiagram() {{
     _edgeColor[eIdx] = colorIdx;
   }});
 
-  // RENDER EDGES — no bridge arcs, just orthogonal paths with color coding
+  // RENDERIZAÇÃO DAS ARESTAS: sem arcos de ponte, somente caminhos ortogonais com cores
 
   function renderEdge({{ edge, pts, isPeEdge, edgeIdx }}) {{
     let pathD;
@@ -2517,7 +2524,7 @@ function renderDiagram() {{
       pathD = buildOrthoPath(pts);
     }}
 
-    // Determine edge color: PE=purple, crossing=colored, normal=gray
+    // Define a cor da aresta: PE=roxo, cruzamento=colorido, normal=cinza
     let edgeStroke, edgeOpacity;
     if (isPeEdge) {{
       edgeStroke = '#5C2D91';
@@ -2543,7 +2550,7 @@ function renderDiagram() {{
     path.setAttribute('data-to', edge.to);
     root.appendChild(path);
 
-    // Label placement — collision-aware
+    // Posicionamento de rótulos com detecção de colisões
     if (edge.label) {{
       const bw = edge.label.length * 5.5 + 10;
       const bh = 14;
@@ -2589,13 +2596,13 @@ function renderDiagram() {{
     return {{ path, edge, pts }};
   }}
 
-  // Render all edges
+  // Renderiza todas as arestas
   _allEdgePaths.forEach((ep, edgeIdx) => renderEdge({{ ...ep, edgeIdx }}));
 
-  // Re-append group labels on top of edges
+  // Reinsere os rótulos dos grupos sobre as arestas
   _groupLabelElements.forEach(el => root.appendChild(el));
 
-  // ── Nodes (rendered LAST — on top of edges, covering crossing points) ──
+  // ── Nós (renderizados POR ÚLTIMO, sobre as arestas e os cruzamentos) ──
   NODES.forEach(node => {{
     const pos = positions[node.id];
     if (!pos) return;
@@ -2607,7 +2614,7 @@ function renderDiagram() {{
     g.setAttribute('data-id', node.id);
     g.setAttribute('transform', `translate(${{pos.x}},${{pos.y}})`);
 
-    // Card background — full clickable area
+    // Fundo do cartão: toda a área é clicável
     const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     rect.setAttribute('class', 'node-bg');
     rect.setAttribute('width', nw); rect.setAttribute('height', nh);
@@ -2616,26 +2623,27 @@ function renderDiagram() {{
     rect.setAttribute('filter', 'url(#shadow)');
     g.appendChild(rect);
 
-    // Color accent bar at top
+    // Barra de destaque colorida na parte superior
     const accent = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     accent.setAttribute('width', nw); accent.setAttribute('height', '3');
     accent.setAttribute('rx', '8'); accent.setAttribute('fill', node.color);
     accent.setAttribute('opacity', '0.7');
     g.appendChild(accent);
 
-    // Icon — official Azure icon (data URI) preferred, fallback to SVG
+    // Ícone: prefere o ícone oficial do Azure (URI de dados) e usa SVG como alternativa
     const iconSize = isPe ? 28 : 36;
     const iconX = (nw - iconSize) / 2;
     const iconY = isPe ? 12 : 14;
     if (node.icon_data_uri) {{
-      // Official Azure icon (Base64 image)
+      // Ícone oficial do Azure (imagem Base64)
       const iconImg = document.createElementNS('http://www.w3.org/2000/svg', 'image');
       iconImg.setAttribute('x', iconX); iconImg.setAttribute('y', iconY);
       iconImg.setAttribute('width', iconSize); iconImg.setAttribute('height', iconSize);
+      iconImg.setAttribute('role', 'img'); iconImg.setAttribute('aria-label', node.name);
       iconImg.setAttributeNS('http://www.w3.org/1999/xlink', 'href', node.icon_data_uri);
       g.appendChild(iconImg);
     }} else {{
-      // Fallback: built-in SVG text icon
+      // Alternativa: ícone de texto SVG integrado
       const iconG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       iconG.setAttribute('x', iconX); iconG.setAttribute('y', iconY);
       iconG.setAttribute('width', iconSize); iconG.setAttribute('height', iconSize);
@@ -2644,7 +2652,7 @@ function renderDiagram() {{
       g.appendChild(iconG);
     }}
 
-    // Name — extra gap below icon (icon bottom ~50, name baseline at 74 → 24px breathing room)
+    // Nome: espaço extra abaixo do ícone (base do ícone ~50, base do nome em 74 → 24 px)
     const name = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     name.setAttribute('x', nw/2); name.setAttribute('y', isPe ? 64 : 74);
     name.setAttribute('text-anchor', 'middle');
@@ -2655,7 +2663,7 @@ function renderDiagram() {{
     name.textContent = node.name.length > maxC ? node.name.substring(0, maxC-1) + '..' : node.name;
     g.appendChild(name);
 
-    // SKU label
+    // Rótulo da SKU
     if (!isPe && node.sku) {{
       const sku = document.createElementNS('http://www.w3.org/2000/svg', 'text');
       sku.setAttribute('x', nw/2); sku.setAttribute('y', 90);
@@ -2676,7 +2684,7 @@ function renderDiagram() {{
       g.appendChild(det);
     }}
 
-    // Service type label below (not category — show actual service type name)
+    // Rótulo do tipo de serviço abaixo (não é a categoria; mostra o tipo real)
     if (!isPe) {{
       const TYPE_LABELS = {{
         'ai_foundry': 'AI Foundry', 'openai': 'Azure OpenAI', 'search': 'AI Search', 'ai_search': 'AI Search',
@@ -2706,7 +2714,7 @@ function renderDiagram() {{
       g.appendChild(cat);
     }}
 
-    // Private badge on card
+    // Selo de privado no cartão
     if (node.private && !isPe) {{
       const badge = document.createElementNS('http://www.w3.org/2000/svg', 'g');
       const br = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
@@ -2718,7 +2726,7 @@ function renderDiagram() {{
       g.appendChild(badge);
     }}
 
-    // ── Events: drag vs click separation ──
+    // ── Eventos: separação entre arrastar e clicar ──
     g.addEventListener('mousedown', e => {{
       if (e.button !== 0) return;
       dragging = node.id;
@@ -2755,7 +2763,7 @@ function renderDiagram() {{
     root.appendChild(g);
   }});
 
-  // ── Edge labels (rendered AFTER nodes — always visible on top) ──
+  // ── Rótulos das arestas (renderizados APÓS os nós, sempre visíveis acima) ──
   _edgeLabels.forEach(el => {{
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     g.classList.add('edge-label');
@@ -2778,7 +2786,7 @@ function renderDiagram() {{
     root.appendChild(g);
   }});
 
-  // Re-apply text scale and selection state after DOM rebuild
+  // Reaplica a escala do texto e o estado da seleção após reconstruir o DOM
   if (typeof _textScale !== 'undefined' && _textScale !== 1) applyTextScale();
   if (_selectedNodeId) applySelectionHighlight();
 
@@ -2802,14 +2810,14 @@ document.getElementById('canvas').addEventListener('mousemove', e => {{
     const dx = p.x - dragOffX;
     const dy = p.y - dragOffY;
     dragOffX = p.x; dragOffY = p.y;
-    // Move all nodes in the group
+    // Move todos os nós do grupo
     groupDragNodes.forEach(nid => {{
       if (positions[nid]) {{
         positions[nid].x += dx;
         positions[nid].y += dy;
       }}
     }});
-    // Also move the group box itself
+    // Também move a própria caixa de grupo
     const gb = groupBoxes[draggingGroup];
     if (gb) {{ gb.x += dx; gb.y += dy; }}
     renderDiagram();
@@ -2817,7 +2825,7 @@ document.getElementById('canvas').addEventListener('mousemove', e => {{
 }});
 document.addEventListener('mouseup', () => {{ dragging = null; draggingGroup = null; groupDragNodes = []; }});
 
-// ── Pan & Zoom ──
+// ── Movimento e zoom ──
 function applyTransform() {{
   document.getElementById('diagram-root').setAttribute('transform',
     `translate(${{viewTransform.x}},${{viewTransform.y}}) scale(${{viewTransform.scale}})`);
@@ -2840,8 +2848,8 @@ function fitToScreen() {{
 function zoomIn() {{ viewTransform.scale *= 1.25; applyTransform(); }}
 function zoomOut() {{ viewTransform.scale *= 0.8; applyTransform(); }}
 
-// ── Text size controls ──
-let _textScale = 1.4;  // default 40% larger than raw attribute sizes
+// ── Controles de tamanho do texto ──
+let _textScale = 1.4;  // por padrão, 40% maior que os tamanhos brutos dos atributos
 function applyTextScale() {{
   document.querySelectorAll('#canvas text').forEach(t => {{
     let orig = t.getAttribute('data-orig-fs');
@@ -2872,7 +2880,7 @@ function downloadPNG() {{
   clone.setAttribute('viewBox', `${{-pad}} ${{-pad}} ${{w}} ${{h}}`);
   clone.querySelector('#viewport')?.removeAttribute('transform');
 
-  // Inline all computed styles
+  // Incorpora todos os estilos calculados
   const allEls = clone.querySelectorAll('*');
   const origEls = svg.querySelectorAll('*');
   allEls.forEach((el, i) => {{
@@ -2946,26 +2954,26 @@ document.addEventListener('mouseup', () => {{
   if (isPanning) {{ isPanning = false; document.getElementById('canvas').style.cursor = ''; }}
 }});
 
-// ── Sidebar ──
+// ── Barra lateral ──
 function buildSidebar() {{
   const list = document.getElementById('service-list');
   const byCat = {{}};
   NODES.forEach(n => {{ if (!byCat[n.category]) byCat[n.category] = []; byCat[n.category].push(n); }});
   Object.entries(byCat).forEach(([cat, nodes]) => {{
     const cd = document.createElement('div');
-    cd.className = 'cat-label'; cd.textContent = cat;
+    cd.className = 'cat-label'; cd.textContent = categoryLabel(cat);
     list.appendChild(cd);
     nodes.forEach(node => {{
       const card = document.createElement('div');
       card.className = 'service-card'; card.id = 'card-' + node.id;
       card.innerHTML = `
         <div class="service-card-header">
-          <div class="sc-icon">${{node.icon_data_uri ? `<img src="${{node.icon_data_uri}}" width="28" height="28" style="object-fit:contain;">` : `<svg viewBox="0 0 48 48">${{node.icon_svg}}</svg>`}}</div>
+          <div class="sc-icon">${{node.icon_data_uri ? `<img src="${{node.icon_data_uri}}" alt="" width="28" height="28" style="object-fit:contain;">` : `<svg viewBox="0 0 48 48" aria-hidden="true">${{node.icon_svg}}</svg>`}}</div>
           <div>
             <div class="service-name">${{node.name}}</div>
             <div class="service-sku">${{node.sku || node.type}}</div>
           </div>
-          ${{node.private ? '<span class="private-badge">Private</span>' : ''}}
+          ${{node.private ? '<span class="private-badge">Privado</span>' : ''}}
         </div>
         ${{node.details.length > 0 ? `<div class="service-card-body">${{node.details.map(d => `<div class="service-detail">${{d}}</div>`).join('')}}</div>` : ''}}
       `;
@@ -2977,7 +2985,7 @@ function buildSidebar() {{
   }});
 }}
 
-// ── VNet highlight toggle ──
+// ── Alternância do destaque da VNet ──
 let _vnetHighlighted = false;
 function toggleVNetHighlight() {{
   _vnetHighlighted = !_vnetHighlighted;
@@ -2992,7 +3000,7 @@ function toggleVNetHighlight() {{
     vr.setAttribute('stroke', '#5C2D91');
     vr.setAttribute('fill', '#f8f7ff');
   }}
-  // Also toggle sidebar card
+  // Também alterna o cartão da barra lateral
   const card = document.getElementById('card-vnet-boundary');
   if (card) card.classList.toggle('selected', _vnetHighlighted);
 }}
@@ -3000,24 +3008,24 @@ function toggleVNetHighlight() {{
 renderDiagram();
 buildSidebar();
 
-// ── VNet sidebar card (added dynamically if VNet boundary exists) ──
+// ── Cartão da VNet na barra lateral (adicionado dinamicamente se houver limite de VNet) ──
 if (VNET_INFO || NODES.some(n => n.private && n.type !== 'pe') || NODES.some(n => n.type === 'pe')) {{
   const list = document.getElementById('service-list');
-  // Insert at the top
+  // Insere na parte superior
   const catLabel = document.createElement('div');
-  catLabel.className = 'cat-label'; catLabel.textContent = 'NETWORK';
+  catLabel.className = 'cat-label'; catLabel.textContent = 'REDE';
   const card = document.createElement('div');
   card.className = 'service-card'; card.id = 'card-vnet-boundary';
   const vnetIcon = '<rect x="6" y="6" width="36" height="36" rx="4" fill="none" stroke="#5C2D91" stroke-width="3"/><circle cx="16" cy="18" r="3" fill="#5C2D91"/><circle cx="32" cy="18" r="3" fill="#5C2D91"/><circle cx="24" cy="32" r="3" fill="#5C2D91"/>';
   const vnetDetails = VNET_INFO ? VNET_INFO.split('|').map(s => s.trim()) : [];
   card.innerHTML = `
     <div class="service-card-header">
-      <div class="sc-icon"><svg viewBox="0 0 48 48">${{vnetIcon}}</svg></div>
+      <div class="sc-icon"><svg viewBox="0 0 48 48" aria-hidden="true">${{vnetIcon}}</svg></div>
       <div>
         <div class="service-name">Virtual Network</div>
         <div class="service-sku">vnet</div>
       </div>
-      <span class="private-badge">Private</span>
+      <span class="private-badge">Privado</span>
     </div>
     ${{vnetDetails.length > 0 ? `<div class="service-card-body">${{vnetDetails.map(d => `<div class="service-detail">${{d}}</div>`).join('')}}</div>` : ''}}
   `;
@@ -3031,17 +3039,17 @@ setTimeout(fitToScreen, 100);
 </html>"""
     return html
 
-def generate_diagram(services, connections, title="Azure Architecture", vnet_info="", hierarchy=None):
-    """Generate an interactive Azure architecture diagram as an HTML string.
+def generate_diagram(services, connections, title="Arquitetura do Azure", vnet_info="", hierarchy=None):
+    """Gera um diagrama interativo de arquitetura do Azure como uma string HTML.
 
-    Args:
-        services: list of dicts with keys id, name, type, sku, private, details, etc.
-        connections: list of dicts with keys from, to, label, type.
-        title: diagram title string.
-        vnet_info: VNet CIDR info string.
-        hierarchy: optional subscription/RG hierarchy list.
+    Argumentos:
+        services: lista de dicionários com as chaves id, name, type, sku, private, details etc.
+        connections: lista de dicionários com as chaves from, to, label e type.
+        title: cadeia de texto com o título do diagrama.
+        vnet_info: cadeia de texto com informações de CIDR da VNet.
+        hierarchy: lista opcional da hierarquia de assinatura/RG.
 
-    Returns:
-        HTML string containing the interactive diagram.
+    Retorna:
+        Cadeia HTML que contém o diagrama interativo.
     """
     return generate_html(services, connections, title, vnet_info=vnet_info, hierarchy=hierarchy)

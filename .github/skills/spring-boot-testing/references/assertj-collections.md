@@ -1,15 +1,15 @@
-# AssertJ Collections
+# Coleções no AssertJ
 
-AssertJ assertions for collections: `List`, `Set`, `Map`, arrays, and streams.
+Asserções AssertJ para coleções: `List`, `Set`, `Map`, arrays (vetores) e fluxos.
 
-## When to Use This Reference
+## Quando usar esta referência
 
-- The value under test is a `List`, `Set`, `Map`, array, or `Stream`
-- You need to assert on multiple elements, their order, or specific fields within them
-- You are using `extracting()`, `filteredOn()`, `containsExactly()`, or similar collection methods
-- Asserting a single scalar or single object → use [assertj-basics.md](assertj-basics.md) instead
+- O valor testado é `List`, `Set`, `Map`, array ou `Stream`
+- Você precisa verificar vários elementos, sua ordem ou campos específicos
+- Você usa `extracting()`, `filteredOn()`, `containsExactly()` ou métodos semelhantes de coleção
+- Para verificar um único escalar ou objeto, use [assertj-basics.md](assertj-basics.md)
 
-## Basic Collection Checks
+## Verificações básicas de coleções
 
 ```java
 List<Order> orders = orderService.findAll();
@@ -21,28 +21,28 @@ assertThat(orders).hasSizeGreaterThan(0);
 assertThat(orders).hasSizeLessThanOrEqualTo(10);
 ```
 
-## Containment Assertions
+## Asserções de contenção
 
 ```java
-// Contains (any order, allows extras)
+// Contém (qualquer ordem, permite itens adicionais)
 assertThat(orders).contains(order1, order2);
 
-// Contains exactly these elements in this order (no extras)
+// Contém exatamente estes elementos nesta ordem (sem itens adicionais)
 assertThat(statuses).containsExactly("NEW", "PENDING", "COMPLETED");
 
-// Contains exactly these elements in any order (no extras)
+// Contém exatamente estes elementos em qualquer ordem (sem itens adicionais)
 assertThat(statuses).containsExactlyInAnyOrder("COMPLETED", "NEW", "PENDING");
 
-// Contains any of these elements (at least one match required)
+// Contém qualquer um destes elementos (pelo menos uma correspondência)
 assertThat(statuses).containsAnyOf("NEW", "CANCELLED");
 
-// Does not contain
+// Não contém
 assertThat(statuses).doesNotContain("DELETED");
 ```
 
-## Extracting Fields
+## Extração de campos
 
-Extract a single field from each element before asserting:
+Extraia um campo de cada elemento antes da asserção:
 
 ```java
 assertThat(orders)
@@ -50,7 +50,7 @@ assertThat(orders)
   .containsExactly("NEW", "PENDING", "COMPLETED");
 ```
 
-Extract multiple fields as tuples:
+Extraia vários campos como tuplas:
 
 ```java
 assertThat(orders)
@@ -62,7 +62,7 @@ assertThat(orders)
   );
 ```
 
-## Filtering Before Asserting
+## Filtragem antes da asserção
 
 ```java
 assertThat(orders)
@@ -71,27 +71,27 @@ assertThat(orders)
   .extracting(Order::getId)
   .containsExactlyInAnyOrder(1L, 3L);
 
-// Filter by field value
+// Filtra pelo valor do campo
 assertThat(orders)
   .filteredOn("status", "PENDING")
   .hasSize(2);
 ```
 
-## Predicate Checks
+## Verificações com predicados
 
 ```java
 assertThat(orders).allMatch(o -> o.getTotal().compareTo(BigDecimal.ZERO) > 0);
 assertThat(orders).anyMatch(o -> o.getStatus().equals("COMPLETED"));
 assertThat(orders).noneMatch(o -> o.getStatus().equals("DELETED"));
 
-// With description for failure messages
+// Com descrição para mensagens de falha
 assertThat(orders)
   .allSatisfy(o -> assertThat(o.getId()).isPositive());
 ```
 
-## Per-Element Ordered Assertions
+## Asserções ordenadas por elemento
 
-Assert each element in order with individual conditions:
+Verifique cada elemento em ordem com condições individuais:
 
 ```java
 assertThat(orders).satisfiesExactly(
@@ -104,32 +104,32 @@ assertThat(orders).satisfiesExactly(
 );
 ```
 
-## Nested / Flat Collections
+## Coleções aninhadas e planas
 
 ```java
-// flatExtracting: flatten one level of nested collections
+// flatExtracting: achata um nível de coleções aninhadas
 assertThat(orders)
   .flatExtracting(Order::getItems)
   .extracting(OrderItem::getProduct)
   .contains("Laptop", "Mouse");
 ```
 
-## Recursive Field Comparison
+## Comparação recursiva de campos
 
-Compare elements by fields instead of object identity:
+Compare elementos por campos, não pela identidade do objeto:
 
 ```java
 assertThat(orders)
   .usingRecursiveFieldByFieldElementComparator()
   .containsExactlyInAnyOrder(expectedOrder1, expectedOrder2);
 
-// Ignore specific fields (e.g. generated IDs or timestamps)
+// Ignora campos específicos (por exemplo, IDs gerados ou timestamps)
 assertThat(orders)
   .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "createdAt")
   .containsExactly(expectedOrder1, expectedOrder2);
 ```
 
-## Map Assertions
+## Asserções de mapas
 
 ```java
 Map<String, Integer> stockByProduct = inventoryService.getStock();
@@ -146,7 +146,7 @@ assertThat(stockByProduct)
   .hasEntrySatisfying("Laptop", qty -> assertThat(qty).isGreaterThan(0));
 ```
 
-## Array Assertions
+## Asserções de arrays
 
 ```java
 String[] roles = user.getRoles();
@@ -156,7 +156,7 @@ assertThat(roles).contains("ADMIN");
 assertThat(roles).containsExactlyInAnyOrder("USER", "ADMIN");
 ```
 
-## Set Assertions
+## Asserções de conjuntos
 
 ```java
 Set<String> tags = product.getTags();
@@ -166,7 +166,7 @@ assertThat(tags).doesNotContain("expired");
 assertThat(tags).hasSizeGreaterThanOrEqualTo(1);
 ```
 
-## Static Import
+## Import estático
 
 ```java
 import static org.assertj.core.api.Assertions.assertThat;
@@ -174,10 +174,10 @@ import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.Assertions.entry;
 ```
 
-## Key Points
+## Pontos principais
 
-1. **`containsExactly` vs `containsExactlyInAnyOrder`** — use the former when order matters
-2. **`extracting()` before containment checks** — avoids implementing `equals()` on domain objects
-3. **`filteredOn()` + `extracting()`** — compose to assert a subset of a collection precisely
-4. **`satisfiesExactly()`** — use when each element needs different assertions
-5. **`usingRecursiveFieldByFieldElementComparator()`** — preferred over `equals()` for DTOs and records
+1. **`containsExactly` versus `containsExactlyInAnyOrder`**: use o primeiro quando a ordem for importante
+2. **`extracting()` antes das verificações de contenção**: evita implementar `equals()` nos objetos do domínio
+3. **`filteredOn()` + `extracting()`**: combine-os para verificar precisamente um subconjunto da coleção
+4. **`satisfiesExactly()`**: use quando cada elemento exigir asserções diferentes
+5. **`usingRecursiveFieldByFieldElementComparator()`**: prefira-o a `equals()` para DTOs e records

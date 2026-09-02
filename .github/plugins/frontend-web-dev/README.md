@@ -1,25 +1,25 @@
 # frontend-web-dev
 
-React frontend agent and Playwright test-generation skill.
+Agente de interface web React e habilidade de geração de testes Playwright.
 
-## What this plugin bundles
+## O que esta extensão reúne
 
-| Component | Type | Location |
+| Componente | Tipo | Localização |
 |-----------|------|----------|
-| `expert-react-frontend-engineer` | Agent | [`.github/agents/expert-react-frontend-engineer.agent.md`](../../agents/expert-react-frontend-engineer.agent.md) |
-| `playwright-generate-test` | Skill | [`.github/skills/playwright-generate-test/`](../../skills/playwright-generate-test/) |
+| `expert-react-frontend-engineer` | Agente | [`.github/agents/expert-react-frontend-engineer.agent.md`](../../agents/expert-react-frontend-engineer.agent.md) |
+| `playwright-generate-test` | Habilidade | [`.github/skills/playwright-generate-test/`](../../skills/playwright-generate-test/) |
 
-## Upstream references not included
+## Referências originais não incluídas
 
-- `playwright-explore-website` (skill) — not present in this kit.
-- `electron-angular-native` (agent) — not present in this kit.
+- `playwright-explore-website` (habilidade) — não está presente neste kit.
+- `electron-angular-native` (agente) — não está presente neste kit.
 
-## How it is enabled
+## Como é habilitado
 
-Content under `.github/skills/` and `.github/agents/` is discovered natively by
-Copilot in this repository, so these components work here without any plugin
-install. The plugin layer packages them as a named bundle in the local
-`datacorp-mm-team-kit` marketplace ([`marketplace.json`](../marketplace.json))
-and is declared in
-[`.github/copilot/settings.json`](../../copilot/settings.json). See the
-[plugins index](../README.md) for the mechanism and its limitations.
+O conteúdo em `.github/skills/` e `.github/agents/` é descoberto nativamente
+pelo Copilot neste repositório, portanto estes componentes funcionam aqui sem
+instalar nenhuma extensão. A camada de extensões os empacota como um conjunto nomeado
+no catálogo local `datacorp-mm-team-kit`
+([`marketplace.json`](../marketplace.json)) e é declarada em
+[`.github/copilot/settings.json`](../../copilot/settings.json). Consulte o
+[índice de extensões](../README.md) para conhecer o mecanismo e suas limitações.

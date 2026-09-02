@@ -1,33 +1,34 @@
 # software-engineering-team
 
-UX/UI designer agent from the software engineering team set.
+Agente de projeto da experiência e da interface do usuário (UX/UI) do conjunto
+da equipe de engenharia de software.
 
-## What this plugin bundles
+## O que esta extensão reúne
 
-| Component | Type | Location |
+| Componente | Tipo | Localização |
 |-----------|------|----------|
-| `se-ux-ui-designer` | Agent | [`.github/agents/se-ux-ui-designer.agent.md`](../../agents/se-ux-ui-designer.agent.md) |
+| `se-ux-ui-designer` | Agente | [`.github/agents/se-ux-ui-designer.agent.md`](../../agents/se-ux-ui-designer.agent.md) |
 
-## Related kit content
+## Conteúdo relacionado do kit
 
-The workshop ships its own persona and stage agents under
-[`.github/agents/`](../../agents/) (for example `software-architect`,
-`product-owner`, `tech-writer`, `qa-engineer`). They cover the roles the
-upstream `se-*` agents addressed, so those upstream agents are not referenced
-here as substitutes.
+A imersão fornece seus próprios agentes de persona e estágio em
+[`.github/agents/`](../../agents/) (por exemplo, `software-architect`,
+`product-owner`, `tech-writer`, `qa-engineer`). Eles cobrem os papéis atendidos
+pelos agentes `se-*` originais, portanto esses agentes originais não são
+referenciados aqui como substitutos.
 
-## Upstream references not included
+## Referências originais não incluídas
 
 - `se-gitops-ci-specialist`, `se-product-manager-advisor`,
   `se-responsible-ai-code`, `se-security-reviewer`,
-  `se-system-architecture-reviewer`, `se-technical-writer` (agents) — not
-  present in this kit.
+  `se-system-architecture-reviewer`, `se-technical-writer` (agentes) — não
+  estão presentes neste kit.
 
-## How it is enabled
+## Como é habilitado
 
-Content under `.github/agents/` is discovered natively by Copilot in this
-repository, so this agent works here without any plugin install. The plugin
-layer packages it as a named bundle in the local `datacorp-mm-team-kit`
-marketplace ([`marketplace.json`](../marketplace.json)) and is declared in
-[`.github/copilot/settings.json`](../../copilot/settings.json). See the
-[plugins index](../README.md) for the mechanism and its limitations.
+O conteúdo em `.github/agents/` é descoberto nativamente pelo Copilot neste
+repositório, portanto este agente funciona aqui sem instalar nenhuma extensão. A
+camada de extensões o empacota como um conjunto nomeado no catálogo local
+`datacorp-mm-team-kit` ([`marketplace.json`](../marketplace.json)) e é declarada
+em [`.github/copilot/settings.json`](../../copilot/settings.json). Consulte o
+[índice de extensões](../README.md) para conhecer o mecanismo e suas limitações.

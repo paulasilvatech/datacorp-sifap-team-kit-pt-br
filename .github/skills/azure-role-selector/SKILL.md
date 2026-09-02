@@ -1,52 +1,52 @@
 ---
 name: "azure-role-selector"
-description: "Use when the user asks which Azure RBAC role to assign to an identity, how to grant least-privilege permissions, or how to author a custom role when no built-in role fits. Recommends the narrowest built-in role, then emits the assignment as Terraform (azurerm_role_assignment), this kit's IaC. Triggers include \"which Azure role\", \"least privilege\", \"role assignment\", \"custom role definition\", and \"grant permissions\"."
+description: "Use quando a pessoa perguntar qual função do Azure RBAC atribuir a uma identidade, como conceder permissões de privilégio mínimo ou como criar uma função personalizada quando nenhuma função interna for adequada. Recomenda a função interna mais restrita e gera a atribuição como Terraform (azurerm_role_assignment), a IaC deste kit. Os gatilhos incluem \"qual função do Azure\", \"privilégio mínimo\", \"atribuição de função\", \"definição de função personalizada\" e \"conceder permissões\"."
 ---
-# Azure role selector
+# Seletor de funções do Azure
 
-Recommend the **least-privilege** Azure RBAC role for an identity given the actions it must perform, then express the assignment as Terraform (`azurerm_role_assignment`), which is this kit's IaC. Always prefer a built-in role at the narrowest scope; author a custom role definition only when no built-in role fits.
+Recomende a função do Azure RBAC de **privilégio mínimo** para uma identidade com base nas ações que ela precisa executar. Depois, expresse a atribuição como Terraform (`azurerm_role_assignment`), a IaC deste kit. Sempre prefira uma função interna no escopo mais restrito. Crie uma definição de função personalizada apenas quando nenhuma função interna for adequada.
 
-This skill teaches you how to choose and apply a role. It does not decide which identity or scope your workload needs — that comes from the specification and the team's own investigation.
+Esta habilidade ensina como escolher e aplicar uma função. Ela não decide qual identidade ou escopo sua carga de trabalho precisa. Isso vem da especificação e da investigação da equipe.
 
 > [!NOTE]
-> This skill depends on the **Azure MCP server** (or the `az` CLI) to look up role definitions and generate assignment commands. If neither is installed, say so and fall back to the public Azure built-in role documentation.
+> Esta habilidade depende do **servidor MCP do Azure** (ou da CLI `az`) para consultar definições de função e gerar comandos de atribuição. Se nenhum deles estiver instalado, informe isso e use a documentação pública de funções internas do Azure.
 
-## When to invoke
+## Quando usar
 
-- "Which Azure role should I assign to this managed identity?"
-- "Grant this service principal read-only access to one storage account, least privilege."
-- "No built-in role fits — help me write a custom role definition."
-- "Give the app's identity permission to read secrets from Key Vault."
+- "Qual função do Azure devo atribuir a esta identidade gerenciada?"
+- "Conceda a esta entidade de serviço acesso somente leitura a uma conta de armazenamento, com privilégio mínimo."
+- "Nenhuma função interna é adequada. Ajude-me a escrever uma definição de função personalizada."
+- "Dê à identidade da aplicação permissão para ler segredos do Key Vault."
 
-## Selection procedure
+## Procedimento de seleção
 
-1. **Capture the required actions.** List the exact operations the identity must perform (for example: read blobs, list secrets, send to a queue). Separate control-plane `actions` from data-plane `dataActions`.
-2. **Pick the narrowest scope.** Assign at the smallest scope that satisfies the requirement: resource before resource group, resource group before subscription, subscription before management group.
-3. **Match a built-in role.** Use the Azure MCP documentation tool to find the built-in role whose `actions`/`dataActions` cover the requirement with the least excess. Prefer data-plane roles (for example `Storage Blob Data Reader`) over broad management roles (`Contributor`).
-4. **Fall back to a custom role only if needed.** When no built-in role fits, use the Azure MCP `extension_cli_generate` tool to draft a custom role definition that lists only the required `actions`/`dataActions` and an explicit `assignableScopes`.
-5. **Generate the assignment.** Use the Azure MCP `extension_cli_generate` tool for the `az role assignment create` command, then translate it to Terraform for the kit deliverable.
-6. **Prefer managed identity.** For service-to-service authentication, assign the role to a managed identity — never distribute secrets, keys, or connection strings.
+1. **Registre as ações necessárias.** Liste as operações exatas que a identidade deve executar (por exemplo: ler blobs, listar segredos, enviar para uma fila). Separe `actions` do plano de controle de `dataActions` do plano de dados.
+2. **Escolha o escopo mais restrito.** Faça a atribuição no menor escopo que atenda ao requisito: recurso antes de grupo de recursos, grupo de recursos antes de assinatura e assinatura antes de grupo de gerenciamento.
+3. **Encontre uma função interna.** Use a ferramenta de documentação do MCP do Azure para encontrar a função interna cujas `actions`/`dataActions` cubram o requisito com o menor excesso. Prefira funções do plano de dados (por exemplo, `Storage Blob Data Reader`) a funções amplas de gerenciamento (`Contributor`).
+4. **Use uma função personalizada apenas se necessário.** Quando nenhuma função interna for adequada, use a ferramenta `extension_cli_generate` do MCP do Azure para elaborar uma definição que liste somente as `actions`/`dataActions` necessárias e um `assignableScopes` explícito.
+5. **Gere a atribuição.** Use a ferramenta `extension_cli_generate` do MCP do Azure para o comando `az role assignment create` e traduza-o para Terraform como entrega do kit.
+6. **Prefira uma identidade gerenciada.** Para autenticação entre serviços, atribua a função a uma identidade gerenciada. Nunca distribua segredos, chaves ou cadeias de conexão.
 
-## Least-privilege decision table
+## Tabela de decisão de privilégio mínimo
 
-| Situation | Choose |
+| Situação | Escolha |
 |---|---|
-| A built-in role matches the actions exactly | The built-in role at the narrowest scope |
-| A built-in role is close but slightly broad | Prefer the built-in role unless the extra permissions are sensitive; document the gap |
-| No built-in role covers the actions | A custom role definition containing only the required actions |
-| An Azure service must call another Azure service | A managed identity plus a role assignment, never a secret |
-| The identity only reads data | A data-plane `... Data Reader` role, not `Reader` or `Contributor` |
+| Uma função interna corresponde exatamente às ações | A função interna no escopo mais restrito |
+| Uma função interna é próxima, mas ligeiramente ampla | Prefira a função interna, a menos que as permissões extras sejam sensíveis. Documente a diferença |
+| Nenhuma função interna cobre as ações | Uma definição de função personalizada contendo apenas as ações necessárias |
+| Um serviço do Azure precisa chamar outro serviço do Azure | Uma identidade gerenciada com uma atribuição de função, nunca um segredo |
+| A identidade apenas lê dados | Uma função do plano de dados `... Data Reader`, não `Reader` nem `Contributor` |
 
 > [!WARNING]
-> Never assign `Owner` or `Contributor` at subscription or management-group scope to a workload identity. Those roles include `Microsoft.Authorization/*`, which lets the identity grant itself further access.
+> Nunca atribua `Owner` nem `Contributor` no escopo da assinatura ou do grupo de gerenciamento a uma identidade de carga de trabalho. Essas funções incluem `Microsoft.Authorization/*`, que permite à identidade conceder mais acesso a si mesma.
 
-## Bicep and ARM — out of scope
+## Bicep e ARM fora do escopo
 
-A Bicep or ARM role-assignment snippet (via the Azure MCP `bicepschema` and `get_bestpractices` tools) is optional and **out of scope** for this kit's deliverables. Produce Terraform; use Bicep only for exploration or comparison.
+Um trecho de atribuição de função em Bicep ou ARM (por meio das ferramentas `bicepschema` e `get_bestpractices` do MCP do Azure) é opcional e está **fora do escopo** das entregas deste kit. Produza Terraform. Use Bicep apenas para exploração ou comparação.
 
-## Output template
+## Modelo de saída
 
-Deliver the recommendation plus a ready-to-commit Terraform snippet. Role assignments and role definitions do not support `tags`, so the kit's tagging rule does not apply to these resources.
+Entregue a recomendação com um trecho de Terraform pronto para ser confirmado no repositório. Atribuições e definições de função não aceitam `tags`. Portanto, a regra de marcação do kit não se aplica a esses recursos.
 
 ```hcl
 resource "azurerm_role_assignment" "app_blob_reader" {
@@ -56,13 +56,13 @@ resource "azurerm_role_assignment" "app_blob_reader" {
 }
 ```
 
-When no built-in role fits, deliver a custom role definition alongside the assignment:
+Quando nenhuma função interna for adequada, entregue uma definição de função personalizada junto com a atribuição:
 
 ```hcl
 resource "azurerm_role_definition" "read_one_container" {
   name        = "SIFAP Read Single Blob Container"
   scope       = azurerm_storage_account.data.id
-  description = "Read-only access to a single blob container, least privilege."
+  description = "Acesso somente leitura a um único contêiner de blobs, com privilégio mínimo."
 
   permissions {
     actions      = ["Microsoft.Storage/storageAccounts/blobServices/containers/read"]
@@ -74,24 +74,24 @@ resource "azurerm_role_definition" "read_one_container" {
 }
 ```
 
-Summarize the choice in prose:
+Resuma a escolha em texto:
 
 ```text
-Recommended role: Storage Blob Data Reader (built-in)
-Scope: storage account azurerm_storage_account.data (narrowest that works)
-Principal: user-assigned managed identity app
-Why: covers blob read data-plane action with no excess; no custom role needed.
+Função recomendada: Storage Blob Data Reader (interna)
+Escopo: conta de armazenamento azurerm_storage_account.data (o mais restrito que funciona)
+Entidade de segurança: identidade gerenciada app atribuída pelo usuário
+Motivo: cobre a ação de leitura de blobs no plano de dados sem excesso; não é necessária uma função personalizada.
 ```
 
-## Quality gate
+## Critérios de qualidade
 
-- [ ] The recommended role is the narrowest built-in role that covers every required action.
-- [ ] The assignment scope is the smallest scope that satisfies the requirement.
-- [ ] A custom role is proposed only when no built-in role fits, and lists only the required actions with explicit `assignable_scopes`.
-- [ ] The assignment is expressed as Terraform `azurerm_role_assignment` (Bicep/ARM left out of scope).
-- [ ] Service-to-service authentication uses a managed identity, never a secret or connection string.
-- [ ] No `Owner`/`Contributor` at subscription or management-group scope for a workload identity.
+- [ ] A função recomendada é a função interna mais restrita que cobre todas as ações necessárias.
+- [ ] O escopo da atribuição é o menor que atende ao requisito.
+- [ ] Uma função personalizada é proposta apenas quando nenhuma função interna é adequada e lista somente as ações necessárias, com `assignable_scopes` explícito.
+- [ ] A atribuição está expressa como Terraform `azurerm_role_assignment` (Bicep/ARM fora do escopo).
+- [ ] A autenticação entre serviços usa uma identidade gerenciada, nunca um segredo ou uma cadeia de conexão.
+- [ ] Não há `Owner`/`Contributor` no escopo da assinatura ou do grupo de gerenciamento para uma identidade de carga de trabalho.
 
-## License
+## Licença
 
-Bundled material in this skill is provided under the [MIT License](LICENSE.txt).
+O material incluído nesta habilidade é fornecido sob a [Licença MIT](LICENSE.txt).

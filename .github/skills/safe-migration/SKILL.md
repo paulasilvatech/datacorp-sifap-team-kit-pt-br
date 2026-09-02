@@ -1,74 +1,74 @@
 ---
 name: "safe-migration"
-description: "Use when planning an online schema change, a zero-downtime migration, or a rollback for a deployment that changed a table. Triggers include \"migration\", \"ALTER TABLE\", \"zero-downtime\", \"expand-contract\", and \"backfill\"."
+description: "Use ao planejar uma alteração de esquema durante a operação, uma migração sem indisponibilidade ou a reversão de uma implantação que alterou uma tabela. Os gatilhos incluem \"migração\", \"ALTER TABLE\", \"sem indisponibilidade\", \"expandir e contrair\" e \"preenchimento retroativo\"."
 ---
-# Safe schema migration
+# Migração segura de esquema
 
-## When to invoke
+## Quando invocar
 
-- "Plan the migration to add column X."
-- "Can we rename this column without downtime?"
-- "How do we remove this table safely?"
+- "Planeje a migração para adicionar a coluna X."
+- "Podemos renomear esta coluna sem indisponibilidade?"
+- "Como removemos esta tabela com segurança?"
 
-## Expand / migrate / contract pattern
+## Padrão expandir, migrar e contrair
 
-Every schema change that affects live traffic goes through **three deployments**, never just one.
+Cada alteração de esquema que afeta o tráfego ativo passa por **três implantações**, nunca apenas uma.
 
-1. **Expand** - add the new shape alongside the old one (new nullable column, new table, new index). No reads or writes use it yet.
-2. **Migrate** - dual-write to the old and new shapes, backfill historical rows, and switch reads to the new shape behind a flag.
-3. **Contract** - remove the old shape only after the new shape has been authoritative for at least one release cycle.
+1. **Expandir**: adicione a nova estrutura ao lado da antiga (nova coluna anulável, nova tabela ou novo índice). Nenhuma leitura ou escrita a utiliza ainda.
+2. **Migrar**: grave simultaneamente nas estruturas antiga e nova, faça o preenchimento retroativo das linhas históricas e altere as leituras para a nova estrutura por meio de uma chave de funcionalidade.
+3. **Contrair**: remova a estrutura antiga somente depois que a nova for a fonte autoritativa por pelo menos um ciclo de lançamento.
 
-## Practical rules
+## Regras práticas
 
-- **Additive changes are always safe**: new nullable column, new index (CONCURRENTLY / ONLINE), new table.
-- **Destructive changes never happen in a single deployment**: drop column, rename column, change type, drop table, add NOT NULL.
-- **Backfills run in batches** with LIMIT, pauses between batches, and idempotency. Never run `UPDATE whole_table SET …` all at once.
-- **Index construction**: `CREATE INDEX CONCURRENTLY` (Postgres), `ONLINE=ON` (MySQL 8 / SQL Server). Watch for lock escalation.
-- **Renames**: DO NOT rename in place. Add a new column → dual-write → backfill → switch reads → remove the old column.
+- **Alterações aditivas são sempre seguras**: nova coluna anulável, novo índice (CONCURRENTLY / ONLINE) ou nova tabela.
+- **Alterações destrutivas nunca ocorrem em uma única implantação**: excluir ou renomear coluna, alterar tipo, excluir tabela ou adicionar NOT NULL.
+- **Preenchimentos retroativos são executados em lotes**, com LIMIT, pausas entre lotes e idempotência. Nunca execute `UPDATE whole_table SET …` de uma só vez.
+- **Criação de índices**: `CREATE INDEX CONCURRENTLY` (Postgres), `ONLINE=ON` (MySQL 8 / SQL Server). Monitore a escalada de bloqueios.
+- **Renomeações**: NÃO renomeie diretamente. Adicione uma nova coluna → faça escrita dupla → execute o preenchimento retroativo → altere as leituras → remova a coluna antiga.
 
-## Pre-flight checklist
+## Lista de verificação prévia à implantação
 
-- [ ] The migration has written **forward** and **rollback** plans.
-- [ ] Duration estimated on a **production copy** (never estimate in development).
-- [ ] Lock impact assessed (`pg_locks`, `SHOW ENGINE INNODB STATUS`, `sys.dm_tran_locks`).
-- [ ] Backfill batch size selected based on the replication-lag budget.
-- [ ] Monitoring installed for replica lag, long-running transactions, and deadlocks.
-- [ ] Feature flag or dual-read path installed before the migrate stage.
+- [ ] A migração tem planos de **avanço** e de **reversão** documentados.
+- [ ] A duração foi estimada em uma **cópia de produção** (nunca estime no ambiente de desenvolvimento).
+- [ ] O impacto de bloqueios foi avaliado (`pg_locks`, `SHOW ENGINE INNODB STATUS`, `sys.dm_tran_locks`).
+- [ ] O tamanho do lote de preenchimento retroativo foi definido de acordo com o orçamento de atraso da réplica.
+- [ ] Há monitoramento para atraso da réplica, transações longas e impasses (deadlocks).
+- [ ] Uma chave de funcionalidade ou um fluxo de leitura dupla foi instalado antes da etapa de migração.
 
-## Red flags - do not ship
+## Sinais de alerta: não implante
 
-- A single `ALTER TABLE` that takes a full lock on a large table.
-- A migration coupled to the application deployment that cannot be rolled back independently.
-- An irreversible step without a backup.
-- A backfill that rewrites every row in one transaction.
+- Um único `ALTER TABLE` que bloqueia integralmente uma tabela grande.
+- Uma migração acoplada à implantação da aplicação que não pode ser revertida independentemente.
+- Uma etapa irreversível sem cópia de segurança.
+- Um preenchimento retroativo que reescreve todas as linhas em uma única transação.
 
-## Output template
+## Modelo de saída
 
 ```markdown
-## Migration plan - <change>
+## Plano de migração - <alteração>
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| Change type | additive / destructive |
-| Pattern stage | Expand / Migrate / Contract |
-| Migration file | backend/src/main/resources/db/migration/V<N>__<desc>.sql |
-| Forward plan | <DDL / backfill> |
-| Rollback plan | <how to reverse independently of the app deploy> |
-| Lock impact | <estimate from a production copy> |
+| Tipo de alteração | aditiva / destrutiva |
+| Etapa do padrão | Expandir / Migrar / Contrair |
+| Arquivo de migração | backend/src/main/resources/db/migration/V<N>__<desc>.sql |
+| Plano de avanço | <DDL / preenchimento retroativo> |
+| Plano de reversão | <como reverter independentemente da implantação da aplicação> |
+| Impacto de bloqueios | <estimativa obtida em uma cópia de produção> |
 
-### Backfill
-- Batch size <rows>, pause <ms>, idempotent yes/no
+### Preenchimento retroativo
+- Tamanho do lote <linhas>, pausa <ms>, idempotente sim/não
 ```
 
-## Quality gate
+## Critérios de qualidade
 
-- [ ] Destructive changes are split across expand / migrate / contract deployments.
-- [ ] Forward and rollback plans exist and are independent of the app deployment.
-- [ ] Indexes are built with `CREATE INDEX CONCURRENTLY`; no full-table lock ships.
-- [ ] Backfills run in bounded, idempotent batches within the replication-lag budget.
-- [ ] Duration and lock impact were estimated on a production-sized copy.
+- [ ] As alterações destrutivas estão divididas entre implantações de expansão, migração e contração.
+- [ ] Existem planos de avanço e reversão independentes da implantação da aplicação.
+- [ ] Os índices são criados com `CREATE INDEX CONCURRENTLY`; nenhum bloqueio integral de tabela é implantado.
+- [ ] Os preenchimentos retroativos são executados em lotes limitados e idempotentes, dentro do orçamento de atraso da réplica.
+- [ ] A duração e o impacto de bloqueios foram estimados em uma cópia com tamanho de produção.
 
-## References
+## Referências
 
 - [Braintree - PostgreSQL at Scale: Safe Migrations](https://medium.com/paypal-tech/postgresql-at-scale-database-schema-changes-without-downtime-20d3749ed680)
 - [GitHub - gh-ost online schema migration](https://github.com/github/gh-ost)

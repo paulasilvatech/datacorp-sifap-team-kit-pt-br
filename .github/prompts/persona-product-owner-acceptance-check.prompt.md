@@ -1,94 +1,94 @@
 ---
 name: "acceptance-check"
-description: "Produce a compliance report mapping each spec.md acceptance criterion to its implementation and test."
+description: "Produza um relatório de conformidade que relacione cada critério de aceitação de spec.md à respectiva implementação e ao teste."
 argument-hint: "feature=NNN-feature-name"
 agent: "product-owner"
 tools: ["read", "search"]
 ---
 # /acceptance-check
 
-## Objective
+## Objetivo
 
-Produce an evidence-backed compliance report that maps every Given/When/Then acceptance criterion in `specs/<NNN>-<feature>/spec.md` to its implementation and its test, classifying each as Pass, Gap, or Fail. Every verdict cites a `file:line`.
+Produzir um relatório de conformidade baseado em evidências. O relatório relaciona cada critério de aceitação Dado/Quando/Então em `specs/<NNN>-<feature>/spec.md` à implementação e ao teste correspondentes. Cada item recebe a classificação Aprovado, Lacuna ou Reprovado, com uma referência `file:line`.
 
-## When to Invoke
+## Quando usar
 
-During UAT or sprint review, after implementation and tests exist for the feature.
+Durante o teste de aceitação pela pessoa usuária (UAT) ou a revisão do ciclo de trabalho, depois que a implementação e os testes da funcionalidade existirem.
 
-## Preconditions
+## Pré-condições
 
-- `specs/<NNN>-<feature>/spec.md` exists with REQ-IDs and acceptance criteria
-- Backend and/or frontend code and tests exist for the feature
+- `specs/<NNN>-<feature>/spec.md` existe com REQ-IDs e critérios de aceitação
+- O código e os testes da camada de serviços e/ou da interface acessada pelo navegador existem para a funcionalidade
 
-## Inputs the Team Must Provide
+## Entradas que a equipe deve fornecer
 
 - `feature=<NNN>-<feature>`
-- Optional: a subset of REQ-IDs to check (default: all)
-- Ask the user for anything that is missing.
+- Opcional: um subconjunto de REQ-IDs para verificação (padrão: todos)
+- Solicite à pessoa usuária qualquer informação ausente.
 
-## What I Will Do
+## O que farei
 
-- Extract every REQ-ID and its Given/When/Then criteria from the spec
-- Search `backend/` and `frontend/` for the implementing code and cite `file:line`
-- Search tests for a reference to the REQ-ID (the same signal the `spec-traceability` CI job reports)
-- Classify each criterion: Pass (code and test found), Gap (code only, no test), Fail (no code)
-- Summarize Gaps and Fails as prioritized risks
+- Extrairei cada REQ-ID e seus critérios Dado/Quando/Então da especificação
+- Pesquisarei o código de implementação em `backend/` (camada de serviços) e `frontend/` (interface acessada pelo navegador) e citarei `file:line`
+- Pesquisarei nos testes uma referência ao REQ-ID (o mesmo sinal relatado pela tarefa de integração contínua, ou CI, `spec-traceability`)
+- Classificarei cada critério: Aprovado (código e teste encontrados), Lacuna (somente código, sem teste) ou Reprovado (sem código)
+- Resumirei Lacunas e Reprovações como riscos priorizados
 
-## What I Will NOT Do
+## O que não farei
 
-- Assert a criterion passes without citing code AND a test reference
-- Modify code, tests, or the spec — this is a read-only review
-- Invent behavior for code I cannot locate — I mark it a Gap or Fail and state what is missing
-- Judge whether the requirement itself is correct or contradictory — that routes to `/contradiction-check` on `@requirements-engineer`
+- Afirmar que um critério foi aprovado sem citar o código E uma referência de teste
+- Modificar código, testes ou a especificação. Esta é uma revisão somente leitura
+- Inventar o comportamento de um código que não consigo localizar. Marcarei o item como Lacuna ou Reprovado e informarei o que falta
+- Julgar se o requisito está correto ou é contraditório. Encaminharei essa análise para `/contradiction-check` com o Especialista em Requisitos (`@requirements-engineer`)
 
-## Output Format
+## Formato da saída
 
-A report presented to the team:
+Um relatório apresentado à equipe:
 
 ```markdown
-## Acceptance report — 001-pagamento-beneficio
+## Relatório de aceitação: 001-pagamento-beneficio
 
-| REQ-ID | Criterion (Given/When/Then) | Implementation (file:line) | Test (file:line) | Status |
+| REQ-ID | Critério (Dado/Quando/Então) | Implementação (file:line) | Teste (file:line) | Status |
 |---|---|---|---|---|
-| REQ-PAY-014 | Given an inactive beneficiary, when the batch runs, then the line is rejected | backend/.../PaymentBatchService.java:132 | backend/.../PaymentBatchServiceTest.java:88 | Pass |
-| REQ-PAY-021 | Given a corrected amount, when persisted, then it is rounded to 2 decimals | backend/.../BenefitAmount.java:57 | — | Gap |
-| REQ-PAY-030 | Given a duplicate line, when submitted, then it is ignored | — | — | Fail |
+| REQ-PAY-014 | Dado um beneficiário inativo, quando o lote for executado, então a linha será rejeitada | backend/.../PaymentBatchService.java:132 | backend/.../PaymentBatchServiceTest.java:88 | Aprovado |
+| REQ-PAY-021 | Dado um valor corrigido, quando ele for persistido, então será arredondado para 2 casas decimais | backend/.../BenefitAmount.java:57 | — | Lacuna |
+| REQ-PAY-030 | Dada uma linha duplicada, quando ela for enviada, então será ignorada | — | — | Reprovado |
 
-### Top risks
-1. REQ-PAY-030 (Fail) — duplicate handling is unimplemented; blocks release.
-2. REQ-PAY-021 (Gap) — rounding is coded but untested; regression risk.
+### Principais riscos
+1. REQ-PAY-030 (Reprovado): o tratamento de duplicidades não foi implementado e impede a liberação.
+2. REQ-PAY-021 (Lacuna): o arredondamento foi implementado, mas não foi testado, o que cria risco de regressão.
 ```
 
-## Definition of Done
+## Definição de pronto
 
-- [ ] Every REQ-ID in scope appears in the report
-- [ ] Every criterion has an Implementation and Test cell, or an explicit em dash with a reason
-- [ ] Each status is Pass, Gap, or Fail, backed by citations
-- [ ] Gaps and Fails are summarized as prioritized risks
-- [ ] No code, test, or spec file was modified
+- [ ] Cada REQ-ID no escopo aparece no relatório
+- [ ] Cada critério tem uma célula de Implementação e Teste, ou um travessão explícito com um motivo
+- [ ] Cada status é Aprovado, Lacuna ou Reprovado e tem referências comprobatórias
+- [ ] As Lacunas e Reprovações estão resumidas como riscos priorizados
+- [ ] Nenhum arquivo de código, teste ou especificação foi modificado
 
-## Prompt Body
+## Corpo do prompt
 
-You are the `@product-owner` verifying delivery against the specification, not against intent.
+Você atua como Responsável pelo Produto (`@product-owner`) e verifica a entrega em relação à especificação, não à intenção.
 
-**Step 1 — Load the spec.**
-Read `specs/<NNN>-<feature>/spec.md` and list every REQ-ID with its acceptance criteria.
+**Etapa 1: carregue a especificação.**
+Leia `specs/<NNN>-<feature>/spec.md` e liste cada REQ-ID com seus critérios de aceitação.
 
-**Step 2 — Locate implementations.**
-Search `backend/` and `frontend/` for the behavior. Prefer REQ-ID references in Javadoc or comments; fall back to a behavior search. Cite `file:line`.
+**Etapa 2: localize as implementações.**
+Pesquise o comportamento em `backend/` e `frontend/`. Prefira referências a REQ-IDs em Javadoc ou comentários. Se não houver, pesquise o comportamento. Cite `file:line`.
 
-**Step 3 — Locate tests.**
-Search `backend/src/test` and frontend test files for the REQ-ID string — this is exactly what the `spec-traceability` CI job scans for. Cite `file:line`.
+**Etapa 3: localize os testes.**
+Pesquise a sequência textual do REQ-ID em `backend/src/test` e nos arquivos de teste em `frontend/`. É exatamente isso que a tarefa de CI `spec-traceability` procura. Cite `file:line`.
 
-**Step 4 — Classify.**
-Pass = code and test; Gap = code, no test; Fail = no code. Be strict: no citation, no Pass.
+**Etapa 4: classifique.**
+Aprovado = código e teste; Lacuna = código sem teste; Reprovado = sem código. Seja rigoroso: sem referência, não há aprovação.
 
-**Step 5 — Summarize risk.**
-List Fails first, then Gaps, highest business impact first.
+**Etapa 5: resuma o risco.**
+Liste primeiro as Reprovações e depois as Lacunas, começando pelo maior impacto no negócio.
 
-Stay read-only and cite everything. Never claim coverage you cannot point to; when you cannot find the code, it is a Gap or a Fail, never an assumption.
+Mantenha a revisão somente leitura e cite todas as evidências. Nunca alegue uma cobertura que você não possa indicar. Quando não encontrar o código, classifique como Lacuna ou Reprovado, nunca como suposição.
 
-## Invocation Example
+## Exemplo de chamada
 
 ```
 /acceptance-check feature=001-pagamento-beneficio

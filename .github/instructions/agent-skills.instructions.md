@@ -1,182 +1,141 @@
 ---
-description: "Use when authoring, reviewing, or debugging a GitHub Copilot Agent Skill under .github/skills/ — SKILL.md frontmatter, the name-must-match-directory rule, description tuning for auto-loading, progressive disclosure, and bundled resources."
+description: "Use ao criar, revisar ou depurar uma GitHub Copilot Agent Skill em .github/skills/: frontmatter de SKILL.md, regra de correspondência entre nome e diretório, ajuste da descrição para carregamento automático, divulgação progressiva e recursos incluídos."
 applyTo: ".github/skills/**/SKILL.md"
 ---
 
-# Agent Skills — Authoring Guide
+# Agent Skills — Guia de autoria
 
-This file activates when you create or edit a `SKILL.md` under `.github/skills/`. It teaches how to author a skill that loads reliably and scopes cleanly: the two-key frontmatter schema, the rule that `name` must equal the skill's directory, how the `description` drives automatic loading, progressive disclosure, and how to bundle scripts and references. It teaches you how to structure and package a skill — it does not decide which skills this workshop needs or what a given skill's domain procedure should contain; that lives in each skill's own `SKILL.md` and in [`.github/copilot-instructions.md`](../copilot-instructions.md).
+Este arquivo é ativado ao criar ou editar um `SKILL.md` em `.github/skills/`. Ele ensina a criar uma skill que carregue de forma confiável e tenha escopo claro: schema de frontmatter com duas chaves, igualdade entre `name` e diretório, uso de `description` no carregamento automático, divulgação progressiva e inclusão de scripts e referências. Ele ensina como estruturar e empacotar uma skill, mas não decide quais skills a imersão precisa nem qual procedimento de domínio deve conter. Isso pertence ao `SKILL.md` de cada skill e a [`.github/copilot-instructions.md`](../copilot-instructions.md).
 
-## What a Skill Is
+## O que é uma skill
 
-A skill is a self-contained folder holding a `SKILL.md` plus optional bundled resources (scripts, references, templates, assets) that teaches Copilot a specialized, repeatable capability. Skills are not the same primitive as these instruction files:
+Uma skill é uma pasta autocontida com um `SKILL.md` e recursos opcionais (scripts, referências, modelos e assets) que ensina ao Copilot uma capacidade especializada e repetível.
 
-| Primitive | Purpose | Loads |
+| Primitiva | Finalidade | Carregamento |
 |---|---|---|
-| Instruction file (`*.instructions.md`) | Standing rules for files that match `applyTo` | Whenever a matching file is in context |
-| Skill (`SKILL.md`) | An on-demand workflow or capability | Only when the request matches its `description` |
+| Arquivo de instruções (`*.instructions.md`) | Regras permanentes para arquivos que correspondem a `applyTo` | Sempre que um arquivo correspondente está no contexto |
+| Skill (`SKILL.md`) | Fluxo de trabalho ou capacidade sob demanda | Somente quando a solicitação corresponde a `description` |
 
-Skills are portable across VS Code, the Copilot CLI, and the Copilot coding agent, and they load progressively — the body and resources stay out of context until they are needed.
+As skills são portáveis entre VS Code, Copilot CLI e Copilot coding agent. O corpo e os recursos permanecem fora do contexto até serem necessários.
 
-## Where Skills Live
+## Onde ficam as skills
 
-| Location | Scope |
+| Local | Escopo |
 |---|---|
-| `.github/skills/<skill-name>/` | This repository — where every workshop skill belongs |
-| `~/.copilot/skills/<skill-name>/` | Personal, across all of your repositories |
+| `.github/skills/<skill-name>/` | Este repositório; local de todas as skills da imersão |
+| `~/.copilot/skills/<skill-name>/` | Pessoal; todos os seus repositórios |
 
-Each skill owns its own directory and must contain at least a `SKILL.md`. This instruction file governs `.github/skills/**/SKILL.md`.
+Cada skill possui seu próprio diretório e ao menos um `SKILL.md`. Este arquivo rege `.github/skills/**/SKILL.md`.
 
-## Frontmatter — Only Two Keys
+## Frontmatter — Somente duas chaves
 
-`SKILL.md` frontmatter accepts exactly two keys: `name` and `description`.
+O frontmatter de `SKILL.md` aceita exatamente `name` e `description`.
 
 ```yaml
 ---
 name: "draw-io-diagram-generator"
-description: "Use when creating, editing, or generating draw.io diagram files (.drawio, .drawio.svg, .drawio.png), flowcharts, architecture diagrams, sequence diagrams, ER diagrams, or UML class diagrams."
+description: "Use ao criar, editar ou gerar diagramas draw.io (.drawio, .drawio.svg, .drawio.png), fluxogramas, diagramas de sequência ou diagramas ER."
 ---
 ```
 
-| Field | Required | Constraint |
+| Campo | Obrigatório | Restrição |
 |---|---|---|
-| `name` | Yes | Lowercase letters, numbers, and hyphens only; 64 characters maximum; **must exactly equal the parent directory name** |
-| `description` | Yes | States *when to use* the skill; keyword-dense; 1024 characters maximum |
+| `name` | Sim | Somente letras minúsculas, números e hifens; no máximo 64 caracteres; deve ser exatamente igual ao diretório pai |
+| `description` | Sim | Informa quando usar a skill; concentra palavras-chave; no máximo 1.024 caracteres |
 
 > [!IMPORTANT]
-> `name` must be identical to the skill's folder name. `.github/skills/draw-io-diagram-generator/SKILL.md` must declare `name: "draw-io-diagram-generator"`. If they differ — even by one capital letter or an underscore — the skill **silently fails to load**: there is no error and no warning; it is simply never offered to Copilot.
+> `name` deve ser idêntico ao nome da pasta. `.github/skills/draw-io-diagram-generator/SKILL.md` deve declarar `name: "draw-io-diagram-generator"`. Qualquer diferença faz a skill deixar de carregar silenciosamente.
 
 > [!WARNING]
-> Only `name` and `description` are part of the schema. Keys such as `license`, `allowed-tools`, `compatibility`, and `metadata` are **not** recognized — they are ignored, and their presence gives a false impression that a constraint is enforced. Do not add them, and do not ship a `LICENSE.txt` on the assumption that a `license:` key wires it up.
+> Somente `name` e `description` pertencem ao schema. `license`, `allowed-tools`, `compatibility` e `metadata` não são reconhecidas. Não as adicione nem presuma que `LICENSE.txt` seja conectado por `license:`.
 
-## The description Drives Auto-Loading
+## A descrição controla o carregamento automático
 
-Copilot reads only `name` and `description` during discovery, then decides whether to pull in the full skill. A vague description means the skill never activates. Include three things:
+O Copilot lê somente `name` e `description` durante a descoberta. Inclua:
 
-1. **What** the skill does (its capability).
-2. **When** to use it — concrete triggers, file types, or phrasings the user would type.
-3. **Keywords** the user is likely to mention.
-
-Good — specific enough to activate reliably:
+1. O que a skill faz.
+2. Quando usá-la, com gatilhos, tipos de arquivo ou frases concretas.
+3. Palavras-chave que a pessoa usuária provavelmente escreverá.
 
 ```yaml
-description: "Use when creating, editing, or generating draw.io diagram files (.drawio, .drawio.svg, .drawio.png), flowcharts, sequence diagrams, or ER diagrams."
+# Bom: específico
+description: "Use ao criar ou gerar arquivos draw.io, fluxogramas, diagramas de sequência ou diagramas ER."
+
+# Ruim: vago
+description: "Auxiliares de diagrama"
 ```
 
-Poor — too vague to ever activate:
+Coloque o valor entre aspas. Use aspas simples quando houver gatilhos entre aspas duplas.
 
-```yaml
-description: "Diagram helpers"
-```
+## Formato obrigatório do corpo
 
-Quote the value. Use single quotes when the description embeds double-quoted trigger phrases, so you do not have to escape them.
+Depois do frontmatter, use um título `#` em sentence case e estas seções, na ordem:
 
-## Required Body Shape in This Repository
+- `## Quando invocar`: três ou quatro solicitações realistas entre aspas.
+- Uma ou mais seções de procedimento com tabelas, checklists ou etapas.
+- `## Modelo de saída`: bloco cercado com o artefato exato.
+- `## Portão de qualidade`: checklist `- [ ]`.
 
-After the frontmatter, every workshop skill uses one `#` title in sentence case, then these sections in order. This is the standard the whole `.github/skills/` tree is held to:
+Seções como `## Armadilhas`, `## Solução de problemas` e `## Referências` são opcionais quando agregarem informação.
 
-- `## When to invoke` — three or four realistic, quoted user requests that should trigger the skill.
-- One or more procedure sections — the actual decision tables, checklists, or step recipes.
-- `## Output template` — a fenced block showing the exact artifact the skill produces.
-- `## Quality gate` — a `- [ ]` checklist the work must pass before it is considered done.
+## Divulgação progressiva
 
-```markdown
-## When to invoke
-
-- "Draw a sequence diagram for the payment flow."
-- "Turn this ER sketch into a .drawio file."
-
-## Generating the diagram
-
-Decision tables, recipes, and style rules go here.
-
-## Output template
-
-The exact artifact the skill produces.
-
-## Quality gate
-
-- [ ] Verifiable criterion
-```
-
-Add `## Gotchas`, `## Troubleshooting`, or `## References` sections when they carry real signal, but the four above are mandatory.
-
-## Progressive Disclosure
-
-Skills load in three levels, so install cost stays low:
-
-| Level | What loads | When |
+| Nível | Conteúdo carregado | Momento |
 |---|---|---|
-| Discovery | `name` and `description` only | Always |
-| Instructions | The full `SKILL.md` body | When the request matches the description |
-| Resources | Scripts, references, templates | Only when the body links to them and Copilot follows the link |
+| Descoberta | Somente `name` e `description` | Sempre |
+| Instruções | Corpo completo de `SKILL.md` | Quando a solicitação corresponde à descrição |
+| Recursos | Scripts, referências e modelos | Quando o corpo os vincula e o Copilot segue o link |
 
-Keep the `SKILL.md` body focused. Past roughly 200 lines, move deep material into `references/` and link to it, so Copilot pulls detail on demand instead of paying for it upfront. Treat about 500 lines as a hard ceiling.
+Mantenha o corpo focado. Após cerca de 200 linhas, mova detalhes para `references/` e vincule-os. Considere 500 linhas o limite rígido.
 
-## Bundling Resources
+## Inclusão de recursos
 
-| Folder | Holds | Read into context? |
+| Pasta | Conteúdo | Lido no contexto? |
 |---|---|---|
-| `scripts/` | Executable automation (`.py`, `.sh`, `.ts`) | Only when run |
-| `references/` | Documentation Copilot reads to decide | Yes, when linked |
-| `templates/` | Scaffolds Copilot modifies and builds on | Yes, when linked |
-| `assets/` | Static files emitted unchanged in output | No |
+| `scripts/` | Automação executável (`.py`, `.sh`, `.ts`) | Somente ao executar |
+| `references/` | Documentação usada pelo Copilot para decidir | Sim, quando vinculada |
+| `templates/` | Estruturas que o Copilot modifica | Sim, quando vinculadas |
+| `assets/` | Arquivos estáticos emitidos sem alteração | Não |
 
-The `templates/` versus `assets/` split is about intent: if Copilot edits the file, it is a template; if the file is emitted as-is, it is an asset. Reference bundled files with paths relative to the skill directory, for example `[the validator](./scripts/validate-drawio.py)`.
+Use `templates/` quando o Copilot editar o arquivo e `assets/` quando o emitir sem mudanças. Referencie arquivos por paths relativos, como [o validador](../skills/draw-io-diagram-generator/scripts/validate-drawio.py).
 
-Prefer a script over regenerated inline code when the same logic would be rewritten on each run, when deterministic behavior matters (file edits, API calls), or when the operation deserves its own tests. Scripts should expose `--help`, fail with clear messages, store no secrets, and use relative paths.
+Prefira scripts a código inline regenerado quando a lógica se repetir, exigir determinismo ou merecer testes. Scripts devem oferecer `--help`, falhar com mensagens claras, não armazenar segredos e usar paths relativos.
 
-## Writing High-Impact Skills
+## Como escrever skills de alto impacto
 
-- **Teach only what Copilot would otherwise get wrong.** Skip language syntax and first-page documentation; spend the budget on internal conventions, non-obvious defaults, version-specific quirks, and domain workflows.
-- **Guard the shared description budget.** Every installed skill's description competes for the same discovery window. Keep descriptions short and keyword-dense.
-- **Gotchas are the highest-signal content.** A proactive "never do X because Y" prevents a whole class of mistakes; add one every time Copilot produces a wrong result.
-- **Prefer flexible guidance to rigid steps** for open-ended work. Reserve numbered steps for procedures where sequence truly matters (build, deploy, setup).
+- Ensine somente o que o Copilot provavelmente erraria: convenções internas, padrões não óbvios, particularidades de versão e fluxos de domínio.
+- Mantenha descrições curtas e concentradas em palavras-chave, pois todas competem pela mesma janela de descoberta.
+- Registre armadilhas no formato "nunca faça X porque Y" quando o Copilot produzir um resultado incorreto.
+- Prefira orientação flexível em trabalhos abertos e reserve etapas numeradas para sequências obrigatórias, como build, implantação e setup.
 
-Rigid steps bind Copilot to one file layout and rot quickly:
+## Convenções
 
-```text
-1. Open src/api/handlers.ts
-2. Find processOrder
-3. Add a try-catch around lines 45-60
-```
-
-Flexible guidance adapts to the real code:
-
-```text
-When hardening error handling in API handlers:
-- Wrap every database call in the project's error-handling utility
-- Log failures with enough context to debug in production
-```
-
-## Conventions
-
-| Rule | Rationale |
+| Regra | Justificativa |
 |---|---|
-| Frontmatter carries only `name` and `description` | Any other key is ignored and hides a false assumption |
-| `name` equals the skill's directory name exactly | A mismatch makes the skill silently fail to load |
-| `description` says *when* to use the skill, in 1024 keyword-dense characters or fewer | It is the only text discovery sees; vague text never activates |
-| Body follows `## When to invoke` then a procedure then `## Output template` then `## Quality gate` | Matches the standard every workshop skill is held to |
-| Deep detail moves to `references/` past roughly 200 lines | Keeps the discovery and instruction levels cheap |
-| Scripts expose `--help`, handle errors, and store no secrets | Bundled automation must be safe and self-describing |
+| Frontmatter contém somente `name` e `description` | Outras chaves são ignoradas e ocultam suposições falsas |
+| `name` é exatamente igual ao diretório da skill | Divergência impede o carregamento silenciosamente |
+| `description` informa quando usar a skill em até 1.024 caracteres | É o único texto lido na descoberta |
+| Corpo segue invocação, procedimento, modelo de saída e portão de qualidade | Corresponde ao padrão da imersão |
+| Detalhes profundos vão para `references/` após cerca de 200 linhas | Reduz o custo de contexto |
+| Scripts oferecem `--help`, tratam erros e não guardam segredos | Automação incluída deve ser segura e autoexplicativa |
 
-## Do / Do Not
+## Faça / Não faça
 
-| Do | Do not |
+| Faça | Não faça |
 |---|---|
-| Name the folder and `name` identically | Rename one without the other |
-| Write a trigger-rich `description` | Ship a vague description such as "helpers" |
-| Keep only `name` and `description` in frontmatter | Add `license`, `allowed-tools`, `compatibility`, or `metadata` |
-| Link bundled files with relative paths | Hardcode absolute or machine-specific paths |
-| Split large skills into `references/` | Let one `SKILL.md` grow past roughly 500 lines |
-| Put the four required sections in every skill | Drop `## When to invoke`, `## Output template`, or `## Quality gate` |
+| Use o mesmo nome na pasta e em `name` | Renomeie somente um deles |
+| Escreva `description` rica em gatilhos | Use descrição vaga como "auxiliares" |
+| Mantenha somente duas chaves no frontmatter | Adicione chaves fora do schema |
+| Vincule arquivos incluídos por paths relativos | Fixe paths absolutos ou específicos de máquina |
+| Divida skills grandes em `references/` | Deixe um `SKILL.md` ultrapassar cerca de 500 linhas |
+| Inclua as quatro seções obrigatórias | Omita invocação, modelo de saída ou portão de qualidade |
 
-## Checklist Before Opening a PR
+## Lista de verificação antes de abrir uma PR
 
-- [ ] `SKILL.md` frontmatter contains only `name` and `description`, both quoted
-- [ ] `name` is lowercase and hyphenated, 64 characters or fewer, and identical to the parent directory name
-- [ ] `description` states what the skill does and when to use it, and stays within 1024 characters
-- [ ] The body has `## When to invoke`, at least one procedure section, `## Output template`, and `## Quality gate`
-- [ ] Content teaches non-obvious knowledge, not language syntax or first-page docs
-- [ ] Any bundled scripts, references, templates, or assets are linked with relative paths
-- [ ] The body stays focused, with deep detail in `references/`, and no emoji or inline lint pragma was introduced
+- [ ] O frontmatter contém somente `name` e `description`, ambos entre aspas
+- [ ] `name` usa minúsculas e hifens, possui até 64 caracteres e é idêntico ao diretório pai
+- [ ] `description` informa o que a skill faz e quando usá-la, em até 1.024 caracteres
+- [ ] O corpo possui invocação, ao menos um procedimento, modelo de saída e portão de qualidade
+- [ ] O conteúdo ensina conhecimento não óbvio, não sintaxe básica
+- [ ] Scripts, referências, modelos e assets usam paths relativos
+- [ ] O corpo permanece focado, sem emojis nem pragma de lint inline

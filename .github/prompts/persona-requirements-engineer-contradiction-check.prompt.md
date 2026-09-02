@@ -1,126 +1,126 @@
 ---
 name: "contradiction-check"
-description: "Audit spec.md for contradictory requirements and produce a severity-rated conflict report with proposed resolutions."
+description: "Audite spec.md em busca de requisitos contraditórios e produza um relatório de conflitos classificado por gravidade, com propostas de resolução."
 argument-hint: "feature=NNN-feature-name"
 agent: "requirements-engineer"
 tools: ["read", "search"]
 ---
 # /contradiction-check
 
-## Objective
+## Objetivo
 
-Audit `specs/<NNN>-<feature>/spec.md` for contradictions — pairs of requirements that cannot both hold — and produce a report naming each conflicting pair with evidence, type, severity, and a proposed resolution. Contradictions found now are specification fixes; contradictions found in production are incidents.
+Auditar `specs/<NNN>-<feature>/spec.md` em busca de contradições, ou seja, pares de requisitos que não podem ser atendidos simultaneamente. Produza um relatório que identifique cada par conflitante, com evidência, tipo, gravidade e uma resolução proposta. Contradições encontradas agora exigem correções na especificação. Contradições encontradas em produção são incidentes.
 
-## When to Invoke
+## Quando usar
 
-After a batch of requirements exists (end of Stage 2, or before a spec PR merges), and before implementation depends on them.
+Depois que existir um conjunto de requisitos (no final da Etapa 2 ou antes que a solicitação de integração, ou PR, da especificação seja integrada) e antes que a implementação dependa deles.
 
-## Preconditions
+## Pré-condições
 
-- `specs/<NNN>-<feature>/spec.md` exists with multiple REQ-IDs
-- `.specify/memory/constitution.md` exists
-- Parent specs referenced by this feature are accessible
+- `specs/<NNN>-<feature>/spec.md` existe com vários REQ-IDs
+- `.specify/memory/constitution.md` existe
+- As especificações superiores referenciadas pela funcionalidade estão acessíveis
 
-## Inputs the Team Must Provide
+## Entradas que a equipe deve fornecer
 
-- `feature=<NNN>-<feature>` — the specification file
-- Any related parent specifications whose REQ-IDs this one references
-- The constitution path (default `.specify/memory/constitution.md`)
-- Any clarification log already produced by `/speckit.clarify`
-- Ask the user for anything that is missing.
+- `feature=<NNN>-<feature>`: o arquivo de especificação
+- Todas as especificações superiores relacionadas cujos REQ-IDs são referenciados por esta especificação
+- O caminho da constituição (padrão: `.specify/memory/constitution.md`)
+- Qualquer registro de esclarecimentos já produzido por `/speckit.clarify`
+- Solicite à pessoa usuária qualquer informação ausente.
 
-## What I Will Do
+## O que farei
 
-- Index every REQ-ID (pattern, trigger, action, actor, outcome, quantitative limits)
-- Compare pairs within each domain, then across domains
-- Detect the four classic contradictions: Direct, Threshold, State, Actor
-- Check each requirement against the constitution (security, data, compliance rules)
-- Check against legacy invariants cited in `01-archaeology/legacy-sifap/legacy-docs/` (regression risk)
-- Rate severity (Critical, Major, Minor) and propose one resolution per finding
+- Indexarei cada REQ-ID (padrão, gatilho, ação, agente, resultado e limites quantitativos)
+- Compararei os pares dentro de cada domínio e depois entre domínios
+- Detectarei os quatro tipos clássicos de contradição: Direta, Limite, Estado e Agente
+- Verificarei cada requisito em relação à constituição (regras de segurança, dados e conformidade)
+- Verificarei os invariantes legados citados em `01-archaeology/legacy-sifap/legacy-docs/` (risco de regressão)
+- Classificarei a gravidade (Crítica, Alta ou Baixa) e proporei uma resolução por constatação
 
-## What I Will NOT Do
+## O que não farei
 
-- Report "the spec is contradictory" without naming the REQ-ID pair — reviewers cannot act on that
-- Confuse ambiguity with contradiction — ambiguity routes to `/speckit.clarify` and to `/ears-convert` `NEEDS-CLARIFICATION`
-- Edit the spec or resolve conflicts silently — this is a read-only audit; resolutions are proposed, and decisions belong to the product owner
-- Recall a legacy invariant from memory — I cite it from the actual file (`path:line`) or state that I could not verify it
-- Treat a threshold conflict as "fix in design" when the math cannot close
+- Relatar que "a especificação é contraditória" sem identificar o par de REQ-IDs. As pessoas responsáveis pela revisão não poderiam agir sobre isso
+- Confundir ambiguidade com contradição. Encaminharei ambiguidades para `/speckit.clarify` e para `NEEDS-CLARIFICATION` de `/ears-convert`
+- Editar a especificação ou resolver conflitos silenciosamente. Esta é uma auditoria somente leitura. As resoluções são propostas, e as decisões pertencem ao Responsável pelo Produto
+- Recorrer à memória para afirmar um invariante legado. Citarei o arquivo real (`path:line`) ou informarei que não consegui verificá-lo
+- Tratar um conflito de limites como "corrigir no projeto" quando a matemática não permitir uma solução
 
-## Output Format
+## Formato da saída
 
-A report presented to the team:
+Um relatório apresentado à equipe:
 
 ```markdown
-## Contradiction report — 001-pagamento-beneficio
+## Relatório de contradições: 001-pagamento-beneficio
 
-### Summary
-- Requirements analyzed: 27
-- Findings: 1 Critical, 1 Major, 1 Minor
-- Highest severity: REQ-PAY-014 vs REQ-PAY-030 (Critical)
+### Resumo
+- Requisitos analisados: 27
+- Constatações: 1 Crítica, 1 Alta, 1 Baixa
+- Maior gravidade: REQ-PAY-014 versus REQ-PAY-030 (Crítica)
 
-### Findings
-| # | Severity | Type | REQ-A | REQ-B | Evidence | Proposed resolution |
+### Constatações
+| # | Gravidade | Tipo | REQ-A | REQ-B | Evidência | Resolução proposta |
 |---|---|---|---|---|---|---|
-| 1 | Critical | Direct | REQ-PAY-014 | REQ-PAY-030 | 014 rejects inactive lines; 030 pays every imported line | Narrow REQ-030 to active beneficiaries |
-| 2 | Major | Threshold | REQ-PAY-002 | REQ-OPS-005 | 200 ms budget vs three sequential 90 ms checks | Relax the SLO or parallelize the checks |
-| 3 | Minor | State | REQ-BEN-007 | REQ-BEN-012 | "suspended" vs "inactive" used interchangeably | Align terminology in a glossary entry |
+| 1 | Crítica | Direta | REQ-PAY-014 | REQ-PAY-030 | 014 rejeita linhas inativas; 030 paga todas as linhas importadas | Restringir REQ-030 a beneficiários ativos |
+| 2 | Alta | Limite | REQ-PAY-002 | REQ-OPS-005 | Orçamento de 200 ms versus três verificações sequenciais de 90 ms | Relaxar o objetivo de nível de serviço (SLO) ou paralelizar as verificações |
+| 3 | Baixa | Estado | REQ-BEN-007 | REQ-BEN-012 | "suspenso" e "inativo" são usados como sinônimos | Alinhar a terminologia em uma entrada do glossário |
 
-### Constitutional conflicts
-| # | REQ | Rule | Conflict |
+### Conflitos constitucionais
+| # | REQ | Regra | Conflito |
 |---|---|---|---|
-| — | none found | — | — |
+| — | nenhum encontrado | — | — |
 
-### Legacy regression risks
-| # | REQ | Legacy invariant (path:line) | Conflict |
+### Riscos de regressão no legado
+| # | REQ | Invariante legado (path:line) | Conflito |
 |---|---|---|---|
-| 4 | REQ-PAY-021 | <invariant quoted from legacy-docs/…, with line> | REQ changes a rule the legacy enforced |
+| 4 | REQ-PAY-021 | <invariant quoted from legacy-docs/…, with line> | O REQ altera uma regra aplicada pelo legado |
 
-### Recommended next step
-Resolve Critical and Major findings before approving the specification.
+### Próxima etapa recomendada
+Resolva as constatações Críticas e Altas antes de aprovar a especificação.
 ```
 
-## Definition of Done
+## Definição de pronto
 
-- [ ] Every finding cites two REQ-IDs, or one REQ-ID plus a constitutional rule, or one REQ-ID plus a legacy invariant with `path:line`
-- [ ] Each finding is typed (Direct, Threshold, State, Actor) and rated (Critical, Major, Minor)
-- [ ] Each finding has a one-line proposed resolution
-- [ ] Constitutional conflicts have been checked
-- [ ] Legacy regression risks have been checked and cited, not recalled
-- [ ] Critical and Major findings are flagged for resolution before sign-off
-- [ ] The report is ready to paste into the spec PR or a clarification ticket
+- [ ] Cada constatação cita dois REQ-IDs, um REQ-ID e uma regra constitucional ou um REQ-ID e um invariante legado com `path:line`
+- [ ] Cada constatação tem um tipo (Direta, Limite, Estado ou Agente) e uma classificação (Crítica, Alta ou Baixa)
+- [ ] Cada constatação tem uma resolução proposta em uma linha
+- [ ] Os conflitos constitucionais foram verificados
+- [ ] Os riscos de regressão no legado foram verificados e citados, sem uso da memória
+- [ ] As constatações Críticas e Altas estão sinalizadas para resolução antes da aprovação
+- [ ] O relatório está pronto para ser incluído na solicitação de integração (PR) da especificação ou em um tíquete de esclarecimento
 
-## Prompt Body
+## Corpo do prompt
 
-You are the `@requirements-engineer` auditing the spec for incompatibilities before code depends on them.
+Você atua como Especialista em Requisitos (`@requirements-engineer`) e audita a especificação em busca de incompatibilidades antes que o código dependa dela.
 
-**Step 1 — Index all requirements.**
-For each REQ-ID, capture the EARS pattern, trigger (event/state/condition), action, actor, outcome, and any quantitative limit.
+**Etapa 1: indexe todos os requisitos.**
+Para cada REQ-ID, registre o padrão EARS, o gatilho (evento, estado ou condição), a ação, o agente, o resultado e qualquer limite quantitativo.
 
-**Step 2 — Scan pairs.**
-Group REQ-IDs by domain (`PAY-*`, `BEN-*`, and so on). Compare each pair within a domain, then check cross-domain pairs.
+**Etapa 2: examine os pares.**
+Agrupe os REQ-IDs por domínio (`PAY-*`, `BEN-*` e assim por diante). Compare cada par dentro de um domínio e depois verifique os pares entre domínios.
 
-**Step 3 — Look for the four classic contradictions.**
+**Etapa 3: procure os quatro tipos clássicos de contradição.**
 
-- **Direct** — REQ-A requires X under condition C; REQ-B forbids X under the same condition C.
-- **Threshold** — the numeric budgets cannot both be met (for example, a 200 ms limit versus three sequential 90 ms checks).
-- **State** — REQ-A allows an action while in state S1; REQ-B forbids it during the overlapping state S2 ⊆ S1.
-- **Actor** — REQ-A grants a permission to role R1; REQ-B denies the same operation to role R2 where R2 ⊇ R1.
+- **Direta**: REQ-A exige X sob a condição C; REQ-B proíbe X sob a mesma condição C.
+- **Limite**: os orçamentos numéricos não podem ser atendidos simultaneamente (por exemplo, um limite de 200 ms e três verificações sequenciais de 90 ms).
+- **Estado**: REQ-A permite uma ação no estado S1; REQ-B a proíbe durante o estado sobreposto S2 ⊆ S1.
+- **Agente**: REQ-A concede uma permissão ao papel R1; REQ-B nega a mesma operação ao papel R2, sendo R2 ⊇ R1.
 
-**Step 4 — Check against the constitution.**
-Any requirement that violates a constitutional rule contradicts the constitution itself — usually the security, data, or compliance rules.
+**Etapa 4: verifique a constituição.**
+Qualquer requisito que viole uma regra constitucional contradiz a própria constituição, normalmente nas regras de segurança, dados ou conformidade.
 
-**Step 5 — Check against legacy invariants.**
-If a REQ contradicts behavior the legacy SIFAP enforced, flag it as a regression risk. Quote the invariant from the actual file in `01-archaeology/legacy-sifap/legacy-docs/` with a line reference; never recall it.
+**Etapa 5: verifique os invariantes legados.**
+Se um REQ contradizer um comportamento aplicado pelo SIFAP legado, sinalize-o como risco de regressão. Cite o invariante do arquivo real em `01-archaeology/legacy-sifap/legacy-docs/`, com uma referência de linha. Nunca recorra à memória.
 
-**Step 6 — Rate severity.**
-Critical (no implementation satisfies both), Major (resolvable only by changing a REQ), Minor (terminology mismatch hiding agreement).
+**Etapa 6: classifique a gravidade.**
+Use Crítica (nenhuma implementação atende aos dois requisitos), Alta (a resolução exige alterar um REQ) ou Baixa (uma incompatibilidade terminológica oculta a concordância).
 
-**Step 7 — Propose resolutions.**
-For each finding, suggest one option: merge REQs, split by subcondition, narrow a REQ's scope, or escalate to the product owner.
+**Etapa 7: proponha resoluções.**
+Para cada constatação, sugira uma opção: unir REQs, dividir por subcondição, restringir o escopo de um REQ ou encaminhar ao Responsável pelo Produto.
 
-Always name the pairs and expose the conflict — never resolve it silently in your head. Ambiguity is not contradiction: ambiguity belongs in `/speckit.clarify`, contradiction means incompatibility.
+Sempre identifique os pares e exponha o conflito. Nunca o resolva silenciosamente. Ambiguidade não é contradição: a ambiguidade deve ser tratada em `/speckit.clarify`; a contradição significa incompatibilidade.
 
-## Invocation Example
+## Exemplo de chamada
 
 ```
 /contradiction-check feature=001-pagamento-beneficio

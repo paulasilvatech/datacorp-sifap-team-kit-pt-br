@@ -1,70 +1,70 @@
-# Stage 1 — Archaeology
+# Estágio 1 — Arqueologia
 
-> **Track:** [Team Kit](../README.md) › **Stage 1 — Archaeology**
+> **Trilha:** [Kit do Time](../README.md) › **Estágio 1 — Arqueologia**
 
-**Stage 1 overview.** Read this page before opening the GUIDE; it presents the objective, expected artifacts, and participants.
+**Visão geral do Estágio 1.** Leia esta página antes de abrir o GUIDE; ela apresenta o objetivo, os artefatos esperados e os participantes.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | All 5 team pairs |
-| **Prerequisites** | None — this is the starting point |
-| **Estimated time** | 90 min (11:00–12:00 + 13:30–14:00) |
-| **Stage** | Stage 1 — Archaeology |
-| **Expected outcome** | Rules catalog, dependency map, glossary, and discovery report |
+| **Público-alvo** | As 5 duplas do time |
+| **Pré-requisitos** | Nenhum — este é o ponto de partida |
+| **Tempo estimado** | 90 min (11:00–12:00 + 13:30–14:00) |
+| **Estágio** | Estágio 1 — Arqueologia |
+| **Resultado esperado** | Catálogo de regras, mapa de dependências, glossário e relatório de descoberta |
 
-![Stage 1](https://img.shields.io/badge/Stage-1%20%C2%B7%20Archaeology-171717?style=flat-square) ![Mandatory gate](https://img.shields.io/badge/Gate-Hard%20Gate-404040?style=flat-square) ![All pairs in parallel](https://img.shields.io/badge/Pairs-All%20in%20parallel-737373?style=flat-square)
+![Estágio 1](https://img.shields.io/badge/Est%C3%A1gio-1%20%C2%B7%20Arqueologia-171717?style=flat-square) ![Gate obrigatório](https://img.shields.io/badge/Crit%C3%A9rio-Obrigat%C3%B3rio-404040?style=flat-square) ![Todas as duplas em paralelo](https://img.shields.io/badge/Duplas-Todas%20em%20paralelo-737373?style=flat-square)
 
 > [!IMPORTANT]
-> **Read first:** [`LEGACY-EXPLORATION-CHECKLIST.md`](LEGACY-EXPLORATION-CHECKLIST.md) — mandatory gate before starting Stage 2. No EARS requirement is accepted without traceability to legacy code.
+> **Leia primeiro:** [`LEGACY-EXPLORATION-CHECKLIST.md`](LEGACY-EXPLORATION-CHECKLIST.md) — gate obrigatório antes de começar o Estágio 2. Nenhum requisito EARS é aceito sem rastreabilidade até o código legado.
 
 > [!TIP]
-> **The system is running, not just archived.** The same data you are about to study can be queried through the shared viewer terminal at <https://sifap-lab-438k30.eastus2.cloudapp.azure.com/terminal/>. Sign in as `viewer` with the password shared privately by the facilitator. Reading the source is still the gate; the live screen only makes the evidence concrete.
+> **O sistema está no ar, não apenas arquivado.** Os mesmos programas que você está prestes a ler executam em um ambiente compartilhado em <https://sifap-lab-438k30.eastus2.cloudapp.azure.com> — `/terminal/` abre uma sessão Natural real contra os arquivos Adabas carregados. Peça as credenciais ao facilitador. Ler o código-fonte continua sendo o gate; o sistema no ar existe para tornar a evidência concreta.
 
 ---
 
-## What Stage 1 is
+## O que é o Estágio 1
 
-**Software archaeology** is the practice of extracting knowledge from legacy systems by systematically reading source code without modifying it. In this workshop, archaeology has a precise objective: gather enough evidence to write traceable requirements in Stage 2.
+**Arqueologia de software** é a prática de extrair conhecimento de sistemas legados lendo o código-fonte de forma sistemática, sem modificá-lo. Nesta imersão, a arqueologia tem um objetivo preciso: reunir evidência suficiente para escrever requisitos rastreáveis no Estágio 2.
 
-SIFAP, the Payment Inspection and Administration System, has operated for 29 years. Most knowledge about its business rules is in the Natural code, not in documentation. Without reading the code, the team would write specifications based on assumptions—which CI rejects because it requires a valid `source_legacy:`.
-
----
-
-## Where this fits in the workshop flow
-
-![Day timeline: pre-event, 4 stages, and demo, with the three H1, H2, and H3 handoffs](../assets/timeline-stages.svg)
+O SIFAP, o Sistema de Fiscalização e Administração de Pagamentos, opera há 29 anos. A maior parte do conhecimento sobre suas regras de negócio está no código Natural, não em documentação. Sem ler o código, o time escreveria especificações baseadas em suposições — o que o CI rejeita, porque exige um `source_legacy:` válido.
 
 ---
 
-## Who works here
+## Onde isto se encaixa no fluxo da imersão
 
-All 5 pairs work in parallel, each responsible for 3 Natural programs. Pair 1 (Vision) leads the synthesis at the end of the stage. See [`GUIDE.md`](GUIDE.md) for the full assignment.
+![Timeline do dia: pré-evento, 4 estágios e demo, com os três handoffs H1, H2 e H3](../assets/timeline-stages.svg)
 
 ---
 
-## Stage 1 artifacts
+## Quem trabalha aqui
 
-| File | Purpose |
+As 5 duplas trabalham em paralelo, cada uma responsável por 3 programas Natural. A Dupla 1 (Visão) lidera a síntese no fim do estágio. Veja [`GUIDE.md`](GUIDE.md) para a distribuição completa.
+
+---
+
+## Artefatos do Estágio 1
+
+| Arquivo | Finalidade |
 |---|---|
-| [`LEGACY-EXPLORATION-CHECKLIST.md`](LEGACY-EXPLORATION-CHECKLIST.md) | **Mandatory gate.** Program ownership by pair and completion criteria before Stage 2. |
-| [`GUIDE.md`](GUIDE.md) | Step-by-step guide with a timed schedule. |
-| [`glossary.md`](glossary.md) | Glossary of SIFAP domain terms and abbreviations. |
-| [`business-rules-catalog.md`](business-rules-catalog.md) | Catalog of extracted business rules with mandatory `Source Program`. |
-| [`dependency-map.md`](dependency-map.md) | Dependency map between programs and DDMs. |
-| [`discovery-report.md`](discovery-report.md) | Discovery report consolidating the stage evidence. |
-| [`mysteries-checklist.md`](mysteries-checklist.md) | Traceability checklist for open questions. |
-| [`mysteries-found.md`](mysteries-found.md) | Detailed record of open questions with evidence and owner. |
+| [`LEGACY-EXPLORATION-CHECKLIST.md`](LEGACY-EXPLORATION-CHECKLIST.md) | **Gate obrigatório.** Responsabilidade por programa em cada dupla e critérios de conclusão antes do Estágio 2. |
+| [`GUIDE.md`](GUIDE.md) | Guia passo a passo com cronograma cronometrado. |
+| [`glossary.md`](glossary.md) | Glossário dos termos e abreviações do domínio SIFAP. |
+| [`business-rules-catalog.md`](business-rules-catalog.md) | Catálogo das regras de negócio extraídas, com `Programa de origem` obrigatório. |
+| [`dependency-map.md`](dependency-map.md) | Mapa de dependências entre programas e DDMs. |
+| [`discovery-report.md`](discovery-report.md) | Relatório de descoberta que consolida as evidências do estágio. |
+| [`mysteries-checklist.md`](mysteries-checklist.md) | Checklist de rastreabilidade das questões em aberto. |
+| [`mysteries-found.md`](mysteries-found.md) | Registro detalhado das questões em aberto, com evidência e responsável. |
 
-The legacy code is in [`legacy-sifap/`](legacy-sifap/) (shared by the kit).
+O código legado está em [`legacy-sifap/`](legacy-sifap/) (compartilhado pelo kit).
 
-The shared Azure lab is operated outside this repository. Participants do not receive deployment or administration material; use the read-only viewer described in [`docs/legacy-system-access.md`](../docs/legacy-system-access.md).
+O laboratório compartilhado do Azure é operado fora deste repositório. Participantes não recebem material de implantação ou administração; use o visualizador somente leitura descrito em [`docs/legacy-system-access.md`](../docs/legacy-system-access.md).
 
 ---
 
-### Continue reading
+### Continue lendo
 
-| Previous | Next |
+| Anterior | Próximo |
 |---|---|
-| [Team Kit](../README.md)<br/><sub>Main repository hub.</sub> | [Stage 1 GUIDE](GUIDE.md)<br/><sub>90-minute timed schedule for reading the legacy system and cataloging rules.</sub> |
+| [Kit do Time](../README.md)<br/><sub>Hub principal do repositório.</sub> | [GUIDE do Estágio 1](GUIDE.md)<br/><sub>Cronograma cronometrado de 90 minutos para ler o sistema legado e catalogar regras.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Voltar ao índice do kit](../README.md)</sub>

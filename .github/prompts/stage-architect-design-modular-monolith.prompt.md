@@ -1,111 +1,96 @@
 ---
 name: "design-modular-monolith"
-description: "Records in plan.md only the Modular Monolith design required for the selected feature."
+description: "Registra em plan.md somente o projeto do Monólito Modular necessário à funcionalidade selecionada."
 argument-hint: "feature=NNN-feature-name"
 agent: "architect"
 tools: ["read", "search", "edit"]
 ---
 # /design-modular-monolith
 
-## Objective
+## Objetivo
 
-Record in `specs/<NNN>-<feature>/plan.md` only the design decisions that unblock the first implementation. The prompt does not create a generic architecture, endpoints, contracts, or diagrams without evidence from the feature.
+Registrar em `specs/<NNN>-<feature>/plan.md` somente as decisões de projeto que liberam a primeira implementação. Não criar arquitetura genérica, endpoints, contratos nem diagramas sem evidências da funcionalidade.
 
-## When to Invoke
+## Quando usar
 
-After `/write-ears-spec` has produced `specs/<NNN>-<feature>/spec.md` with every REQ-ID carrying `source_legacy:`, and the team has stated one concrete design question that blocks the first task — still on the `spec/<NNN>-<feature>` branch.
+Depois que `/write-ears-spec` produzir `specs/<NNN>-<feature>/spec.md`, com `source_legacy:` em cada REQ-ID, e a equipe declarar uma questão concreta de projeto que bloqueie a primeira tarefa, ainda na branch `spec/<NNN>-<feature>`.
 
 > [!NOTE]
-> Do not invoke it to design the whole system, to add modules no requirement needs, or before the spec exists. It plans the smallest structure the first task requires.
+> Não use para projetar o sistema inteiro, adicionar módulos sem requisito ou trabalhar antes da especificação. Planeje a menor estrutura necessária.
 
-## Preconditions
+## Pré-condições
 
-- `specs/<NNN>-<feature>/spec.md` exists and every REQ-ID has `source_legacy:`
-- The team confirmed the feature scope in Stage 2
-- The design question to resolve has been stated
+- `spec.md` existe e cada REQ-ID tem `source_legacy:`
+- A equipe confirmou o escopo e declarou a questão de projeto
 
-## Inputs the Team Must Provide
+## Entradas que a equipe deve fornecer
 
-- `feature=<NNN>-<feature-name>` — the folder under `specs/` that already holds `spec.md` and receives `plan.md`
-- The concrete design question blocking the first task (for example, which module owns a DDM's data)
-- Any team constraint that narrows the design (owned data, integration point, contract)
+- `feature=<NNN>-<feature-name>`
+- A questão concreta que bloqueia a primeira tarefa
+- Restrições de dados, integração ou contrato
 
-## What I Will Do
+## O que farei
 
-- Read `spec.md`, any existing `plan.md`, and the scope decisions in `02-modern-spec/scope-decisions.md`
-- Request evidence for any boundary, integration, or contract the feature does not describe; record the question instead of filling the gap
-- Describe in `plan.md` the smallest module, data, and communication structure the first task requires
-- Create a Mermaid diagram or contract only when it resolves a concrete implementation question, and reference it from `plan.md`
-- Link each design decision to existing REQ-IDs and relevant supporting decisions
+- Lerei `spec.md`, `plan.md` existente e `02-modern-spec/scope-decisions.md`
+- Solicitarei evidências para limites, integrações e contratos não descritos
+- Descreverei a menor estrutura de módulos, dados e comunicação necessária
+- Criarei diagrama ou contrato somente se resolver uma questão concreta
+- Relacionarei cada decisão aos REQ-IDs e decisões de apoio
 
-## What I Will NOT Do
+## O que não farei
 
-- Suggest microservices — the target is a Modular Monolith
-- Write implementation code
-- Fill in requirements, endpoints, schemas, or decisions the team has not confirmed
-- Use `02-modern-spec/` as the location for `spec.md`, `plan.md`, or `tasks.md`
-- Require a fixed number of modules, diagrams, or contracts — reduce scope if Stage 2 runs short on time
+- Sugerir microsserviços, escrever código ou preencher requisitos e decisões não confirmados
+- Colocar `spec.md`, `plan.md` ou `tasks.md` em `02-modern-spec/`
+- Exigir quantidade fixa de módulos, diagramas ou contratos
 
-## Output Format
-
-Write the design to `specs/<NNN>-<feature>/plan.md` with this skeleton (values are illustrative):
+## Formato da saída
 
 ```markdown
-# Plan — <NNN>-<feature>
+# Plano — <NNN>-<feature>
 
-## Modules (Modular Monolith)
+## Módulos (Monólito Modular)
 
-<one row per module — see the table below>
-
-## Open Design Questions
-
-- Q: <question the feature evidence does not answer yet> — owner: <name>, status: open
-```
-
-Record each module in a table:
-
-| Module | Responsibility | Owned data (DDM) | In-process interface | Serves REQ-ID |
+| Módulo | Responsabilidade | Dados próprios (DDM) | Interface em processo | Atende ao REQ-ID |
 |---|---|---|---|---|
 | `<module>` | <what it owns> | `<DDM>.ddm` | `<Interface>` | REQ-NNN |
 
+## Questões de projeto em aberto
+- P: <question the feature evidence does not answer yet> — responsável: <name>, status: open
+```
+
 > [!NOTE]
-> Add a Mermaid `flowchart` only when it resolves a concrete implementation question, then reference it from `plan.md`.
+> Adicione um `flowchart` Mermaid somente quando ele resolver uma questão concreta e referencie-o em `plan.md`.
 
-## Definition of Done
+## Definição de pronto
 
-- [ ] `plan.md` describes only the design required for the narrow feature
-- [ ] Every decision has evidence or an explicit open question
-- [ ] Every supporting artifact is linked from `plan.md`
-- [ ] The plan allows Pairs 3 and 4 to start the first task without creating additional scope
+- [ ] `plan.md` descreve somente o necessário à funcionalidade
+- [ ] Toda decisão tem evidência ou questão explícita em aberto
+- [ ] Artefatos de apoio estão vinculados
+- [ ] As duplas 3 e 4 podem iniciar a primeira tarefa sem criar escopo adicional
 
-## Prompt Body
+## Corpo do prompt
 
-You are the `@architect`. The team has an evidence-backed `spec.md` and one design question blocking the first implementation task. You plan the smallest structure that unblocks it — nothing more.
+Você é `@architect`. Há um `spec.md` apoiado por evidências e uma questão que bloqueia a primeira tarefa. Planeje somente o necessário.
 
-**Step 1 — Read the current state.**
-Open `specs/<NNN>-<feature>/spec.md`, any existing `plan.md`, and `02-modern-spec/scope-decisions.md`. Confirm every REQ-ID you will touch carries `source_legacy:`. If one does not, stop and return it to the team; do not design around an unsourced requirement.
+**Etapa 1 — Ler o estado atual.**
+Abra `spec.md`, qualquer `plan.md` e `02-modern-spec/scope-decisions.md`. Confirme `source_legacy:` em cada REQ-ID. Se faltar, interrompa e devolva o requisito à equipe.
 
-**Step 2 — State the design question.**
-Write the concrete question the first task needs answered (for example, "which module owns PAYMENT data, and how does the benefit module read it?"). If the feature evidence does not describe a boundary, integration, or contract the question depends on, record it as an open design question rather than inventing an answer.
+**Etapa 2 — Declarar a questão.**
+Registre a pergunta concreta, por exemplo, “qual módulo possui os dados PAYMENT e como o módulo de benefícios os lê?”. Se faltarem evidências de limite, integração ou contrato, registre uma questão em aberto.
 
-**Step 3 — Design the smallest structure.**
-Describe only the module(s), owned data, and communication the first task requires:
+**Etapa 3 — Projetar a menor estrutura.**
+Descreva módulo em linguagem de negócio, DDMs ou tabelas exclusivos, interface em processo e REQ-IDs atendidos. Nunca use HTTP entre serviços.
 
-- **Module** — one bounded area of the Modular Monolith, named in business language
-- **Owned data** — the DDM(s) or table(s) that module owns exclusively
-- **In-process interface** — the method or event other modules use; communication is in-process, never HTTP between services
-- **Served REQ-IDs** — the requirements this structure implements
+**Etapa 4 — Adicionar diagrama ou contrato somente quando necessário.**
+Crie `flowchart` Mermaid ou contrato de interface apenas se resolver a pergunta. Não desenhe o sistema inteiro nem defina endpoints sem requisito.
 
-**Step 4 — Add a diagram or contract only if it earns its place.**
-Create a Mermaid `flowchart` or an interface contract only when it resolves a concrete implementation question, then reference it from `plan.md`. Do not draw a full-system diagram or define endpoints no requirement needs.
+**Etapa 5 — Relacionar e escrever.**
+Vincule decisões e REQ-IDs e escreva em `specs/<NNN>-<feature>/plan.md`. Mantenha os artefatos Spec-Kit em `specs/<NNN>-<feature>/`. Se faltar tempo, reduza o escopo.
 
-**Step 5 — Link and write.**
-Link each decision to its REQ-IDs and supporting decisions, then write to `specs/<NNN>-<feature>/plan.md`. Keep `spec.md`, `plan.md`, and `tasks.md` in `specs/<NNN>-<feature>/`, never in `02-modern-spec/`. The target is a Modular Monolith, never microservices. If Stage 2 is short on time, reduce scope instead of adding speculative structure.
-
-## Invocation Example
+## Exemplo de chamada
 
 ```text
 /design-modular-monolith feature=001-benefit-calculation
 ```
 
-Expect `specs/001-benefit-calculation/plan.md` describing only the modules, owned data, and in-process interfaces the first task needs, each linked to a REQ-ID, with unresolved items listed as open design questions.
+Espere `specs/001-benefit-calculation/plan.md` somente com módulos, dados próprios e interfaces em processo necessários à primeira tarefa, relacionados a REQ-IDs, e questões pendentes.

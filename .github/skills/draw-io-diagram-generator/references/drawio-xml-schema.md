@@ -1,96 +1,96 @@
-# draw.io XML Schema Reference
+# Referência do esquema XML do draw.io
 
-Complete reference for the `.drawio` file format (mxGraph XML). Use this when generating, parsing, or validating diagram files.
+Referência completa do formato de arquivo `.drawio` (XML mxGraph). Use-a ao gerar, analisar ou validar arquivos de diagrama.
 
 ---
 
-## Top-Level Structure
+## Estrutura de nível superior
 
-Every `.drawio` file is XML with this root structure:
+Todo arquivo `.drawio` é um XML com esta estrutura-raiz:
 
 ```xml
-<!-- Set modified to the current ISO 8601 timestamp when generating a new file -->
+<!-- Defina modified com o timestamp ISO 8601 atual ao gerar um novo arquivo -->
 <mxfile host="Electron" modified=""
         agent="draw.io" version="26.0.0" type="device">
-  <diagram id="<unique-id>" name="<Page Name>">
+  <diagram id="<id-exclusivo>" name="<Nome da página>">
     <mxGraphModel ...attributes...>
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <!-- All content cells here -->
+        <!-- Todas as células de conteúdo entram aqui -->
       </root>
     </mxGraphModel>
   </diagram>
 </mxfile>
 ```
 
-### `<mxfile>` Attributes
+### Atributos de `<mxfile>`
 
-| Attribute | Required | Default | Description |
+| Atributo | Obrigatório | Padrão | Descrição |
 | ----------- | ---------- | --------- | ------------- |
-| `host` | No | `"app.diagrams.net"` | Origin editor (`"Electron"` for desktop/VS Code) |
-| `modified` | No | — | ISO 8601 timestamp |
-| `agent` | No | — | User agent string |
-| `version` | No | — | draw.io version |
-| `type` | No | `"device"` | Storage type |
+| `host` | Não | `"app.diagrams.net"` | Editor de origem (`"Electron"` para desktop/VS Code) |
+| `modified` | Não | — | Timestamp ISO 8601 |
+| `agent` | Não | — | String do agente de usuário |
+| `version` | Não | — | Versão do draw.io |
+| `type` | Não | `"device"` | Tipo de armazenamento |
 
-### `<diagram>` Attributes
+### Atributos de `<diagram>`
 
-| Attribute | Required | Description |
+| Atributo | Obrigatório | Descrição |
 | ----------- | ---------- | ------------- |
-| `id` | Yes | Unique page identifier (any string) |
-| `name` | Yes | Tab label shown in editor |
+| `id` | Sim | Identificador exclusivo da página (qualquer string) |
+| `name` | Sim | Rótulo da aba exibido no editor |
 
-### `<mxGraphModel>` Attributes
+### Atributos de `<mxGraphModel>`
 
-| Attribute | Type | Default | Description |
+| Atributo | Tipo | Padrão | Descrição |
 | ----------- | ------ | --------- | ------------- |
-| `dx` | int | `1422` | Scroll X offset |
-| `dy` | int | `762` | Scroll Y offset |
-| `grid` | `0`/`1` | `1` | Show grid |
-| `gridSize` | int | `10` | Grid snap size in px |
-| `guides` | `0`/`1` | `1` | Show alignment guides |
-| `tooltips` | `0`/`1` | `1` | Enable tooltips |
-| `connect` | `0`/`1` | `1` | Enable connection arrows on hover |
-| `arrows` | `0`/`1` | `1` | Show directional arrows |
-| `fold` | `0`/`1` | `1` | Enable group fold/collapse |
-| `page` | `0`/`1` | `1` | Show page boundary |
-| `pageScale` | float | `1` | Page zoom scale |
-| `pageWidth` | int | `1169` | Page width in px (A4 landscape) |
-| `pageHeight` | int | `827` | Page height in px (A4 landscape) |
-| `math` | `0`/`1` | `0` | Enable LaTeX math rendering |
-| `shadow` | `0`/`1` | `0` | Global shadow on shapes |
+| `dx` | int | `1422` | Deslocamento da rolagem no eixo X |
+| `dy` | int | `762` | Deslocamento da rolagem no eixo Y |
+| `grid` | `0`/`1` | `1` | Exibir grade |
+| `gridSize` | int | `10` | Tamanho do ajuste à grade em px |
+| `guides` | `0`/`1` | `1` | Exibir guias de alinhamento |
+| `tooltips` | `0`/`1` | `1` | Habilitar dicas de ferramenta |
+| `connect` | `0`/`1` | `1` | Habilitar setas de conexão ao passar o cursor |
+| `arrows` | `0`/`1` | `1` | Exibir setas direcionais |
+| `fold` | `0`/`1` | `1` | Habilitar expansão/recolhimento de grupos |
+| `page` | `0`/`1` | `1` | Exibir limite da página |
+| `pageScale` | float | `1` | Escala de zoom da página |
+| `pageWidth` | int | `1169` | Largura da página em px (A4 em paisagem) |
+| `pageHeight` | int | `827` | Altura da página em px (A4 em paisagem) |
+| `math` | `0`/`1` | `0` | Habilitar renderização matemática LaTeX |
+| `shadow` | `0`/`1` | `0` | Sombra global nas formas |
 
-**Common page sizes (px at 96dpi):**
+**Tamanhos comuns de página (px a 96 dpi):**
 
-| Format | Width | Height |
+| Formato | Largura | Altura |
 | -------- | ------- | -------- |
-| A4 landscape | `1169` | `827` |
-| A4 portrait | `827` | `1169` |
-| A3 landscape | `1654` | `1169` |
-| Letter landscape | `1100` | `850` |
-| Letter portrait | `850` | `1100` |
-| Screen (16:9) | `1654` | `931` |
+| A4 em paisagem | `1169` | `827` |
+| A4 em retrato | `827` | `1169` |
+| A3 em paisagem | `1654` | `1169` |
+| Carta em paisagem | `1100` | `850` |
+| Carta em retrato | `850` | `1100` |
+| Tela (16:9) | `1654` | `931` |
 
 ---
 
-## Reserved Cells (Always Required)
+## Células reservadas (sempre obrigatórias)
 
 ```xml
-<mxCell id="0" />                 <!-- Root cell — never omit, never add attributes -->
-<mxCell id="1" parent="0" />     <!-- Default layer — all cells are children of this -->
+<mxCell id="0" />                 <!-- Célula-raiz: nunca omita nem adicione atributos -->
+<mxCell id="1" parent="0" />     <!-- Camada-padrão: todas as células são filhas desta -->
 ```
 
-These two cells MUST be the first entries inside `<root>`. IDs `0` and `1` are reserved and must not be used for any other cell.
+Essas duas células DEVEM ser as primeiras entradas dentro de `<root>`. Os IDs `0` e `1` são reservados e não podem ser usados por nenhuma outra célula.
 
 ---
 
-## Vertex (Shape) Element
+## Elemento de vértice (forma)
 
 ```xml
 <mxCell
   id="2"
-  value="Label Text"
+  value="Texto do rótulo"
   style="rounded=1;whiteSpace=wrap;html=1;"
   vertex="1"
   parent="1">
@@ -98,34 +98,34 @@ These two cells MUST be the first entries inside `<root>`. IDs `0` and `1` are r
 </mxCell>
 ```
 
-### `<mxCell>` Vertex Attributes
+### Atributos de vértice de `<mxCell>`
 
-| Attribute | Required | Type | Description |
+| Atributo | Obrigatório | Tipo | Descrição |
 | ----------- | ---------- | ------ | ------------- |
-| `id` | Yes | string | Unique identifier within this diagram |
-| `value` | Yes | string | Label text (HTML allowed if style has `html=1`) |
-| `style` | Yes | string | Semicolon-delimited key=value style string |
-| `vertex` | Yes | `"1"` | Must be `"1"` to declare this as a shape |
-| `parent` | Yes | string | Parent cell ID (`"1"` for default layer) |
+| `id` | Sim | string | Identificador exclusivo neste diagrama |
+| `value` | Sim | string | Texto do rótulo (HTML permitido se o estilo tiver `html=1`) |
+| `style` | Sim | string | String de estilo key=value delimitada por ponto e vírgula |
+| `vertex` | Sim | `"1"` | Deve ser `"1"` para declarar uma forma |
+| `parent` | Sim | string | ID da célula-pai (`"1"` para a camada-padrão) |
 
-### `<mxGeometry>` Vertex Attributes
+### Atributos de vértice de `<mxGeometry>`
 
-| Attribute | Required | Type | Description |
+| Atributo | Obrigatório | Tipo | Descrição |
 | ----------- | ---------- | ------ | ------------- |
-| `x` | Yes | float | Left edge of shape (px from canvas origin) |
-| `y` | Yes | float | Top edge of shape (px from canvas origin) |
-| `width` | Yes | float | Shape width in px |
-| `height` | Yes | float | Shape height in px |
-| `as` | Yes | `"geometry"` | Always `"geometry"` |
+| `x` | Sim | float | Borda esquerda da forma (px a partir da origem da tela) |
+| `y` | Sim | float | Borda superior da forma (px a partir da origem da tela) |
+| `width` | Sim | float | Largura da forma em px |
+| `height` | Sim | float | Altura da forma em px |
+| `as` | Sim | `"geometry"` | Sempre `"geometry"` |
 
 ---
 
-## Edge (Connector) Element
+## Elemento de aresta (conector)
 
 ```xml
 <mxCell
   id="5"
-  value="Label"
+  value="Rótulo"
   style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"
   edge="1"
   source="2"
@@ -135,26 +135,26 @@ These two cells MUST be the first entries inside `<root>`. IDs `0` and `1` are r
 </mxCell>
 ```
 
-### `<mxCell>` Edge Attributes
+### Atributos de aresta de `<mxCell>`
 
-| Attribute | Required | Type | Description |
+| Atributo | Obrigatório | Tipo | Descrição |
 | ----------- | ---------- | ------ | ------------- |
-| `id` | Yes | string | Unique identifier |
-| `value` | Yes | string | Connector label (empty string for no label) |
-| `style` | Yes | string | Style string (see Edge Styles) |
-| `edge` | Yes | `"1"` | Must be `"1"` to declare as connector |
-| `source` | No | string | ID of source vertex |
-| `target` | No | string | ID of target vertex |
-| `parent` | Yes | string | Parent cell ID (usually `"1"`) |
+| `id` | Sim | string | Identificador exclusivo |
+| `value` | Sim | string | Rótulo do conector (string vazia quando não houver rótulo) |
+| `style` | Sim | string | String de estilo (consulte Estilos de aresta) |
+| `edge` | Sim | `"1"` | Deve ser `"1"` para declarar um conector |
+| `source` | Não | string | ID do vértice de origem |
+| `target` | Não | string | ID do vértice de destino |
+| `parent` | Sim | string | ID da célula-pai (normalmente `"1"`) |
 
-### `<mxGeometry>` Edge Attributes
+### Atributos de aresta de `<mxGeometry>`
 
-| Attribute | Required | Type | Description |
+| Atributo | Obrigatório | Tipo | Descrição |
 | ----------- | ---------- | ------ | ------------- |
-| `relative` | No | `"1"` | Always `"1"` for edges |
-| `as` | Yes | `"geometry"` | Always `"geometry"` |
+| `relative` | Não | `"1"` | Sempre `"1"` para arestas |
+| `as` | Sim | `"geometry"` | Sempre `"geometry"` |
 
-### Edge with Label Offset
+### Aresta com deslocamento de rótulo
 
 ```xml
 <mxGeometry x="-0.1" y="10" relative="1" as="geometry">
@@ -162,9 +162,9 @@ These two cells MUST be the first entries inside `<root>`. IDs `0` and `1` are r
 </mxGeometry>
 ```
 
-The `x` on relative geometry moves the label along the edge (-1 to 1). `y` is perpendicular offset in px.
+O `x` na geometria relativa move o rótulo ao longo da aresta (-1 a 1). `y` é o deslocamento perpendicular em px.
 
-### Edge with Manual Waypoints (Control Points)
+### Aresta com pontos de passagem manuais (pontos de controle)
 
 ```xml
 <mxGeometry relative="1" as="geometry">
@@ -177,83 +177,83 @@ The `x` on relative geometry moves the label along the edge (-1 to 1). `y` is pe
 
 ---
 
-## Multi-Page Diagrams
+## Diagramas com várias páginas
 
 ```xml
 <mxfile>
-  <diagram id="page-1" name="Overview">
+  <diagram id="page-1" name="Visão geral">
     <mxGraphModel>...</mxGraphModel>
   </diagram>
-  <diagram id="page-2" name="Detail">
+  <diagram id="page-2" name="Detalhes">
     <mxGraphModel>...</mxGraphModel>
   </diagram>
 </mxfile>
 ```
 
-Each `<diagram>` is a separate page/tab. Cell IDs are scoped to their own `<diagram>` — the same ID value can appear in different pages without conflict.
+Cada `<diagram>` é uma página/aba separada. Os IDs das células têm o escopo do próprio `<diagram>`. O mesmo valor de ID pode aparecer em páginas diferentes sem conflito.
 
 ---
 
-## Layer Cells
+## Células de camada
 
-Layers replace the default `id="1"` layer. Cells are assigned to a layer via `parent`:
+As camadas substituem a camada-padrão `id="1"`. As células são atribuídas a uma camada por meio de `parent`:
 
 ```xml
 <mxCell id="0" />
-<mxCell id="1" value="Background" parent="0" />        <!-- layer 1 -->
-<mxCell id="layer2" value="Services" parent="0" />     <!-- layer 2 -->
-<mxCell id="layer3" value="Connectors" parent="0" />   <!-- layer 3 -->
+<mxCell id="1" value="Plano de fundo" parent="0" />        <!-- camada 1 -->
+<mxCell id="layer2" value="Serviços" parent="0" />         <!-- camada 2 -->
+<mxCell id="layer3" value="Conectores" parent="0" />       <!-- camada 3 -->
 
-<!-- Assign layer via parent attribute -->
+<!-- Atribua a camada por meio do atributo parent -->
 <mxCell id="10" value="API" ... parent="layer2">
   <mxGeometry ... />
 </mxCell>
 ```
 
-Toggle layer visibility:
+Alterne a visibilidade da camada:
 
 ```xml
-<mxCell id="layer2" value="Services" parent="0" visible="0" />
+<mxCell id="layer2" value="Serviços" parent="0" visible="0" />
 ```
 
 ---
 
-## Swimlane Container
+## Contêiner de raias (`swimlane`)
 
 ```xml
-<!-- Swimlane container -->
-<mxCell id="swim1" value="Process" style="shape=pool;startSize=30;horizontal=1;"
+<!-- Contêiner de raias (swimlane) -->
+<mxCell id="swim1" value="Processo" style="shape=pool;startSize=30;horizontal=1;"
         vertex="1" parent="1">
   <mxGeometry x="40" y="40" width="800" height="340" as="geometry" />
 </mxCell>
 
-<!-- Lane 1 (child of swimlane container) -->
-<mxCell id="lane1" value="Customer" style="swimlane;startSize=30;"
+<!-- Raia 1 (filha do contêiner swimlane) -->
+<mxCell id="lane1" value="Cliente" style="swimlane;startSize=30;"
         vertex="1" parent="swim1">
   <mxGeometry x="0" y="30" width="800" height="150" as="geometry" />
 </mxCell>
 
-<!-- Shape inside lane (child of lane) -->
-<mxCell id="step1" value="Place Order" style="rounded=1;whiteSpace=wrap;html=1;"
+<!-- Forma dentro da raia (filha da raia) -->
+<mxCell id="step1" value="Fazer pedido" style="rounded=1;whiteSpace=wrap;html=1;"
         vertex="1" parent="lane1">
   <mxGeometry x="80" y="50" width="120" height="60" as="geometry" />
 </mxCell>
 ```
 
-> **Key**: Cells inside a swimlane have `parent` set to the **lane's ID**, not `"1"`.
-> Coordinates inside lanes are **relative to the lane origin**.
+> **Importante**: as células dentro de uma raia (`swimlane`) têm `parent` definido com o **ID da raia**, não `"1"`.
+> As coordenadas dentro das raias são **relativas à origem da raia**.
 
 ---
 
-## Group Cells
+## Células de grupo
 
 ```xml
-<!-- Invisible group container -->
+<!-- Contêiner de grupo invisível -->
 <mxCell id="group1" value="" style="group;" vertex="1" parent="1">
   <mxGeometry x="100" y="100" width="300" height="200" as="geometry" />
 </mxCell>
 
-<!-- Children relative to group origin -->
+<!-- Filhos relativos à origem do grupo -->
 <mxCell id="child1" value="A" style="rounded=1;" vertex="1" parent="group1">
   <mxGeometry x="20" y="20" width="100" height="60" as="geometry" />
 </mxCell>
@@ -261,9 +261,9 @@ Toggle layer visibility:
 
 ---
 
-## HTML Labels
+## Rótulos HTML
 
-When `html=1` is in the style, `value` can contain HTML:
+Quando o estilo contém `html=1`, `value` pode conter HTML:
 
 ```xml
 <mxCell value="&lt;b&gt;OrderService&lt;/b&gt;&lt;br&gt;&lt;i&gt;:8080&lt;/i&gt;"
@@ -272,43 +272,43 @@ When `html=1` is in the style, `value` can contain HTML:
 </mxCell>
 ```
 
-HTML must be XML-escaped:
+O HTML deve usar escapes XML:
 
 - `<` → `&lt;`
 - `>` → `&gt;`
 - `&` → `&amp;`
 - `"` → `&quot;`
 
-Common HTML tags supported: `<b>`, `<i>`, `<u>`, `<br>`, `<font color="#hex">`, `<span style="...">`, `<hr/>`
+Tags HTML comuns compatíveis: `<b>`, `<i>`, `<u>`, `<br>`, `<font color="#hex">`, `<span style="...">`, `<hr/>`
 
 ---
 
-## Tooltip / Metadata
+## Dica de ferramenta / Metadados
 
 ```xml
-<mxCell value="Service Name" tooltip="Handles order processing" style="..." vertex="1" parent="1">
+<mxCell value="Nome do serviço" tooltip="Processa pedidos" style="..." vertex="1" parent="1">
   <mxGeometry ... />
 </mxCell>
 ```
 
 ---
 
-## ID Generation Rules
+## Regras de geração de IDs
 
-| Rule | Detail |
+| Regra | Detalhe |
 | ------ | -------- |
-| IDs `0` and `1` | Reserved — always the root and default layer |
-| All other IDs | Must be unique within their `<diagram>` |
-| Safe pattern | Sequential integers starting at `2`, or UUID strings |
-| Cross-page | IDs do not need to be unique across different `<diagram>` pages |
+| IDs `0` e `1` | Reservados, sempre a raiz e a camada-padrão |
+| Todos os outros IDs | Devem ser exclusivos em seu `<diagram>` |
+| Padrão seguro | Inteiros sequenciais a partir de `2` ou strings UUID |
+| Entre páginas | Os IDs não precisam ser exclusivos entre páginas `<diagram>` diferentes |
 
-**Safe sequential ID example:**
+**Exemplo seguro de ID sequencial:**
 
 ```text
 id="2", id="3", id="4", ...
 ```
 
-**UUID-style example:**
+**Exemplo no estilo UUID:**
 
 ```text
 id="a1b2c3d4-e5f6-7890-abcd-ef1234567890"
@@ -316,28 +316,28 @@ id="a1b2c3d4-e5f6-7890-abcd-ef1234567890"
 
 ---
 
-## Coordinate System
+## Sistema de coordenadas
 
-- Origin `(0, 0)` is **top-left** of the canvas
-- `x` increases **rightward**
-- `y` increases **downward**
-- All units are **pixels**
+- A origem `(0, 0)` fica no **canto superior esquerdo** da tela
+- `x` aumenta **para a direita**
+- `y` aumenta **para baixo**
+- Todas as unidades estão em **pixels**
 
 ---
 
-## Recommended Spacing
+## Espaçamento recomendado
 
-| Context | Value |
+| Contexto | Valor |
 | --------- | ------- |
-| Minimum gap between shapes | `40px` |
-| Comfortable gap | `80px` |
-| Swimlane inner padding | `20px` |
-| Page margin from edge | `40px` |
-| Connector routing clearance | `10px` |
+| Espaço mínimo entre formas | `40px` |
+| Espaço confortável | `80px` |
+| Preenchimento interno da raia (`swimlane`) | `20px` |
+| Margem da borda da página | `40px` |
+| Folga para roteamento de conectores | `10px` |
 
 ---
 
-## Minimal Valid `.drawio` File
+## Arquivo `.drawio` válido mínimo
 
 ```xml
 <mxfile host="Electron" modified="2026-03-25T00:00:00.000Z" version="26.0.0">
@@ -357,23 +357,23 @@ id="a1b2c3d4-e5f6-7890-abcd-ef1234567890"
 
 ---
 
-## Validation Rules
+## Regras de validação
 
-### Must Pass
+### Obrigatórias
 
-- [ ] `id="0"` and `id="1"` cells always present as first two children of `<root>`
-- [ ] No other cell uses `id="0"` or `id="1"`
-- [ ] All `id` values are unique within each `<diagram>`
-- [ ] Every `<mxCell>` has exactly one `<mxGeometry>` child
-- [ ] `<mxGeometry>` has `as="geometry"` attribute
-- [ ] Vertex cells have `vertex="1"`, edge cells have `edge="1"`
-- [ ] Edge `source`/`target` IDs reference existing vertex IDs in the same diagram
-- [ ] Swimlane children have `parent` set to the swimlane/lane ID, not `"1"`
-- [ ] HTML in `value` attributes is XML-escaped
+- [ ] As células `id="0"` e `id="1"` estão sempre presentes como os dois primeiros filhos de `<root>`
+- [ ] Nenhuma outra célula usa `id="0"` ou `id="1"`
+- [ ] Todos os valores de `id` são exclusivos em cada `<diagram>`
+- [ ] Cada `<mxCell>` tem exatamente um filho `<mxGeometry>`
+- [ ] `<mxGeometry>` tem o atributo `as="geometry"`
+- [ ] Células de vértice têm `vertex="1"`; células de aresta têm `edge="1"`
+- [ ] Os IDs `source`/`target` das arestas referenciam IDs de vértices existentes no mesmo diagrama
+- [ ] Filhos de uma raia (`swimlane`) têm `parent` definido com o ID da raia, não `"1"`
+- [ ] O HTML nos atributos `value` usa escapes XML
 
-### Recommended
+### Recomendadas
 
-- [ ] Shapes do not overlap unless intentional (use ≥40px gap)
-- [ ] Edge labels are short (≤4 words)
-- [ ] Layer cells have descriptive `value` names
-- [ ] All shapes fit within `pageWidth` × `pageHeight` bounds
+- [ ] As formas não se sobrepõem, salvo intencionalmente (use espaço ≥40 px)
+- [ ] Os rótulos das arestas são curtos (≤4 palavras)
+- [ ] As células de camada têm nomes descritivos em `value`
+- [ ] Todas as formas cabem nos limites de `pageWidth` × `pageHeight`

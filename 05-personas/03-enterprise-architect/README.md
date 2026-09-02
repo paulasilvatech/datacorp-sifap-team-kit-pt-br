@@ -1,82 +1,82 @@
-# Enterprise Architect — Copilot Kit
+# Enterprise Architect: kit do Copilot
 
-> **Trail:** [Team Kit](../../README.md) › [Personas](../OVERVIEW.md) › **Enterprise Architect**
+> **Trilha:** [Kit do Time](../../README.md) › [Personas](../OVERVIEW.md) › **Enterprise Architect**
 
-**Inventory of the Copilot kit for the Enterprise Architect persona.** Lists the active artifacts, where they live under `.github/`, and best practices specific to this role.
+**Inventário do kit do Copilot para a persona Enterprise Architect.** Lista os artefatos ativos, onde estão localizados em `.github/` e as boas práticas específicas deste papel.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Person acting as Enterprise Architect in the workshop |
-| **Pair** | 2 · Architecture (with the Software Architect) |
-| **SDLC phase** | Architecture → Design → Security |
-| **Prerequisites** | [PERSONA.md](PERSONA.md) read |
-| **Expected outcome** | Kit validated, prompts accessible in Copilot Chat |
+| **Público-alvo** | Pessoa que atua como Enterprise Architect na imersão |
+| **Dupla** | 2 · Arquitetura (com o Software Architect) |
+| **Fase do SDLC** | Arquitetura → Design → Segurança |
+| **Pré-requisitos** | Leitura de [PERSONA.md](PERSONA.md) concluída |
+| **Resultado esperado** | Kit validado e prompts acessíveis no GitHub Copilot |
 
 > [!IMPORTANT]
-> Read [PERSONA.md](PERSONA.md) before continuing. The profile explains the mission, handoff, and evaluation rubrics.
+> Leia [PERSONA.md](PERSONA.md) antes de continuar. O perfil explica a missão, o handoff e as rubricas de avaliação.
 
 ---
 
-## Concept
+## Conceito
 
-The Enterprise Architect views the system within its ecosystem. In SIFAP (Payment Inspection and Administration System), this means mapping external dependencies — SIAFI, Banco do Brasil, INCRA, MDA — and ensuring that the target architecture respects existing contracts. The EA knows where the contracts are, which are fragile, and which can be changed without triggering a chain of unforeseen effects.
+O Enterprise Architect enxerga o sistema dentro de seu ecossistema. No SIFAP (Sistema de Fiscalização e Administração de Pagamentos), isso significa mapear dependências externas, como SIAFI, Banco do Brasil, INCRA e MDA, e garantir que a arquitetura-alvo respeite os contratos existentes. O EA sabe onde estão os contratos, quais são frágeis e quais podem ser alterados sem desencadear uma sequência de efeitos imprevistos.
 
 ---
 
-## Persona kit
+## Kit da persona
 
-| **Artifact** | Type | Purpose |
+| **Artefato** | Tipo | Finalidade |
 |---|---|---|
-| `PERSONA.md` | Profile | Responsibilities, handoff, prompts, and rubric |
-| `.github/agents/enterprise-architect.agent.md` | Agent | Architecture and security |
+| `PERSONA.md` | Perfil | Responsabilidades, handoff, prompts e rubrica |
+| `.github/agents/enterprise-architect.agent.md` | Agente | Arquitetura e segurança |
 | `.github/prompts/persona-enterprise-architect-create-constitution.prompt.md` | Prompt | `/create-constitution` |
 | `.github/prompts/persona-enterprise-architect-create-adr.prompt.md` | Prompt | `/create-adr` |
 | `.github/prompts/persona-enterprise-architect-architecture-review.prompt.md` | Prompt | `/architecture-review` |
-| `.github/instructions/security.instructions.md` | Instructions | Security conventions |
-| `.github/instructions/infrastructure.instructions.md` | Instructions | IaC conventions |
-| `hooks.json` | Hooks | Edit blocks for `.specify/memory/constitution.md` |
+| `.github/instructions/security.instructions.md` | Instruções | Convenções de segurança |
+| `.github/instructions/infrastructure.instructions.md` | Instruções | Convenções de IaC |
+| `hooks.json` | Hooks | Bloqueios de edição para `.specify/memory/constitution.md` |
 
 ---
 
-## Where the artifacts live
+## Onde ficam os artefatos
 
-The active artifacts are consolidated under the root `.github/` directory:
+Os artefatos ativos estão consolidados no diretório `.github/` da raiz:
 
-| **Type** | Path |
+| **Tipo** | Caminho |
 |---|---|
-| Agents | `.github/agents/` |
+| Agentes | `.github/agents/` |
 | Prompts | `.github/prompts/persona-*.prompt.md` |
 | Skills | `.github/skills/` |
-| Instructions | `.github/instructions/` |
+| Instruções | `.github/instructions/` |
 
-Use this directory as the reference. Active files live only under the root `.github/` directory — edit them there when maintenance is needed.
+Use esse diretório como referência. Os arquivos ativos ficam somente no diretório `.github/` da raiz. Edite-os nesse local quando for necessária alguma manutenção.
 
-If the kit includes `mcp.json` and the facilitator requests local MCP, copy only that file to `.vscode/mcp.json`.
-
----
-
-## Best practices
-
-- Use C4 L1/L2 for the executive view and L3/L4 for implementation.
-- Every architectural decision needs an ADR with context, decision, and consequences.
-- Prefer architecture that is predictable and operable in production.
-- Use the Azure Well-Architected pillars as review gates, not as a late checklist.
+Se o kit incluir `mcp.json` e a pessoa facilitadora solicitar MCP local, copie somente esse arquivo para `.vscode/mcp.json`.
 
 ---
 
-## References
+## Boas práticas
 
-- [C4 Model — Simon Brown](https://c4model.com/)
+- Use C4 L1/L2 para a visão executiva e L3/L4 para a implementação.
+- Toda decisão arquitetural precisa de um ADR com contexto, decisão e consequências.
+- Prefira uma arquitetura previsível e operável em produção.
+- Use os pilares do Azure Well-Architected como gates de revisão, não como um checklist tardio.
+
+---
+
+## Referências
+
+- [Modelo C4: Simon Brown](https://c4model.com/)
 - [Microsoft Azure Well-Architected Framework](https://learn.microsoft.com/azure/well-architected/)
-- [Architecture Decision Records](https://adr.github.io/)
-- [Azure Architecture Center](https://learn.microsoft.com/azure/architecture/)
+- [Registros de decisão de arquitetura](https://adr.github.io/)
+- [Centro de Arquitetura do Azure](https://learn.microsoft.com/azure/architecture/)
 
 ---
 
-### Continue reading
+### Continue lendo
 
-| Previous | Next |
+| Anterior | Próximo |
 |---|---|
-| [OVERVIEW](../OVERVIEW.md)<br/><sub>Table of the 10 personas.</sub> | [PERSONA.md](PERSONA.md)<br/><sub>Profile for this persona.</sub> |
+| [OVERVIEW](../OVERVIEW.md)<br/><sub>Tabela das 10 personas.</sub> | [PERSONA.md](PERSONA.md)<br/><sub>Perfil desta persona.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Voltar ao índice do kit](../README.md)</sub>

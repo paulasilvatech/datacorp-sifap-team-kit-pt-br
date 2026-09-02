@@ -1,61 +1,61 @@
-# Validation Commands Reference
+# Referência dos comandos de validação
 
-This reference documents all commands used for Azure deployment preflight validation.
+Esta referência documenta todos os comandos usados na validação pré-implantação do Azure.
 
 ## Azure Developer CLI (azd)
 
 ### azd provision --preview
 
-Preview infrastructure changes for azd projects without deploying.
+Visualiza as alterações de infraestrutura de projetos azd sem implantá-las.
 
 ```bash
 azd provision --preview [options]
 ```
 
-**Options:**
+**Opções:**
 
-| Option | Description |
+| Opção | Descrição |
 |--------|-------------|
-| `--environment`, `-e` | Name of the environment to use |
-| `--no-prompt` | Accept defaults without prompting |
-| `--debug` | Enable debug logging |
-| `--cwd` | Set working directory |
+| `--environment`, `-e` | Nome do ambiente a usar |
+| `--no-prompt` | Aceita os padrões sem solicitar confirmação |
+| `--debug` | Ativa registros de depuração |
+| `--cwd` | Define o diretório de trabalho |
 
-**Examples:**
+**Exemplos:**
 
 ```bash
-# Preview with default environment
+# Visualiza com o ambiente padrão
 azd provision --preview
 
-# Preview specific environment
+# Visualiza um ambiente específico
 azd provision --preview --environment dev
 
-# Preview without prompts (CI/CD)
+# Visualiza sem solicitações de confirmação (CI/CD)
 azd provision --preview --no-prompt
 ```
 
-**Output:** Shows resources that will be created, modified, or deleted.
+**Saída:** mostra os recursos que serão criados, modificados ou excluídos.
 
 ### azd auth login
 
-Authenticate to Azure for azd operations.
+Autentica no Azure para operações do azd.
 
 ```bash
 azd auth login [options]
 ```
 
-**Options:**
+**Opções:**
 
-| Option | Description |
+| Opção | Descrição |
 |--------|-------------|
-| `--check-status` | Check login status without logging in |
-| `--use-device-code` | Use device code flow |
-| `--tenant-id` | Specify tenant |
-| `--client-id` | Service principal client ID |
+| `--check-status` | Verifica o status da autenticação sem entrar |
+| `--use-device-code` | Usa o fluxo de código do dispositivo |
+| `--tenant-id` | Especifica o tenant |
+| `--client-id` | ID de cliente da entidade de serviço |
 
 ### azd env list
 
-List available environments.
+Lista os ambientes disponíveis.
 
 ```bash
 azd env list
@@ -67,7 +67,7 @@ azd env list
 
 ### az deployment group what-if
 
-Preview changes for resource group deployments.
+Visualiza alterações de implantações em grupos de recursos.
 
 ```bash
 az deployment group what-if \
@@ -76,54 +76,54 @@ az deployment group what-if \
   [options]
 ```
 
-**Required Parameters:**
+**Parâmetros obrigatórios:**
 
-| Parameter | Description |
+| Parâmetro | Descrição |
 |-----------|-------------|
-| `--resource-group`, `-g` | Target resource group name |
-| `--template-file`, `-f` | Path to Bicep file |
+| `--resource-group`, `-g` | Nome do grupo de recursos de destino |
+| `--template-file`, `-f` | Caminho do arquivo Bicep |
 
-**Optional Parameters:**
+**Parâmetros opcionais:**
 
-| Parameter | Description |
+| Parâmetro | Descrição |
 |-----------|-------------|
-| `--parameters`, `-p` | Parameter file or inline values |
-| `--validation-level` | `Provider` (default), `ProviderNoRbac`, or `Template` |
-| `--result-format` | `FullResourcePayloads` (default) or `ResourceIdOnly` |
-| `--no-pretty-print` | Output raw JSON for parsing |
-| `--name`, `-n` | Deployment name |
-| `--exclude-change-types` | Exclude specific change types from output |
+| `--parameters`, `-p` | Arquivo de parâmetros ou valores em linha |
+| `--validation-level` | `Provider` (padrão), `ProviderNoRbac` ou `Template` |
+| `--result-format` | `FullResourcePayloads` (padrão) ou `ResourceIdOnly` |
+| `--no-pretty-print` | Produz JSON bruto para análise |
+| `--name`, `-n` | Nome da implantação |
+| `--exclude-change-types` | Exclui tipos específicos de alterações da saída |
 
-**Validation Levels:**
+**Níveis de validação:**
 
-| Level | Description | Use Case |
+| Nível | Descrição | Caso de uso |
 |-------|-------------|----------|
-| `Provider` | Full validation with RBAC checks | Default, most thorough |
-| `ProviderNoRbac` | Full validation, read permissions only | When lacking deploy permissions |
-| `Template` | Static syntax validation only | Quick syntax check |
+| `Provider` | Validação completa com verificações de RBAC | Padrão, mais completa |
+| `ProviderNoRbac` | Validação completa, somente com permissões de leitura | Quando faltam permissões de implantação |
+| `Template` | Somente validação estática da sintaxe | Verificação rápida da sintaxe |
 
-**Examples:**
+**Exemplos:**
 
 ```bash
-# Basic what-if
+# What-if básico
 az deployment group what-if \
   --resource-group my-rg \
   --template-file main.bicep
 
-# With parameters and full validation
+# Com parâmetros e validação completa
 az deployment group what-if \
   --resource-group my-rg \
   --template-file main.bicep \
   --parameters main.bicepparam \
   --validation-level Provider
 
-# Fallback without RBAC checks
+# Alternativa sem verificações de RBAC
 az deployment group what-if \
   --resource-group my-rg \
   --template-file main.bicep \
   --validation-level ProviderNoRbac
 
-# JSON output for parsing
+# Saída JSON para análise
 az deployment group what-if \
   --resource-group my-rg \
   --template-file main.bicep \
@@ -132,7 +132,7 @@ az deployment group what-if \
 
 ### az deployment sub what-if
 
-Preview changes for subscription-level deployments.
+Visualiza alterações de implantações no nível da assinatura.
 
 ```bash
 az deployment sub what-if \
@@ -141,14 +141,14 @@ az deployment sub what-if \
   [options]
 ```
 
-**Required Parameters:**
+**Parâmetros obrigatórios:**
 
-| Parameter | Description |
+| Parâmetro | Descrição |
 |-----------|-------------|
-| `--location`, `-l` | Location for deployment metadata |
-| `--template-file`, `-f` | Path to Bicep file |
+| `--location`, `-l` | Local dos metadados da implantação |
+| `--template-file`, `-f` | Caminho do arquivo Bicep |
 
-**Examples:**
+**Exemplos:**
 
 ```bash
 az deployment sub what-if \
@@ -160,7 +160,7 @@ az deployment sub what-if \
 
 ### az deployment mg what-if
 
-Preview changes for management group deployments.
+Visualiza alterações de implantações em grupos de gerenciamento.
 
 ```bash
 az deployment mg what-if \
@@ -170,17 +170,17 @@ az deployment mg what-if \
   [options]
 ```
 
-**Required Parameters:**
+**Parâmetros obrigatórios:**
 
-| Parameter | Description |
+| Parâmetro | Descrição |
 |-----------|-------------|
-| `--location`, `-l` | Location for deployment metadata |
-| `--management-group-id`, `-m` | Target management group ID |
-| `--template-file`, `-f` | Path to Bicep file |
+| `--location`, `-l` | Local dos metadados da implantação |
+| `--management-group-id`, `-m` | ID do grupo de gerenciamento de destino |
+| `--template-file`, `-f` | Caminho do arquivo Bicep |
 
 ### az deployment tenant what-if
 
-Preview changes for tenant-level deployments.
+Visualiza alterações de implantações no nível do locatário (`tenant`).
 
 ```bash
 az deployment tenant what-if \
@@ -189,32 +189,32 @@ az deployment tenant what-if \
   [options]
 ```
 
-**Required Parameters:**
+**Parâmetros obrigatórios:**
 
-| Parameter | Description |
+| Parâmetro | Descrição |
 |-----------|-------------|
-| `--location`, `-l` | Location for deployment metadata |
-| `--template-file`, `-f` | Path to Bicep file |
+| `--location`, `-l` | Local dos metadados da implantação |
+| `--template-file`, `-f` | Caminho do arquivo Bicep |
 
 ### az login
 
-Authenticate to Azure CLI.
+Autentica na Azure CLI.
 
 ```bash
 az login [options]
 ```
 
-**Options:**
+**Opções:**
 
-| Option | Description |
+| Opção | Descrição |
 |--------|-------------|
-| `--tenant`, `-t` | Tenant ID or domain |
-| `--use-device-code` | Use device code flow |
-| `--service-principal` | Login as service principal |
+| `--tenant`, `-t` | ID ou domínio do tenant |
+| `--use-device-code` | Usa o fluxo de código do dispositivo |
+| `--service-principal` | Entra como entidade de serviço |
 
 ### az account show
 
-Display current subscription context.
+Exibe o contexto atual da assinatura.
 
 ```bash
 az account show
@@ -222,7 +222,7 @@ az account show
 
 ### az group exists
 
-Check if resource group exists.
+Verifica se o grupo de recursos existe.
 
 ```bash
 az group exists --name <rg-name>
@@ -234,46 +234,46 @@ az group exists --name <rg-name>
 
 ### bicep build
 
-Compile Bicep to ARM JSON and validate syntax.
+Compila Bicep para JSON do ARM e valida a sintaxe.
 
 ```bash
 bicep build <bicep-file> [options]
 ```
 
-**Options:**
+**Opções:**
 
-| Option | Description |
+| Opção | Descrição |
 |--------|-------------|
-| `--stdout` | Output to stdout instead of file |
-| `--outdir` | Output directory |
-| `--outfile` | Output file path |
-| `--no-restore` | Skip module restore |
+| `--stdout` | Produz a saída em stdout em vez de um arquivo |
+| `--outdir` | Diretório de saída |
+| `--outfile` | Caminho do arquivo de saída |
+| `--no-restore` | Ignora a restauração de módulos |
 
-**Examples:**
+**Exemplos:**
 
 ```bash
-# Validate syntax (output to stdout, no file created)
+# Valida a sintaxe (saída em stdout, sem criar arquivo)
 bicep build main.bicep --stdout > /dev/null
 
-# Build to specific directory
+# Compila em um diretório específico
 bicep build main.bicep --outdir ./build
 
-# Validate multiple files
+# Valida vários arquivos
 for f in *.bicep; do bicep build "$f" --stdout; done
 ```
 
-**Error Output Format:**
+**Formato da saída de erro:**
 
-```
+```text
 /path/to/file.bicep(22,51) : Error BCP064: Found unexpected tokens in interpolated expression.
 /path/to/file.bicep(22,51) : Error BCP004: The string at this location is not terminated.
 ```
 
-Format: `<file>(<line>,<column>) : <severity> <code>: <message>`
+Formato: `<file>(<line>,<column>) : <severity> <code>: <message>`
 
 ### bicep --version
 
-Check Bicep CLI version.
+Verifica a versão da Bicep CLI.
 
 ```bash
 bicep --version
@@ -281,11 +281,11 @@ bicep --version
 
 ---
 
-## Parameter File Detection
+## Detecção de arquivos de parâmetros
 
-### Bicep Parameters (.bicepparam)
+### Parâmetros Bicep (.bicepparam)
 
-Modern Bicep parameter files (recommended):
+Arquivos modernos de parâmetros Bicep (recomendados):
 
 ```bicep
 using './main.bicep'
@@ -298,11 +298,11 @@ param tags = {
 }
 ```
 
-**Detection pattern:** `<template-name>.bicepparam`
+**Padrão de detecção:** `<template-name>.bicepparam`
 
-### JSON Parameters (.parameters.json)
+### Parâmetros JSON (.parameters.json)
 
-Traditional ARM parameter files:
+Arquivos tradicionais de parâmetros do ARM:
 
 ```json
 {
@@ -315,28 +315,28 @@ Traditional ARM parameter files:
 }
 ```
 
-**Detection patterns:**
+**Padrões de detecção:**
 
 - `<template-name>.parameters.json`
 - `parameters.json`
 - `parameters/<env>.json`
 
-### Using Parameters with Commands
+### Uso de parâmetros com comandos
 
 ```bash
-# Bicep parameters file
+# Arquivo de parâmetros Bicep
 az deployment group what-if \
   --resource-group my-rg \
   --template-file main.bicep \
   --parameters main.bicepparam
 
-# JSON parameters file
+# Arquivo de parâmetros JSON
 az deployment group what-if \
   --resource-group my-rg \
   --template-file main.bicep \
   --parameters @parameters.json
 
-# Inline parameter overrides
+# Substituições de parâmetros em linha
 az deployment group what-if \
   --resource-group my-rg \
   --template-file main.bicep \
@@ -346,27 +346,27 @@ az deployment group what-if \
 
 ---
 
-## Determining Deployment Scope
+## Determinação do escopo da implantação
 
-Check the Bicep file's `targetScope` declaration:
+Verifique a declaração `targetScope` do arquivo Bicep:
 
 ```bicep
-// Resource Group (default if not specified)
+// Grupo de recursos (padrão quando não especificado)
 targetScope = 'resourceGroup'
 
-// Subscription
+// Assinatura
 targetScope = 'subscription'
 
-// Management Group
+// Grupo de gerenciamento
 targetScope = 'managementGroup'
 
-// Tenant
+// Locatário
 targetScope = 'tenant'
 ```
 
-**Scope to Command Mapping:**
+**Mapeamento de escopo para comando:**
 
-| targetScope | Command | Required Parameters |
+| targetScope | Comando | Parâmetros obrigatórios |
 |-------------|---------|---------------------|
 | `resourceGroup` | `az deployment group what-if` | `--resource-group` |
 | `subscription` | `az deployment sub what-if` | `--location` |
@@ -375,15 +375,15 @@ targetScope = 'tenant'
 
 ---
 
-## Version Requirements
+## Requisitos de versão
 
-| Tool | Minimum Version | Recommended Version | Key Features |
+| Ferramenta | Versão mínima | Versão recomendada | Recursos principais |
 |------|-----------------|---------------------|--------------|
-| Azure CLI | 2.14.0 | 2.76.0+ | `--validation-level` switch |
-| Azure Developer CLI | 1.0.0 | Latest | `--preview` flag |
-| Bicep CLI | 0.4.0 | Latest | Best error messages |
+| Azure CLI | 2.14.0 | 2.76.0+ | Opção `--validation-level` |
+| Azure Developer CLI | 1.0.0 | Mais recente | Opção `--preview` |
+| Bicep CLI | 0.4.0 | Mais recente | Melhores mensagens de erro |
 
-**Check versions:**
+**Verifique as versões:**
 
 ```bash
 az --version

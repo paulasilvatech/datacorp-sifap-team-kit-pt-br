@@ -1,43 +1,43 @@
-# Posting Long Comments and Bodies on Windows
+# Publicação de comentários e corpos longos no Windows
 
-On Windows the `az` command resolves to `az.cmd`, a batch wrapper invoked by `cmd.exe`. The whole command line is capped at ~8191 characters, so a long `--discussion`, `--description`, or `--content` value can be silently truncated or fail. Detect the shell before composing a long argument and route accordingly. Skipping this is the most common reason the agent burns 3-5 turns falling back to raw token retrieval and REST calls.
+No Windows, o comando `az` é resolvido como `az.cmd`, um programa intermediário em lote invocado pelo `cmd.exe`. A linha de comando completa tem um limite de cerca de 8.191 caracteres. Portanto, um valor longo de `--discussion`, `--description` ou `--content` pode ser truncado silenciosamente ou falhar. Detecte o interpretador de comandos antes de compor um argumento longo e escolha a abordagem adequada. Ignorar isso é o motivo mais comum para o agente gastar de 3 a 5 interações recorrendo à obtenção direta de tokens e a chamadas REST.
 
-## Detect the shell first
+## Detecte primeiro o interpretador de comandos
 
-| Environment | Signal | Action |
+| Ambiente | Sinal | Ação |
 |---|---|---|
-| PowerShell on Windows | `$IsWindows -eq $true` and `$PSVersionTable.PSVersion` is set | Use `azps.ps1` (see below) |
-| PowerShell on macOS / Linux | `$IsWindows -eq $false` | Plain `az` is fine, no cmd.exe wrapper |
-| bash / zsh / sh | `$BASH_VERSION` or `$ZSH_VERSION` set, or `uname` works | Plain `az` is fine, no cmd.exe wrapper |
-| Windows `cmd.exe` | `%ComSpec%` ends in `cmd.exe`, no `$PSVersionTable` | Use `azps.ps1` if PowerShell is installed, otherwise see `az devops invoke` fallback below |
+| PowerShell no Windows | `$IsWindows -eq $true` e `$PSVersionTable.PSVersion` definido | Use `azps.ps1` (veja abaixo) |
+| PowerShell no macOS/Linux | `$IsWindows -eq $false` | O `az` comum funciona, sem o programa intermediário do cmd.exe |
+| bash/zsh/sh | `$BASH_VERSION` ou `$ZSH_VERSION` definido, ou `uname` funciona | O `az` comum funciona, sem o programa intermediário do cmd.exe |
+| `cmd.exe` do Windows | `%ComSpec%` termina em `cmd.exe`, sem `$PSVersionTable` | Use `azps.ps1` se o PowerShell estiver instalado. Caso contrário, veja a alternativa com `az devops invoke` abaixo |
 
-## Option 1: `azps.ps1` (PowerShell on Windows)
+## Opção 1: `azps.ps1` (PowerShell no Windows)
 
-`azps.ps1` ships with the Azure CLI installer and invokes the Python entry point directly. No `cmd.exe` length cap.
+O `azps.ps1` acompanha o instalador da CLI do Azure e invoca diretamente o ponto de entrada Python. Não há o limite de comprimento do `cmd.exe`.
 
 ```powershell
-# Read the long body into a variable and pass it through. No quoting headaches.
+# Leia o corpo longo em uma variável e forneça-o diretamente. Sem problemas com aspas.
 $body = Get-Content -Raw .\comment.md
 azps.ps1 boards work-item update --id 1234 --discussion $body
 ```
 
-## Option 2: dedicated `--file-path` flag where Azure CLI offers one
+## Opção 2: opção dedicada `--file-path` quando oferecida pela CLI do Azure
 
-Some commands have a native file flag and you should prefer it over any inline body:
+Alguns comandos têm uma opção nativa de arquivo. Prefira-a a qualquer corpo embutido:
 
-- `az devops wiki page create` and `az devops wiki page update` take `--file-path` (with optional `--encoding`).
-- Use it on any shell, including Windows.
+- `az devops wiki page create` e `az devops wiki page update` aceitam `--file-path` (com `--encoding` opcional).
+- Use-a em qualquer interpretador de comandos, inclusive no Windows.
 
 ```bash
 az devops wiki page create --path 'My page' --wiki myproject --file-path ./page.md --encoding utf-8
 ```
 
-## Option 3: `az devops invoke` fallback
+## Opção 3: alternativa com `az devops invoke`
 
-When no `--file-path` exists (work-item `--discussion`, PR `--description`) and you're not in PowerShell, post the body via the underlying REST API. `az devops invoke` runs inside the Python entry point, so it isn't subject to the `cmd.exe` cap either, and it takes the request body from a file with `--in-file`:
+Quando não houver `--file-path` (`--discussion` de item de trabalho, `--description` de solicitação de pull) e você não estiver no PowerShell, publique o corpo pela API REST subjacente. O `az devops invoke` é executado no ponto de entrada Python, portanto também não está sujeito ao limite do `cmd.exe`, e lê o corpo da solicitação de um arquivo com `--in-file`:
 
 ```bash
-# Post a long discussion comment to work item 1234.
+# Publique um comentário de discussão longo no item de trabalho 1234.
 # REST: POST /{project}/_apis/wit/workItems/{id}/comments?api-version=7.0-preview.3
 az devops invoke \
   --area wit --resource comments \
@@ -47,8 +47,8 @@ az devops invoke \
   --in-file ./comment.json
 ```
 
-Where `comment.json` is `{ "text": "<long markdown body>" }`. This is the universal escape hatch when neither `azps.ps1` nor `--file-path` is available. `az devops invoke` itself accepts `--in-file` natively.
+Nesse caso, `comment.json` é `{ "text": "<long markdown body>" }`. Esta é a solução universal quando nem `azps.ps1` nem `--file-path` estão disponíveis. O próprio `az devops invoke` aceita `--in-file` nativamente.
 
-## Don't rely on `@<file>` for plain string args
+## Não dependa de `@<file>` para argumentos de texto simples
 
-The Azure CLI `@<file>` convention is documented for JSON parameters (see [the official quoting guide](https://learn.microsoft.com/en-us/cli/azure/use-azure-cli-successfully-quoting)). It is not guaranteed to expand plain string args like `--discussion` or `--description`, so don't reach for it as a substitute for the three options above.
+A convenção `@<file>` da CLI do Azure está documentada para parâmetros JSON (consulte o [guia oficial sobre aspas](https://learn.microsoft.com/en-us/cli/azure/use-azure-cli-successfully-quoting)). Não há garantia de que ela expanda argumentos de texto simples como `--discussion` ou `--description`. Portanto, não a use como substituta das três opções acima.

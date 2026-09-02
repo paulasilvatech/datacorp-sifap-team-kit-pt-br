@@ -1,31 +1,31 @@
 # Persona — DevOps Engineer
 
-> **Track:** [Team Kit](../../README.md) › [Personas](../OVERVIEW.md) › [DevOps Engineer](README.md) › **PERSONA**
+> **Trilha:** [Kit do Time](../../README.md) › [Personas](../OVERVIEW.md) › [DevOps Engineer](README.md) › **PERSONA**
 
-**Reference profile for the DevOps Engineer persona in the SIFAP modernization workshop.**
+**Perfil de referência da persona DevOps Engineer na imersão de modernização do SIFAP.**
 
-![Pair 5](https://img.shields.io/badge/Par-5%20%C2%B7%20Opera%C3%A7%C3%B5es-171717?style=flat-square) ![Leads Stage 4](https://img.shields.io/badge/Lidera-Est%C3%A1gio%204-404040?style=flat-square) ![Cross-cutting](https://img.shields.io/badge/Apoia-Transversal-737373?style=flat-square)
+![Dupla 5](https://img.shields.io/badge/Dupla-5%20%C2%B7%20Opera%C3%A7%C3%B5es-171717?style=flat-square) ![Colabora no Estágio 4](https://img.shields.io/badge/Colabora-Est%C3%A1gio%204-404040?style=flat-square) ![Atuação transversal](https://img.shields.io/badge/Apoia-Transversal-737373?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Role** | DevOps Engineer |
-| **Pair** | Pair 5 — Operations (with Tech Writer) |
-| **Active stages** | Stage 1 (tool validation), Stage 2 (deployment ADR), Stage 3 (pipeline and Terraform), Stage 4 (leads) |
-| **Artifacts produced** | GitHub Actions workflow (`ci.yml`), Dockerfile, Terraform modules, deployment strategy ADR, documented local execution |
-| **Artifacts consumed** | Stable build (Technical Lead / Developer), infrastructure topology (Enterprise Architect / Software Architect), stable schema (DBA) |
-| **Handoff to** | Demonstration—working local execution; production—valid `terraform plan` |
+| **Papel** | DevOps Engineer |
+| **Dupla** | Dupla 5 — Operações (com Tech Writer) |
+| **Estágios ativos** | Estágio 1 (validação das ferramentas), Estágio 2 (implicações operacionais), Estágio 3 (rascunho de CI), Estágio 4 (CI/IaC quando relevante) |
+| **Artefatos produzidos** | Workflow do GitHub Actions (`ci.yml`), Dockerfile, módulos Terraform, ADR de estratégia de implantação e execução local documentada |
+| **Artefatos consumidos** | Build estável (Technical Lead / Developer), topologia de infraestrutura (Enterprise Architect / Software Architect), schema estável (DBA) |
+| **Handoff para** | Demonstração: execução local funcionando; produção: `terraform plan` válido |
 
 ---
 
-## What this persona is
+## O que é esta persona
 
-The DevOps Engineer owns the path from a code commit to something that runs reliably. In the SIFAP (Payment Inspection and Administration System) modernization, this persona ensures that any team machine can start the local environment in under 60 seconds, GitHub Actions validates every PR with linting, tests, and image builds, and Terraform describes the target Azure topology even when it is not applied during the workshop.
+A pessoa DevOps Engineer é responsável pelo caminho entre um commit de código e algo que funciona de forma confiável. Na modernização do SIFAP (Sistema de Fiscalização e Administração de Pagamentos), essa persona garante que qualquer máquina do time consiga iniciar o ambiente local em menos de 60 segundos, que o GitHub Actions valide cada PR com lint, testes e build de imagens e que o Terraform descreva a topologia-alvo no Azure, mesmo quando ela não é aplicada durante a imersão.
 
-Why it matters: a fragile pipeline or ambiguous local environment creates friction for every pair. The Developer loses time to environment errors, the QA Engineer lacks a stable test foundation, and the final demonstration risks operational rather than functional failure.
+Por que isso importa: um pipeline frágil ou um ambiente local ambíguo cria atrito para todas as duplas. A pessoa Developer perde tempo com erros de ambiente, a pessoa QA Engineer fica sem uma base estável de testes e a demonstração final corre o risco de sofrer uma falha operacional, não funcional.
 
-Within the Agentic Legacy Modernization framework, the DevOps Engineer works with the Deployment Agent in Stage 4 and the Security Agent in Stage 3, configuring infrastructure for continuous deployment and coexistence between legacy and modern systems.
+No framework Agentic Legacy Modernization, a pessoa DevOps Engineer trabalha com o Deployment Agent no Estágio 4 e com o Security Agent no Estágio 3, configurando a infraestrutura para implantação contínua e coexistência entre os sistemas legado e moderno.
 
-## Where you work in the SDLC
+## Onde você atua no SDLC
 
 ```mermaid
 %%{init: {'theme':'neutral','themeVariables':{'fontFamily':'ui-sans-serif, system-ui, sans-serif','primaryColor':'#F5F5F5','primaryTextColor':'#171717','primaryBorderColor':'#171717','lineColor':'#525252','secondaryColor':'#FFFFFF','tertiaryColor':'#FAFAFA','background':'#FFFFFF'}}}%%
@@ -33,116 +33,116 @@ flowchart LR
     classDef step fill:#F5F5F5,stroke:#171717,color:#171717
     classDef active fill:#FFFFFF,stroke:#171717,color:#171717,stroke-width:2px
     classDef muted fill:#FAFAFA,stroke:#A3A3A3,color:#404040
-    S1["Stage 1<br/>Archaeology"]:::step --> S2["Stage 2<br/>Specification"]:::step
-    S2 --> S3["Stage 3<br/>Implementation"]:::step
-    S3 --> S4["Stage 4<br/>Evolution"]:::active
+    S1["Estágio 1<br/>Arqueologia"]:::step --> S2["Estágio 2<br/>Especificação"]:::step
+    S2 --> S3["Estágio 3<br/>Implementação"]:::step
+    S3 --> S4["Estágio 4<br/>Evolução"]:::active
 ```
 
-| Stage | Responsibility | Deliverable |
+| Estágio | Responsabilidade | Entrega |
 |---|---|---|
-| **1 — Archaeology** | Validate local tools and plan what the prototype needs for local execution | Validated work environment |
-| **2 — Specification** | Write the deployment strategy ADR (ADR 005) and participate in infrastructure design | ADR 005 + Terraform draft |
-| **3 — Implementation** | Maintain GitHub Actions for builds and tests, publish Docker images, and maintain Terraform | Green pipeline + valid `terraform plan` |
-| **4 — Evolution** | Validate Copilot Agent PRs that change the pipeline or infrastructure | Pipeline remains green after the Agent |
+| **1 — Arqueologia** | Validar as ferramentas locais e planejar o que o protótipo precisa para a execução local | Ambiente de trabalho validado |
+| **2 — Especificação** | Registrar implicações operacionais somente quando bloquearem o plano da feature | Decisão operacional de apoio, se necessária |
+| **3 — Implementação** | Rascunhar a estrutura do pipeline de CI para lint, testes e build | Rascunho de CI alinhado ao protótipo |
+| **4 — Evolução** | Ajustar e validar CI/IaC somente quando forem relevantes para a Issue delegada | Validação operacional da entrega, quando aplicável |
 
-## Core responsibility
+## Responsabilidade principal
 
-Reproducible builds, a green pipeline, and infrastructure described as code. In the workshop: documented local execution that starts the application and database in under 60 seconds once the prototype exists, CI that checks linting, tests, and image builds, and an error-free `terraform plan`.
+Builds reproduzíveis e pipeline verde. Na imersão: execução local documentada depois que o protótipo existe, rascunho de CI no Estágio 3 e ajustes de CI/IaC no Estágio 4 somente quando forem relevantes para a entrega.
 
-## Key skills
+## Competências principais
 
-- GitHub Actions: CI/CD workflows, dependency caching, Docker image builds
-- Terraform (Azure provider ~> 3.x): modules by service area (networking, compute, database, monitoring)
-- Docker and Docker Compose: Maven dependency caching, slim final image, and health checks
-- Minimum observability: structured JSON logs, `/actuator/health`, and basic metrics
-- Secret management: Azure Key Vault and CI environment variables, never code or versioned `.env`
+- GitHub Actions: workflows de CI/CD, cache de dependências e build de imagens Docker
+- Terraform (provider Azure ~> 3.x): módulos por área de serviço (rede, computação, banco de dados e monitoramento)
+- Docker e Docker Compose: cache de dependências do Maven, imagem final enxuta e verificações de integridade
+- Observabilidade mínima: logs JSON estruturados, `/actuator/health` e métricas básicas
+- Gerenciamento de segredos: Azure Key Vault e variáveis de ambiente da CI, nunca código ou `.env` versionado
 
-## Persona kit
+## Kit de persona
 
-| Artifact | Path | Use |
+| Artefato | Caminho | Uso |
 |---|---|---|
-| DevOps Engineer agent | `.github/agents/devops-engineer.agent.md` | CI/CD, infrastructure as code, monitoring, and incident analysis |
-| Prompt `/pipeline` | `.github/prompts/persona-devops-engineer-pipeline.prompt.md` | Create or improve a GitHub Actions workflow |
-| Prompt `/iac-module` | `.github/prompts/persona-devops-engineer-iac-module.prompt.md` | Create a Terraform module for an Azure service |
-| Prompt `/incident-rca` | `.github/prompts/persona-devops-engineer-incident-rca.prompt.md` | Incident root-cause analysis |
-| CI/CD instructions | `.github/instructions/cicd.instructions.md` | Mandatory pipeline conventions |
-| Infrastructure instructions | `.github/instructions/infrastructure.instructions.md` | Mandatory IaC conventions |
+| Agente DevOps Engineer | `.github/agents/devops-engineer.agent.md` | CI/CD, infraestrutura como código, monitoramento e análise de incidentes |
+| Prompt `/pipeline` | `.github/prompts/persona-devops-engineer-pipeline.prompt.md` | Criar ou aprimorar um workflow do GitHub Actions |
+| Prompt `/iac-module` | `.github/prompts/persona-devops-engineer-iac-module.prompt.md` | Criar um módulo Terraform para um serviço do Azure |
+| Prompt `/incident-rca` | `.github/prompts/persona-devops-engineer-incident-rca.prompt.md` | Analisar a causa raiz de um incidente |
+| Instruções de CI/CD | `.github/instructions/cicd.instructions.md` | Convenções obrigatórias do pipeline |
+| Instruções de infraestrutura | `.github/instructions/infrastructure.instructions.md` | Convenções obrigatórias de IaC |
 
-## Copilot tools and modes
+## Ferramentas e modos do Copilot
 
-| Tool / Mode | When to use |
+| Ferramenta / Modo | Quando usar |
 |---|---|
-| **Copilot Ask** | Generate GitHub Actions workflows and understand CI errors |
-| **Copilot Plan** | Create Terraform modules in batches and plan multi-file infrastructure changes |
-| **Copilot Agent** | Stage 4—long, multi-step CI chains |
-| **Azure / Terraform MCP** (if enabled) | Inspect Azure resources and Terraform state |
-| **Spec-Kit** (`/speckit.taskstoissues`) | Create operational Issues from tasks |
+| **Modo Ask do GitHub Copilot** | Gerar workflows do GitHub Actions e entender erros da CI |
+| **Copilot Plan** | Criar módulos Terraform em lote e planejar mudanças de infraestrutura em vários arquivos |
+| **Copilot Agent** | Estágio 4: cadeias longas de CI com várias etapas |
+| **Azure / Terraform MCP** (se habilitado) | Inspecionar recursos do Azure e o estado do Terraform |
+| **Spec-Kit** (`/speckit.taskstoissues`) | Criar Issues operacionais a partir das tarefas |
 
-## Recommended cheat sheets
+## Cartões de referência recomendados
 
-- [`09-cheat-sheets/spec-kit-workflow.md`](../../09-cheat-sheets/spec-kit-workflow.md) — `/speckit.taskstoissues`, `/speckit.analyze`, and release handoff
-- [`09-cheat-sheets/copilot-3-modes.md`](../../09-cheat-sheets/copilot-3-modes.md) — use Agent for pipelines with many sequential steps
+- [`09-cheat-sheets/spec-kit-workflow.md`](../../09-cheat-sheets/spec-kit-workflow.md) — `/speckit.taskstoissues`, `/speckit.analyze` e handoff da versão
+- [`09-cheat-sheets/copilot-3-modes.md`](../../09-cheat-sheets/copilot-3-modes.md) — use Agent para pipelines com muitas etapas sequenciais
 
-## How to perform well
+## Como ter um bom desempenho
 
-- [ ] **Start the local environment in under 60 seconds.** Once the prototype exists: application + database with one command.
-- [ ] **Require lint + test + image build on `main`.** None of these steps is optional.
-- [ ] **Keep `terraform plan` error-free.** Even when it is not applied that day.
-- [ ] **Add structured logs and health checks in Stage 3.** Do not leave them for Stage 4.
+- [ ] **Inicie o ambiente local em menos de 60 segundos.** Depois que o protótipo existir: aplicação + banco de dados com um comando.
+- [ ] **Exija lint + teste + build de imagem na `main`.** Nenhuma dessas etapas é opcional.
+- [ ] **Valide o `terraform plan` quando a feature exigir IaC.** Não crie infraestrutura apenas para cumprir uma meta.
+- [ ] **Adicione logs estruturados e verificações de integridade no Estágio 3.** Não deixe essas tarefas para o Estágio 4.
 
-## Common mistakes and how to avoid them
+## Erros comuns e como evitá-los
 
-| Symptom | Cause | Correction |
+| Sintoma | Causa | Correção |
 |---|---|---|
-| Team loses an hour at startup | Ambiguous or undocumented local setup | Document the exact startup command before Stage 3 |
-| CI runs only unit tests | Pipeline scope is too narrow | Include image build and linting from the first version |
-| Terraform has 500 lines and unclear output | Monolithic module | Use one module per Azure service area |
-| Real secret in a versioned `.env` | Early convenience | Store secrets only in Azure Key Vault or CI variables; add `.env` to `.gitignore` immediately |
+| O time perde uma hora na inicialização | Configuração local ambígua ou sem documentação | Documente o comando exato de inicialização antes do Estágio 3 |
+| A CI executa somente testes unitários | O escopo do pipeline é restrito demais | Inclua o build da imagem e o lint desde a primeira versão |
+| O Terraform tem 500 linhas e uma saída pouco clara | Módulo monolítico | Use um módulo por área de serviço do Azure |
+| Segredo real em um `.env` versionado | Conveniência inicial | Armazene segredos somente no Azure Key Vault ou em variáveis da CI; adicione `.env` ao `.gitignore` imediatamente |
 
-## Combinations with other personas
+## Combinações com outras personas
 
-| Combination | Note |
+| Combinação | Observação |
 |---|---|
-| **DevOps + DBA** | Manage PostgreSQL and the Terraform module that provisions it |
-| **DevOps + Tech Writer** | In Stage 4, monitor the Agent while the Tech Writer documents the runbook |
+| **DevOps + DBA** | Gerenciam o PostgreSQL e o módulo Terraform que o provisiona |
+| **DevOps + Tech Writer** | No Estágio 4, monitoram o Agent enquanto a pessoa Tech Writer documenta o runbook |
 
-## Ready-to-use prompts
+## Prompts prontos para uso
 
-1. **(Ask)** _"Create a `.github/workflows/ci.yml` GitHub Actions workflow that runs on push, configures Java 21 with Maven caching, runs tests, and builds a Docker image."_
-2. **(Plan)** _"Plan the backend Dockerfile: Maven dependency caching, a smaller final image, and a health check."_
-3. **(Ask)** _"The local environment takes 3 minutes to start. Analyze the files created by the team and propose 3 optimizations."_
+1. **(Ask)** _"Crie um workflow do GitHub Actions em `.github/workflows/ci.yml` que seja executado a cada push, configure o Java 21 com cache do Maven, execute os testes e crie uma imagem Docker."_
+2. **(Plan)** _"Planeje o Dockerfile do backend: cache de dependências do Maven, uma imagem final menor e uma verificação de integridade."_
+3. **(Ask)** _"O ambiente local leva 3 minutos para iniciar. Analise os arquivos criados pelo time e proponha 3 otimizações."_
 
-## Emergency defaults
+## Procedimentos padrão de emergência
 
-| Situation | What to do |
+| Situação | O que fazer |
 |---|---|
-| Local environment does not start | Checklist: (1) Is Docker Desktop running? (2) Are ports 5432/8080/3000 free? (3) Are environment variables set? (4) Do logs show the root cause? |
-| CI fails | Read GitHub Actions logs—the most common error is the wrong Java version or a cache miss |
-| `terraform plan` fails | Check: (1) Did `terraform init` run? (2) Is the provider version compatible? (3) Are required variables set? |
-| GitHub Actions is unfamiliar | Copy `.github/workflows/build.yml` and adapt it |
+| O ambiente local não inicia | Checklist: (1) O Docker Desktop está em execução? (2) As portas 5432/8080/3000 estão livres? (3) As variáveis de ambiente estão definidas? (4) Os logs mostram a causa raiz? |
+| A CI falha | Leia os logs do GitHub Actions; o erro mais comum é a versão incorreta do Java ou uma falha de cache |
+| O `terraform plan` falha | Verifique: (1) O `terraform init` foi executado? (2) A versão do provider é compatível? (3) As variáveis obrigatórias estão definidas? |
+| O GitHub Actions não é familiar | Copie `.github/workflows/build.yml` e adapte-o |
 
-## Dependencies
+## Dependências
 
-| Persona | Relationship | Artifact |
+| Persona | Relação | Artefato |
 |---|---|---|
-| Technical Lead | You depend on them | Stable build for the pipeline |
-| Enterprise Architect | You depend on them | Topology for Terraform |
-| Developer | Depends on you | Documented local environment, green CI |
-| DBA | Depends on you for infrastructure | Provisioned PostgreSQL |
-| QA Engineer | Depends on you | Pipeline that runs tests |
+| Technical Lead | Você depende dessa persona | Build estável para o pipeline |
+| Enterprise Architect | Você depende dessa persona | Topologia para o Terraform |
+| Developer | Depende de você | Ambiente local documentado, CI verde |
+| DBA | Depende de você para a infraestrutura | PostgreSQL provisionado |
+| QA Engineer | Depende de você | Pipeline que executa testes |
 
-## How you are evaluated
+## Como você é avaliado
 
-- **Rubric A3 — Technical Integrity:** local execution works, CI is green
-- **Rubric A4 — Copilot:** Agent used for multi-step pipelines
-- **Criterion:** reproducible build—any team machine runs the documented local environment in under 60 seconds
+- **Rubrica A3 — Integridade técnica:** a execução local funciona e a CI está verde
+- **Rubrica A4 — Copilot:** uso do Agent em pipelines com várias etapas
+- **Critério:** build reproduzível; qualquer máquina do time executa o ambiente local documentado em menos de 60 segundos
 
 ---
 
-### Continue reading
+### Continue lendo
 
-| Previous | Next |
+| Anterior | Próximo |
 |---|---|
-| [QA Engineer — PERSONA](../08-qa-engineer/PERSONA.md)<br/><sub>Pair 4 — Quality — equivalence tests and coverage.</sub> | [Tech Writer — PERSONA](../10-tech-writer/PERSONA.md)<br/><sub>Pair 5 — Operations — living documentation and Agent report.</sub> |
+| [QA Engineer — PERSONA](../08-qa-engineer/PERSONA.md)<br/><sub>Dupla 4 — Qualidade — testes de equivalência e cobertura.</sub> | [Tech Writer — PERSONA](../10-tech-writer/PERSONA.md)<br/><sub>Dupla 5 — Operações — documentação viva e relatório do Agent.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Voltar ao índice do kit](../../README.md)</sub>

@@ -1,7 +1,7 @@
 ---
 
-title: "Template: Business Rules Catalog"
-description: "Table skeleton for business rules extracted through /extract-business-rules"
+title: "Template: Catálogo de Regras de Negócio"
+description: "Esqueleto de tabela para as regras de negócio extraídas por /extract-business-rules"
 author: "Paula Silva, AI-Native Software Engineer, Americas Global Black Belt at Microsoft"
 date: "2026-04-29"
 version: "1.0.0"
@@ -9,55 +9,55 @@ status: "approved"
 tags: ["template", "business-rules", "archaeology", "stage-1"]
 ---
 
-# Template: Business Rules Catalog
+# Template: Catálogo de Regras de Negócio
 
-> **Track:** [Team Kit](../../README.md) › [Stage 1](../README.md) › **Templates** › **business-rules-catalog**
+> **Trilha:** [Kit do Time](../../README.md) › [Estágio 1](../README.md) › **Templates** › **business-rules-catalog**
 
-**Table template for recording business rules extracted during Stage 1.**
+**Template de tabela para registrar as regras de negócio extraídas durante o Estágio 1.**
 
 > [!NOTE]
-> **This file is a template.** Copy it to your team repository and complete it with real data. Do not edit the original.
+> **Este arquivo é um template.** Copie-o para o repositório do seu time e preencha com dados reais. Não edite o original.
 
 > [!TIP]
-> To complete it: open the `.NSN` program assigned to your pair, search for `IF` with Ctrl+F, record the condition and line, and classify it as Confirmed, Inferred, or Mystery.
+> Para preencher: abra o programa `.NSN` atribuído à sua dupla, procure `IF` com Ctrl+F, registre a condição e a linha, e classifique como Confirmada, Inferida ou Mistério.
 
-**Team:** <!-- placeholder -->
+**Time:** <!-- preencher -->
 
 ---
 
-## Rules from `<!-- placeholder: file-name.NSN -->`
+## Regras de `<!-- preencher: nome-do-arquivo.NSN -->`
 
-| # | Rule Statement | EARS Candidate | Source | Classification | Notes |
+| # | Enunciado da regra | Candidato EARS | Origem | Classificação | Notas |
 |---|---|---|---|---|---|
-| 1 | <!-- placeholder --> | <!-- placeholder: EARS pattern --> | <!-- placeholder: file:line --> | <!-- placeholder: Confirmed/Inferred/Mystery --> | <!-- placeholder --> |
+| 1 | <!-- preencher --> | <!-- preencher: padrão EARS --> | <!-- preencher: arquivo:linha --> | <!-- preencher: Confirmada/Inferida/Mistério --> | <!-- preencher --> |
 
 > [!NOTE]
-> Duplicate this section for each `.NSN` program read by your pair.
+> Duplique esta seção para cada programa `.NSN` lido pela sua dupla.
 
 ---
 
-## Summary
+## Resumo
 
-| Classification | Count |
+| Classificação | Contagem |
 |---|---|
-| Confirmed | <!-- placeholder --> |
-| Inferred | <!-- placeholder --> |
-| Mystery | <!-- placeholder --> |
+| Confirmada | <!-- preencher --> |
+| Inferida | <!-- preencher --> |
+| Mistério | <!-- preencher --> |
 
 ---
 
-## Definition of done
+## Definição de pronto
 
-- [ ] Every conditional block in the assigned programs was examined.
-- [ ] Every rule cites `file:line`.
-- [ ] Open questions are recorded as Mystery in `mysteries-found.md`.
+- [ ] Todo bloco condicional dos programas atribuídos foi examinado.
+- [ ] Toda regra cita `arquivo:linha`.
+- [ ] As questões em aberto estão registradas como Mistério em `mysteries-found.md`.
 
 ---
 
-### Continue reading
+### Continue lendo
 
-| Previous | Next |
+| Anterior | Próximo |
 |---|---|
-| [Stage 1 GUIDE](../GUIDE.md)<br/><sub>Step-by-step schedule.</sub> | [Team file](../business-rules-catalog.md)<br/><sub>Where you complete it.</sub> |
+| [GUIDE do Estágio 1](../GUIDE.md)<br/><sub>Cronograma passo a passo.</sub> | [Arquivo do time](../business-rules-catalog.md)<br/><sub>Onde você preenche.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Voltar ao índice do kit](../../README.md)</sub>

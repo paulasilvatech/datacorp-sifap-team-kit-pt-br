@@ -1,34 +1,34 @@
 # database-data-management
 
-PostgreSQL code review and optimization skills.
+Habilidades de revisão de código e otimização de PostgreSQL.
 
-## What this plugin bundles
+## O que esta extensão reúne
 
-| Component | Type | Location |
+| Componente | Tipo | Localização |
 |-----------|------|----------|
-| `postgresql-code-review` | Skill | [`.github/skills/postgresql-code-review/`](../../skills/postgresql-code-review/) |
-| `postgresql-optimization` | Skill | [`.github/skills/postgresql-optimization/`](../../skills/postgresql-optimization/) |
+| `postgresql-code-review` | Habilidade | [`.github/skills/postgresql-code-review/`](../../skills/postgresql-code-review/) |
+| `postgresql-optimization` | Habilidade | [`.github/skills/postgresql-optimization/`](../../skills/postgresql-optimization/) |
 
-PostgreSQL 16 is the kit's target database, so only the PostgreSQL skills are
-bundled.
+O PostgreSQL 16 é o banco de dados de destino do kit, portanto somente as habilidades
+de PostgreSQL são incluídas.
 
-## Related kit content
+## Conteúdo relacionado do kit
 
-The workshop maintains a [`dba`](../../agents/dba.agent.md) persona agent and a
-[`query-optimization`](../../skills/query-optimization/) skill. These are the
-kit's own artifacts, not one-to-one renames of the upstream `postgresql-dba` or
-`sql-optimization` items, so they are not referenced here as substitutes.
+A imersão mantém um agente da persona [`dba`](../../agents/dba.agent.md) e uma
+habilidade [`query-optimization`](../../skills/query-optimization/). Esses são
+artefatos próprios do kit, não renomeações diretas dos itens originais
+`postgresql-dba` ou `sql-optimization`, portanto não são referenciados aqui como substitutos.
 
-## Upstream references not included
+## Referências originais não incluídas
 
-- `sql-code-review`, `sql-optimization` (skills) — not present in this kit.
-- `ms-sql-dba`, `postgresql-dba` (agents) — not present in this kit.
+- `sql-code-review`, `sql-optimization` (habilidades) — não estão presentes neste kit.
+- `ms-sql-dba`, `postgresql-dba` (agentes) — não estão presentes neste kit.
 
-## How it is enabled
+## Como é habilitado
 
-Content under `.github/skills/` is discovered natively by Copilot in this
-repository, so these skills work here without any plugin install. The plugin
-layer packages them as a named bundle in the local `datacorp-mm-team-kit`
-marketplace ([`marketplace.json`](../marketplace.json)) and is declared in
-[`.github/copilot/settings.json`](../../copilot/settings.json). See the
-[plugins index](../README.md) for the mechanism and its limitations.
+O conteúdo em `.github/skills/` é descoberto nativamente pelo Copilot neste
+repositório, portanto estas habilidades funcionam aqui sem instalar nenhuma extensão. A
+camada de extensões as empacota como um conjunto nomeado no catálogo local
+`datacorp-mm-team-kit` ([`marketplace.json`](../marketplace.json)) e é declarada
+em [`.github/copilot/settings.json`](../../copilot/settings.json). Consulte o
+[índice de extensões](../README.md) para conhecer o mecanismo e suas limitações.

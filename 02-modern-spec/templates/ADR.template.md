@@ -1,90 +1,90 @@
 ---
 
-title: "Template: Architecture Decision Record"
-description: "MADR-format ADR skeleton for /generate-adr"
-author: "Paula Silva, AI-Native Software Engineer, Americas Global Black Belt at Microsoft"
+title: "Template: Registro de Decisão de Arquitetura"
+description: "Estrutura de ADR no formato MADR para /generate-adr"
+author: "Paula Silva, Engenheira de Software AI-Native, Americas Global Black Belt na Microsoft"
 date: "2026-04-29"
 version: "1.0.0"
 status: "approved"
 tags: ["template", "adr", "architect", "stage-2"]
 ---
 
-<!-- How to use: run /generate-adr. A minimum of 2 options is required. -->
+<!-- Como usar: execute /generate-adr. São necessárias no mínimo duas opções. -->
 
-# ADR-<!-- placeholder: NNN -->: <!-- placeholder: Title -->
+# ADR-<!-- preencher: NNN -->: <!-- preencher: Título -->
 
-![ADR Template](https://img.shields.io/badge/Template-ADR-737373?style=flat-square) ![Copy — do not edit the original](https://img.shields.io/badge/Copy-do%20not%20edit%20the%20original-A3A3A3?style=flat-square)
+![Template de ADR](https://img.shields.io/badge/Modelo-ADR-737373?style=flat-square) ![Copie sem editar o original](https://img.shields.io/badge/Copie-N%C3%A3o%20edite%20o%20original-A3A3A3?style=flat-square)
 
-> **Path:** [Team Kit](../../README.md) › [Stage 2](../README.md) › Templates › **ADR**
+> **Trilha:** [Kit do Time](../../README.md) › [Estágio 2](../README.md) › Templates › **ADR**
 
 > [!NOTE]
-> This file is a TEMPLATE. Copy it to your team's repository and fill it with actual data. Do not edit the original.
+> Este arquivo é um TEMPLATE. Copie-o para o repositório do seu time e preencha a cópia com dados reais. Não edite o original.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Status** | `Proposed` / `Accepted` / `Rejected` / `Superseded` |
-| **Date** | `YYYY-MM-DD` |
-| **Related feature** | `specs/<NNN>-<feature>/` |
+| **Status** | `Proposta` / `Aceita` / `Rejeitada` / `Substituída` |
+| **Data** | `YYYY-MM-DD` |
+| **Feature relacionada** | `specs/<NNN>-<feature>/` |
 
 ---
 
-## Context
+## Contexto
 
-<!-- placeholder: why this decision is necessary -->
+<!-- preencher: por que esta decisão é necessária -->
 
 ---
 
-## Options considered
+## Opções consideradas
 
-### Option 1: <!-- placeholder -->
+### Opção 1: <!-- preencher -->
 
-| Aspect | Assessment |
+| Aspecto | Avaliação |
 |---|---|
-| **Pros** | <!-- placeholder: team-specific --> |
-| **Cons** | <!-- placeholder: team-specific --> |
+| **Vantagens** | <!-- preencher: específicas do time --> |
+| **Desvantagens** | <!-- preencher: específicas do time --> |
 
-### Option 2: <!-- placeholder -->
+### Opção 2: <!-- preencher -->
 
-| Aspect | Assessment |
+| Aspecto | Avaliação |
 |---|---|
-| **Pros** | <!-- placeholder --> |
-| **Cons** | <!-- placeholder --> |
+| **Vantagens** | <!-- preencher --> |
+| **Desvantagens** | <!-- preencher --> |
 
 ---
 
-## Decision
+## Decisão
 
-<!-- placeholder: selected option + rationale -->
-
----
-
-## Consequences
-
-### Positive
-
-- <!-- placeholder -->
-
-### Negative
-
-- <!-- placeholder -->
+<!-- preencher: opção selecionada + justificativa -->
 
 ---
 
-## Related requirements
+## Consequências
 
-- `<!-- placeholder: REQ-NNN -->`
+### Positivas
+
+- <!-- preencher -->
+
+### Negativas
+
+- <!-- preencher -->
+
+---
+
+## Requisitos relacionados
+
+- `<!-- preencher: REQ-NNN -->`
 
 ---
 
 > [!IMPORTANT]
-> ADR Definition of Done: MADR format, at least 2 options, team-specific pros/cons, and a dated decision.
+> Definição de pronto da ADR: formato MADR, no mínimo duas opções, vantagens e desvantagens específicas do time e decisão datada.
 
 ---
 
-### Continue reading
+### Continue lendo
 
-| Previous | Next |
+| Anterior | Próximo |
 |---|---|
-| [Stage 2 GUIDE](../GUIDE.md)<br/><sub>Step-by-step instructions.</sub> | [Stage 2 GUIDE](../GUIDE.md)<br/><sub>Lead the decision with the team.</sub> |
+| [GUIDE do Estágio 2](../GUIDE.md)<br/><sub>Instruções passo a passo.</sub> | [GUIDE do Estágio 2](../GUIDE.md)<br/><sub>Conduza a decisão com o time.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Voltar ao índice do kit](../../README.md)</sub>

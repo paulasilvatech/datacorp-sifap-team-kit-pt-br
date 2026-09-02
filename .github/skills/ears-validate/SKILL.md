@@ -1,68 +1,68 @@
 ---
 name: "ears-validate"
-description: "Use when validating requirements against EARS notation patterns. Triggers include \"EARS\", \"requirement review\", \"requirement quality\", \"shall statement\", and \"REQ-ID\"."
+description: "Use ao validar requisitos conforme os padrões da notação EARS. Os gatilhos incluem \"EARS\", \"revisão de requisitos\", \"qualidade de requisitos\", \"declaração com shall (deve)\" e \"REQ-ID\"."
 ---
-# EARS validation
+# Validação EARS
 
-## When to invoke
+## Quando usar
 
-- "Review these requirements for EARS compliance."
-- "Is this requirement testable?"
-- "Classify this requirement by EARS pattern."
+- "Revise estes requisitos quanto à conformidade com EARS."
+- "Este requisito é testável?"
+- "Classifique este requisito por padrão EARS."
 
-## EARS patterns
+## Padrões EARS
 
-| Pattern | Template |
+| Padrão | Modelo |
 |---|---|
-| Ubiquitous | `The <system> shall <response>.` |
-| Event-driven | `When <trigger>, the <system> shall <response>.` |
-| State-driven | `While <state>, the <system> shall <response>.` |
-| Optional | `Where <feature is included>, the <system> shall <response>.` |
-| Unwanted | `If <undesired condition>, then the <system> shall <mitigation>.` |
-| Complex | `While <state>, when <trigger>, the <system> shall <response>.` |
+| Ubíquo | `O <sistema> DEVE <resposta>.` |
+| Orientado a evento | `QUANDO <gatilho>, o <sistema> DEVE <resposta>.` |
+| Orientado a estado | `ENQUANTO <estado>, o <sistema> DEVE <resposta>.` |
+| Opcional | `ONDE <funcionalidade estiver incluída>, o <sistema> DEVE <resposta>.` |
+| Indesejado | `SE <condição indesejada>, ENTÃO o <sistema> DEVE <mitigação>.` |
+| Complexo | `ENQUANTO <estado>, QUANDO <gatilho>, o <sistema> DEVE <resposta>.` |
 
-## Validation checklist
+## Lista de verificação da validação
 
-- [ ] Exactly one pattern per requirement.
-- [ ] Unambiguous subject ("the system", not "it").
-- [ ] Observable and testable response.
-- [ ] No hidden "and" that combines two requirements into one.
-- [ ] No implementation details ("use Redis"), only behavior.
-- [ ] Includes a REQ-ID in the `REQ-NNN` format.
-- [ ] Includes at least one acceptance criterion.
-- [ ] **Includes a non-empty `source_legacy:` pointing to `01-archaeology/legacy-sifap/natural-programs/*.NSN`, `01-archaeology/legacy-sifap/adabas-ddms/*.ddm`, or `[GREENFIELD] + justification`.**
+- [ ] Exatamente um padrão por requisito.
+- [ ] Sujeito inequívoco ("o sistema", não "ele").
+- [ ] Resposta observável e testável.
+- [ ] Nenhum "e" oculto que combine dois requisitos em um só.
+- [ ] Nenhum detalhe de implementação ("usar Redis"), somente comportamento.
+- [ ] Inclui um REQ-ID no formato `REQ-NNN`.
+- [ ] Inclui pelo menos um critério de aceitação.
+- [ ] **Inclui um `source_legacy:` não vazio que aponte para `01-archaeology/legacy-sifap/natural-programs/*.NSN`, `01-archaeology/legacy-sifap/adabas-ddms/*.ddm` ou use o token `[GREENFIELD]` acompanhado da justificativa de uma nova implementação.**
 
-## Common defects
+## Defeitos comuns
 
-| Defect | Example | Correction |
+| Defeito | Exemplo | Correção |
 |---|---|---|
-| Ambiguous | "The system must be fast." | "When a user submits a form, the system shall respond within 500ms." |
-| Compound | "Log in and send an email." | Split into two requirements. |
-| Not testable | "The system shall be easy to use." | Replace with a measurable UX metric. |
-| Passive | "Login shall be supported." | "The system shall accept username/password authentication." |
+| Ambíguo | "O sistema deve ser rápido." | "QUANDO uma pessoa enviar um formulário, o sistema DEVE responder em até 500 ms." |
+| Composto | "Entrar e enviar um e-mail." | Divida em dois requisitos. |
+| Não testável | "O sistema deve ser fácil de usar." | Substitua por uma métrica mensurável de experiência do usuário (UX). |
+| Passivo | "O login deve ser aceito." | "O sistema DEVE aceitar autenticação por nome de usuário e senha." |
 
-## Output template
+## Modelo de saída
 
 ```markdown
-### REQ-NNN (<pattern>)
-<EARS statement>
+### REQ-NNN (<padrão>)
+<declaração EARS>
 
 source_legacy: 01-archaeology/legacy-sifap/natural-programs/<FILE>.NSN#L<start>-L<end>
-_(or `[GREENFIELD] <justification>` when there is no legacy equivalent)_
+_(ou `[GREENFIELD] <justificativa>` quando não houver equivalente legado)_
 
-**Acceptance criteria**
-- <criterion 1>
-- <criterion 2>
+**Critérios de aceitação**
+- <critério 1>
+- <critério 2>
 
-**Traced from**: US-NNN, ADR-NNN
-**Priority**: P0 / P1 / P2
+**Rastreado de**: US-NNN, ADR-NNN
+**Prioridade**: P0 / P1 / P2
 **Status**: proposed / approved / implemented / verified
 ```
 
-## Quality gate
+## Critérios de qualidade
 
-- [ ] Every requirement has a unique REQ-ID in `REQ-NNN` format.
-- [ ] Every requirement is classified under exactly one EARS pattern.
-- [ ] Every requirement has at least one testable acceptance criterion.
-- [ ] Every requirement has a `source_legacy:` line pointing to a real legacy file or `[GREENFIELD] <justification>`.
-- [ ] The `legacy-traceability` job in `.github/workflows/spec-quality.yml` passes for the PR.
+- [ ] Cada requisito tem um REQ-ID exclusivo no formato `REQ-NNN`.
+- [ ] Cada requisito está classificado em exatamente um padrão EARS.
+- [ ] Cada requisito tem pelo menos um critério de aceitação testável.
+- [ ] Cada requisito tem uma linha `source_legacy:` que aponta para um arquivo legado real ou usa `[GREENFIELD] <justificativa>`.
+- [ ] A tarefa automatizada `legacy-traceability` em `.github/workflows/spec-quality.yml` passa na solicitação de alteração (PR).

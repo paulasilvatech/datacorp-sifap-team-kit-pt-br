@@ -1,52 +1,52 @@
-# Coding Conventions
+# Convenções de código
 
-## Core Sections (Required)
+## Seções principais (obrigatórias)
 
-### 1) Naming Rules
+### 1) Regras de nomenclatura
 
-| Item | Rule | Example | Evidence |
+| Item | Regra | Exemplo | Evidência |
 |------|------|---------|----------|
-| Files | [RULE] | [EXAMPLE] | [FILE] |
-| Functions/methods | [RULE] | [EXAMPLE] | [FILE] |
-| Types/interfaces | [RULE] | [EXAMPLE] | [FILE] |
-| Constants/env vars | [RULE] | [EXAMPLE] | [FILE] |
+| Arquivos | [REGRA] | [EXEMPLO] | [ARQUIVO] |
+| Funções/métodos | [REGRA] | [EXEMPLO] | [ARQUIVO] |
+| Tipos/interfaces | [REGRA] | [EXEMPLO] | [ARQUIVO] |
+| Constantes/variáveis de ambiente | [REGRA] | [EXEMPLO] | [ARQUIVO] |
 
-### 2) Formatting and Linting
+### 2) Formatação e análise estática
 
-- Formatter: [TOOL + CONFIG FILE]
-- Linter: [TOOL + CONFIG FILE]
-- Most relevant enforced rules: [RULE_1], [RULE_2], [RULE_3]
-- Run commands: [COMMANDS]
+- Formatador: [FERRAMENTA + ARQUIVO DE CONFIGURAÇÃO]
+- Ferramenta de análise estática: [FERRAMENTA + ARQUIVO DE CONFIGURAÇÃO]
+- Regras aplicadas mais relevantes: [REGRA_1], [REGRA_2], [REGRA_3]
+- Comandos de execução: [COMANDOS]
 
-### 3) Import and Module Conventions
+### 3) Convenções de importações e módulos
 
-- Import grouping/order: [RULE]
-- Alias vs relative import policy: [RULE]
-- Public exports/barrel policy: [RULE]
+- Agrupamento/ordem de importações: [REGRA]
+- Política de nomes alternativos versus importações relativas: [REGRA]
+- Política de exportações públicas/agrupadas: [REGRA]
 
-### 4) Error and Logging Conventions
+### 4) Convenções de erros e registros
 
-- Error strategy by layer: [SHORT SUMMARY]
-- Logging style and required context fields: [SUMMARY]
-- Sensitive-data redaction rules: [SUMMARY]
+- Estratégia de erros por camada: [RESUMO BREVE]
+- Estilo de registros e campos de contexto obrigatórios: [RESUMO]
+- Regras de ocultação de dados sensíveis: [RESUMO]
 
-### 5) Testing Conventions
+### 5) Convenções de testes
 
-- Test file naming/location rule: [RULE]
-- Mocking strategy norm: [RULE]
-- Coverage expectation: [RULE or TODO]
+- Regra de nome/localização dos arquivos de teste: [REGRA]
+- Padrão da estratégia de simulações: [REGRA]
+- Expectativa de cobertura: [REGRA ou TODO]
 
-### 6) Evidence
+### 6) Evidências
 
 - [path/to/lint-config]
 - [path/to/format-config]
 - [path/to/representative-source-file]
 
-## Extended Sections (Optional)
+## Seções ampliadas (opcionais)
 
-Add only for large or inconsistent codebases:
+Adicione somente para bases de código grandes ou inconsistentes:
 
-- Layer-specific error handling matrix
-- Language-specific strictness options
-- Repo-specific commit/branching conventions
-- Known convention violations to clean up
+- Matriz de tratamento de erros específica por camada
+- Opções de rigor específicas da linguagem
+- Convenções de commits e branches específicas do repositório
+- Violações conhecidas de convenções que precisam ser corrigidas

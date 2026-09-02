@@ -1,246 +1,246 @@
-# Team flow: how five people cover 10 personas
+# Fluxo do time: como cinco pessoas cobrem 10 personas
 
-> **Track:** [Team kit](README.md) › **Team flow**
+> **Trilha:** [Kit do time](README.md) › **Fluxo do time**
 
-**Keep this document pinned on your screen during the whole workshop.** It answers the four essential questions: which SDLC phase your personas lead, who feeds your work, who receives your handoff, and when to ask for help.
+**Mantenha este documento fixado na sua tela durante toda a imersão.** Ele responde às quatro perguntas essenciais: qual fase do SDLC suas personas lideram, quem alimenta o seu trabalho, quem recebe o seu handoff e quando pedir ajuda.
 
-![Flow](https://img.shields.io/badge/Flow-Team-171717?style=flat-square) ![Duration: 10 min read](https://img.shields.io/badge/Duration-10%20min%20read-737373?style=flat-square) ![Use: all the time](https://img.shields.io/badge/Use-All%20the%20time-A3A3A3?style=flat-square)
+![Fluxo](https://img.shields.io/badge/Fluxo-Time-171717?style=flat-square) ![Duração: 10 min de leitura](https://img.shields.io/badge/Dura%C3%A7%C3%A3o-10%20min%20de%20leitura-737373?style=flat-square) ![Uso: o tempo todo](https://img.shields.io/badge/Uso-O%20tempo%20todo-A3A3A3?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Every workshop participant |
-| **Prerequisites** | Read this document before the persona cards |
-| **Estimated time** | 10 minutes |
-| **Expected result** | You know what each pair does, when it does it, and who receives the work next |
+| **Público-alvo** | Todo participante da imersão |
+| **Pré-requisitos** | Leia este documento antes dos cartões de persona |
+| **Tempo estimado** | 10 minutos |
+| **Resultado esperado** | Você sabe o que cada dupla faz, quando faz e quem recebe o trabalho em seguida |
 
 ---
 
-## Where this fits in the SDLC
+## Onde isso se encaixa no SDLC
 
-![Flow of the four Day 2 stages: archaeology, modern spec, implementation, and evolution with Agent](assets/stage-flow.svg)
+![Fluxo dos quatro estágios do Dia 2: arqueologia, especificação moderna, implementação e evolução com Agent](assets/stage-flow.svg)
 
-The five pairs work **in parallel inside each stage**, and leadership shifts as the SDLC moves forward. The three handoffs between stages (**H1** legacy -> spec, **H2** spec -> code, **H3** code -> ops) are the points where the day either flows or stalls. No one sits idle. No one repeats work.
+As cinco duplas trabalham **em paralelo dentro de cada estágio**, e a liderança muda conforme o SDLC avança. Os três handoffs entre estágios (**H1** legado -> spec, **H2** spec -> código, **H3** código -> ops) são os pontos em que o dia flui ou trava. Ninguém fica ocioso. Ninguém repete trabalho.
 
 ---
 
-## 1. The five pairs and their SDLC phases
+## 1. As cinco duplas e suas fases do SDLC
 
-Each person chooses **one pair** (two personas). The two personas in a pair co-own the work. There is no internal handoff between them. They collaborate continuously.
+Cada pessoa escolhe **uma dupla** (duas personas). As duas personas de uma dupla são coautoras do trabalho. Não existe handoff interno entre elas. Elas colaboram continuamente.
 
-| # | Pair | Personas | SDLC phase led |
+| # | Dupla | Personas | Fase do SDLC liderada |
 |---|---|---|---|
-| 1 | **Vision** | Product Owner + Requirements Engineer | Discovery + Specification |
-| 2 | **Architecture** | Enterprise Architect + Software Architect | Specification + Design |
-| 3 | **Implementation** | Technical Lead + Developer | Implementation + Evolution |
-| 4 | **Quality** | DBA + QA Engineer | Implementation (data + tests) |
-| 5 | **Operations** | DevOps Engineer + Tech Writer | Cross-cutting + Evolution |
+| 1 | **Visão** | Product Owner + Requirements Engineer | Descoberta + Especificação |
+| 2 | **Arquitetura** | Enterprise Architect + Software Architect | Especificação + Design |
+| 3 | **Implementação** | Technical Lead + Developer | Implementação + Evolução |
+| 4 | **Qualidade** | DBA + QA Engineer | Implementação (dados + testes) |
+| 5 | **Operações** | DevOps Engineer + Tech Writer | Transversal + Evolução |
 
-> Persona kits live together in [`05-personas/`](05-personas/) as the role reference. The active artifacts are already consolidated in `.github/`: read your role's `PERSONA.md` and validate the agents/prompts/skills at the repository root.
+> Os kits de persona ficam juntos em [`05-personas/`](05-personas/) como referência de papel. Os artefatos ativos já estão consolidados em `.github/`: leia o `PERSONA.md` do seu papel e valide os agentes/prompts/skills na raiz do repositório.
 
-![Persona distribution by pair: vision, architecture, implementation, quality, and operations](assets/personas-team.svg)
+![Distribuição das personas por dupla: visão, arquitetura, implementação, qualidade e operações](assets/personas-team.svg)
 
-### Suggested split inside each pair
+### Divisão sugerida dentro de cada dupla
 
-| Pair | Focus of persona A | Focus of persona B |
+| Dupla | Foco da persona A | Foco da persona B |
 |---|---|---|
-| 1 - Vision | **PO**: scope, value, priorities, demo storyline | **RE**: EARS requirements, acceptance criteria, REQ-IDs |
-| 2 - Architecture | **EA**: external dependencies and scope decisions | **SA**: boundaries and technical slice plan |
-| 3 - Implementation | **TL**: standards, PR review, agent orchestration | **Dev**: Java + TypeScript code, unit tests |
-| 4 - Quality | **DBA**: PostgreSQL schema, Flyway migrations | **QA**: BDD scenarios, coverage gates, contract tests |
-| 5 - Operations | **DevOps**: Terraform, GitHub Actions, secrets | **TW**: glossary, ADR clarity review, runbook, README |
+| 1 - Visão | **PO**: escopo, valor, prioridades, roteiro da demo | **RE**: requisitos EARS, critérios de aceitação, REQ-IDs |
+| 2 - Arquitetura | **EA**: dependências externas e decisões de escopo | **SA**: fronteiras e plano da fatia técnica |
+| 3 - Implementação | **TL**: padrões, revisão de PR, orquestração de agentes | **Dev**: código Java + TypeScript, testes unitários |
+| 4 - Qualidade | **DBA**: schema PostgreSQL, migrações Flyway | **QA**: cenários BDD, gates de cobertura, testes de contrato |
+| 5 - Operações | **DevOps**: Terraform, GitHub Actions, secrets | **TW**: glossário, revisão de clareza dos ADRs, runbook, README |
 
-Rotate inside the pair every ~45 minutes so no one monopolizes knowledge.
+Faça rodízio dentro da dupla a cada ~45 minutos para ninguém monopolizar o conhecimento.
 
 ---
 
-## 2. Timeline (8 hours, Day 2, 10:00-18:00)
+## 2. Cronograma (8 horas, Dia 2, 10:00-18:00)
 
 > [!IMPORTANT]
-> Copilot setup, Docker, and repository clone must be done **before 10:00**. On the morning of Day 2, at 10:00, the team only confirms that everything opens. It does not install from scratch. Without setup ready, the schedule does not fit.
+> O setup do Copilot, do Docker e o clone do repositório precisam estar prontos **antes das 10:00**. Na manhã do Dia 2, às 10:00, o time só confirma que tudo abre. Não instala do zero. Sem o setup pronto, o cronograma não cabe.
 
-![Timeline for the day: pre-event, four stages, and demo, with the three H1, H2, and H3 handoffs](assets/timeline-stages.svg)
+![Timeline do dia: pré-evento, quatro estágios e demo, com os três handoffs H1, H2 e H3](assets/timeline-stages.svg)
 
-| Time | Block | Lead pairs | Support pairs |
+| Horário | Bloco | Duplas líderes | Duplas de apoio |
 |---|---|---|---|
-| **10:00-10:15** | Opening + pair confirmation | Facilitator | Each person confirms their two personas and opens their `PERSONA.md` |
-| **10:15-10:45** | Setup validation + persona kits | Pair 3 + Pair 5 | Git, Java/Node, Docker, Spec-Kit `specify version`, Copilot Chat |
-| **10:45-11:00** | Quick legacy orientation | Pair 1 + Pair 4 | Overview of the 15 Natural programs + four DDMs |
-| **11:00-12:00** | **Stage 1** - Archaeology (part 1) | All five pairs in parallel | Each pair gets three programs - discovery + extraction |
-| **12:00-13:30** | Lunch | - | - |
-| **13:30-14:00** | **Stage 1** - Synthesis + **Handoff H1** | **Pair 1** consolidates evidence + scope | Pair 5 clarifies terms; Pair 2 identifies dependencies |
-| **14:00-15:00** | **Stage 2** - Modern spec | **Pair 2** (EA + SA) | Pair 1 validates scope · Pair 5 reviews clarity · **Handoff H2** at the end |
-| **15:00-16:10** | **Stage 3** - Implementation | **Pair 3** (TL + Dev), **Pair 4** (DBA + QA) | Pair 5 drafts CI scaffold · **Handoff H3** at the end |
-| **16:10-16:50** | **Stage 4** - Evolution with agents | **Pair 5** (DevOps + TW) | **Pair 3** writes Issues and reviews Agent PRs |
-| **16:50-17:00** | Buffer + demo prep | Everyone | Each team rehearses 30 seconds per persona |
-| **17:00-17:30** | **Team demos** (~3 min each) | Whole team | PO leads · facilitator keeps time |
-| **17:30-17:50** | Retrospective | Everyone | Keep / Change / Try - by persona |
-| **17:50-18:00** | Wrap-up + final feedback | Facilitator | - |
+| **10:00-10:15** | Abertura + confirmação das duplas | Facilitador | Cada pessoa confirma suas duas personas e abre seu `PERSONA.md` |
+| **10:15-10:45** | Validação do setup + kits de persona | Dupla 3 + Dupla 5 | Git, Java/Node, Docker, Spec-Kit `specify version`, GitHub Copilot |
+| **10:45-11:00** | Orientação rápida sobre o legado | Dupla 1 + Dupla 4 | Visão geral dos 15 programas Natural + quatro DDMs |
+| **11:00-12:00** | **Estágio 1** - Arqueologia (parte 1) | As cinco duplas em paralelo | Cada dupla recebe três programas - descoberta + extração |
+| **12:00-13:30** | Almoço | - | - |
+| **13:30-14:00** | **Estágio 1** - Síntese + **Handoff H1** | **Dupla 1** consolida evidências + escopo | A Dupla 5 esclarece termos; a Dupla 2 identifica dependências |
+| **14:00-15:00** | **Estágio 2** - Especificação moderna | **Dupla 2** (EA + SA) | A Dupla 1 valida o escopo · a Dupla 5 revisa a clareza · **Handoff H2** no fim |
+| **15:00-16:10** | **Estágio 3** - Implementação | **Dupla 3** (TL + Dev), **Dupla 4** (DBA + QA) | A Dupla 5 rascunha o scaffold de CI · **Handoff H3** no fim |
+| **16:10-16:50** | **Estágio 4** - Evolução com agentes | **Dupla 5** (DevOps + TW) | A **Dupla 3** escreve Issues e revisa os PRs do Agent |
+| **16:50-17:00** | Buffer + preparação da demo | Todos | Cada time ensaia 30 segundos por persona |
+| **17:00-17:30** | **Demos dos times** (~3 min cada) | Time inteiro | O PO conduz · o facilitador controla o tempo |
+| **17:30-17:50** | Retrospectiva | Todos | Keep / Change / Try - por persona |
+| **17:50-18:00** | Encerramento + feedback final | Facilitador | - |
 
 > [!NOTE]
-> No one stays idle. Pairs that are not leading a stage still have concrete support work. See §4.
+> Ninguém fica ocioso. As duplas que não estão liderando um estágio ainda têm trabalho concreto de apoio. Veja a §4.
 
 ---
 
-## 3. Handoff map
+## 3. Mapa de handoffs
 
-![Handoffs H1, H2, and H3 between the four stages of the day, with transfer rules](assets/handoffs.svg)
+![Handoffs H1, H2 e H3 entre os quatro estágios do dia, com as regras de transferência](assets/handoffs.svg)
 
-Each pair has concrete work in every stage. The critical points are the three handoffs (H1, H2, H3). The rule is always the same: **a five-minute live conversation** between the pair leaving the stage and the pair entering it.
+Cada dupla tem trabalho concreto em todos os estágios. Os pontos críticos são os três handoffs (H1, H2, H3). A regra é sempre a mesma: **uma conversa ao vivo de cinco minutos** entre a dupla que sai do estágio e a que entra.
 
-**How to read the handoff diagram:**
+**Como ler o diagrama de handoffs:**
 
-- Arrows are blocking dependencies. Without the slice `spec.md`, `plan.md`, and `tasks.md`, Pairs 3 and 4 cannot start correctly.
-- Every handoff is a five-minute conversation between pairs. "Just read the document" is not enough. Talk live.
+- As setas são dependências bloqueantes. Sem o `spec.md`, o `plan.md` e o `tasks.md` da fatia, as Duplas 3 e 4 não conseguem começar direito.
+- Todo handoff é uma conversa de cinco minutos entre duplas. "É só ler o documento" não basta. Converse ao vivo.
 
 ---
 
-## 4. What each pair does in each stage
+## 4. O que cada dupla faz em cada estágio
 
-No pair stays idle. Even when a pair is not leading, it still has explicit support work.
+Nenhuma dupla fica ociosa. Mesmo quando não está liderando, a dupla tem trabalho de apoio explícito.
 
-| Pair | Stage 1 (Archaeology) | Stage 2 (Spec) | Stage 3 (Implementation) | Stage 4 (Evolution) |
+| Dupla | Estágio 1 (Arqueologia) | Estágio 2 (Spec) | Estágio 3 (Implementação) | Estágio 4 (Evolução) |
 |---|---|---|---|---|
-| **1 - Vision** | **Leads.** Extracts rules; PO prioritizes scope. | Validates EARS; signs off on scope at H2. | Stays available to clarify requirements. Builds the demo narrative. | Rehearses the demo. |
-| **2 - Architecture** | Maps evidence and dependencies relevant to the slice. | **Leads.** `spec.md`, `plan.md`, and `tasks.md`; records blocking decisions. | Stays available for boundary questions; reviews PRs that touch contracts. | Validates IaC against existing decisions. |
-| **3 - Implementation** | Defines conventions (branches, PR template, DoD) and the prototype target skeleton. | Comments on feasibility; estimates complexity. | **Leads.** Code, tests, integration. | **Co-leads.** Agent mode delegation, PR review. |
-| **4 - Quality** | Reads DDMs, plans schema mapping. | Comments on data implications; writes the first BDD scenarios. | **Leads.** Schema, migrations, test coverage. | Final coverage gate; contract tests in CI. |
-| **5 - Operations** | Builds the glossary and terms that support the slice. | Reviews clarity and scope decisions. | Drafts the CI pipeline structure. | **Leads.** One small delegation; CI/IaC only if relevant. |
+| **1 - Visão** | **Lidera.** Extrai regras; o PO prioriza o escopo. | Valida os EARS; assina o escopo no H2. | Fica disponível para esclarecer requisitos. Constrói a narrativa da demo. | Ensaia a demo. |
+| **2 - Arquitetura** | Mapeia evidências e dependências relevantes para a fatia. | **Lidera.** `spec.md`, `plan.md` e `tasks.md`; registra decisões bloqueantes. | Fica disponível para dúvidas de fronteira; revisa PRs que tocam contratos. | Valida a IaC contra as decisões existentes. |
+| **3 - Implementação** | Define convenções (branches, template de PR, DoD) e o esqueleto-alvo do protótipo. | Comenta a viabilidade; estima a complexidade. | **Lidera.** Código, testes, integração. | **Colidera.** Delegação em modo Agent, revisão de PR. |
+| **4 - Qualidade** | Lê os DDMs, planeja o mapeamento do schema. | Comenta as implicações de dados; escreve os primeiros cenários BDD. | **Lidera.** Schema, migrações, cobertura de testes. | Gate final de cobertura; testes de contrato na CI. |
+| **5 - Operações** | Constrói o glossário e os termos que sustentam a fatia. | Revisa a clareza e as decisões de escopo. | Rascunha a estrutura do pipeline de CI. | **Lidera.** Uma delegação pequena; CI/IaC só se for relevante. |
 
 ---
 
-## 5. First 45 minutes: checklist by pair
+## 5. Primeiros 45 minutos: checklist por dupla
 
-Between **10:00 and 10:45**, **every pair** does the same four actions. Specialization starts after that.
+Entre **10:00 e 10:45**, **todas as duplas** fazem as mesmas quatro ações. A especialização começa depois disso.
 
-- [ ] **Step 1: Read `00-TEAM-FLOW.md` (this file).** (10 min)
-- [ ] **Step 2: Read the `PERSONA.md` for both kits in [`05-personas/`](05-personas/).** (15 min)
-- [ ] **Step 3: Validate the consolidated `.github/`.** `ls .github/agents .github/prompts .github/instructions .github/skills` - agents, prompts, instructions, and skills already ship ready. (5 min)
-- [ ] **Step 4: Open Copilot Chat, run the smoke-test prompt, and validate local tools.** (15 min)
+- [ ] **Passo 1: Leia `00-TEAM-FLOW.md` (este arquivo).** (10 min)
+- [ ] **Passo 2: Leia o `PERSONA.md` dos dois kits em [`05-personas/`](05-personas/).** (15 min)
+- [ ] **Passo 3: Valide o `.github/` consolidado.** `ls .github/agents .github/prompts .github/instructions .github/skills` - agentes, prompts, instruções e skills já vêm prontos. (5 min)
+- [ ] **Passo 4: Abra o GitHub Copilot, rode o prompt de smoke test e valide as ferramentas locais.** (15 min)
 
-### First action for each pair in archaeology, at 11:00
+### Primeira ação de cada dupla na arqueologia, às 11:00
 
-| Pair | Action at 11:00 |
+| Dupla | Ação às 11:00 |
 |---|---|
-| **1 - Vision** | PO opens [`00-TEAM-FLOW.md`](00-TEAM-FLOW.md) and the day schedule; RE opens [`01-archaeology/legacy-sifap/natural-programs/`](01-archaeology/legacy-sifap/natural-programs/) and starts the rule catalog. |
-| **2 - Architecture** | EA opens [`01-archaeology/legacy-sifap/legacy-docs/`](01-archaeology/legacy-sifap/legacy-docs/) and records dependencies that affect the slice; SA prepares boundary questions. |
-| **3 - Implementation** | TL defines branch strategy, PR template, definition of done, and standard paths (`backend/`, `frontend/`, `infra/` when needed). |
-| **4 - Quality** | DBA opens [`01-archaeology/legacy-sifap/adabas-ddms/`](01-archaeology/legacy-sifap/adabas-ddms/) and starts the field mapping; QA prepares the test strategy for the prototype that the team will create. |
-| **5 - Operations** | DevOps plans the CI/IaC work that the team will create in this repository; TW opens the template at [`01-archaeology/glossary.md`](01-archaeology/glossary.md). |
+| **1 - Visão** | O PO abre [`00-TEAM-FLOW.md`](00-TEAM-FLOW.md) e o cronograma do dia; o RE abre [`01-archaeology/legacy-sifap/natural-programs/`](01-archaeology/legacy-sifap/natural-programs/) e começa o catálogo de regras. |
+| **2 - Arquitetura** | O EA abre [`01-archaeology/legacy-sifap/legacy-docs/`](01-archaeology/legacy-sifap/legacy-docs/) e registra as dependências que afetam a fatia; o SA prepara as perguntas de fronteira. |
+| **3 - Implementação** | O TL define a estratégia de branches, o template de PR, a definição de pronto e os caminhos padrão (`backend/`, `frontend/`, `infra/` quando necessário). |
+| **4 - Qualidade** | O DBA abre [`01-archaeology/legacy-sifap/adabas-ddms/`](01-archaeology/legacy-sifap/adabas-ddms/) e começa o mapeamento de campos; o QA prepara a estratégia de testes para o protótipo que o time vai criar. |
+| **5 - Operações** | O DevOps planeja o trabalho de CI/IaC que o time vai criar neste repositório; o TW abre o template em [`01-archaeology/glossary.md`](01-archaeology/glossary.md). |
 
 ---
 
-## 6. The 20-minute rule
+## 6. A regra dos 20 minutos
 
 > [!IMPORTANT]
-> **If you, or your pair, stay stuck on the same problem for 20 minutes, stop and ask for help.**
+> **Se você, ou sua dupla, ficar travado no mesmo problema por 20 minutos, pare e peça ajuda.**
 
-The rule applies to everyone. Asking for help is not weakness. Staying silent and pushing alone puts the team schedule at risk.
+A regra vale para todo mundo. Pedir ajuda não é fraqueza. Ficar calado e insistir sozinho coloca o cronograma do time em risco.
 
-### Escalation ladder
+### Escada de escalonamento
 
-| Stuck for | Talk to |
+| Travado há | Fale com |
 |---|---|
-| 5 min | Try Copilot Chat with different framing, or check with the person in your pair |
-| 10 min | Talk to the pair immediately before or after yours (see §3) |
-| 20 min | Talk to Pair 3 (the TL coordinates the team) |
-| 30 min | Raise your hand for a facilitator (blue lanyard) |
+| 5 min | Tente o modo Ask do GitHub Copilot com outro enquadramento, ou confira com a pessoa da sua dupla |
+| 10 min | Fale com a dupla imediatamente antes ou depois da sua (veja a §3) |
+| 20 min | Fale com a Dupla 3 (o TL coordena o time) |
+| 30 min | Levante a mão para um facilitador (cordão azul) |
 
-### How to escalate (three-line format)
+### Como escalar (formato de três linhas)
 
 ```text
-1. Goal: What I am trying to achieve
-2. Tried: What I already tried (and what happened)
-3. Blocker: What is stopping me right now
+1. Objetivo: O que eu estou tentando alcançar
+2. Tentei: O que eu já tentei (e o que aconteceu)
+3. Bloqueio: O que está me impedindo agora
 ```
 
-Bad: "This is not working."
+Ruim: "Não está funcionando."
 
-Good: "Goal: validate CPF in `BeneficioService`. Tried: `@CPF` from Bean Validation and manual validation. Blocker: I need to confirm whether the Payment Inspection and Administration System (SIFAP) accepts CPF for foreign users in a different format."
-
----
-
-## 7. Definition of done by handoff
-
-### Handoff H1: legacy to spec (end of Stage 1, ~14:00)
-
-**Owner:** Pair 1 (Vision)
-**Receivers:** Pair 2 (Architecture), Pair 5 (Operations)
-
-| Artifact | Path | Done means |
-|---|---|---|
-| Rule catalog | `01-archaeology/business-rules-catalog.md` | Candidate slice rules have the source `.NSN` or `.ddm` recorded |
-| Discovery report | `01-archaeology/discovery-report.md` | Thin slice, evidence, and open questions for the chosen feature |
-| Supporting materials consulted | `01-archaeology/` | Glossary, dependencies, and mysteries appear only when they help explain the slice |
-
-### Handoff H2: spec to code (end of Stage 2, ~15:00)
-
-**Owner:** Pair 2 (Architecture)
-**Receivers:** Pair 3 (Implementation), Pair 4 (Quality)
-
-| Artifact | Path | Done means |
-|---|---|---|
-| Formal specification | `specs/<NNN>-<feature>/spec.md` | Thin feature with REQ-IDs, EARS, and `source_legacy:` in every requirement |
-| Formal plan | `specs/<NNN>-<feature>/plan.md` | Decisions, risks, and approach are sufficient to start implementation |
-| Formal tasks | `specs/<NNN>-<feature>/tasks.md` | Implementation and test order are defined for the feature |
-| Scope decision | `02-modern-spec/scope-decisions.md` | The PO confirmed what is in scope and what stays deferred |
-
-### Handoff H3: code to ops (end of Stage 3, ~16:10)
-
-**Owner:** Pair 3 (Implementation)
-**Receivers:** Pair 5 (Operations)
-
-| Artifact | Path | Done means |
-|---|---|---|
-| Working backend | `backend/` | `mvn test` is green; OpenAPI is documented |
-| Working frontend | `frontend/` | `npm test` is green; core flows are usable |
-| Migrations | `backend/src/main/resources/db/migration/` | Flyway scripts are numbered and idempotent (Pair 4 owns this) |
-| Coverage report | CI artifact | Backend >= 70%, frontend >= 60% line coverage (Pair 4 verifies) |
+Bom: "Objetivo: validar CPF em `BeneficioService`. Tentei: `@CPF` do Bean Validation e validação manual. Bloqueio: preciso confirmar se o Sistema de Fiscalização e Administração de Pagamentos (SIFAP) aceita CPF de estrangeiros em outro formato."
 
 ---
 
-## 8. Communication patterns
+## 7. Definição de pronto por handoff
 
-| Pattern | When | Example |
+### Handoff H1: do legado para a spec (fim do Estágio 1, ~14:00)
+
+**Responsável:** Dupla 1 (Visão)
+**Recebem:** Dupla 2 (Arquitetura), Dupla 5 (Operações)
+
+| Artefato | Caminho | Pronto significa |
 |---|---|---|
-| **Stand-up** | At every stage transition (4x) | Two-minute round, one sentence per pair: "We finished X, we are doing Y, we are blocked by Z" |
-| **Pair check-in** | Every 30 minutes inside a stage | "Are the two of us still aligned?" |
-| **Pair-to-pair sync** | During handoffs | Five-minute conversation, no slides |
-| **PR comments** | Async between pairs | Mention the receiving pair explicitly (`@par-3`) |
-| **Quiet hour** | Final 30 minutes of Stage 3 | No meetings; everyone codes or tests |
+| Catálogo de regras | `01-archaeology/business-rules-catalog.md` | As regras candidatas da fatia têm o `.NSN` ou `.ddm` de origem registrado |
+| Relatório de descoberta | `01-archaeology/discovery-report.md` | Fatia fina, evidências e questões em aberto da feature escolhida |
+| Materiais de apoio consultados | `01-archaeology/` | Glossário, dependências e mistérios aparecem só quando ajudam a explicar a fatia |
+
+### Handoff H2: da spec para o código (fim do Estágio 2, ~15:00)
+
+**Responsável:** Dupla 2 (Arquitetura)
+**Recebem:** Dupla 3 (Implementação), Dupla 4 (Qualidade)
+
+| Artefato | Caminho | Pronto significa |
+|---|---|---|
+| Especificação formal | `specs/<NNN>-<feature>/spec.md` | Feature fina com REQ-IDs, EARS e `source_legacy:` em cada requisito |
+| Plano formal | `specs/<NNN>-<feature>/plan.md` | Decisões, riscos e abordagem são suficientes para começar a implementação |
+| Tarefas formais | `specs/<NNN>-<feature>/tasks.md` | A ordem de implementação e de testes está definida para a feature |
+| Decisão de escopo | `02-modern-spec/scope-decisions.md` | O PO confirmou o que está no escopo e o que fica adiado |
+
+### Handoff H3: do código para as operações (fim do Estágio 3, ~16:10)
+
+**Responsável:** Dupla 3 (Implementação)
+**Recebem:** Dupla 5 (Operações)
+
+| Artefato | Caminho | Pronto significa |
+|---|---|---|
+| Backend funcionando | `backend/` | `mvn test` está verde; o OpenAPI está documentado |
+| Frontend funcionando | `frontend/` | `npm test` está verde; os fluxos principais são utilizáveis |
+| Migrações | `backend/src/main/resources/db/migration/` | Os scripts Flyway estão numerados e idempotentes (a Dupla 4 é responsável) |
+| Relatório de cobertura | Artefato da CI | Backend >= 70%, frontend >= 60% de cobertura de linhas (a Dupla 4 verifica) |
 
 ---
 
-## 9. Anti-patterns: do not do this
+## 8. Padrões de comunicação
 
-| Anti-pattern | Do this instead |
+| Padrão | Quando | Exemplo |
+|---|---|---|
+| **Stand-up** | A cada transição de estágio (4x) | Rodada de dois minutos, uma frase por dupla: "Terminamos X, estamos fazendo Y, estamos bloqueados por Z" |
+| **Check-in da dupla** | A cada 30 minutos dentro de um estágio | "Nós dois continuamos alinhados?" |
+| **Sync entre duplas** | Durante os handoffs | Conversa de cinco minutos, sem slides |
+| **Comentários de PR** | Assíncrono entre duplas | Mencione a dupla que recebe explicitamente (`@par-3`) |
+| **Quiet hour** | Últimos 30 minutos do Estágio 3 | Sem reuniões; todo mundo programa ou testa |
+
+---
+
+## 9. Antipadrões: não faça isso
+
+| Antipadrão | Faça isto no lugar |
 |---|---|
-| One persona in the pair does everything | Rotate every ~45 minutes so the other person stays warm |
-| Skip a handoff | Hold the five-minute pair-to-pair conversation at every transition |
-| Pair 4 (Quality) waits until the end of Stage 3 to start | Pair 4 writes BDD scenarios as soon as REQ-IDs exist (middle of Stage 2) |
-| Pair 5 (Operations) stays idle until Stage 4 | Pair 5 leads glossary work in Stage 1, ADR clarity in Stage 2, and CI scaffold in Stage 3 |
-| Pair 1 (Vision) disappears after Stage 1 | PO validates scope at H2 and rehearses the demo in Stage 4 |
-| Pair 3 merges without review | Every PR gets at least one cross-pair review |
+| Uma persona da dupla faz tudo | Faça rodízio a cada ~45 minutos para a outra pessoa se manter aquecida |
+| Pular um handoff | Faça a conversa de cinco minutos entre duplas em toda transição |
+| A Dupla 4 (Qualidade) espera o fim do Estágio 3 para começar | A Dupla 4 escreve cenários BDD assim que os REQ-IDs existirem (meio do Estágio 2) |
+| A Dupla 5 (Operações) fica ociosa até o Estágio 4 | A Dupla 5 lidera o glossário no Estágio 1, a clareza dos ADRs no Estágio 2 e o scaffold de CI no Estágio 3 |
+| A Dupla 1 (Visão) desaparece depois do Estágio 1 | O PO valida o escopo no H2 e ensaia a demo no Estágio 4 |
+| A Dupla 3 faz merge sem revisão | Todo PR recebe pelo menos uma revisão de outra dupla |
 
 ---
 
-## 10. Quick reference
+## 10. Referência rápida
 
-| Question | Where to find it |
+| Pergunta | Onde encontrar |
 |---|---|
-| Which pair am I? | §1 (table of the five pairs) |
-| What does my pair do in stage N? | §4 (pair x stage matrix) |
-| Stuck? | 20-minute rule (§6) |
-| Do I need a handoff? | Definition-of-done criteria (§7) |
-| Which Copilot mode? | `09-cheat-sheets/copilot-3-modes.md` |
-| Which model? | `09-cheat-sheets/model-routing.md` |
-| Which Spec-Kit command? | `09-cheat-sheets/spec-kit-workflow.md` |
+| Em qual dupla eu estou? | §1 (tabela das cinco duplas) |
+| O que minha dupla faz no estágio N? | §4 (matriz dupla x estágio) |
+| Travado? | Regra dos 20 minutos (§6) |
+| Preciso de um handoff? | Critérios de definição de pronto (§7) |
+| Qual modo do Copilot? | `09-cheat-sheets/copilot-3-modes.md` |
+| Qual modelo? | `09-cheat-sheets/model-routing.md` |
+| Qual comando do Spec-Kit? | `09-cheat-sheets/spec-kit-workflow.md` |
 
 ---
 
-### Continue reading
+### Continue lendo
 
-| Previous | Next |
+| Anterior | Próximo |
 |---|---|
-| [First 15 minutes](00-START-HERE.md)<br/><sub>Opening walkthrough with five numbered steps for anyone to get started.</sub> | [Setup](00-SETUP.md)<br/><sub>Laptop setup: Git, VS Code, Copilot, Spec-Kit, branch protection.</sub> |
+| [Primeiros 15 minutos](00-START-HERE.md)<br/><sub>Passo a passo de abertura com cinco passos numerados para qualquer pessoa começar.</sub> | [Setup](00-SETUP.md)<br/><sub>Setup do laptop: Git, VS Code, Copilot, Spec-Kit, proteção de branch.</sub> |
 
-<sub>[Back to the kit index](README.md)</sub>
+<sub>[Voltar ao índice do kit](README.md)</sub>

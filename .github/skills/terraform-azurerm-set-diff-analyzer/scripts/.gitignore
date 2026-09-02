@@ -1,12 +1,12 @@
-# Byte-compiled / optimized / DLL files
+# Arquivos compilados em bytecode, otimizados ou DLL
 __pycache__/
 *.py[cod]
 *$py.class
 
-# C extensions
+# Extensões C
 *.so
 
-# Distribution / packaging
+# Distribuição e empacotamento
 .Python
 build/
 develop-eggs/
@@ -28,11 +28,11 @@ wheels/
 *.manifest
 *.spec
 
-# Installer logs
+# Registros do instalador
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Unit test / coverage reports
+# Relatórios de testes unitários e cobertura
 htmlcov/
 .tox/
 .nox/
@@ -46,11 +46,11 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
-# Translations
+# Traduções
 *.mo
 *.pot
 
-# Environments
+# Ambientes
 .env
 .venv
 env/
@@ -64,11 +64,11 @@ venv.bak/
 .dmypy.json
 dmypy.json
 
-# Pyre type checker
+# Verificador de tipos Pyre
 .pyre/
 
-# pytype static type analyzer
+# Analisador estático de tipos pytype
 .pytype/
 
-# Cython debug symbols
+# Símbolos de depuração do Cython
 cython_debug/

@@ -1,27 +1,27 @@
 ---
-name: Feature Request
-about: New SIFAP 2.0 feature
+name: Solicitação de funcionalidade
+about: Nova funcionalidade do SIFAP 2.0
 title: '[FEATURE] '
 labels: feature
 ---
 
-## Reference REQ-ID
+## REQ-ID de referência
 
-<!-- Example: REQ-001 from specs/<NNN>-<feature>/spec.md -->
+<!-- Exemplo: REQ-001 de specs/<NNN>-<feature>/spec.md -->
 
-## Legacy Traceability
+## Rastreabilidade com o legado
 
-<!-- Required for every REQ-ID: source_legacy: 01-archaeology/legacy-sifap/natural-programs/<FILE>.NSN#L<start>-L<end>
-     or source_legacy: "[GREENFIELD] <one-line justification>". -->
+<!-- Obrigatório para todo REQ-ID: source_legacy: 01-archaeology/legacy-sifap/natural-programs/<FILE>.NSN#L<start>-L<end>
+     ou, para nova implementação, source_legacy: "[GREENFIELD] <justificativa em uma linha>". -->
 
-## Description
+## Descrição
 
-<!-- What needs to be implemented -->
+<!-- O que precisa ser implementado -->
 
-## Acceptance Criteria
+## Critérios de aceitação
 
-<!-- Gate criteria for considering the work complete -->
+<!-- Critérios da verificação para considerar o trabalho concluído -->
 
-## Responsible Persona
+## Persona responsável
 
-<!-- Which persona will implement it? -->
+<!-- Qual persona fará a implementação? -->

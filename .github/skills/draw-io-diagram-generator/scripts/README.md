@@ -1,124 +1,124 @@
-# draw-io Scripts
+# Programas auxiliares do draw.io
 
-Utility scripts for working with `.drawio` diagram files in the cxp-bu-order-ms project.
+Programas auxiliares para trabalhar com arquivos de diagrama `.drawio` no projeto cxp-bu-order-ms.
 
-## Requirements
+## Requisitos
 
 - Python 3.8+
-- No external dependencies (uses standard library only: `xml.etree.ElementTree`, `argparse`, `json`, `sys`, `pathlib`)
+- Sem dependências externas (usa somente a biblioteca padrão: `xml.etree.ElementTree`, `argparse`, `json`, `sys`, `pathlib`)
 
-## Scripts
+## Programas
 
 ### `validate-drawio.py`
 
-Validates the XML structure of a `.drawio` file against required constraints.
+Valida a estrutura XML de um arquivo `.drawio` conforme as restrições obrigatórias.
 
-**Usage**
+**Uso**
 
 ```bash
 python scripts/validate-drawio.py <path-to-diagram.drawio>
 ```
 
-**Examples**
+**Exemplos**
 
 ```bash
-# Validate a single file
+# Validar um único arquivo
 python scripts/validate-drawio.py docs/architecture.drawio
 
-# Validate all drawio files in a directory
+# Validar todos os arquivos drawio de um diretório
 for f in docs/**/*.drawio; do python scripts/validate-drawio.py "$f"; done
 ```
 
-**Checks performed**
+**Verificações realizadas**
 
-| Check | Description |
+| Verificação | Descrição |
 |-------|-------------|
-| Root cells | Verifies id="0" and id="1" cells are present in every diagram page |
-| Unique IDs | All `mxCell` id values are unique within a diagram |
-| Edge connectivity | Every edge has valid `source` and `target` attributes pointing to existing cells |
-| Geometry | Every vertex cell has an `mxGeometry` child element |
-| Parent chain | Every cell's `parent` attribute references an existing cell id |
-| XML well-formedness | File is valid XML |
+| Células-raiz | Verifica se as células id="0" e id="1" estão presentes em cada página do diagrama |
+| IDs exclusivos | Todos os valores de id de `mxCell` são exclusivos no diagrama |
+| Conectividade das arestas | Cada aresta tem atributos `source` e `target` válidos que apontam para células existentes |
+| Geometria | Cada célula de vértice tem um elemento filho `mxGeometry` |
+| Cadeia de pais | O atributo `parent` de cada célula referencia um ID de célula existente |
+| Boa formação do XML | O arquivo é um XML válido |
 
-**Exit codes**
+**Códigos de saída**
 
-- `0` — Validation passed
-- `1` — One or more validation errors found (errors printed to stdout)
+- `0`: validação aprovada
+- `1`: um ou mais erros de validação encontrados (erros impressos na saída padrão, `stdout`)
 
 ---
 
 ### `add-shape.py`
 
-Adds a new shape (vertex cell) to an existing `.drawio` diagram file.
+Adiciona uma nova forma (célula de vértice) a um arquivo de diagrama `.drawio` existente.
 
-**Usage**
+**Uso**
 
 ```bash
 python scripts/add-shape.py <diagram.drawio> <label> <x> <y> [options]
 ```
 
-**Arguments**
+**Argumentos**
 
-| Argument | Required | Description |
+| Argumento | Obrigatório | Descrição |
 |----------|----------|-------------|
-| `diagram` | Yes | Path to the `.drawio` file |
-| `label` | Yes | Text label for the new shape |
-| `x` | Yes | X coordinate (pixels from top-left) |
-| `y` | Yes | Y coordinate (pixels from top-left) |
+| `diagram` | Sim | Caminho do arquivo `.drawio` |
+| `label` | Sim | Rótulo de texto da nova forma |
+| `x` | Sim | Coordenada X (pixels a partir do canto superior esquerdo) |
+| `y` | Sim | Coordenada Y (pixels a partir do canto superior esquerdo) |
 
-**Options**
+**Opções**
 
-| Option | Default | Description |
+| Opção | Padrão | Descrição |
 |--------|---------|-------------|
-| `--width` | `120` | Shape width in pixels |
-| `--height` | `60` | Shape height in pixels |
-| `--style` | `"rounded=1;whiteSpace=wrap;html=1;"` | draw.io style string |
-| `--diagram-index` | `0` | Index of the diagram page (0-based) |
-| `--dry-run` | false | Print the new cell XML without modifying the file |
+| `--width` | `120` | Largura da forma em pixels |
+| `--height` | `60` | Altura da forma em pixels |
+| `--style` | `"rounded=1;whiteSpace=wrap;html=1;"` | String de estilo do draw.io |
+| `--diagram-index` | `0` | Índice da página do diagrama (base zero) |
+| `--dry-run` | false | Imprime o XML da nova célula sem modificar o arquivo |
 
-**Examples**
+**Exemplos**
 
 ```bash
-# Add a basic rounded box
-python scripts/add-shape.py docs/flowchart.drawio "New Step" 400 300
+# Adicionar uma caixa arredondada básica
+python scripts/add-shape.py docs/flowchart.drawio "Nova etapa" 400 300
 
-# Add a custom styled shape
-python scripts/add-shape.py docs/flowchart.drawio "Decision" 400 400 \
+# Adicionar uma forma com estilo personalizado
+python scripts/add-shape.py docs/flowchart.drawio "Decisão" 400 400 \
   --width 160 --height 80 \
   --style "rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;"
 
-# Preview without writing
-python scripts/add-shape.py docs/architecture.drawio "Service X" 600 200 --dry-run
+# Visualizar sem gravar
+python scripts/add-shape.py docs/architecture.drawio "Serviço X" 600 200 --dry-run
 ```
 
-**Output**
+**Saída**
 
-Prints the new cell id on success:
+Imprime o ID da nova célula em caso de sucesso:
 
 ```
-Added shape id="auto_abc123" to page 0 of docs/flowchart.drawio
+Forma id="auto_abc123" adicionada à página 0 de docs/flowchart.drawio
 ```
 
 ---
 
-## Common Workflows
+## Fluxos comuns
 
-### Validate before committing
+### Validar antes de confirmar no Git
 
 ```bash
-# Validate all diagrams
+# Validar todos os diagramas
 find . -name "*.drawio" -not -path "*/node_modules/*" | \
   xargs -I{} python scripts/validate-drawio.py {}
 ```
 
-### Quickly add a placeholder node
+### Adicionar rapidamente um nó de marcador de posição
 
 ```bash
-python scripts/add-shape.py docs/architecture.drawio "TODO: Service" 800 400 \
+python scripts/add-shape.py docs/architecture.drawio "TODO: Serviço" 800 400 \
   --style "rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;"
 ```
 
-### Check a template is valid
+### Verificar se um modelo é válido
 
 ```bash
 python scripts/validate-drawio.py .github/skills/draw-io-diagram-generator/templates/flowchart.drawio

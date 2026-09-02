@@ -1,16 +1,16 @@
 # @RestClientTest
 
-Testing REST clients in isolation with MockRestServiceServer.
+Teste isolado de clientes REST com MockRestServiceServer.
 
-## Overview
+## Visão geral
 
-`@RestClientTest` auto-configures:
+`@RestClientTest` configura automaticamente:
 
-- RestTemplate/RestClient with mock server support
+- RestTemplate/RestClient com suporte a servidor simulado
 - Jackson ObjectMapper
 - MockRestServiceServer
 
-## Basic Setup
+## Configuração básica
 
 ```java
 @RestClientTest(WeatherService.class)
@@ -24,7 +24,7 @@ class WeatherServiceTest {
 }
 ```
 
-## Testing RestTemplate
+## Teste de RestTemplate
 
 ```java
 @RestClientTest(WeatherService.class)
@@ -38,7 +38,7 @@ class WeatherServiceTest {
 
   @Test
   void shouldFetchWeather() {
-    // Given
+    // Dado
     server.expect(requestTo("https://api.weather.com/v1/current"))
       .andExpect(method(HttpMethod.GET))
       .andExpect(queryParam("city", "Berlin"))
@@ -46,17 +46,17 @@ class WeatherServiceTest {
         .contentType(MediaType.APPLICATION_JSON)
         .body("{\"temperature\": 22, \"condition\": \"Sunny\"}"));
 
-    // When
+    // Quando
     Weather weather = weatherService.getCurrentWeather("Berlin");
 
-    // Then
+    // Então
     assertThat(weather.getTemperature()).isEqualTo(22);
     assertThat(weather.getCondition()).isEqualTo("Sunny");
   }
 }
 ```
 
-## Testing RestClient (Spring 6.1+)
+## Teste de RestClient (Spring 6.1+)
 
 ```java
 @RestClientTest(WeatherService.class)
@@ -81,23 +81,23 @@ class WeatherServiceTest {
 }
 ```
 
-## Request Matching
+## Correspondência de solicitações
 
-### Exact URL
+### URL exata
 
 ```java
 server.expect(requestTo("https://api.example.com/users/1"))
   .andRespond(withSuccess());
 ```
 
-### URL Pattern
+### Padrão de URL
 
 ```java
 server.expect(requestTo(matchesPattern("https://api.example.com/users/\\d+")))
   .andRespond(withSuccess());
 ```
 
-### HTTP Method
+### Método HTTP
 
 ```java
 server.expect(ExpectedCount.once(),
@@ -106,7 +106,7 @@ server.expect(ExpectedCount.once(),
   .andRespond(withCreatedEntity(URI.create("/users/1")));
 ```
 
-### Request Body
+### Corpo da solicitação
 
 ```java
 server.expect(requestTo("https://api.example.com/users"))
@@ -115,7 +115,7 @@ server.expect(requestTo("https://api.example.com/users"))
   .andRespond(withSuccess());
 ```
 
-### Headers
+### Cabeçalhos
 
 ```java
 server.expect(requestTo("https://api.example.com/users"))
@@ -124,9 +124,9 @@ server.expect(requestTo("https://api.example.com/users"))
   .andRespond(withSuccess());
 ```
 
-## Response Types
+## Tipos de resposta
 
-### Success with Body
+### Sucesso com corpo
 
 ```java
 server.expect(requestTo("/users/1"))
@@ -135,7 +135,7 @@ server.expect(requestTo("/users/1"))
     .body("{\"id\": 1, \"name\": \"John\"}"));
 ```
 
-### Success from Resource
+### Sucesso com recurso
 
 ```java
 server.expect(requestTo("/users/1"))
@@ -143,7 +143,7 @@ server.expect(requestTo("/users/1"))
     .body(new ClassPathResource("user-response.json")));
 ```
 
-### Created
+### Criado
 
 ```java
 server.expect(requestTo("/users"))
@@ -151,7 +151,7 @@ server.expect(requestTo("/users"))
   .andRespond(withCreatedEntity(URI.create("/users/1")));
 ```
 
-### Error Response
+### Resposta de erro
 
 ```java
 server.expect(requestTo("/users/999"))
@@ -159,14 +159,14 @@ server.expect(requestTo("/users/999"))
 
 server.expect(requestTo("/users"))
   .andRespond(withServerError()
-    .body("Internal Server Error"));
+    .body("Erro interno do servidor"));
 
 server.expect(requestTo("/users"))
   .andRespond(withStatus(HttpStatus.BAD_REQUEST)
-    .body("{\"error\": \"Invalid input\"}"));
+    .body("{\"error\": \"Entrada inválida\"}"));
 ```
 
-## Verifying Requests
+## Verificação de solicitações
 
 ```java
 @Test
@@ -177,11 +177,11 @@ void shouldCallApi() {
 
   service.fetchData();
 
-  server.verify(); // Verify all expectations met
+  server.verify(); // Verifica se todas as expectativas foram atendidas
 }
 ```
 
-## Ignoring Extra Requests
+## Como ignorar solicitações adicionais
 
 ```java
 @Test
@@ -190,14 +190,14 @@ void shouldHandleMultipleCalls() {
     requestTo(matchesPattern("/api/.*")))
     .andRespond(withSuccess());
 
-  // Multiple calls allowed
+  // Várias chamadas permitidas
   service.callApi();
   service.callApi();
   service.callApi();
 }
 ```
 
-## Reset Between Tests
+## Reinicialização entre testes
 
 ```java
 @BeforeEach
@@ -206,7 +206,7 @@ void setUp() {
 }
 ```
 
-## Testing Timeouts
+## Teste de limites de tempo
 
 ```java
 server.expect(requestTo("/slow-endpoint"))
@@ -214,14 +214,14 @@ server.expect(requestTo("/slow-endpoint"))
     .body("{\"data\": \"test\"}")
     .delay(100, TimeUnit.MILLISECONDS));
 
-// Test timeout handling
+// Testa o tratamento do limite de tempo
 ```
 
-## Best Practices
+## Práticas recomendadas
 
-1. Always verify `server.verify()` at end of test
-2. Use resource files for large JSON responses
-3. Match on minimal set of request attributes
-4. Reset server in @BeforeEach
-5. Test error responses, not just success
-6. Verify request body for POST/PUT calls
+1. Sempre execute `server.verify()` ao final do teste
+2. Use arquivos de recursos para respostas JSON grandes
+3. Compare o conjunto mínimo de atributos da solicitação
+4. Reinicialize o servidor em @BeforeEach
+5. Teste respostas de erro, não apenas sucesso
+6. Verifique o corpo da solicitação em chamadas POST/PUT

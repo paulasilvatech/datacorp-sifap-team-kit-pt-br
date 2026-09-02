@@ -1,8 +1,8 @@
 {
     "metadata": {
-        "description": "AzureRM Provider Set-type attribute definitions",
+        "description": "Definições de atributos do tipo Set do provedor AzureRM",
         "lastUpdated": "2026-01-28",
-        "source": "Terraform Registry documentation and AzureRM Provider source code"
+        "source": "Documentação do Terraform Registry e código-fonte do provedor AzureRM"
     },
     "resources": {
         "azurerm_application_gateway": {

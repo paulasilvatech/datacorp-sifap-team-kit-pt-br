@@ -1,29 +1,29 @@
 # Persona — Developer
 
-> **Track:** [Team Kit](../../README.md) › [Personas](../OVERVIEW.md) › [Developer](README.md) › **PERSONA**
+> **Trilha:** [Kit do Time](../../README.md) › [Personas](../OVERVIEW.md) › [Developer](README.md) › **PERSONA**
 
-**Reference profile for the Developer persona in the SIFAP modernization workshop.**
+**Perfil de referência da persona Developer na imersão de modernização do SIFAP.**
 
-![Pair 3](https://img.shields.io/badge/Par-3%20%C2%B7%20Implementa%C3%A7%C3%A3o-171717?style=flat-square) ![Leads Stage 3](https://img.shields.io/badge/Lidera-Est%C3%A1gio%203-404040?style=flat-square) ![Supports Stage 4](https://img.shields.io/badge/Apoia-Est%C3%A1gio%204-737373?style=flat-square)
+![Dupla 3](https://img.shields.io/badge/Dupla-3%20%C2%B7%20Implementa%C3%A7%C3%A3o-171717?style=flat-square) ![Lidera o Estágio 3](https://img.shields.io/badge/Lidera-Est%C3%A1gio%203-404040?style=flat-square) ![Apoia o Estágio 4](https://img.shields.io/badge/Apoia-Est%C3%A1gio%204-737373?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Role** | Developer |
-| **Pair** | Pair 3 — Implementation (with Technical Lead) |
-| **Active stages** | Stage 3 — Implementation (leads); Stage 4 — Evolution (supports) |
-| **Artifacts produced** | Backend (Java 21 + Spring Boot 3.3), frontend (Next.js 15), tests (JUnit 5 + Testcontainers + Vitest), reviewable PRs |
-| **Artifacts consumed** | EARS requirements (Requirements Engineer), package structure and bounded contexts (Software Architect), Flyway migrations (DBA) |
-| **Handoff to** | QA Engineer — testable code; DevOps Engineer — stable build |
+| **Papel** | Developer |
+| **Dupla** | Dupla 3 — Implementação (com Technical Lead) |
+| **Estágios ativos** | Estágio 3 — Implementação (lidera); Estágio 4 — Evolução (apoia) |
+| **Artefatos produzidos** | Backend (Java 21 + Spring Boot 3.3), frontend (Next.js 15), testes (JUnit 5 + Testcontainers + Vitest) e PRs revisáveis |
+| **Artefatos consumidos** | Requisitos EARS (Requirements Engineer), estrutura de pacotes e bounded contexts (Software Architect), migrações Flyway (DBA) |
+| **Handoff para** | QA Engineer — código testável; DevOps Engineer — build estável |
 
 ---
 
-## What this persona is
+## O que é esta persona
 
-The Developer writes the code. In the SIFAP (Payment Inspection and Administration System) modernization, this persona translates Natural programs and DDM/Adabas structures into Java 21 with Spring Boot 3.3, implements the frontend in Next.js 15 with strict TypeScript, and ensures that every EARS requirement becomes a functional endpoint with passing tests.
+O Developer escreve o código. Na modernização do SIFAP (Sistema de Fiscalização e Administração de Pagamentos), essa persona traduz programas Natural e estruturas DDM/Adabas para Java 21 com Spring Boot 3.3, implementa o frontend em Next.js 15 com TypeScript estrito e garante que cada requisito EARS se torne um endpoint funcional com testes aprovados.
 
-Within the Agentic Legacy Modernization framework, the Developer works in the translation layer (Translation Agent — Stage 3) and follows the Review Agent in Stage 4, intervening when the Copilot Agent deviates from the architecture standards defined by the team.
+No framework Agentic Legacy Modernization, o Developer trabalha na camada de tradução (Translation Agent — Estágio 3) e acompanha o Review Agent no Estágio 4, intervindo quando o Copilot Agent se desvia dos padrões de arquitetura definidos pelo time.
 
-## Where you work in the SDLC
+## Onde você atua no SDLC
 
 ```mermaid
 %%{init: {'theme':'neutral','themeVariables':{'fontFamily':'ui-sans-serif, system-ui, sans-serif','primaryColor':'#F5F5F5','primaryTextColor':'#171717','primaryBorderColor':'#171717','lineColor':'#525252','secondaryColor':'#FFFFFF','tertiaryColor':'#FAFAFA','background':'#FFFFFF'}}}%%
@@ -32,117 +32,117 @@ flowchart LR
     classDef active fill:#FFFFFF,stroke:#171717,color:#171717,stroke-width:2px
     classDef muted fill:#FAFAFA,stroke:#A3A3A3,color:#404040
 
-    S1["Stage 1<br/>Archaeology"]:::muted --> S2["Stage 2<br/>Specification"]:::muted
-    S2 --> S3["Stage 3<br/>Implementation"]:::active
-    S3 --> S4["Stage 4<br/>Evolution"]:::step
+    S1["Estágio 1<br/>Arqueologia"]:::muted --> S2["Estágio 2<br/>Especificação"]:::muted
+    S2 --> S3["Estágio 3<br/>Implementação"]:::active
+    S3 --> S4["Estágio 4<br/>Evolução"]:::step
 ```
 
-| Stage | Responsibility | Deliverable |
+| Estágio | Responsabilidade | Entrega |
 |---|---|---|
-| **1 — Archaeology** | Read Natural programs with Copilot Chat and produce a team-readable summary | Narrative program summaries |
-| **2 — Specification** | Pair with the Requirements Engineer to anticipate implementation problems | Preventive notes in the spec |
-| **3 — Implementation** | Implement, test, open a PR, review the pair's PR, iterate | Backend + frontend for the prioritized slice |
-| **4 — Evolution** | Follow the Copilot Agent, intervene when needed, finish what the Agent did not complete | Agent PR in a mergeable state |
+| **1 — Arqueologia** | Lê programas Natural no modo Ask do GitHub Copilot e produz um resumo compreensível para o time | Resumos narrativos dos programas |
+| **2 — Especificação** | Trabalha em dupla com Requirements Engineer para antecipar problemas de implementação | Observações preventivas na spec |
+| **3 — Implementação** | Implementa, testa, abre um PR, revisa o PR da dupla e itera | Backend + frontend da fatia priorizada |
+| **4 — Evolução** | Acompanha o Copilot Agent, intervém quando necessário e conclui o que o Agent não terminou | PR do Agent pronto para merge |
 
-## Core responsibility
+## Responsabilidade principal
 
-Transform the spec into executable code using Copilot deliberately—Ask mode to understand, Plan mode to plan multi-file changes, and Agent mode to delegate well-defined tasks. Commit every day.
+Transformar a spec em código executável usando o Copilot de modo deliberado: modo Ask para compreender, modo Plan para planejar mudanças em vários arquivos e modo Agent para delegar tarefas bem definidas. Faça commits diariamente.
 
-## Key skills
+## Competências principais
 
-- Java 21 implementation: records, sealed interfaces, virtual threads, Optional, Bean Validation
-- TypeScript implementation: Next.js 15 App Router, Server Actions, `strict: true`
-- TDD with JUnit 5, Testcontainers, and Vitest
-- Incremental refactoring with commits separated by intent
-- Deliberate switching among Copilot's three modes
+- Implementação em Java 21: records, sealed interfaces, virtual threads, Optional e Bean Validation
+- Implementação em TypeScript: Next.js 15 App Router, Server Actions e `strict: true`
+- TDD com JUnit 5, Testcontainers e Vitest
+- Refatoração incremental com commits separados por intenção
+- Alternância deliberada entre os três modos do Copilot
 
-## Persona kit
+## Kit da persona
 
-| Artifact | Path | Use |
+| Artefato | Caminho | Uso |
 |---|---|---|
-| Implementation agent | `.github/agents/implementer.agent.md` | Implementation, TDD, and bug fixing |
-| Prompt `/implement` | `.github/prompts/persona-developer-implement.prompt.md` | Start implementation from a spec |
-| Prompt `/fix-bug` | `.github/prompts/persona-developer-fix-bug.prompt.md` | Understand → reproduce → fix → verify cycle |
-| Prompt `/tdd` | `.github/prompts/persona-developer-tdd.prompt.md` | Write a test before implementation |
-| Prompt `/refactor` | `.github/prompts/persona-developer-refactor.prompt.md` | Refactor without changing behavior |
+| Agente de implementação | `.github/agents/implementer.agent.md` | Implementação, TDD e correção de bugs |
+| Prompt `/implement` | `.github/prompts/persona-developer-implement.prompt.md` | Iniciar a implementação a partir de uma spec |
+| Prompt `/fix-bug` | `.github/prompts/persona-developer-fix-bug.prompt.md` | Ciclo compreender → reproduzir → corrigir → verificar |
+| Prompt `/tdd` | `.github/prompts/persona-developer-tdd.prompt.md` | Escrever um teste antes da implementação |
+| Prompt `/refactor` | `.github/prompts/persona-developer-refactor.prompt.md` | Refatorar sem alterar o comportamento |
 
-## Copilot tools and modes
+## Ferramentas e modos do Copilot
 
-| Tool / Mode | When to use |
+| Ferramenta / modo | Quando usar |
 |---|---|
-| **Copilot Ask** | Understand Natural legacy code and discuss design before implementation |
-| **Copilot Plan** | Primary mode in Stage 3—plan changes affecting multiple files |
-| **Copilot Agent** | Stage 4—delegate well-defined tasks from Issues |
-| **Spec-Kit** (`/speckit.tasks`, `/speckit.implement`) | Consume Software Architect and Requirements Engineer artifacts |
-| **GitHub MCP** | Work with Issues and PRs without leaving VS Code |
+| **Modo Ask do GitHub Copilot** | Compreender o código legado Natural e discutir o design antes da implementação |
+| **Copilot Plan** | Modo principal no Estágio 3: planejar mudanças que afetam vários arquivos |
+| **Copilot Agent** | Estágio 4: delegar tarefas bem definidas a partir de Issues |
+| **Spec-Kit** (`/speckit.tasks`, `/speckit.implement`) | Consumir os artefatos de Software Architect e Requirements Engineer |
+| **GitHub MCP** | Trabalhar com Issues e PRs sem sair do VS Code |
 
-## Recommended cheat sheets
+## Cartões de referência recomendados
 
-- [`09-cheat-sheets/copilot-3-modes.md`](../../09-cheat-sheets/copilot-3-modes.md) — map for the day; use it constantly
-- [`09-cheat-sheets/spec-kit-workflow.md`](../../09-cheat-sheets/spec-kit-workflow.md) — `/speckit.tasks`, `/speckit.implement`, and `/speckit.analyze`
-- [`09-cheat-sheets/model-routing.md`](../../09-cheat-sheets/model-routing.md) — Haiku 4.5 for simple snippets, Sonnet 4.6 by default, Opus 4.6 for design
+- [`09-cheat-sheets/copilot-3-modes.md`](../../09-cheat-sheets/copilot-3-modes.md) — mapa para o dia; use-o constantemente
+- [`09-cheat-sheets/spec-kit-workflow.md`](../../09-cheat-sheets/spec-kit-workflow.md) — `/speckit.tasks`, `/speckit.implement` e `/speckit.analyze`
+- [`09-cheat-sheets/model-routing.md`](../../09-cheat-sheets/model-routing.md) — Haiku 4.5 para trechos simples, Sonnet 4.6 por padrão e Opus 4.6 para design
 
-## How to perform well
+## Como desempenhar bem o papel
 
-- [ ] **Use all three Copilot modes deliberately.** Chat is not always the right mode.
-- [ ] **Keep commits small and PRs reviewable.** One topic per PR.
-- [ ] **Write tests at the same time as the code.** Never afterward.
-- [ ] **Do not invest in premature abstractions during Stage 3.** Prefer clarity over elegance.
+- [ ] **Use os três modos do GitHub Copilot de forma deliberada.** Ask nem sempre é o modo adequado.
+- [ ] **Mantenha os commits pequenos e os PRs revisáveis.** Trate um assunto por PR.
+- [ ] **Escreva os testes ao mesmo tempo que o código.** Nunca deixe para depois.
+- [ ] **Não invista em abstrações prematuras durante o Estágio 3.** Prefira clareza a elegância.
 
-## Common mistakes and how to avoid them
+## Erros comuns e como evitá-los
 
-| Symptom | Cause | Correction |
+| Sintoma | Causa | Correção |
 |---|---|---|
-| Huge branch accumulating for hours | Unfocused PR | Open one PR per feature or layer |
-| Copilot Agent used for a simple task | Wrong mode selected | Reserve Agent for tasks with clear scope and complete input artifacts |
-| Untested code discovered at 4 p.m. | TDD postponed | Write the test before moving to the next behavior |
-| Long wait for Opus 4.6 | Oversized model | Use Sonnet 4.6 by default; Opus only for design decisions |
+| Branch enorme acumulada por horas | PR sem foco | Abra um PR por feature ou camada |
+| Copilot Agent usado para uma tarefa simples | Modo incorreto selecionado | Reserve Agent para tarefas com escopo claro e artefatos de entrada completos |
+| Código sem testes descoberto às 16h | TDD adiado | Escreva o teste antes de avançar para o próximo comportamento |
+| Longa espera pelo Opus 4.6 | Modelo maior que o necessário | Use Sonnet 4.6 por padrão e Opus somente para decisões de design |
 
-## Combinations with other personas
+## Combinações com outras personas
 
-| Combination | Note |
+| Combinação | Observação |
 |---|---|
-| **Developer + Technical Lead** | Very common; you implement while the TL reviews and defines standards |
-| **Developer + QA Engineer** | You write the feature and tests in the same session |
-| **Developer + DevOps Engineer** | For small teams; you package and deliver |
+| **Developer + Technical Lead** | Muito comum; você implementa enquanto o TL revisa e define padrões |
+| **Developer + QA Engineer** | Você escreve a feature e os testes na mesma sessão |
+| **Developer + DevOps Engineer** | Para times pequenos; você empacota e entrega |
 
-## Ready-to-use prompts
+## Prompts prontos para uso
 
-1. **(Ask)** _"Explain the selected legacy code and identify only confirmed behaviors. Then propose questions before implementing them in Java."_
-2. **(Plan)** _"Select the files for the prioritized feature. Plan the change across domain, application, infrastructure, data, and tests."_
-3. **(Agent)** _"Implement the feature described in this Issue: [paste the issue]. Follow the three-layer architecture and include tests."_
+1. **(Ask)** _"Explique o código legado selecionado e identifique somente comportamentos confirmados. Depois, proponha perguntas antes de implementá-los em Java."_
+2. **(Plan)** _"Selecione os arquivos da feature priorizada. Planeje a mudança em domain, application, infrastructure, dados e testes."_
+3. **(Agent)** _"Implemente a feature descrita nesta Issue: [cole a issue]. Siga a arquitetura de três camadas e inclua testes."_
 
-## Emergency defaults
+## Padrões para emergências
 
-| Situation | What to do |
+| Situação | O que fazer |
 |---|---|
-| Code does not compile | Run `mvn test-compile` to see the exact error—it is usually a missing import |
-| Package structure is unknown | Consult the structure defined by the team: `domain/` → `application/` → `infrastructure/` |
-| Copilot generates unsuitable code | Switch from Ask to Plan—select the relevant files and describe the change |
-| Test fails for no obvious reason | Read the error: an NPE usually means a missing mock; a wrong assertion means an incorrect expected value |
+| O código não compila | Execute `mvn test-compile` para ver o erro exato. Em geral, é um import ausente |
+| A estrutura de pacotes é desconhecida | Consulte a estrutura definida pelo time: `domain/` → `application/` → `infrastructure/` |
+| O Copilot gera código inadequado | Mude de Ask para Plan, selecione os arquivos relevantes e descreva a mudança |
+| O teste falha sem motivo aparente | Leia o erro: uma NPE geralmente indica um mock ausente; uma asserção incorreta indica um valor esperado incorreto |
 
-## Dependencies
+## Dependências
 
-| Persona | Relationship | Artifact |
+| Persona | Relação | Artefato |
 |---|---|---|
-| Software Architect | You depend on them | Package structure and bounded contexts |
-| Requirements Engineer | You depend on them | EARS requirements to implement |
-| Technical Lead | Depends on you | PRs to review |
-| QA Engineer | Depends on you | Testable code |
-| DBA | You depend on them | Migrations and data model |
+| Software Architect | Você depende dela | Estrutura de pacotes e bounded contexts |
+| Requirements Engineer | Você depende dela | Requisitos EARS para implementar |
+| Technical Lead | Depende de você | PRs para revisar |
+| QA Engineer | Depende de você | Código testável |
+| DBA | Você depende dela | Migrações e modelo de dados |
 
-## How you are evaluated
+## Como você é avaliado
 
-- **Rubric A3 — Technical Integrity:** functional endpoints, passing tests
-- **Rubric A4 — Deliberate Copilot Use:** deliberate switching among Ask, Plan, and Agent
-- **Criterion:** small commits, reviewable PRs, tests written alongside the code
+- **Rubrica A3 — Integridade técnica:** endpoints funcionais e testes aprovados
+- **Rubrica A4 — Uso deliberado do Copilot:** alternância deliberada entre Ask, Plan e Agent
+- **Critério:** commits pequenos, PRs revisáveis e testes escritos junto com o código
 
 ---
 
-### Continue reading
+### Continue lendo
 
-| Previous | Next |
+| Anterior | Próximo |
 |---|---|
-| [Technical Lead — PERSONA](../05-technical-lead/PERSONA.md)<br/><sub>Pair 3 — Implementation — standards and code review.</sub> | [DBA — PERSONA](../07-dba/PERSONA.md)<br/><sub>Pair 4 — Quality — Flyway migrations and query optimization.</sub> |
+| [Technical Lead — PERSONA](../05-technical-lead/PERSONA.md)<br/><sub>Dupla 3 — Implementação — padrões e revisão de código.</sub> | [DBA — PERSONA](../07-dba/PERSONA.md)<br/><sub>Dupla 4 — Qualidade — migrações Flyway e otimização de consultas.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Voltar ao índice do kit](../../README.md)</sub>

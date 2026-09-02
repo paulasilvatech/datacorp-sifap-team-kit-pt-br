@@ -1,82 +1,82 @@
 ---
 name: "java-springboot"
-description: "Spring Boot application best practices — package-by-feature structure, constructor injection, DTOs and validation, service-layer transactions, Spring Data JPA, and configuration/secrets handling. Use when building or reviewing Spring Boot backend code and you want idiomatic structure and conventions. Complements the kit's Java 21 + Spring Boot 3.3 stack."
+description: "Práticas recomendadas para aplicações Spring Boot: estrutura de pacotes por funcionalidade, injeção por construtor, DTOs e validação, transações na camada de serviço, Spring Data JPA e tratamento de configurações e segredos. Use ao criar ou revisar código da camada de servidor Spring Boot para aplicar estruturas e convenções idiomáticas. Complementa o conjunto tecnológico Java 21 + Spring Boot 3.3 do kit."
 ---
-# Spring Boot best practices
+# Práticas recomendadas do Spring Boot
 
-Build and review idiomatic Spring Boot 3.3 slices for the SIFAP 2.0 backend (Java 21, PostgreSQL 16): package-by-feature structure, constructor injection, record DTOs, service-layer transactions, and Spring Data JPA. This skill is the quick best-practice checklist; the authoritative, CI-enforced conventions live in the instruction files — follow them where they overlap:
+Crie e revise fatias idiomáticas do Spring Boot 3.3 para a camada de servidor do SIFAP 2.0 (Java 21, PostgreSQL 16): estrutura de pacotes por funcionalidade, injeção por construtor, DTOs record, transações na camada de serviço e Spring Data JPA. Esta habilidade é uma lista rápida de práticas recomendadas. As convenções autoritativas, impostas pela CI, estão nos arquivos de instruções. Siga-as quando houver sobreposição:
 
-- [`backend.instructions.md`](../../instructions/backend.instructions.md) — controllers, DTOs, validation, error handling.
-- [`modular-monolith.instructions.md`](../../instructions/modular-monolith.instructions.md) — module boundaries and Adabas FDT to JPA mapping.
+- [`backend.instructions.md`](../../instructions/backend.instructions.md): controladores, DTOs, validação e tratamento de erros.
+- [`modular-monolith.instructions.md`](../../instructions/modular-monolith.instructions.md): limites dos módulos e mapeamento de FDT do Adabas para JPA.
 
-## When to invoke
+## Quando invocar
 
-- "Scaffold a new feature slice (controller, service, repository) for this module."
-- "Review this Spring Boot code for structure and conventions."
-- "Wire configuration and secrets for this service."
-- "Turn this JPA entity into a proper DTO-based endpoint."
+- "Crie a estrutura de uma nova fatia de funcionalidade (controlador, serviço e repositório) para este módulo."
+- "Revise a estrutura e as convenções deste código Spring Boot."
+- "Configure as propriedades e os segredos deste serviço."
+- "Transforme esta entidade JPA em um endpoint adequado baseado em DTO."
 
-## Project setup and structure
+## Configuração e estrutura do projeto
 
-- **Build Tool:** Use Maven (`pom.xml`) or Gradle (`build.gradle`) for dependency management.
-- **Starters:** Use Spring Boot starters (e.g., `spring-boot-starter-web`, `spring-boot-starter-data-jpa`) to simplify dependency management.
-- **Package Structure:** Organize code by feature/domain (e.g., `com.example.app.order`, `com.example.app.user`) rather than by layer (e.g., `com.example.app.controller`, `com.example.app.service`).
+- **Ferramenta de compilação:** use Maven (`pom.xml`) ou Gradle (`build.gradle`) para gerenciar dependências.
+- **Inicializadores:** use os inicializadores (starters) do Spring Boot, como `spring-boot-starter-web` e `spring-boot-starter-data-jpa`, para simplificar o gerenciamento de dependências.
+- **Estrutura de pacotes:** organize o código por funcionalidade ou domínio, como `com.example.app.order` e `com.example.app.user`, não por camada, como `com.example.app.controller` e `com.example.app.service`.
 
-## Dependency injection and components
+## Injeção de dependências e componentes
 
-- **Constructor Injection:** Always use constructor-based injection for required dependencies. This makes components easier to test and dependencies explicit.
-- **Immutability:** Declare dependency fields as `private final`.
-- **Component Stereotypes:** Use `@Component`, `@Service`, `@Repository`, and `@Controller`/`@RestController` annotations appropriately to define beans.
+- **Injeção por construtor:** sempre use injeção por construtor para as dependências obrigatórias. Isso explicita as dependências e facilita o teste dos componentes.
+- **Imutabilidade:** declare os campos de dependência como `private final`.
+- **Estereótipos de componentes:** use adequadamente as anotações `@Component`, `@Service`, `@Repository` e `@Controller`/`@RestController` para definir beans.
 
-## Configuration
+## Configuração
 
-- **Externalized Configuration:** Use `application.yml` (or `application.properties`) for configuration. YAML is often preferred for its readability and hierarchical structure.
-- **Type-Safe Properties:** Use `@ConfigurationProperties` to bind configuration to strongly-typed Java objects.
-- **Profiles:** Use Spring Profiles (`application-dev.yml`, `application-prod.yml`) to manage environment-specific configurations.
-- **Secrets management:** Never hardcode secrets. Use environment variables locally and Azure Key Vault via Managed Identity in Azure — never `application.yml`, `locals`, or source. See [`security.instructions.md`](../../instructions/security.instructions.md).
+- **Configuração externalizada:** use `application.yml` (ou `application.properties`) para a configuração. YAML costuma ser preferível por sua legibilidade e estrutura hierárquica.
+- **Propriedades com tipagem segura:** use `@ConfigurationProperties` para vincular a configuração a objetos Java fortemente tipados.
+- **Perfis:** use os perfis do Spring (`application-dev.yml`, `application-prod.yml`) para gerenciar configurações específicas do ambiente.
+- **Gerenciamento de segredos:** nunca fixe segredos no código. Use variáveis de ambiente localmente e Azure Key Vault por meio de Managed Identity no Azure. Nunca use `application.yml`, `locals` ou o código-fonte. Consulte [`security.instructions.md`](../../instructions/security.instructions.md).
 
-## Web layer (controllers)
+## Camada web (controladores)
 
-- **RESTful APIs:** Use `/api/v1/{resource}` paths, correct verbs and status codes (`201`/`204`/`409`), and OpenAPI annotations on every endpoint.
-- **Record DTOs:** Expose Java 21 `record` DTOs at the boundary; never return JPA entities to the client.
-- **Validation:** Apply Bean Validation (`@Valid`, `@NotBlank`, `@Positive`, `@Size`) on the request record at the controller boundary.
-- **Error handling:** Centralize errors in a `@RestControllerAdvice` that returns RFC 7807 `ProblemDetail`. See [`backend.instructions.md`](../../instructions/backend.instructions.md) for the full controller and error shape.
+- **APIs RESTful:** use caminhos `/api/v1/{resource}`, verbos e códigos de status corretos (`201`/`204`/`409`) e anotações OpenAPI em cada ponto de acesso.
+- **DTOs record:** exponha DTOs `record` do Java 21 nos limites; nunca retorne entidades JPA ao cliente.
+- **Validação:** aplique Bean Validation (`@Valid`, `@NotBlank`, `@Positive`, `@Size`) ao record da solicitação no limite do controlador.
+- **Tratamento de erros:** centralize os erros em um `@RestControllerAdvice` que retorne `ProblemDetail` conforme a RFC 7807. Consulte [`backend.instructions.md`](../../instructions/backend.instructions.md) para ver o formato completo do controlador e dos erros.
 
-## Service layer
+## Camada de serviço
 
-- **Business logic:** Encapsulate all business logic within `@Service` classes.
-- **Statelessness:** Services should be stateless.
-- **Transaction management:** Use `@Transactional` only in the service layer — never in controllers or repositories; reads use `@Transactional(readOnly = true)`.
-- **No null returns:** Model absence with `Optional`; never return `null` from a public method.
-- **Type unions:** Use a `sealed interface` with records for discriminated domain states (Java 21).
+- **Lógica de negócio:** encapsule toda a lógica de negócio em classes `@Service`.
+- **Ausência de estado:** os serviços não devem manter estado.
+- **Gerenciamento de transações:** use `@Transactional` somente na camada de serviço, nunca em controladores ou repositórios. Nas leituras, use `@Transactional(readOnly = true)`.
+- **Sem retornos null:** represente a ausência com `Optional`; nunca retorne `null` de um método público.
+- **Uniões de tipos:** use uma `sealed interface` com records para estados discriminados do domínio (Java 21).
 
-## Data layer (repositories)
+## Camada de dados (repositórios)
 
-- **Spring Data JPA:** Use Spring Data JPA repositories by extending `JpaRepository` or `CrudRepository` for standard database operations.
-- **Custom Queries:** For complex queries, use `@Query` or the JPA Criteria API.
-- **Projections:** Use DTO projections to fetch only the necessary data from the database.
+- **Spring Data JPA:** use repositórios Spring Data JPA que estendam `JpaRepository` ou `CrudRepository` para operações padrão do banco de dados.
+- **Consultas personalizadas:** use `@Query` ou a JPA Criteria API para consultas complexas.
+- **Projeções:** use projeções de DTO para buscar apenas os dados necessários do banco.
 
-## Logging
+## Registros de eventos
 
-- **SLF4J:** Use the SLF4J API for logging.
-- **Logger Declaration:** `private static final Logger logger = LoggerFactory.getLogger(MyClass.class);`
-- **Parameterized Logging:** Use parameterized messages (`logger.info("Processing user {}...", userId);`) instead of string concatenation to improve performance.
+- **SLF4J:** use a API SLF4J para registrar eventos.
+- **Declaração do registrador:** `private static final Logger logger = LoggerFactory.getLogger(MyClass.class);`
+- **Registros parametrizados:** use mensagens parametrizadas (`logger.info("Processando usuário {}...", userId);`) em vez de concatenar textos, para melhorar o desempenho.
 
-## Testing
+## Testes
 
-- **Unit tests:** Test services and components with JUnit 5 + Mockito — see [`java-junit`](../java-junit/SKILL.md).
-- **Slice and integration tests:** Use `@WebMvcTest`, `@DataJpaTest`, and `@SpringBootTest` with Testcontainers against a real PostgreSQL 16 — see [`spring-boot-testing`](../spring-boot-testing/SKILL.md).
+- **Testes unitários:** teste serviços e componentes com JUnit 5 + Mockito. Consulte [`java-junit`](../java-junit/SKILL.md).
+- **Testes de fatia e integração:** use `@WebMvcTest`, `@DataJpaTest` e `@SpringBootTest` com Testcontainers e um PostgreSQL 16 real. Consulte [`spring-boot-testing`](../spring-boot-testing/SKILL.md).
 
-## Security
+## Segurança
 
-- **Spring Security:** Use Spring Security for authentication and authorization (OAuth2/JWT).
-- **Password encoding:** Always hash passwords with a strong algorithm such as BCrypt.
-- **Input handling:** Use Spring Data JPA / JPQL (never string-concatenated SQL) and encode output to prevent XSS. See [`security.instructions.md`](../../instructions/security.instructions.md).
+- **Spring Security:** use Spring Security para autenticação e autorização (OAuth2/JWT).
+- **Codificação de senhas:** sempre aplique hash às senhas com um algoritmo forte, como BCrypt.
+- **Tratamento de entradas:** use Spring Data JPA / JPQL (nunca SQL concatenado em strings) e codifique a saída para evitar XSS. Consulte [`security.instructions.md`](../../instructions/security.instructions.md).
 
-## Output template
+## Modelo de saída
 
 ```java
-// com.sifap.payment — one bounded context per package
+// com.sifap.payment: um contexto delimitado por pacote
 @RestController
 @RequestMapping("/api/v1/payments")
 @RequiredArgsConstructor
@@ -85,7 +85,7 @@ class PaymentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Register a payment")
+    @Operation(summary = "Registrar um pagamento")
     PaymentResponse create(@Valid @RequestBody CreatePaymentRequest request) {
         return service.create(request);
     }
@@ -107,11 +107,11 @@ class PaymentService {
 interface PaymentRepository extends JpaRepository<Payment, UUID> {}
 ```
 
-## Quality gate
+## Critérios de qualidade
 
-- [ ] Code is organized by feature/bounded context; no module imports another module's internals.
-- [ ] Dependencies use constructor injection (`private final`); no field `@Autowired`.
-- [ ] Endpoints use `/api/v1/{resource}`, correct status codes, OpenAPI annotations, and `record` DTOs.
-- [ ] `@Transactional` appears only in services; no public method returns `null`.
-- [ ] Errors flow through one `@RestControllerAdvice` as `ProblemDetail`; no secret or sensitive value is logged.
-- [ ] Unit tests (Mockito) and the relevant slice tests pass — see `java-junit` and `spring-boot-testing`.
+- [ ] O código está organizado por funcionalidade ou contexto delimitado; nenhum módulo importa partes internas de outro.
+- [ ] As dependências usam injeção por construtor (`private final`); nenhum campo usa `@Autowired`.
+- [ ] Os pontos de acesso usam `/api/v1/{resource}`, códigos de status corretos, anotações OpenAPI e DTOs `record`.
+- [ ] `@Transactional` aparece somente em serviços; nenhum método público retorna `null`.
+- [ ] Os erros passam por um único `@RestControllerAdvice` como `ProblemDetail`; nenhum segredo ou dado sensível é registrado em log.
+- [ ] Os testes unitários (Mockito) e os testes de fatia relevantes passam. Consulte `java-junit` e `spring-boot-testing`.

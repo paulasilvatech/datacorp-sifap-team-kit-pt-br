@@ -1,50 +1,50 @@
-# Security, hooks, CI/CD, and operations
+# Segurança, ganchos, CI/CD e operações
 
-## Identity and secret handling
+## Tratamento de identidades e segredos
 
-Use this order of preference:
+Use esta ordem de preferência:
 
-1. Managed identity with least-privilege RBAC.
-2. Workload identity federation for CI/CD.
-3. Key Vault reference through `azd env set-secret`.
-4. Short-lived secret material only when no identity-based option exists.
+1. Identidade gerenciada com RBAC de privilégio mínimo.
+2. Federação de identidade da carga de trabalho para CI/CD.
+3. Referência do Key Vault por meio de `azd env set-secret`.
+4. Material secreto de curta duração somente quando não existir uma opção baseada em identidade.
 
-Never:
+Nunca:
 
-- Store a plaintext secret in `.azure/<environment>/.env`.
-- Commit environment files, credentials, certificates, or Terraform state.
-- Put secrets in IaC outputs.
-- Echo environment values indiscriminately in hooks or pipelines.
-- Pass a secret directly on a command line when the shell or CI system can record it.
-- Grant broad subscription roles when resource-group or resource scope is enough.
+- Armazene um segredo em texto simples em `.azure/<environment>/.env`.
+- Versione arquivos de ambiente, credenciais, certificados ou estado do Terraform.
+- Coloque segredos nas saídas da IaC.
+- Exiba valores de ambiente indiscriminadamente em ganchos ou fluxos automatizados.
+- Passe um segredo diretamente na linha de comando quando o interpretador de comandos ou o sistema de CI puder registrá-lo.
+- Conceda funções amplas na assinatura quando o escopo do grupo de recursos ou do recurso for suficiente.
 
-`azd env set-secret <name>` stores a Key Vault reference in the AZD environment. Resolve it only where needed:
+`azd env set-secret <name>` armazena uma referência do Key Vault no ambiente AZD. Resolva-a somente onde for necessário:
 
-- Map it to an `@secure()` Bicep parameter.
-- Use a hook `secrets` mapping for a hook process.
-- Choose between a pipeline variable containing the Key Vault reference or a pipeline secret containing the resolved value.
+- Mapeie-a para um parâmetro Bicep `@secure()`.
+- Use um mapeamento `secrets` do gancho para um processo do gancho.
+- Escolha entre uma variável do fluxo automatizado que contenha a referência do Key Vault ou um segredo desse fluxo que contenha o valor resolvido.
 
-Prefer the reference approach when the pipeline identity can read Key Vault because rotation does not require republishing a resolved pipeline secret.
+Prefira a abordagem por referência quando a identidade do fluxo automatizado puder ler o Key Vault, pois a rotação não exigirá republicar um segredo resolvido desse fluxo.
 
-## Hooks
+## Ganchos
 
-Use hooks for validation, generated runtime configuration, data preparation, smoke checks, or lifecycle coordination that IaC and native AZD behavior cannot express.
+Use ganchos para validação, configuração gerada do ambiente de execução, preparação de dados, verificações rápidas ou coordenação do ciclo de vida que a IaC e o comportamento nativo do AZD não possam expressar.
 
-### Hook rules
+### Regras para ganchos
 
-- Prefer external scripts over long inline commands.
-- Store scripts under `scripts/azd`.
-- Set `shell: sh` or `shell: pwsh` explicitly.
-- Supply `windows` and `posix` implementations when syntax differs.
-- Use paths relative to the documented hook working directory.
-- Make scripts idempotent and safe to rerun.
-- Keep `continueOnError` false unless the operation is observability-only or genuinely optional.
-- Use noninteractive behavior in CI.
-- Do not install unpinned dependencies on every run if a reproducible tool setup can do it once.
-- Do not log secret values or all environment variables.
-- Test with `azd hooks run <hook-name>` before coupling the hook to a complete deployment.
+- Prefira scripts externos a comandos longos em linha.
+- Armazene os scripts em `scripts/azd`.
+- Defina `shell: sh` ou `shell: pwsh` explicitamente.
+- Forneça implementações `windows` e `posix` quando a sintaxe for diferente.
+- Use caminhos relativos ao diretório de trabalho documentado do gancho.
+- Torne os scripts idempotentes e seguros para novas execuções.
+- Mantenha `continueOnError` como false, a menos que a operação sirva somente à observabilidade ou seja realmente opcional.
+- Use comportamento não interativo em CI.
+- Não instale dependências sem versão fixada a cada execução quando uma configuração reproduzível puder fazer isso uma vez.
+- Não registre valores de segredos nem todas as variáveis de ambiente.
+- Teste com `azd hooks run <hook-name>` antes de acoplar o gancho a uma implantação completa.
 
-Example:
+Exemplo:
 
 ```yaml
 hooks:
@@ -61,24 +61,24 @@ hooks:
       continueOnError: false
 ```
 
-Use root hooks for the whole project. Put service-specific hooks under that service's `azure.yaml` entry.
+Use ganchos da raiz para todo o projeto. Coloque ganchos específicos de um serviço na entrada desse serviço em `azure.yaml`.
 
-## Deployment workflow
+## Fluxo de implantação
 
-The normal AZD lifecycle is:
+O ciclo de vida normal do AZD é:
 
-1. Package application artifacts.
-2. Provision or update infrastructure.
-3. Deploy application artifacts.
+1. Empacotar artefatos da aplicação.
+2. Provisionar ou atualizar a infraestrutura.
+3. Implantar artefatos da aplicação.
 
-`azd up` is the convenient combined workflow and is appropriate for routine development and simple deployments.
+`azd up` é o fluxo combinado conveniente e é adequado para desenvolvimento rotineiro e implantações simples.
 
-Use separate commands when:
+Use comandos separados quando:
 
-- Infrastructure review or approval must happen before deployment.
-- The application is redeployed frequently without infrastructure changes.
-- Troubleshooting requires isolating package, provision, or deploy failures.
-- A complex dependency requires a custom order.
+- A revisão ou aprovação da infraestrutura precisar ocorrer antes da implantação.
+- A aplicação for reimplantada com frequência sem alterações na infraestrutura.
+- A solução de problemas exigir o isolamento de falhas de empacotamento, provisionamento ou implantação.
+- Uma dependência complexa exigir uma ordem personalizada.
 
 ```text
 azd package
@@ -86,58 +86,58 @@ azd provision -e <environment>
 azd deploy -e <environment>
 ```
 
-Customize `workflows.up.steps` only when a real dependency requires another order, such as provisioning before a build that needs a generated endpoint. Do not customize the workflow merely to mirror a pipeline's naming conventions.
+Personalize `workflows.up.steps` somente quando uma dependência real exigir outra ordem, como provisionar antes de uma compilação que precise de um ponto de extremidade gerado. Não personalize o fluxo apenas para reproduzir as convenções de nomenclatura de um fluxo automatizado.
 
-## Full-stack and multi-service dependencies
+## Dependências de ponta a ponta e entre vários serviços
 
-- Map service dependencies before implementation.
-- Let Bicep or Terraform handle one-directional infrastructure dependencies.
-- Use provisioning outputs for endpoints and names needed during deployment.
-- Use runtime configuration, such as Azure App Configuration or a generated config file, when settings must change without rebuilding.
-- Avoid circular compile-time dependencies between front-end and back-end services.
-- Use hooks or a custom workflow only when outputs and runtime configuration cannot resolve the dependency.
-- Test the strategy independently in development, test, and production-like environments.
+- Mapeie as dependências dos serviços antes da implementação.
+- Permita que Bicep ou Terraform tratem as dependências unidirecionais da infraestrutura.
+- Use saídas de provisionamento para pontos de extremidade e nomes necessários durante a implantação.
+- Use configuração do ambiente de execução, como Azure App Configuration ou um arquivo de configuração gerado, quando as configurações precisarem mudar sem nova compilação.
+- Evite dependências circulares em tempo de compilação entre serviços de interface e da camada de servidor.
+- Use ganchos ou um fluxo personalizado somente quando as saídas e a configuração do ambiente de execução não puderem resolver a dependência.
+- Teste a estratégia separadamente em ambientes de desenvolvimento, teste e semelhantes à produção.
 
 ## CI/CD
 
-### Pipeline design
+### Projeto do fluxo automatizado
 
-A robust pipeline separates:
+Um fluxo automatizado robusto separa:
 
-1. Application format, lint, build, and tests.
-2. IaC format and static validation.
-3. What-if or plan review at the correct scope.
-4. Provisioning with an explicit AZD environment.
-5. Deployment.
-6. Smoke or health verification.
-7. Production approval and rollback/cleanup procedures.
+1. Formatação, análise estática, compilação e testes da aplicação.
+2. Formatação e validação estática da IaC.
+3. Revisão de what-if ou plano no escopo correto.
+4. Provisionamento com um ambiente AZD explícito.
+5. Implantação.
+6. Verificação rápida ou de integridade.
+7. Procedimentos de aprovação para produção e de reversão/limpeza.
 
 Use:
 
-- `--no-prompt` in automation.
-- A fixed `-e` or `--environment`.
-- Protected environments and required reviewers for production.
-- Concurrency controls to prevent simultaneous writes to one environment.
-- Least-privilege identities scoped to the target environment.
-- Pinned action and tool versions with a managed update process.
+- `--no-prompt` em automações.
+- Um `-e` ou `--environment` fixo.
+- Ambientes protegidos e revisores obrigatórios para produção.
+- Controles de concorrência para impedir gravações simultâneas em um ambiente.
+- Identidades de privilégio mínimo limitadas ao ambiente de destino.
+- Versões fixadas de ações e ferramentas, com um processo gerenciado de atualização.
 
 ### `azd pipeline config`
 
-Current Microsoft documentation marks `azd pipeline config` as beta. Before running it:
+A documentação atual da Microsoft classifica `azd pipeline config` como beta. Antes de executá-lo:
 
-- Review the pipeline definition bundled with the template.
-- Confirm repository, organization, environment, subscription, and authentication mode.
-- Expect repository, identity, variable, secret, commit, push, and pipeline side effects.
-- Review generated workflow and permission changes before production use.
-- Rerun it when `pipeline.variables` or `pipeline.secrets` changes.
+- Revise a definição do fluxo automatizado incluída no modelo.
+- Confirme o repositório, a organização, o ambiente, a assinatura e o modo de autenticação.
+- Espere efeitos colaterais no repositório, na identidade, nas variáveis, nos segredos, no versionamento, no envio e no fluxo automatizado.
+- Revise o fluxo de trabalho gerado e as alterações de permissões antes do uso em produção.
+- Execute-o novamente quando `pipeline.variables` ou `pipeline.secrets` mudar.
 
-For GitHub Actions, AZD configures OIDC/federated credentials by default for supported scenarios. Current documentation says the AZD Terraform pipeline flow does not support OIDC, so evaluate the authentication tradeoff explicitly rather than silently falling back to a long-lived credential.
+Para o GitHub Actions, o AZD configura credenciais OIDC/federadas por padrão nos cenários compatíveis. A documentação atual informa que o fluxo automatizado do AZD com Terraform não oferece suporte a OIDC. Portanto, avalie explicitamente o compromisso de autenticação, em vez de recorrer silenciosamente a uma credencial de longa duração.
 
-For Terraform, configure protected remote state before pipeline setup.
+Para Terraform, configure o estado remoto protegido antes do fluxo automatizado.
 
-## Validation and preview
+## Validação e versão prévia
 
-Run local checks before Azure-changing commands:
+Execute verificações locais antes dos comandos que alteram o Azure:
 
 ### Bicep
 
@@ -145,7 +145,7 @@ Run local checks before Azure-changing commands:
 az bicep build --file infra/main.bicep
 ```
 
-Use an Azure deployment what-if at the scope declared by the template. Do not assume resource-group scope.
+Use um what-if de implantação do Azure no escopo declarado pelo modelo. Não presuma o escopo do grupo de recursos.
 
 ### Terraform
 
@@ -155,31 +155,31 @@ terraform init -backend=false
 terraform validate
 ```
 
-Use `terraform plan` only after confirming the backend, workspace/state key, variables, and Azure identity.
+Use `terraform plan` somente após confirmar a estrutura remota, a chave do espaço de trabalho/estado, as variáveis e a identidade do Azure.
 
-### AZD and application
+### AZD e aplicação
 
-- Run existing application checks.
-- Run relevant hooks independently.
-- Run `azd package` to verify service paths and packaging.
-- Confirm IaC outputs match variables consumed during deployment.
-- Inspect the environment name before provision, deploy, or down.
+- Execute as verificações existentes da aplicação.
+- Execute os ganchos relevantes de forma independente.
+- Execute `azd package` para verificar os caminhos dos serviços e o empacotamento.
+- Confirme se as saídas da IaC correspondem às variáveis consumidas durante a implantação.
+- Verifique o nome do ambiente antes de provisionar, implantar ou excluir.
 
-## Troubleshooting sequence
+## Sequência de solução de problemas
 
-1. Identify whether the failure is package, provision, deploy, hook, authentication, or resource discovery.
-2. Re-run the smallest failing phase rather than `azd up`.
-3. Check the selected environment and expected subscription, tenant, and region.
-4. Check `azure.yaml` paths, provider, service names, host types, and resource discovery tags.
-5. Refresh environment outputs with `azd env refresh` when Azure state changed elsewhere.
-6. For Terraform, verify both AZD and Azure CLI authentication and the correct remote state.
-7. For hooks, run the hook directly and verify its shell, working directory, and environment dependencies.
-8. Use debug logging only when needed, and redact sensitive values before sharing logs.
+1. Identifique se a falha ocorre no empacotamento, provisionamento, implantação, gancho, autenticação ou descoberta de recursos.
+2. Execute novamente a menor fase com falha, em vez de `azd up`.
+3. Verifique o ambiente selecionado e a assinatura, o locatário e a região esperados.
+4. Verifique os caminhos, o provedor, os nomes dos serviços, os tipos de host e as tags de descoberta de recursos em `azure.yaml`.
+5. Atualize as saídas do ambiente com `azd env refresh` quando o estado do Azure mudar em outro local.
+6. Para Terraform, verifique a autenticação do AZD e da Azure CLI, além do estado remoto correto.
+7. Para ganchos, execute o gancho diretamente e verifique o interpretador de comandos, o diretório de trabalho e as dependências de ambiente.
+8. Use registros de depuração somente quando necessário e oculte valores sensíveis antes de compartilhá-los.
 
-## Cleanup
+## Limpeza
 
-- Confirm the exact environment before `azd down`.
-- Explain that cleanup can delete data-bearing resources.
-- Preserve externally owned or shared resources.
-- For ephemeral environments, automate cleanup and include a fallback for failed pipeline runs.
-- Verify deletion rather than assuming command success.
+- Confirme o ambiente exato antes de `azd down`.
+- Explique que a limpeza pode excluir recursos que contêm dados.
+- Preserve recursos compartilhados ou pertencentes a elementos externos.
+- Para ambientes efêmeros, automatize a limpeza e inclua uma alternativa para execuções com falha do fluxo automatizado.
+- Verifique a exclusão, em vez de presumir o sucesso do comando.

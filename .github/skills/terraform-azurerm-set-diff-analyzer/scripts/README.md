@@ -1,61 +1,61 @@
-# Terraform AzureRM Set Diff Analyzer Script
+# Script analisador de diferenças em conjuntos do Terraform AzureRM
 
-A Python script that analyzes Terraform plan JSON and identifies "false-positive diffs" in AzureRM Set-type attributes.
+Script Python que analisa o JSON de planos do Terraform e identifica "diferenças falsas positivas" em atributos do tipo Set do AzureRM.
 
-## Overview
+## Visão geral
 
-AzureRM Provider's Set-type attributes (such as `backend_address_pool`, `security_rule`, etc.) don't guarantee order, so when adding or removing elements, all elements appear as "changed". This script distinguishes such "false-positive diffs" from actual changes.
+Os atributos do tipo Set do provedor AzureRM, como `backend_address_pool` e `security_rule`, não garantem a ordem. Ao adicionar ou remover elementos, todos podem aparecer como "alterados". Este script diferencia essas "diferenças falsas positivas" das alterações reais.
 
-### Use Cases
+### Casos de uso
 
-- As an **Agent Skill** (recommended)
-- As a **CLI tool** for manual execution
-- For automated analysis in **CI/CD pipelines**
+- Como **habilidade de agente (Agent Skill)** (recomendado)
+- Como **ferramenta de CLI** para execução manual
+- Para análise automatizada em **fluxos de CI/CD**
 
-## Prerequisites
+## Pré-requisitos
 
-- Python 3.8 or higher
-- No additional packages required (uses only standard library)
+- Python 3.8 ou superior
+- Nenhum pacote adicional é necessário (usa apenas a biblioteca padrão)
 
-## Usage
+## Uso
 
-### Basic Usage
+### Uso básico
 
 ```bash
-# Read from file
+# Ler de um arquivo
 python analyze_plan.py plan.json
 
-# Read from stdin
+# Ler de stdin
 terraform show -json plan.tfplan | python analyze_plan.py
 ```
 
-### Options
+### Opções
 
-| Option | Short | Description | Default |
+| Opção | Abreviação | Descrição | Padrão |
 |--------|-------|-------------|---------|
-| `--format` | `-f` | Output format (markdown/json/summary) | markdown |
-| `--exit-code` | `-e` | Return exit code based on changes | false |
-| `--quiet` | `-q` | Suppress warnings | false |
-| `--verbose` | `-v` | Show detailed warnings | false |
-| `--ignore-case` | - | Compare values case-insensitively | false |
-| `--attributes` | - | Path to custom attribute definition file | (built-in) |
-| `--include` | - | Filter resources to analyze (can specify multiple) | (all) |
-| `--exclude` | - | Filter resources to exclude (can specify multiple) | (none) |
+| `--format` | `-f` | Formato de saída (markdown/json/summary) | markdown |
+| `--exit-code` | `-e` | Retorna código de saída conforme as alterações | false |
+| `--quiet` | `-q` | Suprime avisos | false |
+| `--verbose` | `-v` | Mostra avisos detalhados | false |
+| `--ignore-case` | - | Compara valores sem diferenciar maiúsculas de minúsculas | false |
+| `--attributes` | - | Caminho do arquivo personalizado de definições de atributos | (interno) |
+| `--include` | - | Filtra os recursos a analisar (pode ser repetido) | (todos) |
+| `--exclude` | - | Filtra os recursos a excluir (pode ser repetido) | (nenhum) |
 
-### Exit Codes (with `--exit-code`)
+### Códigos de saída (com `--exit-code`)
 
-| Code | Meaning |
+| Código | Significado |
 |------|---------|
-| 0 | No changes, or order-only changes |
-| 1 | Actual Set attribute changes |
-| 2 | Resource replacement (delete + create) |
-| 3 | Error |
+| 0 | Sem alterações ou apenas alterações de ordem |
+| 1 | Alterações reais em atributos Set |
+| 2 | Substituição de recurso (excluir + criar) |
+| 3 | Erro |
 
-## Output Formats
+## Formatos de saída
 
-### Markdown (default)
+### Markdown (padrão)
 
-Human-readable format for PR comments and reports.
+Formato legível para comentários de solicitações de pull e relatórios.
 
 ```bash
 python analyze_plan.py plan.json --format markdown
@@ -63,13 +63,13 @@ python analyze_plan.py plan.json --format markdown
 
 ### JSON
 
-Structured data for programmatic processing.
+Dados estruturados para processamento programático.
 
 ```bash
 python analyze_plan.py plan.json --format json
 ```
 
-Example output:
+Exemplo de saída:
 
 ```json
 {
@@ -84,26 +84,26 @@ Example output:
 }
 ```
 
-### Summary
+### Resumo
 
-One-line summary for CI/CD logs.
+Resumo de uma linha para registros de CI/CD.
 
 ```bash
 python analyze_plan.py plan.json --format summary
 ```
 
-Example output:
+Exemplo de saída:
 
-```
-🟢 3 order-only | 🟡 1 set changes
+```text
+🟢 3 apenas de ordem | 🟡 1 alteração de Set
 ```
 
-## CI/CD Pipeline Usage
+## Uso em fluxos de CI/CD
 
 ### GitHub Actions
 
 ```yaml
-name: Terraform Plan Analysis
+name: Análise do plano do Terraform
 
 on:
   pull_request:
@@ -116,32 +116,32 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Terraform
+      - name: Configurar o Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Terraform Init & Plan
+      - name: Terraform init e plan
         run: |
           terraform init
           terraform plan -out=plan.tfplan
           terraform show -json plan.tfplan > plan.json
 
-      - name: Analyze Set Diff
+      - name: Analisar diff de Set
         run: |
           python path/to/analyze_plan.py plan.json --format markdown > analysis.md
 
-      - name: Comment PR
+      - name: Comentar na solicitação de pull
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           path: analysis.md
 ```
 
-### GitHub Actions (Gate with Exit Code)
+### GitHub Actions (critério de bloqueio com código de saída)
 
 ```yaml
-      - name: Analyze and Gate
+      - name: Analisar e aplicar critério de bloqueio
         run: |
           python path/to/analyze_plan.py plan.json --exit-code --format summary
-        # Fail on exit code 2 (resource replacement)
+        # Falha com o código de saída 2 (substituição de recurso)
         continue-on-error: false
 ```
 
@@ -156,7 +156,7 @@ jobs:
 - script: |
     terraform show -json plan.tfplan > plan.json
     python scripts/analyze_plan.py plan.json --format markdown > $(Build.ArtifactStagingDirectory)/analysis.md
-  displayName: 'Analyze Plan'
+  displayName: 'Analisar plano'
 
 - task: PublishBuildArtifacts@1
   inputs:
@@ -164,46 +164,46 @@ jobs:
     artifactName: 'plan-analysis'
 ```
 
-### Filtering Examples
+### Exemplos de filtragem
 
-Analyze only specific resources:
+Analise apenas recursos específicos:
 
 ```bash
 python analyze_plan.py plan.json --include application_gateway --include load_balancer
 ```
 
-Exclude specific resources:
+Exclua recursos específicos:
 
 ```bash
 python analyze_plan.py plan.json --exclude virtual_network
 ```
 
-## Interpreting Results
+## Interpretação dos resultados
 
-| Category | Meaning | Recommended Action |
+| Categoria | Significado | Ação recomendada |
 |----------|---------|-------------------|
-| 🟢 Order-only | False-positive diff, no actual change | Safe to ignore |
-| 🟡 Actual change | Set element added/removed/modified | Review the content, usually in-place update |
-| 🔴 Resource replacement | delete + create | Check for downtime impact |
+| 🟢 Apenas ordem | Diferença falsa positiva, sem alteração real | Pode ser ignorada com segurança |
+| 🟡 Alteração real | Elemento Set adicionado, removido ou modificado | Revise o conteúdo; geralmente é uma atualização local |
+| 🔴 Substituição de recurso | excluir + criar | Verifique o impacto de indisponibilidade |
 
-## Custom Attribute Definitions
+## Definições personalizadas de atributos
 
-By default, uses `references/azurerm_set_attributes.json`, but you can specify a custom definition file:
+Por padrão, usa `references/azurerm_set_attributes.json`, mas você pode informar um arquivo de definição personalizado:
 
 ```bash
 python analyze_plan.py plan.json --attributes /path/to/custom_attributes.json
 ```
 
-See `references/azurerm_set_attributes.md` for the definition file format.
+Consulte `references/azurerm_set_attributes.md` para conhecer o formato do arquivo de definição.
 
-## Limitations
+## Limitações
 
-- Only AzureRM resources (`azurerm_*`) are supported
-- Some resources/attributes may not be supported
-- Comparisons may be incomplete for attributes containing `after_unknown` (values determined after apply)
-- Comparisons may be incomplete for sensitive attributes (they are masked)
+- Apenas recursos AzureRM (`azurerm_*`) são compatíveis
+- Alguns recursos ou atributos podem não ser compatíveis
+- As comparações podem ficar incompletas em atributos que contenham `after_unknown` (valores determinados após a aplicação do plano)
+- As comparações podem ficar incompletas em atributos sensíveis (eles são mascarados)
 
-## Related Documentation
+## Documentação relacionada
 
-- [SKILL.md](../SKILL.md) - Usage as an Agent Skill
-- [azurerm_set_attributes.md](../references/azurerm_set_attributes.md) - Attribute definition reference
+- [SKILL.md](../SKILL.md): uso como habilidade de agente
+- [azurerm_set_attributes.md](../references/azurerm_set_attributes.md): referência das definições de atributos

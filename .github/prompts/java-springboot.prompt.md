@@ -1,87 +1,87 @@
 ---
 name: "java-springboot"
-description: "Apply Spring Boot best practices for the SIFAP 2.0 backend, deferring the detailed checklist to the java-springboot skill."
+description: "Aplique boas práticas de Spring Boot ao backend do SIFAP 2.0, delegando a lista detalhada à skill java-springboot."
 argument-hint: "target=<file-or-module>"
 agent: "implementer"
 tools: ["read", "search", "edit"]
 ---
 # /java-springboot
 
-## Objective
+## Objetivo
 
-Guide building or reviewing a Spring Boot slice for the SIFAP 2.0 backend — package-by-feature layout, constructor injection, DTOs, a global exception handler, service-layer transactions, and test slices — so the code matches the kit's fixed stack. The detailed checklist lives in the [`java-springboot`](../skills/java-springboot/SKILL.md) skill; this prompt applies it without restating it.
+Orientar a construção ou a revisão de uma fatia Spring Boot do backend do SIFAP 2.0: organização por funcionalidade, injeção por construtor, DTOs, tratamento global de exceções, transações na camada de serviço e fatias de teste. Assim, o código corresponde à stack fixa do kit. A lista detalhada está na skill [`java-springboot`](../skills/java-springboot/SKILL.md). Este prompt a aplica sem repeti-la.
 
 > [!IMPORTANT]
-> The stack is fixed: Java 21 + Spring Boot 3.3 + JPA/Hibernate + PostgreSQL 16. Do not offer another framework or database as an alternative.
+> A stack é fixa: Java 21 + Spring Boot 3.3 + JPA/Hibernate + PostgreSQL 16. Não ofereça outro framework ou banco de dados como alternativa.
 
-## When to Invoke
+## Quando usar
 
-During Stage 3/4, while building or reviewing a backend module, once the bounded context the code belongs to is known.
+Durante as Etapas 3 ou 4, ao construir ou revisar um módulo de backend, depois que seu contexto delimitado for conhecido.
 
-## Preconditions
+## Pré-condições
 
-- The `backend/` module is scaffolded (see `/create-spring-boot-java-project`)
-- The bounded context and its package are identified (see [`modular-monolith.instructions.md`](../instructions/modular-monolith.instructions.md))
-- The REQ-IDs the module implements are known
+- O módulo `backend/` foi criado; consulte `/create-spring-boot-java-project`
+- O contexto delimitado e seu pacote foram identificados; consulte [`modular-monolith.instructions.md`](../instructions/modular-monolith.instructions.md)
+- Os REQ-IDs implementados pelo módulo são conhecidos
 
-## Inputs the Team Must Provide
+## Entradas que a equipe deve fornecer
 
-- `target` — the file or module to build or review
-- The bounded context it belongs to and the REQ-IDs it serves
-- Ask the user for anything that is missing.
+- `target`: o arquivo ou módulo a construir ou revisar
+- O contexto delimitado correspondente e os REQ-IDs atendidos
+- Solicite à pessoa usuária qualquer informação ausente.
 
-## What I Will Do
+## O que farei
 
-- Follow the best practices in the [`java-springboot`](../skills/java-springboot/SKILL.md) skill, applying them to the target
-- Enforce constructor injection, `private final` fields, DTO boundaries, and `@Valid` request records
-- Keep `@Transactional` in the service layer and route data access through Spring Data JPA
-- Point secrets at environment variables backed by Azure Key Vault and Managed Identity
+- Seguirei as boas práticas da skill [`java-springboot`](../skills/java-springboot/SKILL.md) e as aplicarei ao destino
+- Exigirei injeção por construtor, campos `private final`, limites por DTO e records de requisição com `@Valid`
+- Manterei `@Transactional` na camada de serviço e encaminharei o acesso a dados pelo Spring Data JPA
+- Direcionarei segredos a variáveis de ambiente respaldadas por Azure Key Vault e Managed Identity
 
-## What I Will NOT Do
+## O que não farei
 
-- Substitute Quarkus, Micronaut, MongoDB, Redis, or any non-kit component
-- Recommend HashiCorp Vault or AWS Secrets Manager (the kit uses Azure Key Vault)
-- Expose JPA entities directly from a controller or return `null` from a public method
-- Put `@Transactional` on a repository or hardcode a secret
+- Substituir por Quarkus, Micronaut, MongoDB, Redis ou qualquer componente alheio ao kit
+- Recomendar HashiCorp Vault ou AWS Secrets Manager; o kit usa Azure Key Vault
+- Expor entidades JPA diretamente por um controlador ou retornar `null` de um método público
+- Colocar `@Transactional` em um repositório ou fixar um segredo no código
 
-## Output Format
+## Formato da saída
 
-The built or reviewed code plus a short conformance note:
+O código construído ou revisado, acompanhado de uma breve nota de conformidade:
 
 ```markdown
-### Applied
-- Constructor injection + `private final` on `PaymentService`
-- `/api/v1/payments` controller with `@Valid PaymentRequest` and OpenAPI annotations
-- `@Transactional` on the service method only
+### Aplicado
+- Injeção por construtor e `private final` em `PaymentService`
+- Controlador `/api/v1/payments` com `@Valid PaymentRequest` e anotações OpenAPI
+- `@Transactional` somente no método de serviço
 
-### Flagged
-- `PaymentController` returned the JPA entity → replaced with a `PaymentResponse` DTO
+### Sinalizado
+- `PaymentController` retornava a entidade JPA → substituída por um DTO `PaymentResponse`
 ```
 
-## Definition of Done
+## Definição de pronto
 
-- [ ] Code is organized by feature, with constructor injection and immutable fields
-- [ ] REST paths use `/api/v1/{resource}` and every endpoint has OpenAPI annotations and `@Valid`
-- [ ] `@Transactional` appears only in the service layer; no entity is exposed
-- [ ] Secrets come from the environment (Azure Key Vault), never hardcoded
+- [ ] O código está organizado por funcionalidade, com injeção por construtor e campos imutáveis
+- [ ] Os caminhos REST usam `/api/v1/{resource}` e cada endpoint tem anotações OpenAPI e `@Valid`
+- [ ] `@Transactional` aparece somente na camada de serviço; nenhuma entidade é exposta
+- [ ] Os segredos vêm do ambiente, pelo Azure Key Vault, e nunca estão fixados no código
 
-## Prompt Body
+## Corpo do prompt
 
-The [`java-springboot`](../skills/java-springboot/SKILL.md) skill owns the layered best practices — read it, then apply them to the target.
+A skill [`java-springboot`](../skills/java-springboot/SKILL.md) define as boas práticas em camadas. Leia-a e aplique-as ao destino.
 
-**Step 1 — Place the code.**
-Confirm the feature package and bounded context; organize by domain, not by layer.
+**Etapa 1 — Posicionar o código.**
+Confirme o pacote da funcionalidade e o contexto delimitado. Organize por domínio, não por camada.
 
-**Step 2 — Apply the skill.**
-Build or review the web, service, and data layers per the skill: DTOs at the boundary, a `@ControllerAdvice` exception handler, `@ConfigurationProperties` for typed config, and SLF4J parameterized logging.
+**Etapa 2 — Aplicar a skill.**
+Construa ou revise as camadas web, de serviço e de dados conforme a skill: DTOs no limite, tratamento de exceções com `@ControllerAdvice`, configuração tipada por `@ConfigurationProperties` e logs parametrizados com SLF4J.
 
-**Step 3 — Respect the kit rules.**
-Hold to Java 21 + Spring Boot 3.3 + PostgreSQL 16, source secrets from Azure Key Vault, and validate every input with `@Valid`.
+**Etapa 3 — Respeitar as regras do kit.**
+Mantenha Java 21 + Spring Boot 3.3 + PostgreSQL 16, obtenha segredos do Azure Key Vault e valide toda entrada com `@Valid`.
 
-**Step 4 — Report.**
-List the practices applied and any violations you corrected.
+**Etapa 4 — Relatar.**
+Liste as práticas aplicadas e as violações corrigidas.
 
-## Invocation Example
+## Exemplo de chamada
 
 ```
 /java-springboot target=backend/src/main/java/com/sifap/payment

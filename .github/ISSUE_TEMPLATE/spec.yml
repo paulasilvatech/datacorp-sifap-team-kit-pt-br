@@ -1,5 +1,5 @@
-name: 📋 Specification Request
-description: Propose a new feature specification (Stage 2 — Spec)
+name: 📋 Solicitação de especificação
+description: Proponha uma nova especificação de funcionalidade (Estágio 2 — Especificação)
 title: "[SPEC] "
 labels: [ "spec", "stage-2" ]
 projects: []
@@ -8,14 +8,14 @@ body:
   - type: markdown
     attributes:
       value: |
-        > Use this template when you are starting a new spec in `specs/<NNN>-<feature>/`.
-        > The Requirements Engineer or Product Owner typically opens this issue.
+        > Use este modelo ao iniciar uma nova especificação em `specs/<NNN>-<feature>/`.
+        > Normalmente, o Especialista em Requisitos ou o Responsável pelo Produto abre esta solicitação.
 
   - type: input
     id: feature-id
     attributes:
-      label: Feature ID
-      description: Three-digit number — must match the folder name in `specs/`
+      label: ID da funcionalidade
+      description: Número de três dígitos — deve corresponder ao nome da pasta em `specs/`
       placeholder: "003"
     validations:
       required: true
@@ -23,64 +23,64 @@ body:
   - type: input
     id: feature-name
     attributes:
-      label: Feature name (kebab-case)
-      placeholder: "<feature-name>"
+      label: "Nome da funcionalidade (formato kebab-case: minúsculas separadas por hífens)"
+      placeholder: "<nome-da-funcionalidade>"
     validations:
       required: true
 
   - type: textarea
     id: business-goal
     attributes:
-      label: Business goal
-      description: What outcome does this feature enable? Tie to a SIFAP business rule
-        when possible.
-      placeholder: "<describe the outcome identified by the team>"
+      label: Objetivo de negócio
+      description: Qual resultado esta funcionalidade viabiliza? Relacione-o a uma regra de negócio do SIFAP
+        quando possível.
+      placeholder: "<descreva o resultado identificado pela equipe>"
     validations:
       required: true
 
   - type: textarea
     id: ears-requirements
     attributes:
-      label: Initial EARS requirements (draft)
-      description: Use the 6 EARS patterns. The Requirements Engineer will refine these.
+      label: Requisitos EARS iniciais (rascunho)
+      description: Use os 6 padrões EARS. O Especialista em Requisitos fará o refinamento.
       value: |
-        - REQ-XXX-001 (Ubiquitous): The system shall ...
-        - REQ-XXX-002 (Event-driven): When ..., the system shall ...
-        - REQ-XXX-003 (State-driven): While ..., the system shall ...
+        - REQ-XXX-001 (Ubíquo): O sistema deve ...
+        - REQ-XXX-002 (Orientado a evento): Quando ..., o sistema deve ...
+        - REQ-XXX-003 (Orientado a estado): Enquanto ..., o sistema deve ...
     validations:
       required: true
 
   - type: textarea
     id: source-legacy
     attributes:
-      label: Legacy traceability (source_legacy)
-      description: Every REQ-ID must cite a Natural .NSN, an Adabas .ddm, or a justified [GREENFIELD] source.
+      label: Rastreabilidade com o legado (source_legacy)
+      description: Todo REQ-ID deve citar um arquivo Natural .NSN, um arquivo Adabas .ddm ou uma nova implementação justificada com o token [GREENFIELD].
       value: |
         source_legacy: 01-archaeology/legacy-sifap/natural-programs/<FILE>.NSN#L<start>-L<end>
-        # or: source_legacy: "[GREENFIELD] <one-line justification>"
+        # ou, para nova implementação: source_legacy: "[GREENFIELD] <justificativa em uma linha>"
     validations:
       required: true
 
   - type: textarea
     id: acceptance-criteria
     attributes:
-      label: Acceptance criteria
-      description: How will you verify the spec is complete?
+      label: Critérios de aceitação
+      description: Como será verificado que a especificação está completa?
       placeholder: |
-        - [ ] All requirements use a valid EARS pattern
-        - [ ] Each requirement is testable
-        - [ ] Product Owner has signed off on scope
+        - [ ] Todos os requisitos usam um padrão EARS válido
+        - [ ] Cada requisito é testável
+        - [ ] O Responsável pelo Produto aprovou o escopo
     validations:
       required: true
 
   - type: dropdown
     id: lead-persona
     attributes:
-      label: Lead persona
+      label: Persona líder
       options:
-        - Requirements Engineer
-        - Product Owner
-        - Software Architect
-        - Enterprise Architect
+        - Especialista em Requisitos
+        - Responsável pelo Produto
+        - Arquiteto de Software
+        - Arquiteto Corporativo
     validations:
       required: true

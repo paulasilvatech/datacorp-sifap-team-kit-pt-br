@@ -1,59 +1,59 @@
-# Architecture Decision Records (ADRs)
+# Registros de decisão de arquitetura (ADRs)
 
-> **Path:** [Team Kit](../../README.md) › [Docs](../README.md) › **ADRs**
+> **Trilha:** [Kit do Time](../../README.md) › [Documentação](../README.md) › **ADRs**
 
-**Index of the team's architecture decision records** — one decision per file, numbered sequentially.
+**Índice dos registros de decisão de arquitetura do time** — uma decisão por arquivo, com numeração sequencial.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | The entire team, especially the Software Architect and Technical Lead |
-| **When to create** | For every decision that is difficult to revisit later (more than one hour to reverse) |
-| **Expected outcome** | Auditable history of decisions made under time pressure |
+| **Público-alvo** | O time inteiro, especialmente o Software Architect e o Technical Lead |
+| **Quando criar** | Para toda decisão difícil de rever depois (mais de uma hora para reverter) |
+| **Resultado esperado** | Histórico auditável das decisões tomadas sob pressão de tempo |
 
 ---
 
-## Why write ADRs
+## Por que escrever ADRs
 
-Decisions made under time pressure are forgotten. Your future self will rediscover the same options and lose hours. An ADR takes five minutes to write now and saves 50 minutes later.
+Decisões tomadas sob pressão de tempo são esquecidas. No futuro, você redescobrirá as mesmas opções e perderá horas. Escrever um ADR agora leva cinco minutos e economiza 50 minutos depois.
 
-## When to write an ADR
+## Quando escrever um ADR
 
-Write one when:
+Escreva um quando:
 
-- A decision will be difficult to revisit later (more than one hour to reverse).
-- Two or more team members would naturally make different choices.
-- A decision affects more than one bounded context or persona.
+- A decisão for difícil de rever depois (mais de uma hora para reverter).
+- Duas ou mais pessoas do time naturalmente fariam escolhas diferentes.
+- A decisão afetar mais de um contexto delimitado ou persona.
 
-Do not write an ADR for variable names, formatting configuration, or minor library versions.
+Não escreva um ADR para nomes de variáveis, configurações de formatação ou versões secundárias de bibliotecas.
 
 ---
 
-## Index
+## Índice
 
-| ADR | Title | Status | Date |
+| ADR | Título | Status | Data |
 |---|---|---|---|
-| 0000 | [Template](0000-template.md) | template | 2026-04-29 |
-| 0001 | [Agent instructions single source of truth](0001-agent-instructions-single-source-of-truth.md) | accepted | 2026-08-17 |
+| 0000 | [Modelo](0000-template.md) | template | 2026-04-29 |
+| 0001 | [Fonte única de verdade para instruções de agentes](0001-agent-instructions-single-source-of-truth.md) | accepted | 2026-08-17 |
 
 > [!NOTE]
-> Add new ADRs to this table as they are created, first with status `proposed` and then `accepted` after team agreement.
+> Adicione novos ADRs a esta tabela quando forem criados, primeiro com o status `proposed` e depois `accepted`, após o acordo do time.
 
 ---
 
-## How to add an ADR
+## Como adicionar um ADR
 
-- [ ] **Open an issue** using the [ADR issue template](../../.github/ISSUE_TEMPLATE/adr.yml).
-- [ ] **Copy the template** — `0000-template.md` → `NNNN-your-title.md` (next sequential number).
-- [ ] **Complete every section** — context, decision, alternatives, consequences, and status.
-- [ ] **Open a pull request** — require at least one review from an architecture persona.
-- [ ] **Merge with status `accepted`** — update this index.
+- [ ] **Abra uma issue** usando o [modelo de issue de ADR](../../.github/ISSUE_TEMPLATE/adr.yml).
+- [ ] **Copie o modelo** — `0000-template.md` → `NNNN-your-title.md` (próximo número sequencial).
+- [ ] **Preencha todas as seções** — contexto, decisão, alternativas, consequências e status.
+- [ ] **Abra um pull request** — exija pelo menos uma revisão de uma persona de arquitetura.
+- [ ] **Integre com o status `accepted`** — atualize este índice.
 
 ---
 
-### Continue reading
+### Continue lendo
 
-| Previous | Next |
+| Anterior | Próximo |
 |---|---|
-| [Cross-cutting Documentation](../README.md)<br/><sub>Glossary, SDLC flow, persona-agent matrix, and runbook.</sub> | [Stage 2 — Modern Specification](../../02-modern-spec/GUIDE.md)<br/><sub>14:00–15:00 — Write EARS, ADRs, and C4 diagrams.</sub> |
+| [Documentação transversal](../README.md)<br/><sub>Glossário, fluxo do SDLC, matriz persona-agente e runbook.</sub> | [Estágio 2 — Especificação moderna](../../02-modern-spec/GUIDE.md)<br/><sub>14:00–15:00 — Escreva EARS, ADRs e diagramas C4.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Voltar ao índice do kit](../../README.md)</sub>

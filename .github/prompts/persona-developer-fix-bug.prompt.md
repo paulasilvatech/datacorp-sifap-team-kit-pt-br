@@ -1,120 +1,120 @@
 ---
 name: "fix-bug"
-description: "Reproduce, isolate, and fix a defect with a regression test, keeping spec.md the source of truth."
+description: "Reproduza, isole e corrija um defeito com um teste de regressão, mantendo spec.md como fonte da verdade."
 argument-hint: "bug=<observed-vs-expected> req=REQ-NNN area=<service-or-page>"
 agent: "implementer"
 tools: ["read", "search", "edit", "execute"]
 ---
 # /fix-bug
 
-## Objective
+## Objetivo
 
-Fix a defect so that the fix is (a) reproducible with a new failing test, (b) the smallest change that makes that test pass, and (c) traceable to a real `REQ-ID`—an existing one, or a new one proposed through `/update-spec` when the bug reveals a missing requirement. The root cause is named, not patched over.
+Corrigir um defeito para que a correção seja (a) reproduzível com um novo teste falhando, (b) a menor mudança que faça esse teste passar e (c) rastreável até um `REQ-ID` real, seja um existente, seja um novo proposto por `/update-spec` quando o defeito revelar um requisito ausente. A causa raiz é identificada, não encoberta por uma correção superficial.
 
 > [!WARNING]
-> SIFAP must fail explicitly. Never wrap a defect in a catch-and-continue that logs the error and swallows it.
+> O SIFAP deve falhar explicitamente. Nunca envolva um defeito em uma captura que registre o erro e continue a execução.
 
-## When to Invoke
+## Quando usar
 
-When a defect is reported against code already merged to `develop`, and the team wants a root-cause fix with a regression test rather than a symptom patch. Run it on an `impl/<NNN>-<bug-name>` branch cut from `develop`.
+Use quando um defeito for relatado em código já mesclado em `develop` e a equipe quiser corrigir a causa raiz com um teste de regressão, em vez de remediar o sintoma. Execute em uma ramificação `impl/<NNN>-<bug-name>` criada a partir de `develop`.
 
-## Preconditions
+## Pré-condições
 
-- `specs/<NNN>-<feature>/spec.md` exists for the affected area, to confirm the intended behavior
-- The current branch is `impl/<NNN>-<bug-name>`
-- The failing scenario is described well enough to reproduce, or the reporter is reachable
-- The affected `backend/` or `frontend/` module has already been scaffolded
+- `specs/<NNN>-<feature>/spec.md` existe para a área afetada e permite confirmar o comportamento pretendido
+- A ramificação atual é `impl/<NNN>-<bug-name>`
+- O cenário de falha está descrito com detalhes suficientes para reprodução, ou a pessoa que o relatou está disponível
+- O módulo `backend/` ou `frontend/` afetado já tem sua estrutura inicial
 
-## Inputs the Team Must Provide
+## Entradas que a equipe deve fornecer
 
-- A bug description: observed vs. expected behavior, exact steps, and environment
-- A stack trace, log line, or screenshot, if available
-- The affected service or page
-- The likely related `REQ-ID` (or "unknown—please investigate")
-- Ask the user for any missing item before starting.
+- Uma descrição do defeito: comportamento observado e esperado, etapas exatas e ambiente
+- Um rastreamento de pilha, uma linha de registro (log) ou uma captura de tela, se disponível
+- O serviço ou a página afetada
+- O `REQ-ID` provavelmente relacionado (ou "desconhecido, investigue")
+- Solicite à pessoa usuária qualquer item ausente antes de começar.
 
-## What I Will Do
+## O que farei
 
-- Reproduce the defect locally, or write the smallest test that mirrors the report
-- Write the regression test before touching production code and confirm it fails for the right reason
-- Diagnose the root cause by reading the code, tracing the call stack, and checking the spec
-- Map the corrected behavior to an existing `REQ-ID`, or propose a new EARS requirement
-- Apply the smallest fix, add one boundary test, and run the full local suite
+- Reproduzirei o defeito localmente ou escreverei o menor teste que represente o relato
+- Escreverei o teste de regressão antes de alterar o código de produção e confirmarei que ele falha pelo motivo correto
+- Diagnosticarei a causa raiz por meio da leitura do código, do rastreamento da pilha de chamadas e da verificação da especificação
+- Associarei o comportamento corrigido a um `REQ-ID` existente ou proporei um novo requisito EARS
+- Aplicarei a menor correção, adicionarei um teste de limite e executarei a suíte local completa
 
-## What I Will NOT Do
+## O que não farei
 
-- Fix the symptom—catch the exception, swallow the null, or wrap the bug in a try/catch that logs and continues
-- Ship a fix without a regression test
-- Refactor the surrounding class "while here"—that is a separate `/refactor`
-- Silently change behavior when the spec is ambiguous—I propose a spec update instead
-- Change the schema (that is `/migration`, routed through the DBA)
-- Invent a root cause I cannot demonstrate—if I cannot reproduce the defect, I stop and say what is missing
+- Corrigir somente o sintoma, capturando a exceção, ignorando o `null` ou envolvendo o defeito em um try/catch que registra o erro e continua
+- Entregar uma correção sem teste de regressão
+- Refatorar a classe ao redor "já que estou aqui". Isso pertence a um `/refactor` separado
+- Alterar silenciosamente o comportamento quando a especificação for ambígua. Em vez disso, proporei uma atualização da especificação
+- Alterar o esquema. Isso pertence a `/migration` e deve ser encaminhado à pessoa responsável pela administração do banco de dados
+- Inventar uma causa raiz que eu não possa demonstrar. Se eu não conseguir reproduzir o defeito, pararei e informarei o que falta
 
-## Output Format
+## Formato da saída
 
 ```markdown
-### Root cause
-Two `BigDecimal` values were compared with `equals`, so `10.00` and `10` never matched and the
-exemption branch was skipped for scale-0 inputs. Three to five sentences, in plain language.
+### Causa raiz
+Dois valores `BigDecimal` foram comparados com `equals`, portanto `10.00` e `10` nunca foram considerados iguais e a
+ramificação de isenção foi ignorada para entradas com escala 0. Três a cinco frases, em linguagem simples.
 
-### Linked requirement
-REQ-031 (existing) — or "PROPOSED: new REQ-XXX; see /update-spec".
+### Requisito vinculado
+REQ-031 (existente) ou "PROPOSTO: novo REQ-XXX; consulte /update-spec".
 
-### Regression + boundary tests
+### Testes de regressão e de limite
 <complete test source, each test with an inline `// REQ-031` comment>
 
-### Fix
+### Correção
 <minimal production diff>
 
-### Risk assessment
-Touches the shared fee calculator used by intake and reconciliation; both paths were retested.
+### Avaliação de risco
+Afeta a calculadora de tarifas compartilhada usada pela entrada e pela conciliação. Ambos os fluxos foram testados novamente.
 
-### Commit message
-fix(fees): compare BigDecimal by value, not scale (REQ-031)
+### Mensagem do registro de alteração
+fix(fees): comparar BigDecimal por valor, não por escala (REQ-031)
 
-Root cause: equals() is scale-sensitive on BigDecimal. Adds a regression test.
-Refs: BUG-42, REQ-031
+Causa raiz: equals() considera a escala em BigDecimal. Adiciona um teste de regressão.
+Referências: BUG-42, REQ-031
 ```
 
-## Definition of Done
+## Definição de pronto
 
-- [ ] A new test fails before the fix and passes after it, carrying an inline `// REQ-NNN` comment
-- [ ] The root cause is named in the commit message and the PR description
-- [ ] The fix is the smallest change that makes the test pass
-- [ ] At least one boundary test is added in addition to the reproduction case
-- [ ] An existing `REQ-ID` is cited, or a new one is formally proposed via `/update-spec`
-- [ ] No unrelated files are modified
-- [ ] The full suite passes: `./mvnw verify` (backend) or `pnpm test && pnpm lint && pnpm typecheck` (frontend)
+- [ ] Um novo teste falha antes da correção e passa depois dela, com um comentário `// REQ-NNN` na mesma linha
+- [ ] A causa raiz é identificada na mensagem do registro de alteração e na descrição da solicitação de integração
+- [ ] A correção é a menor mudança que faz o teste passar
+- [ ] Pelo menos um teste de limite é adicionado além do caso de reprodução
+- [ ] Um `REQ-ID` existente é citado ou um novo é formalmente proposto por `/update-spec`
+- [ ] Nenhum arquivo não relacionado é modificado
+- [ ] A suíte completa passa: `./mvnw verify` (servidor) ou `pnpm test && pnpm lint && pnpm typecheck` (interface)
 
-## Prompt Body
+## Corpo do prompt
 
-You are the `@implementer`. A defect was reported and the team wants a root-cause fix with a regression test. Read [`tdd-workflow`](../skills/tdd-workflow/SKILL.md); the same red-green discipline applies to bug fixes.
+Você é `@implementer`. Um defeito foi relatado e a equipe quer corrigir a causa raiz com um teste de regressão. Leia a habilidade [`tdd-workflow`](../skills/tdd-workflow/SKILL.md). A mesma disciplina vermelho-verde (`red-green`) se aplica às correções de defeitos.
 
-**Step 1 — Reproduce locally first.**
-Run the failing scenario, or write the smallest test that mirrors the report. If you cannot reproduce it, stop and tell the user exactly what is missing.
+**Etapa 1: primeiro reproduza localmente.**
+Execute o cenário de falha ou escreva o menor teste que represente o relato. Se não conseguir reproduzi-lo, pare e informe exatamente o que falta à pessoa usuária.
 
-**Step 2 — Write the regression test.**
-Before changing any code, add a test named `should_<expected>_when_<condition>` in the same package as the code under test, with an inline `// REQ-NNN` comment. Confirm it fails, and read the assertion to confirm it fails for the right reason—fix the setup first if it does not.
+**Etapa 2: escreva o teste de regressão.**
+Antes de alterar qualquer código, adicione um teste chamado `should_<expected>_when_<condition>` no mesmo pacote do código em teste, com um comentário `// REQ-NNN` na mesma linha. Confirme que ele falha e leia a asserção para verificar se o motivo é o correto. Caso contrário, corrija primeiro a configuração.
 
-**Step 3 — Diagnose the root cause.**
-Read the related code, trace the call stack, and compare against `spec.md`. Write three to five plain-language sentences explaining the cause before showing any fix. Do not patch blindly.
+**Etapa 3: diagnostique a causa raiz.**
+Leia o código relacionado, rastreie a pilha de chamadas e compare o comportamento com `spec.md`. Escreva de três a cinco frases em linguagem simples para explicar a causa antes de mostrar qualquer correção. Não corrija sem diagnóstico.
 
-**Step 4 — Map the fix to a requirement.**
-If an existing `REQ-ID` covers the correct behavior, cite it. Otherwise draft a new EARS requirement and propose it through `/update-spec`—never silently change behavior.
+**Etapa 4: associe a correção a um requisito.**
+Se um `REQ-ID` existente abranger o comportamento correto, cite-o. Caso contrário, redija um novo requisito EARS e proponha-o por `/update-spec`. Nunca altere o comportamento silenciosamente.
 
-**Step 5 — Apply the smallest fix.**
-Change only what the failing test needs. Leave unrelated cleanup as a `// TODO(REQ-XXX)` or a follow-up issue.
+**Etapa 5: aplique a menor correção.**
+Altere somente o que o teste falhando exige. Registre qualquer limpeza não relacionada como `// TODO(REQ-XXX)` ou em um item de acompanhamento.
 
-**Step 6 — Add a boundary test.**
-A happy-path test is not enough. Add an edge case: null, empty, maximum value, or off-by-one.
+**Etapa 6: adicione um teste de limite.**
+Um teste do fluxo principal não é suficiente. Adicione um caso extremo: `null`, vazio, valor máximo ou erro de uma unidade.
 
-**Step 7 — Run the full suite.**
-Run `./mvnw verify` or `pnpm test && pnpm lint && pnpm typecheck`. Do not finish until it is green.
+**Etapa 7: execute a suíte completa.**
+Execute `./mvnw verify` ou `pnpm test && pnpm lint && pnpm typecheck`. Não termine até que tudo passe.
 
-Mask CPF and benefit amounts in any log line. If the bug exposes an ambiguous or missing requirement, escalate it to the spec; do not decide the business rule yourself.
+Mascare CPF e valores de benefícios em qualquer linha de registro (log). Se o defeito revelar um requisito ambíguo ou ausente, encaminhe-o para a especificação. Não decida a regra de negócio por conta própria.
 
-## Invocation Example
+## Exemplo de chamada
 
 ```
-/fix-bug bug="an exempt payer is still charged a fee" req=REQ-031 area=fee-service
+/fix-bug bug="uma pessoa pagadora isenta ainda recebe uma tarifa" req=REQ-031 area=fee-service
 ```

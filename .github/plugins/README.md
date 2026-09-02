@@ -1,54 +1,56 @@
-# Copilot plugins
+# Extensões (plugins) do Copilot
 
-This directory packages the kit's curated Copilot **skills** and **agents** as
-named plugins, and exposes them through a local plugin **marketplace** so they
-can be declared in [`.github/copilot/settings.json`](../copilot/settings.json).
+Este diretório empacota as **habilidades** e os **agentes** selecionados do
+Copilot como extensões nomeadas e os expõe por meio de um **catálogo local
+(marketplace)** de extensões
+para que possam ser declarados em
+[`.github/copilot/settings.json`](../copilot/settings.json).
 
-## What lives here
+## O que existe aqui
 
-- Ten plugin directories, each with a `plugin.json` manifest and a `README.md`.
-- [`marketplace.json`](marketplace.json) — a local **directory marketplace**
-  named `datacorp-mm-team-kit` that lists all ten plugins.
+- Dez diretórios de extensões, cada um com um manifesto `plugin.json` e um `README.md`.
+- [`marketplace.json`](marketplace.json) — um **catálogo de diretório** local
+  chamado `datacorp-mm-team-kit`, que lista todas as dez extensões.
 
-The actual skill and agent content is **not** duplicated here. It is maintained
-once at the repository level under [`.github/skills/`](../skills/) and
-[`.github/agents/`](../agents/). Each `plugin.json` references that shared
-content with relative paths such as `../../skills/<name>/` and
+O conteúdo real das habilidades e dos agentes **não** é duplicado aqui. Ele é mantido
+uma única vez no nível do repositório, em [`.github/skills/`](../skills/) e
+[`.github/agents/`](../agents/). Cada `plugin.json` referencia esse conteúdo
+compartilhado com caminhos relativos como `../../skills/<name>/` e
 `../../agents/<name>.agent.md`.
 
-## Two layers, one source of truth
+## Duas camadas, uma fonte única da verdade
 
-1. **Native discovery (in this repository).** Copilot automatically loads every
-   skill under `.github/skills/` and every agent under `.github/agents/`. In
-   this repository those components already work without installing anything.
-2. **Plugin packaging (for naming and reuse).** The plugins group the shared
-   components into themed bundles and publish them through the official
-   marketplace / `enabledPlugins` mechanism.
+1. **Descoberta nativa (neste repositório).** O Copilot carrega automaticamente
+   todas as habilidades em `.github/skills/` e todos os agentes em `.github/agents/`.
+   Neste repositório, esses componentes já funcionam sem instalar nada.
+2. **Empacotamento por extensões (para nomeação e reutilização).** As extensões
+   agrupam os componentes compartilhados em conjuntos temáticos e os publicam
+   pelo mecanismo oficial de catálogo (`marketplace`) / `enabledPlugins`.
 
-## Catalog
+## Catálogo
 
-| Plugin | Bundles | Status |
+| Extensão | Conteúdo | Situação |
 |--------|---------|--------|
-| [`arch`](arch/) | — | catalog-only (no components in this kit) |
-| [`azure-cloud-development`](azure-cloud-development/) | 3 skills | enabled |
-| [`chromium-control-canvas`](chromium-control-canvas/) | — | catalog-only (no components in this kit) |
-| [`context-engineering`](context-engineering/) | 1 skill | enabled |
-| [`copilot-sdk`](copilot-sdk/) | 1 skill | enabled |
-| [`database-data-management`](database-data-management/) | 2 skills | enabled |
-| [`frontend-web-dev`](frontend-web-dev/) | 1 agent, 1 skill | enabled |
-| [`java-development`](java-development/) | 4 skills | enabled |
-| [`software-engineering-team`](software-engineering-team/) | 1 agent | enabled |
-| [`testing-automation`](testing-automation/) | 2 skills | enabled |
+| [`arch`](arch/) | — | somente catálogo (sem componentes neste kit) |
+| [`azure-cloud-development`](azure-cloud-development/) | 3 habilidades | habilitada |
+| [`chromium-control-canvas`](chromium-control-canvas/) | — | somente catálogo (sem componentes neste kit) |
+| [`context-engineering`](context-engineering/) | 1 habilidade | habilitada |
+| [`copilot-sdk`](copilot-sdk/) | 1 habilidade | habilitada |
+| [`database-data-management`](database-data-management/) | 2 habilidades | habilitada |
+| [`frontend-web-dev`](frontend-web-dev/) | 1 agente, 1 habilidade | habilitada |
+| [`java-development`](java-development/) | 4 habilidades | habilitada |
+| [`software-engineering-team`](software-engineering-team/) | 1 agente | habilitada |
+| [`testing-automation`](testing-automation/) | 2 habilidades | habilitada |
 
-These manifests were adapted from the `github/awesome-copilot` catalog. Of the
-48 component references in the original manifests, 16 resolve to content that
-exists in this kit and are kept; the other 32 point at skills, agents, or
-extensions that are not part of this kit and were removed. Each plugin README
-lists exactly what it dropped.
+Estes manifestos foram adaptados do catálogo `github/awesome-copilot`. Das 48
+referências a componentes nos manifestos originais, 16 apontam para conteúdo
+existente neste kit e foram mantidas; as outras 32 apontam para habilidades, agentes
+ou extensões que não fazem parte deste kit e foram removidas. O README de cada
+extensão lista exatamente o que foi removido.
 
-## How plugins are enabled
+## Como as extensões são habilitadas
 
-The declarative configuration lives in
+A configuração declarativa fica em
 [`.github/copilot/settings.json`](../copilot/settings.json):
 
 ```json
@@ -64,65 +66,67 @@ The declarative configuration lives in
 }
 ```
 
-- `extraKnownMarketplaces` registers the local directory marketplace. The value
-  shape (`{ "source": { "source": "directory", "path": ... } }`) is exactly what
-  the CLI writes when you register a directory marketplace.
-- `enabledPlugins` keys are plugin **specs** in `name@marketplace` form — never
-  bare names or filesystem paths. Only the eight component-bearing plugins are
-  enabled; the two catalog-only entries are listed in the marketplace but not
-  enabled, because enabling them would load nothing.
+- `extraKnownMarketplaces` registra o catálogo de diretório local. O formato
+  do valor (`{ "source": { "source": "directory", "path": ... } }`) é exatamente
+  o que a CLI grava quando você registra um catálogo de diretório.
+- As chaves de `enabledPlugins` são **especificações** de extensões no formato
+  `name@marketplace` — nunca nomes isolados nem caminhos do sistema de arquivos.
+  Somente as oito extensões que contêm componentes estão habilitadas; as duas
+  entradas somente de catálogo são listadas no catálogo, mas não são
+  habilitadas, pois habilitá-las não carregaria nada.
 
-To register the marketplace on demand from the repository root, use the
-command the CLI supports for a directory source (the explicit `./` prefix is
-required so the path is not read as a GitHub `owner/repo` spec):
+Para registrar o catálogo sob demanda a partir da raiz do repositório, use o
+comando aceito pela CLI para uma origem de diretório (o prefixo explícito `./` é
+obrigatório para que o caminho não seja interpretado como uma especificação
+`owner/repo` do GitHub):
 
 ```bash
 copilot plugin marketplace add ./.github/plugins
 copilot plugin marketplace browse datacorp-mm-team-kit
 ```
 
-## Honest limitations
+## Limitações declaradas
 
-- **In this repository the plugins add no new capability.** Everything they
-  reference is already loaded by native discovery of `.github/skills/` and
-  `.github/agents/`. The plugin layer is documentation and packaging: it records
-  which shared components form each bundle and exposes them through the official
-  marketplace mechanism.
-- **Installed plugins copy only their own directory.** When a plugin is
-  installed from a marketplace, Copilot copies that plugin's directory — not the
-  repository root. Because these manifests point at shared content **outside**
-  the plugin directory (`../../skills/...`, `../../agents/...`), those components
-  are not copied on install and will not appear in another repository or a
-  global install. This was verified empirically: installing such a plugin
-  reports success but bundles zero skills. To ship a self-contained plugin, the
-  referenced content must be vendored into the plugin directory. This kit
-  deliberately does not duplicate that content, because it is maintained once at
-  the repository root.
-- **Headless `copilot -p` runs did not apply the repository
-  `extraKnownMarketplaces`.** In a non-interactive prompt session only the
-  default marketplaces loaded. The declarative settings are documented for
-  interactive and agent sessions; the reliable, verified way to register the
-  local marketplace is the `copilot plugin marketplace add ./.github/plugins`
-  command above.
+- **Neste repositório, as extensões não adicionam nenhuma funcionalidade nova.**
+  Tudo o que elas referenciam já é carregado pela descoberta nativa de
+  `.github/skills/` e `.github/agents/`. A camada de extensões serve para
+  documentação e empacotamento: ela registra quais componentes compartilhados
+  formam cada conjunto e os expõe pelo mecanismo oficial de catálogo.
+- **Extensões instaladas copiam somente seu próprio diretório.** Quando uma extensão é
+  instalada de um catálogo, o Copilot copia o diretório dessa extensão — não a
+  raiz do repositório. Como estes manifestos apontam para conteúdo compartilhado
+  **fora** do diretório da extensão (`../../skills/...`, `../../agents/...`), esses
+  componentes não são copiados na instalação e não aparecerão em outro
+  repositório nem em uma instalação global. Isso foi verificado empiricamente:
+  a instalação de uma extensão desse tipo relata sucesso, mas inclui zero habilidades.
+  Para fornecer uma extensão autocontida, o conteúdo referenciado precisa ser
+  incorporado ao diretório da extensão. Este kit deliberadamente não duplica esse
+  conteúdo, pois ele é mantido uma única vez na raiz do repositório.
+- **Execuções sem interface (headless) de `copilot -p` não aplicaram
+  `extraKnownMarketplaces` do repositório.** Em uma sessão de solicitação
+  (`prompt`) não interativa, somente os catálogos padrão foram carregados. As configurações
+  declarativas são documentadas para sessões interativas e de agentes; a forma
+  confiável e verificada de registrar o catálogo local é o comando
+  `copilot plugin marketplace add ./.github/plugins` acima.
 
-## Validation
+## Validação
 
 ```bash
-# every manifest and settings file parses as JSON
+# todos os manifestos e arquivos de configuração são interpretados como JSON
 python3 -c "import json,glob; [json.load(open(f)) for f in \
   glob.glob('.github/plugins/*/plugin.json') + \
   ['.github/copilot/settings.json', '.github/plugins/marketplace.json']]"
 
-# markdown lint (uses the root .markdownlint-cli2.jsonc)
+# análise de Markdown (usa o arquivo .markdownlint-cli2.jsonc da raiz)
 npx --yes markdownlint-cli2 ".github/plugins/**/*.md"
 ```
 
-## References
+## Referências
 
-- Copilot CLI plugins:
+- Extensões da Copilot CLI:
   <https://docs.github.com/copilot/concepts/agents/copilot-cli/about-cli-plugins>
-- Creating plugins:
+- Criação de extensões:
   <https://docs.github.com/copilot/how-tos/copilot-cli/customize-copilot/plugins-creating>
-- Copilot CLI reference:
+- Referência da Copilot CLI:
   <https://docs.github.com/copilot/how-tos/copilot-cli>
-- Upstream catalog: <https://github.com/github/awesome-copilot>
+- Catálogo original: <https://github.com/github/awesome-copilot>

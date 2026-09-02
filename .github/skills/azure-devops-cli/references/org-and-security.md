@@ -1,169 +1,169 @@
-# Organization, Security & Administration
+# Organização, segurança e administração
 
-## Table of Contents
+## Sumário
 
-- [Projects](#projects)
-- [Extension Management](#extension-management)
-- [Service Endpoints](#service-endpoints)
-- [Teams](#teams)
-- [Users](#users)
-- [Security Groups](#security-groups)
-- [Security Permissions](#security-permissions)
+- [Projetos](#projetos)
+- [Gerenciamento de extensões](#gerenciamento-de-extensões)
+- [Pontos de extremidade de serviço](#pontos-de-extremidade-de-serviço)
+- [Equipes](#equipes)
+- [Usuários](#usuários)
+- [Grupos de segurança](#grupos-de-segurança)
+- [Permissões de segurança](#permissões-de-segurança)
 - [Wikis](#wikis)
-- [Administration](#administration)
-- [DevOps Extensions](#devops-extensions)
+- [Administração](#administração)
+- [Extensões do DevOps](#extensões-do-devops)
 
 ---
 
-## Projects
+## Projetos
 
-### List Projects
+### Listar projetos
 
 ```bash
 az devops project list --organization https://dev.azure.com/{org}
 az devops project list --top 10 --output table
 ```
 
-### Create Project
+### Criar projeto
 
 ```bash
 az devops project create \
   --name myNewProject \
   --organization https://dev.azure.com/{org} \
-  --description "My new DevOps project" \
+  --description "Meu novo projeto do DevOps" \
   --source-control git \
   --visibility private
 ```
 
-### Show Project Details
+### Exibir detalhes do projeto
 
 ```bash
 az devops project show --project {project-name} --org https://dev.azure.com/{org}
 ```
 
-### Delete Project
+### Excluir projeto
 
 ```bash
 az devops project delete --id {project-id} --org https://dev.azure.com/{org} --yes
 ```
 
-## Extension Management
+## Gerenciamento de extensões
 
-### List Extensions
+### Listar extensões
 
 ```bash
-# List available extensions
+# Listar extensões disponíveis
 az extension list-available --output table
 
-# List installed extensions
+# Listar extensões instaladas
 az extension list --output table
 ```
 
-### Manage Azure DevOps Extension
+### Gerenciar a extensão do Azure DevOps
 
 ```bash
-# Install Azure DevOps extension
+# Instalar a extensão do Azure DevOps
 az extension add --name azure-devops
 
-# Update Azure DevOps extension
+# Atualizar a extensão do Azure DevOps
 az extension update --name azure-devops
 
-# Remove extension
+# Remover extensão
 az extension remove --name azure-devops
 
-# Install from local path
+# Instalar a partir de um caminho local
 az extension add --source ~/extensions/azure-devops.whl
 ```
 
-## Service Endpoints
+## Pontos de extremidade de serviço
 
-### List Service Endpoints
+### Listar pontos de extremidade de serviço
 
 ```bash
 az devops service-endpoint list --project {project}
 az devops service-endpoint list --project {project} --output table
 ```
 
-### Show Service Endpoint
+### Exibir ponto de extremidade de serviço
 
 ```bash
 az devops service-endpoint show --id {endpoint-id} --project {project}
 ```
 
-### Create Service Endpoint
+### Criar ponto de extremidade de serviço
 
 ```bash
-# Using configuration file
+# Usar um arquivo de configuração
 az devops service-endpoint create --service-endpoint-configuration endpoint.json --project {project}
 ```
 
-### Delete Service Endpoint
+### Excluir ponto de extremidade de serviço
 
 ```bash
 az devops service-endpoint delete --id {endpoint-id} --project {project} --yes
 ```
 
-## Teams
+## Equipes
 
-### List Teams
+### Listar equipes
 
 ```bash
 az devops team list --project {project}
 ```
 
-### Show Team
+### Exibir equipe
 
 ```bash
 az devops team show --team {team-name} --project {project}
 ```
 
-### Create Team
+### Criar equipe
 
 ```bash
 az devops team create \
   --name {team-name} \
-  --description "Team description" \
+  --description "Descrição da equipe" \
   --project {project}
 ```
 
-### Update Team
+### Atualizar equipe
 
 ```bash
 az devops team update \
   --team {team-name} \
   --project {project} \
   --name "{new-team-name}" \
-  --description "Updated description"
+  --description "Descrição atualizada"
 ```
 
-### Delete Team
+### Excluir equipe
 
 ```bash
 az devops team delete --team {team-name} --project {project} --yes
 ```
 
-### Show Team Members
+### Exibir integrantes da equipe
 
 ```bash
 az devops team list-member --team {team-name} --project {project}
 ```
 
-## Users
+## Usuários
 
-### List Users
+### Listar usuários
 
 ```bash
 az devops user list --org https://dev.azure.com/{org}
 az devops user list --top 10 --output table
 ```
 
-### Show User
+### Exibir usuário
 
 ```bash
 az devops user show --user {user-id-or-email} --org https://dev.azure.com/{org}
 ```
 
-### Add User
+### Adicionar usuário
 
 ```bash
 az devops user add \
@@ -172,7 +172,7 @@ az devops user add \
   --org https://dev.azure.com/{org}
 ```
 
-### Update User
+### Atualizar usuário
 
 ```bash
 az devops user update \
@@ -181,99 +181,99 @@ az devops user update \
   --org https://dev.azure.com/{org}
 ```
 
-### Remove User
+### Remover usuário
 
 ```bash
 az devops user remove --user {user-id-or-email} --org https://dev.azure.com/{org} --yes
 ```
 
-## Security Groups
+## Grupos de segurança
 
-### List Groups
+### Listar grupos
 
 ```bash
-# List all groups in project
+# Listar todos os grupos do projeto
 az devops security group list --project {project}
 
-# List all groups in organization
+# Listar todos os grupos da organização
 az devops security group list --scope organization
 
-# List with filtering
+# Listar com filtragem
 az devops security group list --project {project} --subject-types vstsgroup
 ```
 
-### Show Group Details
+### Exibir detalhes do grupo
 
 ```bash
 az devops security group show --group-id {group-id}
 ```
 
-### Create Group
+### Criar grupo
 
 ```bash
 az devops security group create \
   --name {group-name} \
-  --description "Group description" \
+  --description "Descrição do grupo" \
   --project {project}
 ```
 
-### Update Group
+### Atualizar grupo
 
 ```bash
 az devops security group update \
   --group-id {group-id} \
   --name "{new-group-name}" \
-  --description "Updated description"
+  --description "Descrição atualizada"
 ```
 
-### Delete Group
+### Excluir grupo
 
 ```bash
 az devops security group delete --group-id {group-id} --yes
 ```
 
-### Group Memberships
+### Participações no grupo
 
 ```bash
-# List memberships
+# Listar participações
 az devops security group membership list --id {group-id}
 
-# Add member
+# Adicionar integrante
 az devops security group membership add \
   --group-id {group-id} \
   --member-id {member-id}
 
-# Remove member
+# Remover integrante
 az devops security group membership remove \
   --group-id {group-id} \
   --member-id {member-id} --yes
 ```
 
-## Security Permissions
+## Permissões de segurança
 
-### List Namespaces
+### Listar espaços de nomes
 
 ```bash
 az devops security permission namespace list
 ```
 
-### Show Namespace Details
+### Exibir detalhes do espaço de nomes
 
 ```bash
-# Show permissions available in a namespace
+# Exibir permissões disponíveis em um espaço de nomes
 az devops security permission namespace show --namespace "GitRepositories"
 ```
 
-### List Permissions
+### Listar permissões
 
 ```bash
-# List permissions for user/group and namespace
+# Listar permissões de usuário/grupo e espaço de nomes
 az devops security permission list \
   --id {user-or-group-id} \
   --namespace "GitRepositories" \
   --project {project}
 
-# List for specific token (repository)
+# Listar para um token específico (repositório)
 az devops security permission list \
   --id {user-or-group-id} \
   --namespace "GitRepositories" \
@@ -281,7 +281,7 @@ az devops security permission list \
   --token "repoV2/{project}/{repository-id}"
 ```
 
-### Show Permissions
+### Exibir permissões
 
 ```bash
 az devops security permission show \
@@ -291,10 +291,10 @@ az devops security permission show \
   --token "repoV2/{project}/{repository-id}"
 ```
 
-### Update Permissions
+### Atualizar permissões
 
 ```bash
-# Grant permission
+# Conceder permissão
 az devops security permission update \
   --id {user-or-group-id} \
   --namespace "GitRepositories" \
@@ -302,7 +302,7 @@ az devops security permission update \
   --token "repoV2/{project}/{repository-id}" \
   --permission-mask "Pull,Contribute"
 
-# Deny permission
+# Negar permissão
 az devops security permission update \
   --id {user-or-group-id} \
   --namespace "GitRepositories" \
@@ -311,10 +311,10 @@ az devops security permission update \
   --permission-mask 0
 ```
 
-### Reset Permissions
+### Redefinir permissões
 
 ```bash
-# Reset specific permission bits
+# Redefinir bits de permissão específicos
 az devops security permission reset \
   --id {user-or-group-id} \
   --namespace "GitRepositories" \
@@ -322,7 +322,7 @@ az devops security permission reset \
   --token "repoV2/{project}/{repository-id}" \
   --permission-mask "Pull,Contribute"
 
-# Reset all permissions
+# Redefinir todas as permissões
 az devops security permission reset-all \
   --id {user-or-group-id} \
   --namespace "GitRepositories" \
@@ -332,33 +332,33 @@ az devops security permission reset-all \
 
 ## Wikis
 
-### List Wikis
+### Listar wikis
 
 ```bash
-# List all wikis in project
+# Listar todas as wikis do projeto
 az devops wiki list --project {project}
 
-# List all wikis in organization
+# Listar todas as wikis da organização
 az devops wiki list
 ```
 
-### Show Wiki
+### Exibir wiki
 
 ```bash
 az devops wiki show --wiki {wiki-name} --project {project}
 az devops wiki show --wiki {wiki-name} --project {project} --open
 ```
 
-### Create Wiki
+### Criar wiki
 
 ```bash
-# Create project wiki
+# Criar wiki do projeto
 az devops wiki create \
   --name {wiki-name} \
   --project {project} \
   --type projectWiki
 
-# Create code wiki from repository
+# Criar wiki de código a partir do repositório
 az devops wiki create \
   --name {wiki-name} \
   --project {project} \
@@ -367,103 +367,103 @@ az devops wiki create \
   --mapped-path /wiki
 ```
 
-### Delete Wiki
+### Excluir wiki
 
 ```bash
 az devops wiki delete --wiki {wiki-id} --project {project} --yes
 ```
 
-### Wiki Pages
+### Páginas da wiki
 
 ```bash
-# List pages
+# Listar páginas
 az devops wiki page list --wiki {wiki-name} --project {project}
 
-# Show page
+# Exibir página
 az devops wiki page show \
   --wiki {wiki-name} \
   --path "/page-name" \
   --project {project}
 
-# Create page
+# Criar página
 az devops wiki page create \
   --wiki {wiki-name} \
   --path "/new-page" \
-  --content "# New Page\n\nPage content here..." \
+  --content "# Nova página\n\nConteúdo da página aqui..." \
   --project {project}
 
-# Update page
+# Atualizar página
 az devops wiki page update \
   --wiki {wiki-name} \
   --path "/existing-page" \
-  --content "# Updated Page\n\nNew content..." \
+  --content "# Página atualizada\n\nNovo conteúdo..." \
   --project {project}
 
-# Delete page
+# Excluir página
 az devops wiki page delete \
   --wiki {wiki-name} \
   --path "/old-page" \
   --project {project} --yes
 ```
 
-## Administration
+## Administração
 
-### Banner Management
+### Gerenciamento de banners
 
 ```bash
-# List banners
+# Listar banners
 az devops admin banner list
 
-# Show banner details
+# Exibir detalhes do banner
 az devops admin banner show --id {banner-id}
 
-# Add new banner
+# Adicionar novo banner
 az devops admin banner add \
-  --message "System maintenance scheduled" \
+  --message "Manutenção do sistema agendada" \
   --level info  # info, warning, error
 
-# Update banner
+# Atualizar banner
 az devops admin banner update \
   --id {banner-id} \
-  --message "Updated message" \
+  --message "Mensagem atualizada" \
   --level warning \
   --expiration-date "2025-12-31T23:59:59Z"
 
-# Remove banner
+# Remover banner
 az devops admin banner remove --id {banner-id}
 ```
 
-## DevOps Extensions
+## Extensões do DevOps
 
-Manage extensions installed in an Azure DevOps organization (different from CLI extensions).
+Gerencie as extensões instaladas em uma organização do Azure DevOps (diferentes das extensões da CLI).
 
 ```bash
-# List installed extensions
+# Listar extensões instaladas
 az devops extension list --org https://dev.azure.com/{org}
 
-# Search marketplace extensions
+# Pesquisar extensões no Marketplace
 az devops extension search --search-query "docker"
 
-# Show extension details
+# Exibir detalhes da extensão
 az devops extension show --ext-id {extension-id} --org https://dev.azure.com/{org}
 
-# Install extension
+# Instalar extensão
 az devops extension install \
   --ext-id {extension-id} \
   --org https://dev.azure.com/{org} \
   --publisher {publisher-id}
 
-# Enable extension
+# Ativar extensão
 az devops extension enable \
   --ext-id {extension-id} \
   --org https://dev.azure.com/{org}
 
-# Disable extension
+# Desativar extensão
 az devops extension disable \
   --ext-id {extension-id} \
   --org https://dev.azure.com/{org}
 
-# Uninstall extension
+# Desinstalar extensão
 az devops extension uninstall \
   --ext-id {extension-id} \
   --org https://dev.azure.com/{org} --yes

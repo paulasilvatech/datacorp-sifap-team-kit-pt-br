@@ -1,6 +1,6 @@
 {
   "name": "java-development",
-  "description": "Comprehensive collection of prompts and instructions for Java development including Spring Boot, Quarkus, testing, documentation, and best practices.",
+  "description": "Coleção abrangente de instruções orientadoras (prompts) e regras para desenvolvimento Java, incluindo Spring Boot, Quarkus, testes, documentação e boas práticas.",
   "version": "1.0.0",
   "author": { "name": "Awesome Copilot Community" },
   "repository": "https://github.com/github/awesome-copilot",

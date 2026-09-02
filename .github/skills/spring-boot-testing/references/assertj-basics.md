@@ -1,10 +1,10 @@
-# AssertJ Basics
+# Fundamentos do AssertJ
 
-Fluent assertions for readable, maintainable tests.
+Asserções fluentes para testes legíveis e fáceis de manter.
 
-## Basic Assertions
+## Asserções básicas
 
-### Object Equality
+### Igualdade de objetos
 
 ```java
 assertThat(order.getStatus()).isEqualTo("PENDING");
@@ -14,7 +14,7 @@ assertThat(order).isNotNull();
 assertThat(nullOrder).isNull();
 ```
 
-### String Assertions
+### Asserções de texto
 
 ```java
 assertThat(order.getDescription())
@@ -26,7 +26,7 @@ assertThat(order.getDescription())
   .matches("[A-Za-z ]+");
 ```
 
-### Number Assertions
+### Asserções de números
 
 ```java
 assertThat(order.getAmount())
@@ -38,14 +38,14 @@ assertThat(order.getAmount())
   .isNotZero();
 ```
 
-### Boolean Assertions
+### Asserções booleanas
 
 ```java
 assertThat(order.isActive()).isTrue();
 assertThat(order.isDeleted()).isFalse();
 ```
 
-## Date/Time Assertions
+## Asserções de data e hora
 
 ```java
 assertThat(order.getCreatedAt())
@@ -55,7 +55,7 @@ assertThat(order.getCreatedAt())
   .isCloseTo(LocalDateTime.now(), within(5, ChronoUnit.SECONDS));
 ```
 
-## Optional Assertions
+## Asserções de Optional
 
 ```java
 Optional<Order> maybeOrder = orderService.findById(1L);
@@ -69,9 +69,9 @@ assertThat(maybeOrder)
 assertThat(orderService.findById(999L)).isEmpty();
 ```
 
-## Exception Assertions
+## Asserções de exceções
 
-### JUnit 5 Exception Handling
+### Tratamento de exceções do JUnit 5
 
 ```java
 @Test
@@ -80,12 +80,12 @@ void shouldThrowException() {
 
   assertThatThrownBy(() -> service.findById(999L))
     .isInstanceOf(OrderNotFoundException.class)
-    .hasMessage("Order 999 not found")
+    .hasMessage("Pedido 999 não encontrado")
     .hasMessageContaining("999");
 }
 ```
 
-### AssertJ Exception Handling
+### Tratamento de exceções do AssertJ
 
 ```java
 @Test
@@ -96,9 +96,9 @@ void shouldThrowExceptionWithCause() {
 }
 ```
 
-## Custom Assertions
+## Asserções personalizadas
 
-Create domain-specific assertions for reusable test code:
+Crie asserções específicas do domínio para reutilizar o código de teste:
 
 ```java
 public class OrderAssert extends AbstractAssert<OrderAssert, Order> {
@@ -114,7 +114,7 @@ public class OrderAssert extends AbstractAssert<OrderAssert, Order> {
   public OrderAssert isPending() {
     isNotNull();
     if (!"PENDING".equals(actual.getStatus())) {
-      failWithMessage("Expected order status to be PENDING but was %s", actual.getStatus());
+      failWithMessage("Esperava status PENDING para o pedido, mas era %s", actual.getStatus());
     }
     return this;
   }
@@ -122,14 +122,14 @@ public class OrderAssert extends AbstractAssert<OrderAssert, Order> {
   public OrderAssert hasTotal(BigDecimal expected) {
     isNotNull();
     if (!expected.equals(actual.getTotal())) {
-      failWithMessage("Expected total %s but was %s", expected, actual.getTotal());
+      failWithMessage("Esperava total %s, mas era %s", expected, actual.getTotal());
     }
     return this;
   }
 }
 ```
 
-Usage:
+Uso:
 
 ```java
 OrderAssert.assertThat(order)
@@ -137,9 +137,9 @@ OrderAssert.assertThat(order)
   .hasTotal(new BigDecimal("99.99"));
 ```
 
-## Soft Assertions
+## Asserções agrupadas
 
-Collect multiple failures before failing:
+Colete várias falhas antes de interromper o teste:
 
 ```java
 @Test
@@ -154,7 +154,7 @@ void shouldValidateOrder() {
 }
 ```
 
-## Satisfies Pattern
+## Padrão `satisfies`
 
 ```java
 assertThat(order)
@@ -165,7 +165,7 @@ assertThat(order)
   });
 ```
 
-## Using with Spring
+## Uso com Spring
 
 ```java
 import static org.assertj.core.api.Assertions.assertThat;
@@ -188,9 +188,9 @@ class OrderServiceTest {
 }
 ```
 
-## Static Import
+## Import estático
 
-Always use static import for clean assertions:
+Sempre use import estático para manter as asserções limpas:
 
 ```java
 import static org.assertj.core.api.Assertions.assertThat;
@@ -198,10 +198,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.catchThrowable;
 ```
 
-## Key Benefits
+## Principais benefícios
 
-1. **Readable**: Sentence-like structure
-2. **Type-safe**: IDE autocomplete works
-3. **Rich API**: Many built-in assertions
-4. **Extensible**: Custom assertions for your domain
-5. **Better Errors**: Clear failure messages
+1. **Legível**: estrutura semelhante a frases
+2. **Tipagem segura**: o preenchimento automático da IDE funciona
+3. **API abrangente**: muitas asserções integradas
+4. **Extensível**: asserções personalizadas para seu domínio
+5. **Erros melhores**: mensagens de falha claras

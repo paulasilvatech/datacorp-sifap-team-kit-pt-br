@@ -1,84 +1,84 @@
 ---
 name: "adr-draft"
-description: "Use when drafting Architecture Decision Records, evaluating alternatives, or documenting technical trade-offs. Triggers include \"ADR\", \"architecture decision\", \"trade-off\", \"pick between\", and \"why did we choose\"."
+description: "Use ao elaborar Registros de Decisão de Arquitetura, avaliar alternativas ou documentar compromissos técnicos. Os gatilhos incluem \"ADR\", \"decisão de arquitetura\", \"compromisso\", \"escolher entre\" e \"por que escolhemos\"."
 ---
-# ADR draft
+# Rascunho de ADR
 
-## When to invoke
+## Quando usar
 
-- "Draft an ADR for choosing PostgreSQL over MongoDB."
-- "Document our decision to adopt event-driven architecture."
-- "Revisit ADR-007 - we need to supersede it."
+- "Elabore um ADR para a escolha do PostgreSQL em vez do MongoDB."
+- "Documente nossa decisão de adotar uma arquitetura orientada a eventos."
+- "Revise o ADR-007, pois precisamos substituí-lo."
 
-## When to write an ADR
+## Quando escrever um ADR
 
-Write an ADR when a decision:
+Escreva um ADR quando uma decisão:
 
-- Is difficult or expensive to reverse.
-- Affects more than one team.
-- Restricts future choices (technology lock-in).
-- Will probably be questioned in 6 months.
+- For difícil ou cara de reverter.
+- Afetar mais de uma equipe.
+- Restringir escolhas futuras (dependência de tecnologia).
+- Provavelmente for questionada em seis meses.
 
-Do not write an ADR for a local refactor or a reversible configuration change.
+Não escreva um ADR para uma refatoração local ou uma alteração reversível de configuração.
 
-## Writing tips
+## Dicas de redação
 
-- Write in the present tense ("We use X").
-- Include at least 2 rejected alternatives.
-- Name consequences that you know will be painful. Your future self will thank you.
-- Supersede, never delete. The history provides value.
+- Escreva no presente ("Usamos X").
+- Inclua pelo menos duas alternativas rejeitadas.
+- Cite consequências que você sabe que serão difíceis. Isso será útil no futuro.
+- Substitua, nunca exclua. O histórico agrega valor.
 
-## Antipatterns
+## Antipadrões
 
-- ADRs written after the fact to justify a decision already made.
-- One ADR that groups 5 unrelated decisions.
-- No alternatives section, which signals that no trade-off analysis occurred.
-- Status stuck at "proposed" for months.
+- ADRs escritos posteriormente para justificar uma decisão já tomada.
+- Um ADR que agrupa cinco decisões sem relação entre si.
+- Ausência de uma seção de alternativas, o que indica que não houve análise de compromissos.
+- Status mantido como "proposto" durante meses.
 
-## Output template
+## Modelo de saída
 
-Save the ADR to `docs/adr/NNNN-<slug>.md`. The repo's canonical template is [`docs/adr/0000-template.md`](../../../docs/adr/0000-template.md); the condensed shape is:
+Salve o ADR em `docs/adr/NNNN-<slug>.md`. O modelo canônico do repositório é [`docs/adr/0000-template.md`](../../../docs/adr/0000-template.md); a estrutura resumida é:
 
 ```markdown
-# ADR-NNN: <Decision title in imperative>
+# ADR-NNN: <Título da decisão no imperativo>
 
-**Status**: proposed | accepted | superseded by ADR-NNN | deprecated
-**Date**: YYYY-MM-DD
-**Deciders**: <names>
-**Context tags**: security, performance, cost
+**Status**: proposto | aceito | substituído pelo ADR-NNN | descontinuado
+**Data**: YYYY-MM-DD
+**Responsáveis pela decisão**: <nomes>
+**Tags de contexto**: segurança, desempenho, custo
 
-## Context
-2-4 paragraphs. What is the forcing function? What constraints apply?
+## Contexto
+De dois a quatro parágrafos. Qual é o fator determinante? Quais restrições se aplicam?
 
-## Decision
-One paragraph. "We will <decision>."
+## Decisão
+Um parágrafo. "Vamos <decisão>."
 
-## Alternatives considered
-- **Option A**: <summary>. Pros: ... Cons: ...
-- **Option B**: <summary>. Pros: ... Cons: ...
-- **Option C (chosen)**: <summary>. Pros: ... Cons: ...
+## Alternativas consideradas
+- **Opção A**: <resumo>. Prós: ... Contras: ...
+- **Opção B**: <resumo>. Prós: ... Contras: ...
+- **Opção C (escolhida)**: <resumo>. Prós: ... Contras: ...
 
-## Consequences
-### Positive
+## Consequências
+### Positivas
 - ...
-### Negative
+### Negativas
 - ...
-### Neutral
+### Neutras
 - ...
 
-## Follow-ups
-- [ ] Update REQ-NNN
-- [ ] Migrate <system>
-- [ ] Revisit in Q<N>
+## Acompanhamentos
+- [ ] Atualizar REQ-NNN
+- [ ] Migrar <sistema>
+- [ ] Revisar no T<N>
 
-## References
-- Source 1
-- Source 2
+## Referências
+- Fonte 1
+- Fonte 2
 ```
 
-## Quality gate
+## Critérios de qualidade
 
-- [ ] The ADR has Context, Decision, Alternatives considered, and Consequences sections.
-- [ ] At least two rejected alternatives are documented with their trade-offs.
-- [ ] Status is set (proposed, accepted, superseded, or deprecated), not left blank.
-- [ ] The file is saved as `docs/adr/NNNN-<slug>.md` and linked from the REQ-IDs it affects.
+- [ ] O ADR tem as seções Contexto, Decisão, Alternativas consideradas e Consequências.
+- [ ] Pelo menos duas alternativas rejeitadas estão documentadas com seus compromissos.
+- [ ] O status está definido (proposto, aceito, substituído ou descontinuado), não em branco.
+- [ ] O arquivo está salvo como `docs/adr/NNNN-<slug>.md` e vinculado aos REQ-IDs afetados.

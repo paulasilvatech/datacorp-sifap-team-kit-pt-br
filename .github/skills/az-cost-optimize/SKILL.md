@@ -1,52 +1,52 @@
 ---
 name: "az-cost-optimize"
-description: "Use when the user wants to reduce or optimize Azure spend for an existing workload, right-size resources, or track cost savings as GitHub issues. Analyzes Terraform/Bicep IaC and deployed Azure resources for cost-optimization opportunities, then opens one GitHub issue per opportunity plus a coordinating EPIC. Triggers include \"reduce Azure cost\", \"optimize Azure spend\", \"right-size resources\", and \"cost savings issues\". For raw price lookups or estimates, use azure-pricing instead."
+description: "Use quando a pessoa quiser reduzir ou otimizar os gastos do Azure de uma carga de trabalho existente, redimensionar recursos ou acompanhar economias em itens de trabalho do GitHub. Analisa IaC em Terraform/Bicep e recursos implantados no Azure para identificar oportunidades de otimização de custos. Em seguida, abre um item de trabalho do GitHub por oportunidade e um épico de coordenação. Os gatilhos incluem \"reduzir custos do Azure\", \"otimizar gastos do Azure\", \"redimensionar recursos\" e \"itens de economia\". Para consultas de preços ou estimativas brutas, use azure-pricing."
 ---
-# Azure Cost Optimize
+# Otimização de custos do Azure
 
-Analyze Infrastructure-as-Code files and deployed Azure resources to generate cost-optimization recommendations, then create individual GitHub issues for each opportunity plus one EPIC issue to coordinate implementation.
+Analise arquivos de infraestrutura como código e recursos implantados no Azure para gerar recomendações de otimização de custos. Depois, crie um item de trabalho individual (`issue`) no GitHub para cada oportunidade e um épico de coordenação.
 
 > [!NOTE]
-> This skill depends on the **Azure MCP server** and the **GitHub MCP server** (or `gh`) being authenticated. This kit's IaC is **Terraform**, so `.tf` files are the primary source of truth; treat other repository files as non-authoritative. Prefer Azure MCP tools (`azmcp-*`) over direct Azure CLI when available.
+> Esta habilidade depende da autenticação no **servidor MCP do Azure** e no **servidor MCP do GitHub** (ou `gh`). A IaC deste kit usa **Terraform**. Portanto, os arquivos `.tf` são a fonte primária da verdade. Trate os outros arquivos do repositório como não oficiais. Quando disponíveis, prefira as ferramentas MCP do Azure (`azmcp-*`) à Azure CLI direta.
 
-## When to invoke
+## Quando usar
 
-- "Reduce our Azure spend for the SIFAP workload."
-- "Right-size these over-provisioned resources and track the work."
-- "Open GitHub issues for our Azure cost-optimization opportunities."
-- "Where are we wasting money in this resource group?"
+- "Reduza nossos gastos do Azure com a carga de trabalho do SIFAP."
+- "Redimensione estes recursos superdimensionados e acompanhe o trabalho."
+- "Abra itens de trabalho no GitHub para nossas oportunidades de otimização de custos do Azure."
+- "Onde estamos desperdiçando dinheiro neste grupo de recursos?"
 
-## Prerequisites
+## Pré-requisitos
 
-- Azure MCP server configured and authenticated.
-- GitHub MCP server (or `gh`) configured and authenticated.
-- Target GitHub repository identified.
-- Azure resources deployed (IaC files optional but helpful).
+- Servidor MCP do Azure configurado e autenticado.
+- Servidor MCP do GitHub (ou `gh`) configurado e autenticado.
+- Repositório de destino do GitHub identificado.
+- Recursos do Azure implantados (arquivos de IaC são opcionais, mas úteis).
 
-## Workflow steps
+## Etapas do fluxo de trabalho
 
-### Step 1: Get Azure best practices
+### Etapa 1: obter as boas práticas do Azure
 
-Run `azmcp-bestpractices-get` to load current Azure optimization guidelines, and use them to inform the analysis and recommendations. Reference the relevant best practice in each recommendation.
+Execute `azmcp-bestpractices-get` para carregar as orientações atuais de otimização do Azure. Use-as para embasar a análise e as recomendações. Cite a boa prática relevante em cada recomendação.
 
-### Step 2: Discover Azure infrastructure
+### Etapa 2: descobrir a infraestrutura do Azure
 
-1. **Resource discovery**:
-   - `azmcp-subscription-list` to find subscriptions.
-   - `azmcp-group-list --subscription <id>` to find resource groups.
-   - `az resource list --subscription <id> --resource-group <name>` for a full inventory.
-   - Prefer MCP tools per resource type, with CLI fallback: `azmcp-cosmos-account-list`, `azmcp-storage-account-list`, `azmcp-monitor-workspace-list`, `azmcp-keyvault-key-list`; and `az webapp list`, `az appservice plan list`, `az functionapp list`, `az sql server list`, `az redis list` where no MCP tool exists.
-2. **IaC detection**:
-   - Scan for IaC files: `**/*.tf` (primary for this kit), plus `**/*.bicep`, `**/main.json`, `**/*template*.json`.
-   - Parse resource definitions and compare against discovered resources.
-   - Use only IaC files as a source of truth — no other repository files.
-   - If no IaC files are found, stop and report that to the user.
-3. **Configuration analysis**: extract current SKUs, tiers, and settings; map dependencies and utilization patterns.
+1. **Descoberta de recursos**:
+   - Use `azmcp-subscription-list` para localizar assinaturas.
+   - Use `azmcp-group-list --subscription <id>` para localizar grupos de recursos.
+   - Use `az resource list --subscription <id> --resource-group <name>` para obter um inventário completo.
+   - Prefira as ferramentas MCP por tipo de recurso, com a CLI como alternativa: `azmcp-cosmos-account-list`, `azmcp-storage-account-list`, `azmcp-monitor-workspace-list`, `azmcp-keyvault-key-list`; e `az webapp list`, `az appservice plan list`, `az functionapp list`, `az sql server list`, `az redis list` quando não existir uma ferramenta MCP.
+2. **Detecção de IaC**:
+   - Procure arquivos de IaC: `**/*.tf` (principal neste kit), além de `**/*.bicep`, `**/main.json` e `**/*template*.json`.
+   - Analise as definições dos recursos e compare-as aos recursos descobertos.
+   - Use somente arquivos de IaC como fonte da verdade, não outros arquivos do repositório.
+   - Se nenhum arquivo de IaC for encontrado, pare e informe a pessoa.
+3. **Análise da configuração**: extraia as SKUs, as camadas e as configurações atuais; mapeie dependências e padrões de utilização.
 
-### Step 3: Collect usage metrics and validate current costs
+### Etapa 3: coletar métricas de uso e validar os custos atuais
 
-1. **Find monitoring sources**: `azmcp-monitor-workspace-list`, then `azmcp-monitor-table-list` to discover tables.
-2. **Execute usage queries** with `azmcp-monitor-log-query` (predefined `recent`, `errors`) or custom KQL:
+1. **Localize as fontes de monitoramento**: use `azmcp-monitor-workspace-list` e depois `azmcp-monitor-table-list` para descobrir as tabelas.
+2. **Execute consultas de uso** com `azmcp-monitor-log-query` (opções predefinidas `recent` e `errors`) ou KQL personalizada:
 
 ```kql
 AppServiceAppLogs
@@ -61,174 +61,174 @@ AzureDiagnostics
 | summarize avg(RequestCharge) by Resource
 ```
 
-3. **Calculate baseline metrics**: CPU/memory averages, database throughput, storage access frequency, function execution rates.
-4. **Validate current costs**: using the discovered SKUs/tiers, look up current Azure pricing (or use the `azure-pricing` skill) and document Resource → Current SKU → Estimated monthly cost before recommending changes.
+3. **Calcule as métricas de referência**: médias de CPU/memória, taxa de transferência do banco de dados, frequência de acesso ao armazenamento e taxas de execução de funções.
+4. **Valide os custos atuais**: usando as SKUs/camadas descobertas, consulte os preços atuais do Azure (ou use a habilidade `azure-pricing`) e documente Recurso → SKU atual → Custo mensal estimado antes de recomendar alterações.
 
-### Step 4: Generate cost-optimization recommendations
+### Etapa 4: gerar recomendações de otimização de custos
 
-1. **Apply optimization patterns**:
+1. **Aplique padrões de otimização**:
 
-| Area | Pattern |
+| Área | Padrão |
 |---|---|
-| Compute | Right-size App Service plans; move low-use Functions from Premium to Consumption; scale down oversized VMs |
-| Databases | Cosmos DB provisioned to serverless for variable load; right-size RU/s; right-size SQL tiers by DTU |
-| Storage | Lifecycle policies (Hot to Cool to Archive); consolidate redundant accounts; right-size tiers |
-| Infrastructure | Remove unused resources; add autoscaling; schedule non-production shutdown |
+| Computação | Redimensionar planos do App Service; mover Functions com pouco uso de Premium para Consumption; reduzir VMs superdimensionadas |
+| Bancos de dados | Mover Cosmos DB provisionado para o modo sem servidor em cargas variáveis; redimensionar RU/s; redimensionar camadas do SQL por DTU |
+| Armazenamento | Aplicar políticas de ciclo de vida (Hot para Cool e depois Archive); consolidar contas redundantes; redimensionar camadas |
+| Infraestrutura | Remover recursos não usados; adicionar dimensionamento automático; agendar o desligamento de ambientes que não sejam de produção |
 
-2. **Calculate evidence-based savings**: current validated cost minus target cost, documenting the pricing source for both.
-3. **Calculate a priority score** for each recommendation:
+2. **Calcule economias baseadas em evidências**: subtraia o custo de destino do custo atual validado e documente a fonte de preços de ambos.
+3. **Calcule uma pontuação de prioridade** para cada recomendação:
 
 ```text
-Priority Score = (Value Score x Monthly Savings) / (Risk Score x Implementation Days)
+Pontuação de prioridade = (Pontuação de valor x Economia mensal) / (Pontuação de risco x Dias de implementação)
 
-High Priority:   Score > 20
-Medium Priority: Score 5-20
-Low Priority:    Score < 5
+Prioridade alta:  Pontuação > 20
+Prioridade média: Pontuação 5-20
+Prioridade baixa: Pontuação < 5
 ```
 
-4. **Validate recommendations**: verify CLI commands, confirm savings math, and assess risks and prerequisites — every saving must have supporting evidence.
+4. **Valide as recomendações**: verifique os comandos da CLI, confirme os cálculos de economia e avalie os riscos e pré-requisitos. Toda economia deve ter evidências de suporte.
 
-### Step 5: User confirmation
+### Etapa 5: obter a confirmação da pessoa
 
-Present the summary and gate issue creation on explicit approval:
+Apresente o resumo e condicione a criação de itens de trabalho à aprovação explícita:
 
 ```text
-Azure Cost Optimization Summary
+Resumo da otimização de custos do Azure
 
-Analysis Results:
-- Total Resources Analyzed: X
-- Current Monthly Cost: $X
-- Potential Monthly Savings: $Y
-- Optimization Opportunities: Z
-- High Priority Items: N
+Resultados da análise:
+- Total de recursos analisados: X
+- Custo mensal atual: $X
+- Economia mensal potencial: $Y
+- Oportunidades de otimização: Z
+- Itens de alta prioridade: N
 
-Recommendations:
-1. [Resource]: [Current SKU] -> [Target SKU] = $X/month - [Risk] | [Effort]
-2. [Resource]: [Current] -> [Target] = $Y/month - [Risk] | [Effort]
+Recomendações:
+1. [Recurso]: [SKU atual] -> [SKU de destino] = $X/mês - [Risco] | [Esforço]
+2. [Recurso]: [Atual] -> [Destino] = $Y/mês - [Risco] | [Esforço]
 
-This will create Z individual GitHub issues plus 1 EPIC issue.
+Isso criará Z itens de trabalho individuais no GitHub e um épico.
 
-Proceed with creating GitHub issues? (y/n)
+Prosseguir com a criação dos itens de trabalho no GitHub? (s/n)
 ```
 
 > [!IMPORTANT]
-> Only create GitHub issues after an explicit affirmative response. On a negative, ambiguous, or missing response, print the recommendations to the console and stop.
+> Crie itens de trabalho no GitHub somente após uma resposta afirmativa explícita. Diante de uma resposta negativa, ambígua ou ausente, imprima as recomendações no console e pare.
 
-### Step 6: Create individual optimization issues
+### Etapa 6: criar itens de trabalho individuais de otimização
 
-Create one GitHub issue per opportunity, labelled `cost-optimization` and `azure`, using the individual-issue template in [Output template](#output-template). Title format: `[COST-OPT] [Resource Type] - [Brief Description] - $X/month savings`.
+Crie um item de trabalho no GitHub por oportunidade, com os rótulos `cost-optimization` e `azure`, usando o modelo de item individual em [Modelo de saída](#modelo-de-saída). Formato do título: `[COST-OPT] [Tipo de recurso] - [Descrição breve] - economia de $X/mês`.
 
-### Step 7: Create the EPIC coordinating issue
+### Etapa 7: criar o épico de coordenação
 
-Create one EPIC issue, labelled `cost-optimization`, `azure`, and `epic`, using the EPIC template in [Output template](#output-template). Verify any Mermaid diagram is syntactically valid and accessible (styling, colors). Title format: `[EPIC] Azure Cost Optimization Initiative - $X/month potential savings`.
+Crie um épico com os rótulos `cost-optimization`, `azure` e `epic`, usando o modelo de épico em [Modelo de saída](#modelo-de-saída). Verifique se cada diagrama Mermaid tem sintaxe válida e é acessível (estilo e cores). Formato do título: `[EPIC] Iniciativa de otimização de custos do Azure - economia potencial de $X/mês`.
 
-## Error handling
+## Tratamento de erros
 
-| Situation | Action |
+| Situação | Ação |
 |---|---|
-| Savings estimates lack evidence | Re-verify configurations and pricing sources before proceeding |
-| Azure authentication failure | Provide manual Azure CLI setup steps |
-| No resources found | Create an informational issue about resource deployment |
-| GitHub creation failure | Output the formatted recommendations to the console |
-| Insufficient usage data | Note the limitation and give configuration-based recommendations only |
+| Estimativas de economia sem evidências | Verifique novamente as configurações e as fontes de preços antes de prosseguir |
+| Falha na autenticação do Azure | Forneça etapas manuais de configuração da Azure CLI |
+| Nenhum recurso encontrado | Crie um item de trabalho informativo sobre a implantação de recursos |
+| Falha ao criar no GitHub | Exiba as recomendações formatadas no console |
+| Dados de uso insuficientes | Registre a limitação e forneça somente recomendações baseadas na configuração |
 
-## Output template
+## Modelo de saída
 
-Individual optimization issue:
+Item de trabalho individual de otimização:
 
 ````markdown
-## Cost Optimization: <Brief Title>
+## Otimização de custos: <Título breve>
 
-**Monthly Savings**: $X | **Risk Level**: <Low/Medium/High> | **Implementation Effort**: X days
+**Economia mensal**: $X | **Nível de risco**: <Baixo/Médio/Alto> | **Esforço de implementação**: X dias
 
-### Description
-<Clear explanation of the optimization and why it is needed>
+### Descrição
+<Explicação clara da otimização e do motivo de sua necessidade>
 
-### Implementation
+### Implementação
 
-IaC files detected: <Yes/No>
+Arquivos de IaC detectados: <Sim/Não>
 
-When IaC files are found, apply the Terraform change (for example, in `infra/app_service.tf` change `sku_name = "S3"` to `sku_name = "B2"`):
+Quando arquivos de IaC forem encontrados, aplique a alteração no Terraform (por exemplo, em `infra/app_service.tf`, altere `sku_name = "S3"` para `sku_name = "B2"`):
 
 ```bash
 terraform -chdir=infra apply
 ```
 
-When no IaC files are found, use the Azure CLI directly and warn that an authoritative IaC file may exist elsewhere:
+Quando nenhum arquivo de IaC for encontrado, use a Azure CLI diretamente e avise que pode existir um arquivo de IaC oficial em outro local:
 
 ```bash
 az appservice plan update --name <plan> --sku B2
 ```
 
-### Evidence
-- Current configuration: <details>
-- Usage pattern: <evidence from monitoring data>
-- Cost impact: $X/month -> $Y/month
-- Best-practice alignment: <reference>
+### Evidências
+- Configuração atual: <detalhes>
+- Padrão de uso: <evidência dos dados de monitoramento>
+- Impacto no custo: $X/mês -> $Y/mês
+- Alinhamento às boas práticas: <referência>
 
-### Validation Steps
-- [ ] Test in a non-production environment
-- [ ] Verify no performance degradation
-- [ ] Confirm cost reduction in Azure Cost Management
-- [ ] Update monitoring and alerts if needed
+### Etapas de validação
+- [ ] Testar em um ambiente que não seja de produção
+- [ ] Verificar se não houve degradação de desempenho
+- [ ] Confirmar a redução de custos no Azure Cost Management
+- [ ] Atualizar o monitoramento e os alertas, se necessário
 
-### Risks and Considerations
-- <Risk and mitigation>
+### Riscos e considerações
+- <Risco e mitigação>
 
-**Priority Score**: X | **Value**: X/10 | **Risk**: X/10
+**Pontuação de prioridade**: X | **Valor**: X/10 | **Risco**: X/10
 ````
 
-EPIC coordinating issue:
+Épico de coordenação:
 
 ````markdown
-## Azure Cost Optimization EPIC
+## Épico de otimização de custos do Azure
 
-**Total Potential Savings**: $X/month | **Implementation Timeline**: X weeks
+**Economia potencial total**: $X/mês | **Prazo de implementação**: X semanas
 
-### Executive Summary
-- Resources Analyzed: X
-- Optimization Opportunities: Y
-- Total Monthly Savings Potential: $X
-- High Priority Items: N
+### Resumo executivo
+- Recursos analisados: X
+- Oportunidades de otimização: Y
+- Economia mensal potencial total: $X
+- Itens de alta prioridade: N
 
-### Current Architecture Overview
+### Visão geral da arquitetura atual
 
 ```mermaid
 graph TB
-    subgraph "Resource Group: name"
-        APP[App Service<br/>Plan: S3 -> B2]
+    subgraph "Grupo de recursos: nome"
+        APP[App Service<br/>Plano: S3 -> B2]
         SQL[Azure SQL<br/>S3 -> S1]
-        STORAGE[Storage<br/>Hot -> Lifecycle]
+        STORAGE[Armazenamento<br/>Hot -> Ciclo de vida]
     end
 ```
 
-### Implementation Tracking
+### Acompanhamento da implementação
 
-High priority (implement first):
-- [ ] #<issue>: <Title> - $X/month savings
+Prioridade alta (implementar primeiro):
+- [ ] #<issue>: <Título> - economia de $X/mês
 
-Medium priority:
-- [ ] #<issue>: <Title> - $X/month savings
+Prioridade média:
+- [ ] #<issue>: <Título> - economia de $X/mês
 
-Low priority:
-- [ ] #<issue>: <Title> - $X/month savings
+Prioridade baixa:
+- [ ] #<issue>: <Título> - economia de $X/mês
 
-### Progress Tracking
-- Completed: 0 of Y optimizations
-- Savings Realized: $0 of $X/month
+### Acompanhamento do progresso
+- Concluídas: 0 de Y otimizações
+- Economia obtida: $0 de $X/mês
 
-### Success Criteria
-- [ ] All high-priority optimizations implemented
-- [ ] Over 80% of estimated savings realized
-- [ ] No performance degradation observed
-- [ ] Cost monitoring dashboard updated
+### Critérios de sucesso
+- [ ] Todas as otimizações de alta prioridade implementadas
+- [ ] Mais de 80% da economia estimada obtida
+- [ ] Nenhuma degradação de desempenho observada
+- [ ] Painel de monitoramento de custos atualizado
 ````
 
-## Quality gate
+## Critérios de qualidade
 
-- [ ] Every cost estimate is verified against actual resource configuration and Azure pricing.
-- [ ] Recommendations are derived only from IaC source-of-truth files, or the run stops when none are found.
-- [ ] Each recommendation carries evidence, a priority score, and specific executable commands.
-- [ ] One trackable GitHub issue is created per opportunity, plus one coordinating EPIC.
-- [ ] Issues are created only after explicit user confirmation.
-- [ ] Any architecture diagram is valid Mermaid and represents the current state accurately.
+- [ ] Cada estimativa de custo foi verificada em relação à configuração real do recurso e aos preços do Azure.
+- [ ] As recomendações derivam somente dos arquivos de IaC que são a fonte da verdade, ou a execução para quando nenhum é encontrado.
+- [ ] Cada recomendação contém evidências, uma pontuação de prioridade e comandos executáveis específicos.
+- [ ] Um item de trabalho rastreável do GitHub foi criado por oportunidade, além de um épico de coordenação.
+- [ ] Os itens de trabalho foram criados somente após confirmação explícita da pessoa.
+- [ ] Cada diagrama de arquitetura é um Mermaid válido e representa com precisão o estado atual.

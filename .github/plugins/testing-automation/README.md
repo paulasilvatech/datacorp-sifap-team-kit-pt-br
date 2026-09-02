@@ -1,34 +1,34 @@
 # testing-automation
 
-JUnit 5 and Playwright test-generation skills.
+Habilidades de geração de testes JUnit 5 e Playwright.
 
-## What this plugin bundles
+## O que esta extensão reúne
 
-| Component | Type | Location |
+| Componente | Tipo | Localização |
 |-----------|------|----------|
-| `java-junit` | Skill | [`.github/skills/java-junit/`](../../skills/java-junit/) |
-| `playwright-generate-test` | Skill | [`.github/skills/playwright-generate-test/`](../../skills/playwright-generate-test/) |
+| `java-junit` | Habilidade | [`.github/skills/java-junit/`](../../skills/java-junit/) |
+| `playwright-generate-test` | Habilidade | [`.github/skills/playwright-generate-test/`](../../skills/playwright-generate-test/) |
 
-## Related kit content
+## Conteúdo relacionado do kit
 
-The workshop maintains testing skills such as
+A imersão mantém habilidades de teste como
 [`tdd-workflow`](../../skills/tdd-workflow/),
-[`test-strategy`](../../skills/test-strategy/), and
-[`spring-boot-testing`](../../skills/spring-boot-testing/), which cover the
-roles of the upstream `tdd-*` agents.
+[`test-strategy`](../../skills/test-strategy/) e
+[`spring-boot-testing`](../../skills/spring-boot-testing/), que cobrem os
+papéis dos agentes `tdd-*` originais.
 
-## Upstream references not included
+## Referências originais não incluídas
 
 - `ai-prompt-engineering-safety-review`, `csharp-nunit`,
-  `playwright-explore-website` (skills) — not present in this kit.
-- `playwright-tester`, `tdd-red`, `tdd-green`, `tdd-refactor` (agents) — not
-  present in this kit.
+  `playwright-explore-website` (habilidades) — não estão presentes neste kit.
+- `playwright-tester`, `tdd-red`, `tdd-green`, `tdd-refactor` (agentes) — não
+  estão presentes neste kit.
 
-## How it is enabled
+## Como é habilitado
 
-Content under `.github/skills/` is discovered natively by Copilot in this
-repository, so these skills work here without any plugin install. The plugin
-layer packages them as a named bundle in the local `datacorp-mm-team-kit`
-marketplace ([`marketplace.json`](../marketplace.json)) and is declared in
-[`.github/copilot/settings.json`](../../copilot/settings.json). See the
-[plugins index](../README.md) for the mechanism and its limitations.
+O conteúdo em `.github/skills/` é descoberto nativamente pelo Copilot neste
+repositório, portanto estas habilidades funcionam aqui sem instalar nenhuma extensão. A
+camada de extensões as empacota como um conjunto nomeado no catálogo local
+`datacorp-mm-team-kit` ([`marketplace.json`](../marketplace.json)) e é declarada
+em [`.github/copilot/settings.json`](../../copilot/settings.json). Consulte o
+[índice de extensões](../README.md) para conhecer o mecanismo e suas limitações.

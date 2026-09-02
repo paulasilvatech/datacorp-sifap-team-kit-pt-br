@@ -1,238 +1,238 @@
-# FAQ — Frequently Asked Questions
+# FAQ — Perguntas frequentes
 
-> **Path:** [Team Kit](../README.md) › [Docs](README.md) › **FAQ**
+> **Trilha:** [Kit do Time](../README.md) › [Documentação](README.md) › **FAQ**
 
-**Direct answers to common questions about the SIFAP modernization workshop.**
+**Respostas diretas às perguntas comuns sobre a imersão de modernização do SIFAP.**
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | The entire team |
-| **How to use** | Search the question with `Ctrl+F`. If it is not here, see [troubleshooting.md](troubleshooting.md) |
-| **Estimated time** | Selective reading |
+| **Público-alvo** | O time inteiro |
+| **Como usar** | Pesquise a pergunta com `Ctrl+F`. Se ela não estiver aqui, consulte [troubleshooting.md](troubleshooting.md) |
+| **Tempo estimado** | Leitura seletiva |
 
 ---
 
-## About the workshop
+## Sobre a imersão
 
 <details>
-<summary><strong>I do not code. Can I participate?</strong></summary>
+<summary><strong>Eu não programo. Posso participar?</strong></summary>
 
-Yes. The Product Owner and Tech Writer personas, and part of QA, do not require coding. Read [`07-concepts/`](../07-concepts/) first to become familiar with the concepts. Every `PERSONA.md` includes an "emergency defaults" section.
+Sim. As personas Product Owner e Tech Writer, além de parte de QA, não exigem programação. Leia primeiro [`07-concepts/`](../07-concepts/) para conhecer os conceitos. Todo `PERSONA.md` inclui uma seção "emergency defaults".
 
 </details>
 
 <details>
-<summary><strong>How long does it last?</strong></summary>
+<summary><strong>Quanto tempo dura?</strong></summary>
 
-Eight hours (10:00–18:00). The exact schedule is in [`00-TEAM-FLOW.md`](../00-TEAM-FLOW.md) §2.
-
-</details>
-
-<details>
-<summary><strong>How many people are on each team?</strong></summary>
-
-Five. Each person assumes two personas (one pair), covering ten personas in total.
+Oito horas (10:00–18:00). O cronograma exato está em [`00-TEAM-FLOW.md`](../00-TEAM-FLOW.md) §2.
 
 </details>
 
 <details>
-<summary><strong>Can I choose my two personas?</strong></summary>
+<summary><strong>Quantas pessoas há em cada time?</strong></summary>
 
-Yes, but coordinate with the team. Pairs 1, 4, and 5 accommodate non-technical profiles. Pairs 2 and 3 require technical experience.
-
-</details>
-
-<details>
-<summary><strong>What is SIFAP?</strong></summary>
-
-SIFAP (Payment Inspection and Administration System) is a 29-year-old government payment system written in Natural/Adabas. The workshop simulates modernizing it to Java 21 + Next.js 15. See [`01-archaeology/legacy-sifap/README.md`](../01-archaeology/legacy-sifap/README.md).
-
-</details>
-
----
-
-## About Copilot
-
-<details>
-<summary><strong>Which Copilot model should I use?</strong></summary>
-
-Sonnet 4.6 for most tasks. Haiku for mechanical, repetitive tasks. Opus for complex architectural decisions. See [`09-cheat-sheets/model-routing.md`](../09-cheat-sheets/model-routing.md).
+Cinco. Cada pessoa assume duas personas (uma dupla), cobrindo dez personas no total.
 
 </details>
 
 <details>
-<summary><strong>When should I use Ask, Plan, or Agent?</strong></summary>
+<summary><strong>Posso escolher minhas duas personas?</strong></summary>
 
-- **Ask** — discuss and understand.
-- **Plan** — plan a change across multiple files.
-- **Agent** — delegate a complete Issue.
-
-Reference: [`07-concepts/04-3-copilot-modes.md`](../07-concepts/04-3-copilot-modes.md).
+Sim, mas coordene com o time. As Duplas 1, 4 e 5 acomodam perfis não técnicos. As Duplas 2 e 3 exigem experiência técnica.
 
 </details>
 
 <details>
-<summary><strong>Can Agent merge by itself?</strong></summary>
+<summary><strong>O que é o SIFAP?</strong></summary>
 
-No. Agent opens a pull request. Review it with the same care you would apply to a human contribution.
-
-</details>
-
-<details>
-<summary><strong>Can I use Cursor, Codeium, or another assistant?</strong></summary>
-
-No. The toolchain is fixed: use only GitHub Copilot. See [`.github/copilot-instructions.md`](../.github/copilot-instructions.md).
+O SIFAP (Sistema de Fiscalização e Administração de Pagamentos) é um sistema governamental de pagamentos com 29 anos, escrito em Natural/Adabas. A imersão simula sua modernização para Java 21 + Next.js 15. Consulte [`01-archaeology/legacy-sifap/README.md`](../01-archaeology/legacy-sifap/README.md).
 
 </details>
 
 ---
 
-## About Spec-Kit and EARS
+## Sobre o Copilot
 
 <details>
-<summary><strong>Why does every EARS requirement need `source_legacy:`?</strong></summary>
+<summary><strong>Qual modelo do Copilot devo usar?</strong></summary>
 
-To ensure the team modernized the real system, not only the briefing. CI rejects pull requests without this field. See [`01-archaeology/LEGACY-EXPLORATION-CHECKLIST.md`](../01-archaeology/LEGACY-EXPLORATION-CHECKLIST.md).
+Sonnet 4.6 para a maioria das tarefas. Haiku para tarefas mecânicas e repetitivas. Opus para decisões arquiteturais complexas. Consulte [`09-cheat-sheets/model-routing.md`](../09-cheat-sheets/model-routing.md).
 
 </details>
 
 <details>
-<summary><strong>What if the feature is new and has no legacy equivalent?</strong></summary>
+<summary><strong>Quando devo usar Ask, Plan ou Agent?</strong></summary>
 
-Use `source_legacy: "[GREENFIELD] <one-line justification>"`. Example: `"[GREENFIELD] OAuth2 did not exist on a 3270 terminal."`.
+- **Ask** — discutir e entender.
+- **Plan** — planejar uma mudança em vários arquivos.
+- **Agent** — delegar uma Issue completa.
 
-</details>
-
-<details>
-<summary><strong>Can I skip `/speckit.clarify`?</strong></summary>
-
-No. Skipping it means ambiguities become Stage 3 bugs, when they cost much more to fix.
+Referência: [`07-concepts/04-3-copilot-modes.md`](../07-concepts/04-3-copilot-modes.md).
 
 </details>
 
 <details>
-<summary><strong>`/speckit.analyze` reports problems. What should I do?</strong></summary>
+<summary><strong>O Agent pode fazer merge sozinho?</strong></summary>
 
-Resolve them before implementation. Each finding prevents later rework.
-
-</details>
-
----
-
-## About Git and branches
-
-<details>
-<summary><strong>Can I commit directly to `main`?</strong></summary>
-
-No. Always use a pull request. See rule 1 in [`00-GIT-WORKFLOW.md`](../00-GIT-WORKFLOW.md).
+Não. O Agent abre um pull request. Revise-o com o mesmo cuidado aplicado a uma contribuição humana.
 
 </details>
 
 <details>
-<summary><strong>Which branch prefix should I use?</strong></summary>
+<summary><strong>Posso usar Cursor, Codeium ou outro assistente?</strong></summary>
 
-- `spec/<NNN>-<feature>` in Stage 2
-- `impl/<NNN>-<feature>` in Stage 3
-- `infra/<component>` for infrastructure
-
-Both feature branches start from `develop`. See the complete table in [`00-GIT-WORKFLOW.md`](../00-GIT-WORKFLOW.md).
-
-</details>
-
-<details>
-<summary><strong>How is my PR approved?</strong></summary>
-
-Green CI plus one review from the receiving pair. The flow is Pair 1 → Pair 2 → Pair 3 → Pair 4 → Pair 5 → Pair 1.
-
-</details>
-
-<details>
-<summary><strong>Can I run `git push --force`?</strong></summary>
-
-Only on your own branch, and only with `--force-with-lease`. Never on `develop` or `main`.
+Não. O conjunto de ferramentas é fixo: use somente o GitHub Copilot. Consulte [`.github/copilot-instructions.md`](../.github/copilot-instructions.md).
 
 </details>
 
 ---
 
-## About Terraform and Azure
+## Sobre Spec-Kit e EARS
 
 <details>
-<summary><strong>Can I run `terraform apply`?</strong></summary>
+<summary><strong>Por que todo requisito EARS precisa de `source_legacy:`?</strong></summary>
+
+Para garantir que o time modernizou o sistema real, não apenas o briefing. A CI rejeita pull requests sem esse campo. Consulte [`01-archaeology/LEGACY-EXPLORATION-CHECKLIST.md`](../01-archaeology/LEGACY-EXPLORATION-CHECKLIST.md).
+
+</details>
+
+<details>
+<summary><strong>E se a funcionalidade for nova e não tiver equivalente no legado?</strong></summary>
+
+Use `source_legacy: "[GREENFIELD] <justificativa de uma linha>"`. Exemplo: `"[GREENFIELD] OAuth2 não existia em um terminal 3270."`.
+
+</details>
+
+<details>
+<summary><strong>Posso pular `/speckit.clarify`?</strong></summary>
+
+Não. Pulá-lo faz com que as ambiguidades se tornem bugs no Estágio 3, quando custam muito mais para corrigir.
+
+</details>
+
+<details>
+<summary><strong>`/speckit.analyze` relata problemas. O que devo fazer?</strong></summary>
+
+Resolva-os antes da implementação. Cada descoberta evita retrabalho posterior.
+
+</details>
+
+---
+
+## Sobre Git e branches
+
+<details>
+<summary><strong>Posso fazer commit diretamente em `main`?</strong></summary>
+
+Não. Sempre use um pull request. Consulte a regra 1 em [`00-GIT-WORKFLOW.md`](../00-GIT-WORKFLOW.md).
+
+</details>
+
+<details>
+<summary><strong>Qual prefixo de branch devo usar?</strong></summary>
+
+- `spec/<NNN>-<feature>` no Estágio 2
+- `impl/<NNN>-<feature>` no Estágio 3
+- `infra/<component>` para infraestrutura
+
+As duas branches de funcionalidade partem de `develop`. Consulte a tabela completa em [`00-GIT-WORKFLOW.md`](../00-GIT-WORKFLOW.md).
+
+</details>
+
+<details>
+<summary><strong>Como meu PR é aprovado?</strong></summary>
+
+CI verde e uma revisão da dupla que recebe. O fluxo é Dupla 1 → Dupla 2 → Dupla 3 → Dupla 4 → Dupla 5 → Dupla 1.
+
+</details>
+
+<details>
+<summary><strong>Posso executar `git push --force`?</strong></summary>
+
+Somente na sua própria branch e apenas com `--force-with-lease`. Nunca em `develop` ou `main`.
+
+</details>
+
+---
+
+## Sobre Terraform e Azure
+
+<details>
+<summary><strong>Posso executar `terraform apply`?</strong></summary>
 
 > [!CAUTION]
-> No. Only `terraform plan` is authorized during the workshop. Running `apply` creates real Azure resources and incurs costs.
+> Não. Somente `terraform plan` é autorizado durante a imersão. Executar `apply` cria recursos reais do Azure e gera custos.
 
 </details>
 
 <details>
-<summary><strong>Where should I store secrets?</strong></summary>
+<summary><strong>Onde devo armazenar segredos?</strong></summary>
 
-In Azure Key Vault. Never in `variables.tf` or committed `.env` files. When creating `infra/`, model secrets through Key Vault and Managed Identity.
-
-</details>
-
----
-
-## About stages and handoffs
-
-<details>
-<summary><strong>What are "handoffs H1, H2, and H3"?</strong></summary>
-
-They are artifact-transfer points between pairs at the end of each stage. Each handoff is a five-minute synchronous conversation. Details are in [`00-TEAM-FLOW.md`](../00-TEAM-FLOW.md) §3.
-
-</details>
-
-<details>
-<summary><strong>Can I start Stage 2 while Stage 1 is still in progress?</strong></summary>
-
-No. Without completed Stage 1 archaeology, EARS requirements will lack `source_legacy:` and CI will reject the pull request.
-
-</details>
-
-<details>
-<summary><strong>Who leads each stage?</strong></summary>
-
-See [`05-personas/OVERVIEW.md`](../05-personas/OVERVIEW.md). Summary:
-
-- Stage 1 — all pairs in parallel
-- Stage 2 — Pair 2
-- Stage 3 — Pairs 3 and 4
-- Stage 4 — Pair 5
+No Azure Key Vault. Nunca em `variables.tf` ou arquivos `.env` versionados. Ao criar `infra/`, modele os segredos com o Key Vault e a Managed Identity.
 
 </details>
 
 ---
 
-## About blockers
+## Sobre estágios e handoffs
 
 <details>
-<summary><strong>I am blocked. What should I do?</strong></summary>
+<summary><strong>O que são os "handoffs H1, H2 e H3"?</strong></summary>
 
-Use the 20-minute rule ([`00-TEAM-FLOW.md`](../00-TEAM-FLOW.md) §6):
+São pontos de transferência de artefatos entre duplas no fim de cada estágio. Cada handoff é uma conversa síncrona de cinco minutos. Os detalhes estão em [`00-TEAM-FLOW.md`](../00-TEAM-FLOW.md) §3.
 
-| Time blocked | Action |
+</details>
+
+<details>
+<summary><strong>Posso começar o Estágio 2 enquanto o Estágio 1 ainda está em andamento?</strong></summary>
+
+Não. Sem concluir a arqueologia do Estágio 1, os requisitos EARS não terão `source_legacy:` e a CI rejeitará o pull request.
+
+</details>
+
+<details>
+<summary><strong>Quem lidera cada estágio?</strong></summary>
+
+Consulte [`05-personas/OVERVIEW.md`](../05-personas/OVERVIEW.md). Resumo:
+
+- Estágio 1 — todas as duplas em paralelo
+- Estágio 2 — Dupla 2
+- Estágio 3 — Duplas 3 e 4
+- Estágio 4 — Dupla 5
+
+</details>
+
+---
+
+## Sobre bloqueios
+
+<details>
+<summary><strong>Estou bloqueado. O que devo fazer?</strong></summary>
+
+Use a regra dos 20 minutos ([`00-TEAM-FLOW.md`](../00-TEAM-FLOW.md) §6):
+
+| Tempo bloqueado | Ação |
 |---|---|
-| 5 min | Try to resolve it yourself |
-| 10 min | Ask your pair for help |
-| 20 min | Bring it to the team |
-| 30 min | Ask the facilitator for help |
+| 5 min | Tente resolver por conta própria |
+| 10 min | Peça ajuda à sua dupla |
+| 20 min | Leve o problema ao time |
+| 30 min | Peça ajuda ao facilitador |
 
 </details>
 
 <details>
-<summary><strong>How do I ask for help efficiently?</strong></summary>
+<summary><strong>Como peço ajuda de forma eficiente?</strong></summary>
 
-Use three lines: (1) Objective, (2) What I tried, (3) The blocker. See the example in [`00-TEAM-FLOW.md`](../00-TEAM-FLOW.md) §6.
+Use três linhas: (1) Objetivo, (2) O que tentei, (3) Bloqueio. Consulte o exemplo em [`00-TEAM-FLOW.md`](../00-TEAM-FLOW.md) §6.
 
 </details>
 
 ---
 
-### Continue reading
+### Continue lendo
 
-| Previous | Next |
+| Anterior | Próximo |
 |---|---|
-| [Troubleshooting](troubleshooting.md)<br/><sub>Common errors and solutions.</sub> | [PT-BR Kit](../README.md)<br/><sub>Main hub.</sub> |
+| [Solução de problemas](troubleshooting.md)<br/><sub>Erros comuns e soluções.</sub> | [Kit em pt-BR](../README.md)<br/><sub>Ponto de entrada principal.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Voltar ao índice do kit](../README.md)</sub>

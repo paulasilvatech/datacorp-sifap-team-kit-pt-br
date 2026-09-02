@@ -1,56 +1,56 @@
-# Overview of the 10 Personas
+# Visão geral das 10 personas
 
-> **Track:** [Team Kit](../README.md) › [Personas](README.md) › **OVERVIEW**
+> **Trilha:** [Kit do time](../README.md) › [Personas](README.md) › **Visão geral**
 
-**One-page comparison of the 10 personas.** Use it to choose your pair, identify who leads each stage, and consult emergency defaults.
+**Comparação das 10 personas em uma página.** Use este documento para escolher sua dupla, identificar quem lidera cada estágio e consultar os padrões de emergência.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | All workshop participants |
-| **Prerequisites** | None |
-| **Estimated time** | 5 min |
-| **Expected outcome** | Pair selected and handoffs understood |
+| **Público-alvo** | Todos os participantes da imersão |
+| **Pré-requisitos** | Nenhum |
+| **Tempo estimado** | 5 min |
+| **Resultado esperado** | Dupla selecionada e handoffs compreendidos |
 
 > [!TIP]
-> Each team member takes on **2 personas** from the same pair. The pair stays together throughout the workshop—there is no internal handoff between its two personas.
+> Cada integrante assume **duas personas** da mesma dupla. A dupla permanece unida durante toda a imersão, sem handoff interno entre suas duas personas.
 
 ---
 
-## The 5 pairs
+## As cinco duplas
 
-![Distribution of personas by pair: vision, architecture, implementation, quality, and operations](../assets/personas-team.svg)
+![Distribuição das personas por dupla: visão, arquitetura, implementação, qualidade e operações](../assets/personas-team.svg)
 
 ---
 
-## Complete table of the 10 personas
+## Tabela completa das 10 personas
 
-| **#** | Persona | Pair | Leads stage | Supports | Primary tool | Default when stuck |
+| **#** | Persona | Dupla | Lidera o estágio | Apoia | Ferramenta principal | Padrão para quando travar |
 |---|---|---|---|---|---|---|
-| 01 | [Product Owner](01-product-owner/PERSONA.md) | 1 · Vision | 1 (prioritization), 2 (scope sign-off) | 3, 4 | Copilot Ask + spec.prompt | "We have 3 hours of coding—choose 3 features" |
-| 02 | [Requirements Engineer](02-requirements-engineer/PERSONA.md) | 1 · Vision | 2 (EARS) | 1 | `/ears-convert` + Spec-Kit | Trace every requirement to evidence |
-| 03 | [Enterprise Architect](03-enterprise-architect/PERSONA.md) | 2 · Architecture | 2 (C4 + structural ADRs) | 4 | Mermaid + ADR template | Record alternatives in the template |
-| 04 | [Software Architect](04-software-architect/PERSONA.md) | 2 · Architecture | 2 (bounded contexts, modules) | 3 | `/codemap` + impl-plan | Validate assumptions with the team |
-| 05 | [Technical Lead](05-technical-lead/PERSONA.md) | 3 · Implementation | 3 (standards, review) | 4, 2 | Plan mode + audit-context | Implement the prioritized EARS requirement |
-| 06 | [Developer](06-developer/PERSONA.md) | 3 · Implementation | 3 (code) | 4 | Plan mode + `/tdd` | Complete only 1 endpoint, including its test |
-| 07 | [DBA](07-dba/PERSONA.md) | 4 · Quality | 3 (Flyway migrations) | 3 | `/migration` + query-audit | Derive the model from the DDMs |
-| 08 | [QA Engineer](08-qa-engineer/PERSONA.md) | 4 · Quality | 3 (BDD tests) | 3 | Test-strategy skill | Write 1 acceptance test per critical REQ-ID |
-| 09 | [DevOps Engineer](09-devops-engineer/PERSONA.md) | 5 · Operations | 4 (Terraform + CI/CD) | cross-cutting | `/iac-module` + `/pipeline` | Run `terraform plan` only, never `apply` |
-| 10 | [Tech Writer](10-tech-writer/PERSONA.md) | 5 · Operations | 4 (Agent report) | cross-cutting (1, 2, 3) | Markdown skills + Copilot Ask | Consolidate the team's decisions |
+| 01 | [Product Owner](01-product-owner/PERSONA.md) | 1 · Visão | 1 (priorização), 2 (aprovação do escopo) | 3, 4 | Modo Ask do GitHub Copilot + spec.prompt | "Temos 70 minutos de implementação: escolha uma feature fina" |
+| 02 | [Requirements Engineer](02-requirements-engineer/PERSONA.md) | 1 · Visão | 1 (`@archaeologist`) | 2, 3 | `/ears-convert` + Spec-Kit | Rastreie cada requisito até a evidência |
+| 03 | [Enterprise Architect](03-enterprise-architect/PERSONA.md) | 2 · Arquitetura | 2 (C4 + ADRs estruturais) | 4 | Mermaid + template de ADR | Registre as alternativas no template |
+| 04 | [Software Architect](04-software-architect/PERSONA.md) | 2 · Arquitetura | 2 (`@architect`, bounded contexts e módulos) | 3 | `/codemap` + impl-plan | Valide as suposições com o time |
+| 05 | [Technical Lead](05-technical-lead/PERSONA.md) | 3 · Implementação | 3 (padrões, revisão) | 4, 2 | Modo Plan + audit-context | Implemente o requisito EARS priorizado |
+| 06 | [Developer](06-developer/PERSONA.md) | 3 · Implementação | 3 (código) | 4 | Modo Plan + `/tdd` | Conclua somente um endpoint, incluindo o teste |
+| 07 | [DBA](07-dba/PERSONA.md) | 4 · Qualidade | 3 (migrações Flyway) | 3 | `/migration` + query-audit | Derive o modelo dos DDMs |
+| 08 | [QA Engineer](08-qa-engineer/PERSONA.md) | 4 · Qualidade | — | 2, 3, 4 | Skill test-strategy | Escreva um teste de aceitação por REQ-ID crítico |
+| 09 | [DevOps Engineer](09-devops-engineer/PERSONA.md) | 5 · Operações | — | 3 (rascunho de CI), 4 (CI/IaC se relevante) | `/iac-module` + `/pipeline` | Valide somente a infraestrutura relevante para a entrega |
+| 10 | [Tech Writer](10-tech-writer/PERSONA.md) | 5 · Operações | 4 (relatório do Agent) | Transversal (1, 2, 3) | Skills de Markdown + modo Ask do GitHub Copilot | Consolide as decisões do time |
 
 ---
 
-## Who leads each stage
+## Quem lidera cada estágio
 
-| **Stage** | Time | Leads | Supports |
+| **Estágio** | Horário | Liderança | Apoio |
 |---|---|---|---|
-| **1 · Archaeology** | 11:00–12:00 + 13:30–14:00 | All 5 pairs in parallel (3 programs each) | — |
-| **2 · Specification** | 14:00–15:00 | Pair 2 (EA + SA) | Pair 1 (scope), Pair 5 (review) |
-| **3 · Implementation** | 15:00–16:10 | Pairs 3 (TL + Dev) and 4 (DBA + QA) | Pair 5 (CI skeleton) |
-| **4 · Evolution** | 16:10–16:50 | Pair 5 (DevOps + TW) | Pair 3 (Issues + Agent PR reviews) |
+| **1 · Arqueologia** | 11:00–12:00 + 13:30–14:00 | Todas as cinco duplas em paralelo (três programas cada) | — |
+| **2 · Especificação** | 14:00–15:00 | Dupla 2 (EA + SA) | Dupla 1 (escopo), Dupla 5 (revisão) |
+| **3 · Implementação** | 15:00–16:10 | Duplas 3 (TL + Dev) e 4 (DBA + QA) | Dupla 5 (esqueleto de CI) |
+| **4 · Evolução** | 16:10–16:50 | Dupla 5 (DevOps + TW) | Dupla 3 (Issues + revisões de PR do Agent) |
 
 ---
 
-## Dependency chain
+## Cadeia de dependências
 
 ```mermaid
 %%{init: {'theme':'neutral','themeVariables':{'fontFamily':'ui-sans-serif, system-ui, sans-serif','primaryColor':'#F5F5F5','primaryTextColor':'#171717','primaryBorderColor':'#171717','lineColor':'#525252','secondaryColor':'#FFFFFF','tertiaryColor':'#FAFAFA','background':'#FFFFFF'}}}%%
@@ -72,42 +72,42 @@ flowchart LR
 
 ---
 
-## How to choose your pair
+## Como escolher sua dupla
 
-| If your background is in… | Consider pair |
+| Se sua experiência é em… | Considere a dupla |
 |---|---|
-| Business / product | **1 · Vision** (PO + RE) |
-| Systems architecture | **2 · Architecture** (EA + SA) |
-| Programming / development | **3 · Implementation** (TL + Dev) |
-| Data / testing | **4 · Quality** (DBA + QA) |
-| Infrastructure / documentation | **5 · Operations** (DevOps + TW) |
+| Negócios / produto | **1 · Visão** (PO + RE) |
+| Arquitetura de sistemas | **2 · Arquitetura** (EA + SA) |
+| Programação / desenvolvimento | **3 · Implementação** (TL + Dev) |
+| Dados / testes | **4 · Qualidade** (DBA + QA) |
+| Infraestrutura / documentação | **5 · Operações** (DevOps + TW) |
 
 > [!NOTE]
-> Pairs 1, 4, and 5 accommodate people without a technical programming background. Pairs 2 and 3 require technical experience.
+> As duplas 1, 4 e 5 acomodam pessoas sem experiência técnica em programação. As duplas 2 e 3 exigem experiência técnica.
 
 ---
 
-## Emergency defaults (summary)
+## Padrões de emergência
 
-Each `PERSONA.md` details a "When stuck" section. Here is one line per persona:
+Cada `PERSONA.md` detalha uma seção para quando você travar. Veja uma orientação por persona:
 
-- **PO:** "We have 70 minutes of implementation; choose one thin feature."
-- **RE:** Trace each EARS requirement to evidence and record gaps for clarification.
-- **EA:** Use the ADR template to document alternatives and the team's decision.
-- **SA:** Formulate architecture assumptions and validate them with the team.
-- **TL:** Stop refactoring without tests; review your pair's PRs.
-- **Dev:** 1 complete endpoint > 5 broken ones. Testcontainers is mandatory.
-- **DBA:** Model from the DDMs and never edit an old migration.
-- **QA:** 1 test per critical REQ-ID. Happy path + error path.
-- **DevOps:** `terraform plan` only. Running `apply` in the workshop is high risk.
-- **TW:** Ask the stage-leading pair: "What did you decide in the last 30 minutes that has not been written down yet?"
+- **PO:** "Temos 70 minutos de implementação; escolha uma feature fina."
+- **RE:** Rastreie cada requisito EARS até a evidência e registre lacunas para esclarecimento.
+- **EA:** Use o template de ADR para documentar as alternativas e a decisão do time.
+- **SA:** Formule suposições de arquitetura e valide-as com o time.
+- **TL:** Interrompa refatorações sem testes; revise os PRs da sua dupla.
+- **Dev:** Um endpoint completo é melhor que cinco quebrados. Testcontainers é obrigatório.
+- **DBA:** Modele a partir dos DDMs e nunca edite uma migração antiga.
+- **QA:** Um teste por REQ-ID crítico. Caminho feliz + caminho de erro.
+- **DevOps:** Somente `terraform plan`. Executar `apply` na imersão tem alto risco.
+- **TW:** Pergunte à dupla que lidera o estágio: "O que vocês decidiram nos últimos 30 minutos que ainda não foi registrado?"
 
 ---
 
-### Continue reading
+### Continue lendo
 
-| Previous | Next |
+| Anterior | Próximo |
 |---|---|
-| [SETUP](../00-SETUP.md)<br/><sub>Laptop setup: Git, VS Code, Copilot, Spec-Kit, branch protection.</sub> | [Stage 1 — Archaeology](../01-archaeology/GUIDE.md)<br/><sub>11:00–12:00 + 13:30–14:00 · Read the legacy system and catalog business rules.</sub> |
+| [Setup](../00-SETUP.md)<br/><sub>Configuração do laptop: Git, VS Code, Copilot, Spec-Kit e proteção de branch.</sub> | [Estágio 1 — Arqueologia](../01-archaeology/GUIDE.md)<br/><sub>11:00–12:00 + 13:30–14:00 · Leia o sistema legado e catalogue as regras de negócio.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Voltar ao índice do kit](../README.md)</sub>

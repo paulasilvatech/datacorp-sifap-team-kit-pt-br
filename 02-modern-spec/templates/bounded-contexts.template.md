@@ -1,89 +1,89 @@
 ---
 
 title: "Template: Bounded Contexts"
-description: "Skeleton for bounded context definitions through /carve-bounded-contexts"
-author: "Paula Silva, AI-Native Software Engineer, Americas Global Black Belt at Microsoft"
+description: "Estrutura para definições de bounded contexts por meio de /carve-bounded-contexts"
+author: "Paula Silva, Engenheira de Software AI-Native, Americas Global Black Belt na Microsoft"
 date: "2026-04-29"
 version: "1.0.0"
 status: "approved"
 tags: ["template", "bounded-contexts", "architect", "stage-2"]
 ---
 
-<!-- How to use: run /carve-bounded-contexts. Clone the context block for each context. -->
+<!-- Como usar: execute /carve-bounded-contexts. Duplique o bloco de contexto para cada contexto. -->
 
-# Bounded Context Map
+# Mapa de bounded contexts
 
-![Bounded-contexts template](https://img.shields.io/badge/Template-bounded--contexts-737373?style=flat-square) ![Copy — do not edit the original](https://img.shields.io/badge/Copy-do%20not%20edit%20the%20original-A3A3A3?style=flat-square)
+![Template de bounded contexts](https://img.shields.io/badge/Modelo-contextos%20delimitados-737373?style=flat-square) ![Copie sem editar o original](https://img.shields.io/badge/Copie-N%C3%A3o%20edite%20o%20original-A3A3A3?style=flat-square)
 
-> **Path:** [Team Kit](../../README.md) › [Stage 2](../README.md) › Templates › **bounded-contexts**
+> **Trilha:** [Kit do Time](../../README.md) › [Estágio 2](../README.md) › Templates › **bounded-contexts**
 
 > [!NOTE]
-> This file is a TEMPLATE. Copy it to your team's repository and fill it with actual data. Do not edit the original.
+> Este arquivo é um TEMPLATE. Copie-o para o repositório do seu time e preencha a cópia com dados reais. Não edite o original.
 
 ---
 
-## Concept: Bounded Context
+## Conceito: bounded context
 
-A bounded context is an explicit boundary within which a domain model is valid and consistent. The term comes from Domain-Driven Design (DDD) and provides the foundation for defining the modules of a Modular Monolith.
+Um bounded context é uma fronteira explícita dentro da qual um modelo de domínio é válido e consistente. O termo vem do Domain-Driven Design (DDD) e fornece a base para definir os módulos de um Monólito Modular.
 
-**Why it matters:** in SIFAP, the payments module uses the term "beneficiary" in one way, while the inspection module may use the same term with different rules. Defining bounded contexts prevents a single model from being distorted to serve every context at once, which causes unwanted coupling and makes evolution difficult.
+**Por que isso importa:** no SIFAP, o módulo de pagamentos usa o termo "beneficiário" de uma forma, enquanto o módulo de fiscalização pode usar o mesmo termo com regras diferentes. Definir bounded contexts evita que um único modelo seja distorcido para atender a todos os contextos ao mesmo tempo, o que causa acoplamento indesejado e dificulta a evolução.
 
-**Modular Monolith:** an architecture in which bounded contexts are independent Java modules within a single JVM. Each module has its own layers (`domain/`, `application/`, `infrastructure/`) and communicates with other modules only through defined public interfaces.
+**Monólito Modular:** arquitetura na qual os bounded contexts são módulos Java independentes dentro de uma única JVM. Cada módulo tem suas próprias camadas (`domain/`, `application/`, `infrastructure/`) e se comunica com outros módulos somente por interfaces públicas definidas.
 
-**Strangler Fig:** an incremental migration pattern in which the modern system grows around the legacy system and replaces features one at a time. SIFAP 2.0 does not need to replace everything at once. Each bounded context can be modernized independently.
+**Strangler Fig:** padrão de migração incremental no qual o sistema moderno cresce ao redor do sistema legado e substitui uma feature por vez. O SIFAP 2.0 não precisa substituir tudo de uma só vez. Cada bounded context pode ser modernizado de forma independente.
 
 ---
 
-## Hypothesis assessments
+## Avaliações de hipóteses
 
-### <!-- placeholder: Name --> — <!-- placeholder: ACCEPTED / REJECTED -->
+### <!-- preencher: Nome --> — <!-- preencher: ACEITA / REJEITADA -->
 
-| Criterion | Assessment | Evidence |
+| Critério | Avaliação | Evidência |
 |---|---|---|
-| Cohesion | <!-- placeholder --> | <!-- placeholder --> |
-| Coupling | <!-- placeholder --> | <!-- placeholder --> |
-| Change frequency | <!-- placeholder --> | <!-- placeholder --> |
+| Coesão | <!-- preencher --> | <!-- preencher --> |
+| Acoplamento | <!-- preencher --> | <!-- preencher --> |
+| Frequência de mudança | <!-- preencher --> | <!-- preencher --> |
 
 ---
 
-## Final bounded contexts
+## Bounded contexts finais
 
-### <!-- placeholder: Context Name -->
+### <!-- preencher: Nome do contexto -->
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Responsibility** | <!-- placeholder --> |
-| **Owned data** | <!-- placeholder --> |
-| **Public interface** | <!-- placeholder --> |
-| **Why it is its own context** | <!-- placeholder --> |
+| **Responsabilidade** | <!-- preencher --> |
+| **Dados sob sua responsabilidade** | <!-- preencher --> |
+| **Interface pública** | <!-- preencher --> |
+| **Por que é um contexto próprio** | <!-- preencher --> |
 
 ---
 
-## Communication between contexts
+## Comunicação entre contextos
 
-| From | To | Mechanism | Data |
+| De | Para | Mecanismo | Dados |
 |---|---|---|---|
-| <!-- placeholder --> | <!-- placeholder --> | <!-- placeholder --> | <!-- placeholder --> |
+| <!-- preencher --> | <!-- preencher --> | <!-- preencher --> | <!-- preencher --> |
 
 ```mermaid
 %%{init: {'theme':'neutral','themeVariables':{'fontFamily':'ui-sans-serif, system-ui, sans-serif','primaryColor':'#F5F5F5','primaryTextColor':'#171717','primaryBorderColor':'#171717','lineColor':'#525252','secondaryColor':'#FFFFFF','tertiaryColor':'#FAFAFA','background':'#FFFFFF'}}}%%
 flowchart LR
     classDef ctx fill:#F5F5F5,stroke:#171717,color:#171717
 
-    CTX1["Context 1"]:::ctx -->|"calls"| CTX2["Context 2"]:::ctx
+    CTX1["Contexto 1"]:::ctx -->|"chama"| CTX2["Contexto 2"]:::ctx
 ```
 
 ---
 
 > [!IMPORTANT]
-> Definition of Done: hypotheses assessed, rejections documented, 2 to 5 contexts named, and the Mermaid diagram renders without errors.
+> Definição de pronto: hipóteses avaliadas, rejeições documentadas, dois a cinco contextos nomeados e diagrama Mermaid renderizado sem erros.
 
 ---
 
-### Continue reading
+### Continue lendo
 
-| Previous | Next |
+| Anterior | Próximo |
 |---|---|
-| [Stage 2 GUIDE](../GUIDE.md)<br/><sub>Step-by-step instructions.</sub> | [ADR Template](ADR.template.md)<br/><sub>ADR template.</sub> |
+| [GUIDE do Estágio 2](../GUIDE.md)<br/><sub>Instruções passo a passo.</sub> | [Template de ADR](ADR.template.md)<br/><sub>Template de ADR.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Voltar ao índice do kit](../../README.md)</sub>

@@ -1,43 +1,43 @@
-# Stage 4 — Evolution
+# Estágio 4 — Evolução
 
-> **Path:** [Team Kit](../README.md) › **Stage 4 — Evolution**
+> **Trilha:** [Kit do Time](../README.md) › **Estágio 4 — Evolução**
 
-**In this stage, Pair 5 experiments with delegating a small Issue to GitHub Copilot Agent mode and records honest evidence of the outcome.**
+**Neste estágio, a Dupla 5 experimenta delegar uma Issue pequena ao modo Agent do GitHub Copilot e registra evidências honestas do resultado.**
 
-![Stage 4](https://img.shields.io/badge/Stage-4%20%C2%B7%20Evolution-171717?style=flat-square) ![Led by Pair 5](https://img.shields.io/badge/Lead-Pair%205%20%28DevOps%2BTW%29-404040?style=flat-square) ![Deliverable Agent and IaC](https://img.shields.io/badge/Deliverable-Agent%20%2B%20IaC-737373?style=flat-square)
+![Estágio 4](https://img.shields.io/badge/Est%C3%A1gio-4%20%C2%B7%20Evolu%C3%A7%C3%A3o-171717?style=flat-square) ![Liderado pela Dupla 5](https://img.shields.io/badge/Lideran%C3%A7a-Dupla%205%20%28DevOps%2BTW%29-404040?style=flat-square) ![Entregável: Agent e IaC](https://img.shields.io/badge/Entreg%C3%A1vel-Agent%20%2B%20IaC-737373?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Pair 5 (DevOps + Tech Writer) leads; Pair 3 co-leads the technical review |
-| **Prerequisites** | H3 handoff received; functional Stage 3 prototype |
-| **Estimated time** | 40 min (16:10–16:50) |
-| **Stage** | Stage 4 — Evolution |
-| **Expected outcome** | Issue created, Agent delegation recorded, experience report completed |
+| **Público-alvo** | A Dupla 5 (DevOps + Tech Writer) lidera; a Dupla 3 colidera a revisão técnica |
+| **Pré-requisitos** | Handoff H3 recebido; protótipo funcional do Estágio 3 |
+| **Tempo estimado** | 40 min (16:10–16:50) |
+| **Estágio** | Estágio 4 — Evolução |
+| **Resultado esperado** | Issue criada, delegação ao Agent registrada e relatório de experiência preenchido |
 
 ---
 
-## Where this fits in the day's flow
+## Onde este estágio se encaixa no fluxo do dia
 
-![Day timeline: pre-event, 4 stages, and demo, with the three H1, H2, and H3 handoffs](../assets/timeline-stages.svg)
+![Linha do tempo do dia: pré-evento, quatro estágios e demo, com os três handoffs H1, H2 e H3](../assets/timeline-stages.svg)
 
-## Who works here
+## Quem trabalha neste estágio
 
-![Day timeline: pre-event, 4 stages, and demo, with the three H1, H2, and H3 handoffs](../assets/timeline-stages.svg)
+![Linha do tempo do dia: pré-evento, quatro estágios e demo, com os três handoffs H1, H2 e H3](../assets/timeline-stages.svg)
 
-## Contents of this folder
+## Conteúdo desta pasta
 
-| File | Purpose |
+| Arquivo | Finalidade |
 |---|---|
-| [`GUIDE.md`](GUIDE.md) | Stage step-by-step guide |
-| [`agent-experience-report.md`](agent-experience-report.md) | Experience report for the team to complete during the stage |
-| [`templates/agent-experience-report.template.md`](templates/agent-experience-report.template.md) | Report template for use through `/final-experience-report` |
+| [`GUIDE.md`](GUIDE.md) | Guia passo a passo do estágio |
+| [`agent-experience-report.md`](agent-experience-report.md) | Relatório de experiência para o time preencher durante o estágio |
+| [`templates/agent-experience-report.template.md`](templates/agent-experience-report.template.md) | Template de relatório para uso por meio de `/final-experience-report` |
 
 ---
 
-### Continue reading
+### Continue lendo
 
-| Previous | Next |
+| Anterior | Próximo |
 |---|---|
-| [Stage 3 — Implementation](../03-implementation/README.md)<br/><sub>Implementation summary and prototype structure.</sub> | [Stage 4 — GUIDE](GUIDE.md)<br/><sub>16:10–16:50 · Copilot Agent + Terraform + CI/CD.</sub> |
+| [Estágio 3 — Implementação](../03-implementation/README.md)<br/><sub>Resumo da implementação e estrutura do protótipo.</sub> | [Estágio 4 — GUIDE](GUIDE.md)<br/><sub>16:10–16:50 · Copilot Agent + Terraform + CI/CD.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Voltar ao índice do kit](../README.md)</sub>

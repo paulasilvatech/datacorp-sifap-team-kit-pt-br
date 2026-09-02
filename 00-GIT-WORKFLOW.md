@@ -1,45 +1,45 @@
-# Team Git workflow: each persona on its own branch
+# Workflow Git do time: cada persona na sua própria branch
 
-> **Track:** [Team kit](README.md) › **Git workflow**
+> **Trilha:** [Kit do time](README.md) › **Workflow Git**
 
-**Complete Git guide for the workshop: branches, commits, Pull Requests, and handoffs between pairs.**
+**Guia completo de Git para a imersão: branches, commits, Pull Requests e handoffs entre duplas.**
 
-![Guide](https://img.shields.io/badge/Guide-Git%20workflow-171717?style=flat-square) ![Audience: whole team](https://img.shields.io/badge/Audience-Whole%20team-737373?style=flat-square) ![Use: all day](https://img.shields.io/badge/Use-All%20day-A3A3A3?style=flat-square)
+![Guia](https://img.shields.io/badge/Guia-Fluxo%20Git-171717?style=flat-square) ![Público: time inteiro](https://img.shields.io/badge/P%C3%BAblico-Time%20inteiro-737373?style=flat-square) ![Uso: o dia todo](https://img.shields.io/badge/Uso-O%20dia%20todo-A3A3A3?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | The whole team, especially anyone who has never used one branch per feature |
-| **Prerequisites** | Git installed, repository cloned, `develop` created |
-| **Estimated time** | 10 minutes of reading |
-| **Expected result** | You know how to create a branch, commit, open a PR, and hand work off |
+| **Público-alvo** | O time inteiro, principalmente quem nunca usou uma branch por feature |
+| **Pré-requisitos** | Git instalado, repositório clonado, `develop` criada |
+| **Tempo estimado** | 10 minutos de leitura |
+| **Resultado esperado** | Você sabe criar uma branch, fazer commit, abrir um PR e passar o trabalho adiante |
 
 ---
 
-## What each concept means (quick reference)
+## O que cada conceito significa (referência rápida)
 
-| Git concept | Practical meaning |
+| Conceito Git | Significado prático |
 |---|---|
-| `main` | Stable, demo-ready version; protected from direct push |
-| `develop` | Integrated version for the day; starting point for new branches |
-| `spec/<NNN>-<feature>` | Branch where you work during Stage 2 |
-| `git commit` | Saves a local version (only you can see it) |
-| `git push` | Sends it to GitHub (teammates can see it) |
-| **Pull Request (PR)** | Requests review before merging your branch into `develop` |
-| `git merge` | Integrates your branch into `develop` after review approval |
-| **CI green** | Continuous integration pipeline passed; required before merge |
-| **CI red** | Something broke - fix it before merge |
-| **Merge conflict** | Two branches changed the same section, and you need to resolve it manually |
+| `main` | Versão estável, pronta para a demo; protegida contra push direto |
+| `develop` | Versão integrada do dia; ponto de partida para novas branches |
+| `spec/<NNN>-<feature>` | Branch onde você trabalha durante o Estágio 2 |
+| `git commit` | Salva uma versão local (só você enxerga) |
+| `git push` | Envia para o GitHub (o time enxerga) |
+| **Pull Request (PR)** | Pede revisão antes de integrar sua branch em `develop` |
+| `git merge` | Integra sua branch em `develop` depois da revisão aprovada |
+| **CI verde** | Pipeline de integração contínua passou; obrigatório antes do merge |
+| **CI vermelho** | Alguma coisa quebrou - conserte antes do merge |
+| **Conflito de merge** | Duas branches mudaram o mesmo trecho e você precisa resolver na mão |
 
 ---
 
-## The day's branch tree (visual)
+## A árvore de branches do dia (visual)
 
 ```mermaid
 %%{init: {'theme':'neutral','themeVariables':{'fontFamily':'ui-sans-serif, system-ui, sans-serif','primaryColor':'#F5F5F5','primaryTextColor':'#171717','primaryBorderColor':'#171717','lineColor':'#525252','secondaryColor':'#FFFFFF','tertiaryColor':'#FAFAFA','background':'#FFFFFF'}}}%%
 gitGraph
-   commit id: "Start of day"
+   commit id: "Início do dia"
    branch develop
-   commit id: "Team setup"
+   commit id: "Setup do time"
    branch spec/NNN-feature
    checkout spec/NNN-feature
    commit id: "RE: EARS"
@@ -49,8 +49,8 @@ gitGraph
    branch impl/NNN-feature
    checkout impl/NNN-feature
    commit id: "Dev: feature"
-   commit id: "DBA: migration"
-   commit id: "QA: tests"
+   commit id: "DBA: migração"
+   commit id: "QA: testes"
    checkout develop
    merge impl/NNN-feature tag: "H3"
    branch infra/component
@@ -59,58 +59,58 @@ gitGraph
    checkout develop
    merge infra/component tag: "demo-ready"
    checkout main
-   merge develop tag: "end of day"
+   merge develop tag: "fim do dia"
 ```
 
 ---
 
-## How to name your branch (persona convention)
+## Como nomear sua branch (convenção por persona)
 
-| Who | Stage | Branch prefix | Origin | Example |
+| Quem | Estágio | Prefixo da branch | Origem | Exemplo |
 |---|---|---|---|---|
 | RE + SA | 2 - Spec | `spec/<NNN>-<feature>` | `develop` | `spec/001-calculo-beneficio` |
 | Dev + DBA | 3 - Impl | `impl/<NNN>-<feature>` | `develop` | `impl/001-calculo-beneficio` |
-| QA | 3 - Tests | `impl/<NNN>-<feature>` | `develop` | `impl/001-calculo-beneficio` |
+| QA | 3 - Testes | `impl/<NNN>-<feature>` | `develop` | `impl/001-calculo-beneficio` |
 | DevOps | 4 - Infra | `infra/<componente>` | `develop` | `infra/azure-postgres` |
-| Tech Writer | Cross-cutting | `docs/<topico>` | `develop` | `docs/glossario-sifap` |
-| Agent mode | 4 - Delegation | `agent/<issue-NN>` | `develop` | `agent/issue-42` |
+| Tech Writer | Transversal | `docs/<topico>` | `develop` | `docs/glossario-sifap` |
+| Modo Agent | 4 - Delegação | `agent/<issue-NN>` | `develop` | `agent/issue-42` |
 
 > [!IMPORTANT]
-> The flow is `spec/<NNN>-<feature>` -> `develop` -> `main`. There is no `stage` branch.
-> Every `impl/<NNN>-<feature>` branch starts from `develop`, never from `spec/*`.
+> O fluxo é `spec/<NNN>-<feature>` -> `develop` -> `main`. Não existe branch `stage`.
+> Toda branch `impl/<NNN>-<feature>` sai de `develop`, nunca de `spec/*`.
 
 > [!TIP]
-> Commit message pattern: always cite the REQ-ID or Issue. Example: `feat: Implements REQ-XXX: describes the behavior`.
+> Padrão de mensagem de commit: sempre cite o REQ-ID ou a Issue. Exemplo: `feat: Implements REQ-XXX: describes the behavior`.
 
 ---
 
-## Merge sequence: step by step
+## Sequência de merge: passo a passo
 
-### Step 1: Create your branch from `develop`
+### Passo 1: Crie sua branch a partir de `develop`
 
-- [ ] **Update `develop` and create the branch.**
+- [ ] **Atualize `develop` e crie a branch.**
 
 ```bash
-git checkout develop && git pull        # updates the starting point
-git checkout -b spec/001-feature-name  # creates your branch
+git checkout develop && git pull        # atualiza o ponto de partida
+git checkout -b spec/001-feature-name  # cria a sua branch
 ```
 
-### Step 2: Work (commit after each meaningful step)
+### Passo 2: Trabalhe (faça commit a cada passo com significado)
 
-- [ ] **Commit often - one idea per commit.**
+- [ ] **Faça commits com frequência - uma ideia por commit.**
 
 ```bash
 git add .
 git commit -m "Implements REQ-XXX: behavior"
-git push -u origin spec/001-feature-name   # sends it to GitHub
+git push -u origin spec/001-feature-name   # envia para o GitHub
 ```
 
 > [!NOTE]
-> Make small, frequent commits. Each commit = one idea. Do not pile five hours of work into a single commit.
+> Faça commits pequenos e frequentes. Cada commit = uma ideia. Não empilhe cinco horas de trabalho em um único commit.
 
-### Step 3: Open a PR to `develop`
+### Passo 3: Abra um PR para `develop`
 
-- [ ] **Open the Pull Request.**
+- [ ] **Abra o Pull Request.**
 
 ```bash
 gh pr create \
@@ -130,164 +130,164 @@ gh pr create \
   - See the 'acceptance' section for each REQ-ID"
 ```
 
-### Step 4: CI runs
+### Passo 4: A CI roda
 
-- [ ] **Check the CI status on the PR.**
-- CI green -> move to Step 5
-- CI red -> read the error, fix it, make a new commit, and wait for CI to run again
+- [ ] **Confira o status da CI no PR.**
+- CI verde -> siga para o Passo 5
+- CI vermelho -> leia o erro, conserte, faça um novo commit e espere a CI rodar de novo
 
-### Step 5: The downstream receiving pair reviews
+### Passo 5: A dupla seguinte, que recebe o trabalho, revisa
 
-| You are in pair... | Who reviews your PR |
+| Você está na dupla... | Quem revisa o seu PR |
 |---|---|
-| 1 (Vision) | Pair 2 (Architecture) |
-| 2 (Architecture) | Pair 3 (Implementation) |
-| 3 (Implementation) | Pair 4 (Quality) |
-| 4 (Quality) | Pair 5 (Operations) |
-| 5 (Operations) | Pair 1 (Vision) |
+| 1 (Visão) | Dupla 2 (Arquitetura) |
+| 2 (Arquitetura) | Dupla 3 (Implementação) |
+| 3 (Implementação) | Dupla 4 (Qualidade) |
+| 4 (Qualidade) | Dupla 5 (Operações) |
+| 5 (Operações) | Dupla 1 (Visão) |
 
-### Step 6: Merge into `develop`
+### Passo 6: Merge em `develop`
 
-- [ ] **Merge after approval.** Click **"Merge pull request"** on GitHub (or use `gh pr merge`). Use **squash merge** to keep history clean.
+- [ ] **Faça o merge depois da aprovação.** Clique em **"Merge pull request"** no GitHub (ou use `gh pr merge`). Use **squash merge** para manter o histórico limpo.
 
-### Step 7: At the end of the stage, the lead opens the `develop -> main` PR
+### Passo 7: No fim do estágio, o líder abre o PR `develop -> main`
 
-- [ ] **The lead opens the integration PR.** Only the team lead performs this merge. It is the control point for each stage.
+- [ ] **O líder abre o PR de integração.** Só o líder do time faz esse merge. É o ponto de controle de cada estágio.
 
 ---
 
-## The five golden rules
+## As cinco regras de ouro
 
 > [!IMPORTANT]
-> **No exceptions.**
+> **Sem exceções.**
 >
-> 1. Never commit directly to `main`. Always go through a PR.
-> 2. Never use `git push --force` on a shared branch. Use `--force-with-lease` only if absolutely necessary.
-> 3. Every commit message cites the REQ-ID: `feat: Implements REQ-XXX: ...`.
-> 4. CI red does not merge. Fix it first.
-> 5. A PR without a description does not merge. Describe *what* changed and *why*.
+> 1. Nunca faça commit direto em `main`. Sempre passe por um PR.
+> 2. Nunca use `git push --force` em uma branch compartilhada. Use `--force-with-lease` só se for absolutamente necessário.
+> 3. Toda mensagem de commit cita o REQ-ID: `feat: Implements REQ-XXX: ...`.
+> 4. CI vermelho não faz merge. Conserte primeiro.
+> 5. PR sem descrição não faz merge. Descreva *o que* mudou e *por quê*.
 
 ---
 
-## Commit message templates
+## Modelos de mensagem de commit
 
-Copy and paste, then adapt the REQ-ID and description.
+Copie e cole, depois adapte o REQ-ID e a descrição.
 
 ```bash
-# New feature implementing a REQ-ID
+# Nova feature que implementa um REQ-ID
 git commit -m "feat: Implements REQ-XXX (behavior)"
 
-# Bug fix
+# Correção de bug
 git commit -m "fix: corrects behavior for REQ-XXX"
 
-# Documentation
+# Documentação
 git commit -m "docs: records ADR-XXXX"
 
-# Tests
+# Testes
 git commit -m "test: covers acceptance criteria for REQ-XXX"
 
-# Database migration
+# Migração de banco de dados
 git commit -m "db: V2__feature_change (REQ-XXX)"
 
-# Refactor with no behavior change
+# Refatoração sem mudança de comportamento
 git commit -m "refactor: extracts component (keeps REQ-XXX)"
 
-# Configuration / build / CI
+# Configuração / build / CI
 git commit -m "chore: adds spec-quality.yml workflow"
 
-# Agent mode (Stage 4)
+# Modo Agent (Estágio 4)
 git commit -m "agent: PR #42 - implements REQ-XXX"
 ```
 
-**Message rules:**
+**Regras da mensagem:**
 
-- First line has at most 72 characters
-- Start with a type: `feat:` `fix:` `docs:` `test:` `db:` `refactor:` `chore:` `agent:`
-- Cite the REQ-ID when it applies
-- Do not use `wip` or `temp` - use only commits with a clear meaning
+- A primeira linha tem no máximo 72 caracteres
+- Comece com um tipo: `feat:` `fix:` `docs:` `test:` `db:` `refactor:` `chore:` `agent:`
+- Cite o REQ-ID quando ele se aplicar
+- Não use `wip` nem `temp` - use só commits com significado claro
 
 ---
 
-## Mini tutorial for anyone who has never used Git
+## Minitutorial para quem nunca usou Git
 
-If today is your first contact with Git, do this five-minute warm-up:
+Se hoje é seu primeiro contato com Git, faça este aquecimento de cinco minutos:
 
-- [ ] **Check repository status.**
+- [ ] **Verifique o estado do repositório.**
 
 ```bash
-# 1. See where you are
+# 1. Veja onde você está
 git status
 
-# 2. See which branch you are on
+# 2. Veja em qual branch você está
 git branch --show-current
 
-# 3. Update develop
+# 3. Atualize a develop
 git checkout develop
 git pull
 
-# 4. Create your first branch
+# 4. Crie sua primeira branch
 git checkout -b docs/meu-primeiro-commit
 
-# 5. Edit a file
+# 5. Edite um arquivo
 echo "# Hello world" >> docs/playground.md
 
-# 6. See what changed
+# 6. Veja o que mudou
 git diff
 git status
 
-# 7. Save it (commit)
+# 7. Salve (commit)
 git add docs/playground.md
 git commit -m "docs: first commit"
 
-# 8. Push it to GitHub
+# 8. Envie para o GitHub
 git push -u origin docs/meu-primeiro-commit
 
-# 9. Open a PR
+# 9. Abra um PR
 gh pr create --base develop --title "docs: first commit" --body "Warm-up"
 ```
 
-If you complete all nine steps, **you know enough Git for the workshop**. Everything else is a variation on the same commands.
+Se você completou os nove passos, **sabe Git o suficiente para a imersão**. Todo o resto é variação dos mesmos comandos.
 
 ---
 
-## Emergency commands
+## Comandos de emergência
 
-| Situation | Command |
+| Situação | Comando |
 |---|---|
-| I committed to `develop` without creating a branch | `git reset --soft HEAD~1 && git stash && git checkout -b nova-branch && git stash pop` |
-| Rebase got stuck | `git rebase --abort` (no problem, start clean again) |
-| Merge conflict | Open the file, find `<<<<<<<`, choose the right lines, `git add <file> && git rebase --continue` |
-| I deleted a branch by mistake | `git reflog` -> find the SHA -> `git checkout -b name SHA` |
-| I want to discard uncommitted changes | `git restore .` |
-| Everything went wrong and I want to go back 30 minutes | **Stop. Call the Technical Lead. Do not try it alone.** |
+| Fiz commit em `develop` sem criar uma branch | `git reset --soft HEAD~1 && git stash && git checkout -b nova-branch && git stash pop` |
+| O rebase travou | `git rebase --abort` (sem problema, comece limpo de novo) |
+| Conflito de merge | Abra o arquivo, procure `<<<<<<<`, escolha as linhas certas, `git add <file> && git rebase --continue` |
+| Apaguei uma branch por engano | `git reflog` -> ache o SHA -> `git checkout -b nome SHA` |
+| Quero descartar mudanças não commitadas | `git restore .` |
+| Tudo deu errado e quero voltar 30 minutos | **Pare. Chame o Technical Lead. Não tente sozinho.** |
 
 ---
 
-## Definition of done: you are comfortable with Git when...
+## Definição de pronto: você está confortável com Git quando...
 
-- [ ] You know how to create a branch from `develop`
-- [ ] You make small commits (one idea per commit) with the REQ-ID in the message
-- [ ] You know how to `git push` your branch
-- [ ] You know how to open a PR with `gh pr create` or on the GitHub website
-- [ ] You know how to read CI status on the PR (green/red)
-- [ ] You know who reviews your PR (the downstream pair)
-- [ ] You know to ask for help before trying `--force`
-
----
-
-## Go deeper
-
-- [`00-SETUP.md`](00-SETUP.md) - steps 3 and 4 about branch protection
-- [`00-TEAM-FLOW.md`](00-TEAM-FLOW.md) - the three handoffs (H1, H2, H3) between pairs
-- [`docs/persona-agent-matrix.md`](docs/persona-agent-matrix.md) - who depends on whom
-- [GitHub: gh CLI docs](https://cli.github.com/manual/)
+- [ ] Você sabe criar uma branch a partir de `develop`
+- [ ] Você faz commits pequenos (uma ideia por commit) com o REQ-ID na mensagem
+- [ ] Você sabe fazer `git push` da sua branch
+- [ ] Você sabe abrir um PR com `gh pr create` ou pelo site do GitHub
+- [ ] Você sabe ler o status da CI no PR (verde/vermelho)
+- [ ] Você sabe quem revisa o seu PR (a dupla seguinte)
+- [ ] Você sabe pedir ajuda antes de tentar `--force`
 
 ---
 
-### Continue reading
+## Para ir além
 
-| Previous | Next |
+- [`00-SETUP.md`](00-SETUP.md) - passos 3 e 4 sobre proteção de branch
+- [`00-TEAM-FLOW.md`](00-TEAM-FLOW.md) - os três handoffs (H1, H2, H3) entre duplas
+- [`docs/persona-agent-matrix.md`](docs/persona-agent-matrix.md) - quem depende de quem
+- [GitHub: documentação da CLI gh](https://cli.github.com/manual/)
+
+---
+
+### Continue lendo
+
+| Anterior | Próximo |
 |---|---|
-| [Team flow](00-TEAM-FLOW.md)<br/><sub>Day schedule, handoffs, 20-minute rule, definition of done.</sub> | [Stage 1: archaeology](01-archaeology/GUIDE.md)<br/><sub>Read the legacy system and catalog business rules.</sub> |
+| [Fluxo do time](00-TEAM-FLOW.md)<br/><sub>Cronograma do dia, handoffs, regra dos 20 minutos, definição de pronto.</sub> | [Estágio 1: arqueologia](01-archaeology/GUIDE.md)<br/><sub>Leia o sistema legado e catalogue as regras de negócio.</sub> |
 
-<sub>[Back to the kit index](README.md)</sub>
+<sub>[Voltar ao índice do kit](README.md)</sub>

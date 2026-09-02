@@ -1,7 +1,7 @@
 ---
 
-title: "Template: Open Questions Record"
-description: "Neutral structure for recording open questions through /catalog-mysteries"
+title: "Template: Registro de Questões em Aberto"
+description: "Estrutura neutra para registrar questões em aberto por meio de /catalog-mysteries"
 author: "Paula Silva, AI-Native Software Engineer, Americas Global Black Belt at Microsoft"
 date: "2026-04-29"
 version: "1.0.0"
@@ -9,41 +9,41 @@ status: "approved"
 tags: ["template", "mysteries", "archaeology", "stage-1"]
 ---
 
-# Template: Open Questions Record — Stage 1
+# Template: Registro de Questões em Aberto — Estágio 1
 
-> **Track:** [Team Kit](../../README.md) › [Stage 1](../README.md) › **Templates** › **mysteries-found**
+> **Trilha:** [Kit do Time](../../README.md) › [Estágio 1](../README.md) › **Templates** › **mysteries-found**
 
-**Uncertainty record template for Stage 1.**
+**Template de registro de incertezas para o Estágio 1.**
 
 > [!IMPORTANT]
-> **Traceability gate.** Do not turn a question into a conclusion, rule, or requirement without explicit human validation and `path:line` evidence.
+> **Gate de rastreabilidade.** Não transforme uma pergunta em conclusão, regra ou requisito sem validação humana explícita e evidência `path:line`.
 
 > [!NOTE]
-> **This file is a template.** Copy it to your team repository and complete it with real data. Do not edit the original.
+> **Este arquivo é um template.** Copie-o para o repositório do seu time e preencha com dados reais. Não edite o original.
 
 ---
 
-## Record
+## Registro
 
-| Open question | Evidence (`path:line`) | Impact | Hypothesis (unconfirmed) | Responsible person/area | Status |
+| Questão em aberto | Evidência (`path:line`) | Impacto | Hipótese (não confirmada) | Pessoa/área responsável | Status |
 |---|---|---|---|---|---|
-| <!-- fill in --> | <!-- fill in: path:line --> | <!-- fill in --> | <!-- fill in: unconfirmed --> | <!-- fill in --> | <!-- fill in: open / awaiting human validation / closed after human validation --> |
+| <!-- preencher --> | <!-- preencher: path:line --> | <!-- preencher --> | <!-- preencher: não confirmada --> | <!-- preencher --> | <!-- preencher: aberta / aguardando validação humana / fechada após validação humana --> |
 
 ---
 
-## Definition of done
+## Definição de pronto
 
-- [ ] Every question is recorded without an answer or conclusion.
-- [ ] Evidence uses the `path:line` format.
-- [ ] The hypothesis is marked as unconfirmed.
-- [ ] An owner is identified.
+- [ ] Toda pergunta está registrada sem resposta nem conclusão.
+- [ ] A evidência usa o formato `path:line`.
+- [ ] A hipótese está marcada como não confirmada.
+- [ ] Há um responsável identificado.
 
 ---
 
-### Continue reading
+### Continue lendo
 
-| Previous | Next |
+| Anterior | Próximo |
 |---|---|
-| [Stage 1 GUIDE](../GUIDE.md)<br/><sub>Step-by-step schedule.</sub> | [Team file](../mysteries-found.md)<br/><sub>Where you complete it.</sub> |
+| [GUIDE do Estágio 1](../GUIDE.md)<br/><sub>Cronograma passo a passo.</sub> | [Arquivo do time](../mysteries-found.md)<br/><sub>Onde você preenche.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Voltar ao índice do kit](../../README.md)</sub>

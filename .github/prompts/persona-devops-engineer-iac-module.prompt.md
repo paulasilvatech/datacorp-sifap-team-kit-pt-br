@@ -1,55 +1,55 @@
 ---
 name: "iac-module"
-description: "Create or refactor one Terraform module for SIFAP 2.0 Azure infrastructure with standard tags, typed variables, outputs, and validation."
+description: "Crie ou refatore um módulo Terraform da infraestrutura Azure do SIFAP 2.0 com etiquetas padronizadas, variáveis tipadas, saídas e validação."
 argument-hint: "name=<module> service=<azurerm_resource> reqs=REQ-NNN"
 agent: "devops-engineer"
 tools: ["read", "search", "edit", "execute"]
 ---
 # /iac-module
 
-## Objective
+## Objetivo
 
-Produce or update a **single Terraform module** in `infra/modules/` for SIFAP 2.0, scoped to one Azure service area (networking, compute, database, monitoring, or security). The module carries the standard SIFAP tags on every taggable resource, keeps secrets out of code, uses managed identity for service-to-service auth, and passes `terraform fmt` and `terraform validate` (plus `tflint` and `checkov`) before commit — matching the infra gate in `.github/workflows/ci.yml`.
+Produzir ou atualizar **um único módulo Terraform** em `infra/modules/` para o SIFAP 2.0, limitado a uma área de serviço do Azure (rede, computação, banco de dados, monitoramento ou segurança). O módulo aplica as etiquetas (`tags`) padrão do SIFAP a todos os recursos que as aceitam, mantém os segredos fora do código, usa identidade gerenciada para autenticação entre serviços e passa em `terraform fmt` e `terraform validate`, além de `tflint` e `checkov`, antes do registro da alteração. Assim, ele corresponde ao controle de infraestrutura em `.github/workflows/ci.yml`.
 
-## When to Invoke
+## Quando usar
 
-When a bounded context needs a new Azure service, or when an existing module must be hardened or extended. Module changes ship in their own PR, separate from feature code.
+Use quando um contexto delimitado precisar de um novo serviço do Azure ou quando um módulo existente precisar ser reforçado ou ampliado. As mudanças de módulo são entregues em sua própria solicitação de integração, separada do código da funcionalidade.
 
-## Preconditions
+## Pré-condições
 
-- `.specify/memory/constitution.md` states the non-negotiable rules (managed identity, Key Vault, network access)
-- The Azure service and the linked `REQ-ID` are known
-- The target module path (`infra/modules/<name>/`) is either new or exists for update
+- `.specify/memory/constitution.md` declara as regras inegociáveis (identidade gerenciada, Key Vault e acesso à rede)
+- O serviço do Azure e o `REQ-ID` vinculado são conhecidos
+- O caminho do módulo alvo (`infra/modules/<name>/`) é novo ou já existe para atualização
 
-## Inputs the Team Must Provide
+## Entradas que a equipe deve fornecer
 
-- The module name and Azure service (for example `database` for `azurerm_postgresql_flexible_server`)
-- The linked `REQ-ID` in `specs/<NNN>-<feature>/spec.md` (usually non-functional or operational)
-- The target environments (`dev`, `stage`, `prod`) and any per-environment overrides
-- Whether this creates a new module or modifies an existing one
+- O nome do módulo e o serviço do Azure, por exemplo, `database` para `azurerm_postgresql_flexible_server`
+- O `REQ-ID` vinculado em `specs/<NNN>-<feature>/spec.md`, geralmente não funcional ou operacional
+- Os ambientes alvo (`dev`, `stage`, `prod`) e todas as substituições específicas por ambiente
+- A indicação de que a mudança cria um módulo novo ou modifica um existente
 
-Ask the user for anything that is missing.
+Solicite à pessoa usuária qualquer item ausente.
 
-## What I Will Do
+## O que farei
 
-- Read [`../skills/iac-review/SKILL.md`](../skills/iac-review/SKILL.md) and the constitution, and follow existing module patterns
-- Write the five-file module skeleton with typed, documented variables
-- Apply the standard SIFAP tag set to every taggable resource
-- Keep secrets in `azurerm_key_vault_secret` — never in `locals`, `variables`, or `outputs`
-- Use managed identity and private networking by default
-- Add `examples/basic/` and validate locally with `fmt`, `validate`, `tflint`, and `checkov`
+- Lerei [`../skills/iac-review/SKILL.md`](../skills/iac-review/SKILL.md) e a constituição e seguirei os padrões dos módulos existentes
+- Escreverei a estrutura inicial do módulo com cinco arquivos e variáveis tipadas e documentadas
+- Aplicarei o conjunto padrão de etiquetas do SIFAP a todos os recursos que aceitam etiquetas
+- Manterei os segredos em `azurerm_key_vault_secret`, nunca em `locals`, `variables` ou `outputs`
+- Usarei identidade gerenciada e rede privada por padrão
+- Adicionarei `examples/basic/` e validarei localmente com `fmt`, `validate`, `tflint` e `checkov`
 
-## What I Will NOT Do
+## O que não farei
 
-- Invent a SKU price, a region's availability, or a SIFAP-specific value — unknown inputs are parameterized and confirmed by the team
-- Author the pipeline (`/pipeline`), write application code (`@builder`), or change requirements (`@requirements-engineer`)
-- Put a secret in a variable, a default, an output, or the state file when it can be avoided
-- Set `public_network_access_enabled = true` without a documented exception in `.specify/memory/constitution.md`
-- Put a `provider` block inside the module, or tag some resources but not others
+- Inventar o preço de uma SKU, a disponibilidade de uma região ou um valor específico do SIFAP. As entradas desconhecidas serão parametrizadas e confirmadas pela equipe
+- Criar a esteira de CI/CD (`/pipeline`), escrever código de aplicação (`@builder`) ou alterar requisitos (`@requirements-engineer`)
+- Inserir um segredo em uma variável, um valor padrão, uma saída ou o arquivo de estado quando isso puder ser evitado
+- Definir `public_network_access_enabled = true` sem uma exceção documentada em `.specify/memory/constitution.md`
+- Inserir um bloco `provider` no módulo ou aplicar etiquetas somente a parte dos recursos
 
-## Output Format
+## Formato da saída
 
-A five-file module (`main.tf`, `variables.tf`, `outputs.tf`, `versions.tf`, `README.md`) plus `examples/basic/`. The core files follow the repo's real `azurerm` house style:
+Um módulo com cinco arquivos (`main.tf`, `variables.tf`, `outputs.tf`, `versions.tf`, `README.md`), além de `examples/basic/`. Os arquivos principais seguem o padrão `azurerm` real do repositório:
 
 ```hcl
 # infra/modules/database/versions.tf
@@ -88,11 +88,11 @@ resource "azurerm_postgresql_flexible_server" "this" {
   version                       = "16"
   administrator_login           = var.administrator_login
   administrator_password        = random_password.admin.result
-  public_network_access_enabled = false # private endpoint only; no exception on file
+  public_network_access_enabled = false # somente ponto de extremidade privado; nenhuma exceção registrada
   tags                          = local.tags
 }
 
-# Secret lives in Key Vault, never in variables, outputs, or logs.
+# O segredo fica no Key Vault, nunca em variáveis, saídas ou registros.
 resource "azurerm_key_vault_secret" "admin_password" {
   name         = "${var.environment}-psql-admin-password"
   value        = random_password.admin.result
@@ -102,48 +102,48 @@ resource "azurerm_key_vault_secret" "admin_password" {
 
 # infra/modules/database/outputs.tf
 output "server_fqdn" {
-  description = "PostgreSQL FQDN for callers; contains no secret."
+  description = "FQDN do PostgreSQL para consumidores; não contém segredos."
   value       = azurerm_postgresql_flexible_server.this.fqdn
 }
 ```
 
-Accompany the module with a validation report (`fmt`, `validate`, `tflint`, `checkov` output) and a one-line monthly cost note per environment linking to Azure pricing.
+Acompanhe o módulo com um relatório de validação (saída de `fmt`, `validate`, `tflint` e `checkov`) e uma observação de uma linha sobre o custo mensal por ambiente, com link para os preços do Azure.
 
-## Definition of Done
+## Definição de pronto
 
-- [ ] `terraform fmt -check`, `terraform validate`, `tflint`, and `checkov` all pass
-- [ ] Every taggable resource carries `project`, `environment`, and `owner` (plus the standard extras)
-- [ ] No secret appears in variables, outputs, or default values
-- [ ] Public network access is disabled unless a constitution exception is referenced
-- [ ] Managed identity is used; no service-principal credential appears in code
-- [ ] A consumer in `examples/basic/` compiles and validates
-- [ ] The README documents inputs, outputs, an example, and the linked `REQ-ID`
+- [ ] `terraform fmt -check`, `terraform validate`, `tflint` e `checkov` passam
+- [ ] Todos os recursos que aceitam etiquetas contêm `project`, `environment` e `owner`, além das etiquetas extras padrão
+- [ ] Nenhum segredo aparece em variáveis, saídas ou valores padrão
+- [ ] O acesso à rede pública permanece desativado, exceto quando houver referência a uma exceção na constituição
+- [ ] A identidade gerenciada é usada e nenhuma credencial de principal de serviço aparece no código
+- [ ] Um consumidor em `examples/basic/` compila e passa na validação
+- [ ] O arquivo `README.md` documenta entradas, saídas, um exemplo e o `REQ-ID` vinculado
 
-## Prompt Body
+## Corpo do prompt
 
-You are the `@devops-engineer`. The team needs one focused, reviewable module that respects the repo's Terraform rules.
+Você é `@devops-engineer`. A equipe precisa de um módulo focado e revisável que respeite as regras de Terraform do repositório.
 
-**Step 1 — Read the constitution and the skill.**
-Open `.specify/memory/constitution.md` for non-negotiable rules and [`../skills/iac-review/SKILL.md`](../skills/iac-review/SKILL.md) for the review checklist. Review existing modules for patterns to follow.
+**Etapa 1: leia a constituição e a habilidade.**
+Abra `.specify/memory/constitution.md` para consultar as regras inegociáveis e [`../skills/iac-review/SKILL.md`](../skills/iac-review/SKILL.md) para consultar a lista de verificação da revisão. Revise os módulos existentes para identificar os padrões a seguir.
 
-**Step 2 — Pin the provider.**
-Use `azurerm ~> 3.x` (the repo standard) pinned through `required_providers`, and reference [Azure Verified Modules](https://aka.ms/avm) where applicable.
+**Etapa 2: fixe o provedor.**
+Use `azurerm ~> 3.x`, o padrão do repositório, fixado por `required_providers`, e consulte os [módulos verificados do Azure (Azure Verified Modules)](https://aka.ms/avm) quando aplicável.
 
-**Step 3 — Write the skeleton.**
-`main.tf` (resources only, no `provider` block), `variables.tf` (every input typed and documented, with `validation` blocks where ranges matter), `outputs.tf` (IDs, names, FQDNs — never secrets), `versions.tf`, and `README.md`.
+**Etapa 3: escreva a estrutura inicial.**
+Crie `main.tf` (somente recursos, sem bloco `provider`), `variables.tf` (todas as entradas tipadas e documentadas, com blocos `validation` quando os intervalos forem relevantes), `outputs.tf` (IDs, nomes e FQDNs, nunca segredos), `versions.tf` e `README.md`.
 
-**Step 4 — Apply the standard tags.**
-Merge `var.tags` with `project`, `environment`, `owner`, `cost-center`, `module`, and `managed-by`, and attach the map to every taggable resource.
+**Etapa 4: aplique as etiquetas padrão.**
+Combine `var.tags` com `project`, `environment`, `owner`, `cost-center`, `module` e `managed-by` e associe o mapa a todos os recursos que aceitam etiquetas.
 
-**Step 5 — Enforce secrets, identity, and network discipline.**
-Secrets flow through `azurerm_key_vault_secret` data sources or generated values stored in Key Vault — never variables, defaults, or outputs. Use system- or user-assigned managed identities for service-to-service auth. Keep `public_network_access_enabled = false` unless the constitution grants an exception.
+**Etapa 5: aplique a disciplina de segredos, identidade e rede.**
+Os segredos passam por fontes de dados `azurerm_key_vault_secret` ou por valores gerados e armazenados no Key Vault, nunca por variáveis, valores padrão ou saídas. Use identidades gerenciadas atribuídas pelo sistema ou pela pessoa usuária para autenticação entre serviços. Mantenha `public_network_access_enabled = false`, exceto quando a constituição conceder uma exceção.
 
-**Step 6 — Add an example and validate.**
-Write `examples/basic/main.tf` that consumes the module, then run `terraform fmt -check -recursive`, `terraform init -backend=false`, `terraform validate`, `tflint --recursive`, and `checkov -d . --soft-fail false`. All must pass.
+**Etapa 6: adicione um exemplo e valide.**
+Escreva `examples/basic/main.tf` para consumir o módulo. Depois, execute `terraform fmt -check -recursive`, `terraform init -backend=false`, `terraform validate`, `tflint --recursive` e `checkov -d . --soft-fail false`. Todos os comandos devem passar.
 
-`terraform fmt` and `terraform validate` must pass before commit, matching `.github/workflows/ci.yml`. Every taggable resource carries the mandatory tags. No secret ever lands in a variable, output, or default. Never enable public network access without a documented exception, and never invent a value the team must confirm.
+`terraform fmt` e `terraform validate` devem passar antes do registro da alteração, conforme `.github/workflows/ci.yml`. Todos os recursos que aceitam etiquetas contêm as etiquetas obrigatórias. Nenhum segredo pode chegar a uma variável, saída ou valor padrão. Nunca habilite o acesso à rede pública sem uma exceção documentada nem invente um valor que a equipe precise confirmar.
 
-## Invocation Example
+## Exemplo de chamada
 
 ```
 /iac-module name=database service=azurerm_postgresql_flexible_server reqs=REQ-NNN

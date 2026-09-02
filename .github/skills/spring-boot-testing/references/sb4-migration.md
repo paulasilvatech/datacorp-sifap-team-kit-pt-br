@@ -1,14 +1,14 @@
-# Spring Boot 4.0 Migration
+# Migração para Spring Boot 4.0
 
-Key testing changes when migrating from Spring Boot 3.x to 4.0.
+Principais alterações de teste ao migrar do Spring Boot 3.x para o 4.0.
 
-## Dependency Changes
+## Alterações de dependências
 
-### Modular Test Starters
+### Inicializadores de teste modulares
 
-Spring Boot 4.0 introduces modular test starters:
+O Spring Boot 4.0 introduz inicializadores de teste modulares:
 
-**Before (3.x):**
+**Antes (3.x):**
 
 ```xml
 <dependency>
@@ -18,7 +18,7 @@ Spring Boot 4.0 introduces modular test starters:
 </dependency>
 ```
 
-**After (4.0) - WebMvc Testing:**
+**Depois (4.0), testes WebMvc:**
 
 ```xml
 <dependency>
@@ -28,7 +28,7 @@ Spring Boot 4.0 introduces modular test starters:
 </dependency>
 ```
 
-**After (4.0) - REST Client Testing:**
+**Depois (4.0), testes de cliente REST:**
 
 ```xml
 <dependency>
@@ -38,18 +38,18 @@ Spring Boot 4.0 introduces modular test starters:
 </dependency>
 ```
 
-## Annotation Migration
+## Migração de anotações
 
 ### @MockBean → @MockitoBean
 
-**Deprecated (3.x):**
+**Obsoleto (3.x):**
 
 ```java
 @MockBean
 private OrderService orderService;
 ```
 
-**New (4.0):**
+**Novo (4.0):**
 
 ```java
 @MockitoBean
@@ -58,25 +58,25 @@ private OrderService orderService;
 
 ### @SpyBean → @MockitoSpyBean
 
-**Deprecated (3.x):**
+**Obsoleto (3.x):**
 
 ```java
 @SpyBean
 private PaymentGatewayClient paymentClient;
 ```
 
-**New (4.0):**
+**Novo (4.0):**
 
 ```java
 @MockitoSpyBean
 private PaymentGatewayClient paymentClient;
 ```
 
-## New Testing Features
+## Novos recursos de teste
 
 ### RestTestClient
 
-Replaces TestRestTemplate (deprecated):
+Substitui TestRestTemplate (obsoleto):
 
 ```java
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -101,33 +101,33 @@ class OrderIntegrationTest {
 }
 ```
 
-## JUnit 6 Support
+## Compatibilidade com JUnit 6
 
-Spring Boot 4.0 uses JUnit 6 by default:
+O Spring Boot 4.0 usa JUnit 6 por padrão:
 
-- JUnit 4 is deprecated (use JUnit Vintage temporarily)
-- All JUnit 5 features still work
-- Remove JUnit 4 dependencies for clean migration
+- JUnit 4 está obsoleto (use JUnit Vintage temporariamente)
+- Todos os recursos do JUnit 5 continuam funcionando
+- Remova as dependências do JUnit 4 para uma migração limpa
 
 ## Testcontainers 2.0
 
-Module naming changed:
+Os nomes dos módulos mudaram:
 
-**Before (1.x):**
+**Antes (1.x):**
 
 ```xml
 <artifactId>postgresql</artifactId>
 ```
 
-**After (2.0):**
+**Depois (2.0):**
 
 ```xml
 <artifactId>testcontainers-postgresql</artifactId>
 ```
 
-## Non-Singleton Bean Mocking
+## Simulação de beans não singleton
 
-Spring Framework 7 allows mocking prototype-scoped beans:
+O Spring Framework 7 permite simular beans com escopo de protótipo:
 
 ```java
 @Component
@@ -137,38 +137,38 @@ public class OrderProcessor { }
 @SpringBootTest
 class OrderServiceTest {
   @MockitoBean
-  private OrderProcessor orderProcessor; // Now works!
+  private OrderProcessor orderProcessor; // Agora funciona!
 }
 ```
 
-## SpringExtension Context Changes
+## Alterações no contexto do SpringExtension
 
-Extension context is now test-method scoped by default.
+Agora, o contexto da extensão tem escopo de método de teste por padrão.
 
-If tests fail with @Nested classes:
+Se os testes falharem com classes @Nested:
 
 ```java
 @SpringExtensionConfig(useTestClassScopedExtensionContext = true)
 @SpringBootTest
 class OrderTest {
-  // Use old behavior
+  // Usa o comportamento antigo
 }
 ```
 
-## Migration Checklist
+## Lista de verificação da migração
 
-- [ ] Replace @MockBean with @MockitoBean
-- [ ] Replace @SpyBean with @MockitoSpyBean
-- [ ] Update Testcontainers dependencies to 2.0 naming
-- [ ] Add modular test starters as needed
-- [ ] Migrate TestRestTemplate to RestTestClient
-- [ ] Remove JUnit 4 dependencies
-- [ ] Update custom TestExecutionListener implementations
-- [ ] Test @Nested class behavior
+- [ ] Substituir @MockBean por @MockitoBean
+- [ ] Substituir @SpyBean por @MockitoSpyBean
+- [ ] Atualizar os nomes das dependências do Testcontainers para 2.0
+- [ ] Adicionar inicializadores de teste modulares conforme necessário
+- [ ] Migrar TestRestTemplate para RestTestClient
+- [ ] Remover dependências do JUnit 4
+- [ ] Atualizar implementações personalizadas de TestExecutionListener
+- [ ] Testar o comportamento de classes @Nested
 
-## Backward Compatibility
+## Compatibilidade retroativa
 
-Use "classic" starters for gradual migration:
+Use inicializadores "clássicos" para uma migração gradual:
 
 ```xml
 <dependency>
@@ -178,4 +178,4 @@ Use "classic" starters for gradual migration:
 </dependency>
 ```
 
-This provides old behavior while you migrate incrementally.
+Isso mantém o comportamento antigo durante a migração incremental.

@@ -17,8 +17,8 @@ services:
     language: ts
     host: staticwebapp
 
-# Add hooks only when the default lifecycle cannot express the requirement.
-# Keep nontrivial commands in scripts/azd and provide both OS variants.
+# Adicione ganchos somente quando o ciclo de vida padrão não expressar o requisito.
+# Mantenha comandos não triviais em scripts/azd e forneça variantes para os dois sistemas operacionais.
 hooks:
   preprovision:
     windows:

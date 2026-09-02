@@ -1,8 +1,10 @@
-name: Lint Markdown and Spec Quality
+name: Análise de Markdown e qualidade das especificações
 
+# `portugues-br` espelha todo o kit em pt-BR, portanto precisa das mesmas verificações de Markdown,
+# primitivas e rastreabilidade que `main`. Consulte a mesma observação em ci.yml.
 on:
   push:
-    branches: [main, develop, "spec/**"]
+    branches: [main, develop, portugues-br, "spec/**"]
   pull_request:
     paths:
       - ".github/workflows/spec-quality.yml"
@@ -19,37 +21,37 @@ concurrency:
 
 jobs:
   markdown-lint:
-    name: Markdown lint
+    name: Análise de Markdown
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
-      - name: Run markdownlint
+      - name: Executar markdownlint
         uses: DavidAnson/markdownlint-cli2-action@992badcdf24e3b8eb7e87ff9287fe931bcb00c6e # v20
         with:
-          # Exclusions live in .markdownlint-cli2.jsonc, which is the single
-          # source of truth. Do not re-list them here: a second list drifts.
+          # As exclusões ficam em .markdownlint-cli2.jsonc, que é a fonte única
+          # da verdade. Não as liste novamente aqui: uma segunda lista diverge.
           globs: "**/*.md"
 
   copilot-primitives:
-    name: Copilot primitive drift check
+    name: Verificação de divergência das primitivas do Copilot
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
-      - name: Validate agents, prompts, instructions, skills, and hooks
+      - name: Validar agentes, prompts, instruções, habilidades e ganchos (hooks)
         shell: bash
         run: |
           set -euo pipefail
           python3 .github/scripts/validate-copilot-primitives.py
 
   spec-traceability:
-    name: Report REQ-ID test traceability
+    name: Relatar rastreabilidade de testes por REQ-ID
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
-      - name: Report REQ-IDs not yet referenced by tests
+      - name: Relatar REQ-IDs ainda não referenciados por testes
         shell: bash
         run: |
           set -euo pipefail
@@ -74,7 +76,7 @@ jobs:
 
           specs_directory = Path("specs")
           if not specs_directory.is_dir():
-              print("No specs/ directory yet. Skipping test traceability report.")
+              print("O diretório specs/ ainda não existe. Ignorando o relatório de rastreabilidade de testes.")
               raise SystemExit
 
           spec_requirements = {
@@ -118,23 +120,23 @@ jobs:
           missing = sorted(spec_requirements - test_requirements)
           if missing:
               print(
-                  "::warning::REQ-IDs declared in specs/ but not yet referenced "
-                  "by automated tests:"
+                  "::warning::REQ-IDs declarados em specs/, mas ainda não referenciados "
+                  "por testes automatizados:"
               )
               print("\n".join(missing))
           elif spec_requirements:
-              print("All REQ-IDs declared in specs/ are referenced by automated tests.")
+              print("Todos os REQ-IDs declarados em specs/ são referenciados por testes automatizados.")
           else:
-              print("No REQ-IDs found in specs/ yet.")
+              print("Nenhum REQ-ID foi encontrado em specs/ até o momento.")
           PY
 
   legacy-traceability:
-    name: Legacy traceability gate (every REQ-ID must cite a .NSN/.ddm or [GREENFIELD])
+    name: Verificação de rastreabilidade com o legado (todo REQ-ID deve citar um .NSN/.ddm ou uma nova implementação [GREENFIELD])
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
-      - name: Verify source_legacy on every requirement
+      - name: Verificar source_legacy em todos os requisitos
         shell: bash
         run: |
           set -euo pipefail
@@ -144,7 +146,7 @@ jobs:
 
           requirements_directory = Path("specs")
           if not requirements_directory.is_dir():
-              print("No specs/ directory yet. Skipping legacy-traceability gate.")
+              print("O diretório specs/ ainda não existe. Ignorando a verificação de rastreabilidade com o legado.")
               raise SystemExit
 
           requirement_id = r"REQ-(?:\d+|[A-Z]+(?:-[A-Z]+)*-\d+)"
@@ -217,23 +219,23 @@ jobs:
 
           if failures:
               print(
-                  "::error::Every REQ-ID must have a valid source_legacy: line "
-                  "within 20 lines of its declaration."
+                  "::error::Todo REQ-ID deve ter uma linha source_legacy: válida "
+                  "até 20 linhas após sua declaração."
               )
               print("\n".join(failures))
               print(
-                  "\nUse either "
+                  "\nUse "
                   "source_legacy: "
                   "01-archaeology/legacy-sifap/natural-programs/<FILE>.NSN"
                   "#L<start>-L<end>"
               )
               print(
-                  'or source_legacy: "[GREENFIELD] <one-line justification>"'
+                  'ou source_legacy: "[GREENFIELD] <justificativa em uma linha>"'
               )
               raise SystemExit(1)
 
           if requirements_found:
-              print("All REQ-IDs declare a valid source_legacy. Gate passes.")
+              print("Todos os REQ-IDs declaram um source_legacy válido. A verificação foi aprovada.")
           else:
-              print("No REQ-IDs found in specs/ yet.")
+              print("Nenhum REQ-ID foi encontrado em specs/ até o momento.")
           PY

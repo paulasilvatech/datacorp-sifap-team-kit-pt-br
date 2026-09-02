@@ -1,111 +1,111 @@
 ---
 name: "spec-sync"
-description: "Detect drift between spec.md and the implementation and propose a synchronizing spec update."
+description: "Detecte divergências entre spec.md e a implementação e proponha uma atualização de sincronização da especificação."
 argument-hint: "feature=NNN-feature-name"
 agent: "requirements-engineer"
 tools: ["read", "search", "execute"]
 ---
 # /spec-sync
 
-## Objective
+## Objetivo
 
-Detect drift between `specs/<NNN>-<feature>/spec.md` and the code, classify every REQ-ID, and propose a spec patch that closes the gap. The deliverable is a drift report plus a proposed patch — not an applied edit, and never an assumption that the code is correct.
+Detectar divergências entre `specs/<NNN>-<feature>/spec.md` e o código, classificar cada REQ-ID e propor uma alteração na especificação que elimine a lacuna. A entrega é um relatório de divergências e uma alteração proposta, não uma edição aplicada. Nunca presuma que o código está correto.
 
-## When to Invoke
+## Quando usar
 
-Mid-to-late Stage 3 or Stage 4, when code has moved ahead of (or behind) the spec and the team needs to reconcile them.
+Entre a metade e o final da Etapa 3 ou na Etapa 4, quando o código estiver adiantado ou atrasado em relação à especificação e a equipe precisar reconciliá-los.
 
-## Preconditions
+## Pré-condições
 
-- `specs/<NNN>-<feature>/spec.md` exists with REQ-IDs
-- Feature code and tests exist
-- The team can confirm sources for any newly discovered behavior
+- `specs/<NNN>-<feature>/spec.md` existe com REQ-IDs
+- O código e os testes da funcionalidade existem
+- A equipe consegue confirmar as fontes de qualquer comportamento recém-descoberto
 
-## Inputs the Team Must Provide
+## Entradas que a equipe deve fornecer
 
 - `feature=<NNN>-<feature>`
-- Optional scope: a subset of REQ-IDs or packages
-- For any Undocumented behavior the team decides to keep, its `source_legacy:`
-- Ask the user for anything that is missing.
+- Escopo opcional: um subconjunto de REQ-IDs ou pacotes
+- O `source_legacy:` de qualquer comportamento Não documentado que a equipe decidir manter
+- Solicite à pessoa usuária qualquer informação ausente.
 
-## What I Will Do
+## O que farei
 
-- Parse the REQ-IDs from `spec.md`
-- Grep the codebase for REQ-ID references in comments, test names, and commit messages
-- Classify each REQ-ID: Implemented (code and test), Partial (code only), Orphaned (no code), Undocumented (code cites an unknown REQ-ID)
-- Sample three representative flows and compare the spec against the actual code path
-- Propose spec additions for Undocumented items, each with a proposed REQ-ID, EARS statement, and a required `source_legacy:` placeholder
-- Rank the top three drifts by risk
+- Analisarei os REQ-IDs de `spec.md`
+- Pesquisarei na base de código as referências a REQ-IDs em comentários, nomes de testes e mensagens de confirmação no Git
+- Classificarei cada REQ-ID como Implementado (código e teste), Parcial (somente código), Órfão (sem código) ou Não documentado (o código cita um REQ-ID desconhecido)
+- Selecionarei três fluxos representativos e compararei a especificação com o caminho real do código
+- Proporei adições à especificação para itens Não documentados, cada uma com um REQ-ID proposto, uma declaração EARS e um marcador de posição `source_legacy:` obrigatório
+- Classificarei as três principais divergências por risco
 
-## What I Will NOT Do
+## O que não farei
 
-- Auto-write the spec — I propose a patch; the product owner approves it
-- Mint a requirement for Undocumented code without demanding its `source_legacy:` (anti-hallucination guardrail and CI gate)
-- Assume code is correct because it exists — drift can mean the code is wrong, not the spec
-- Invent a legacy source for discovered behavior — the team supplies it
-- Classify anything without a `file:line` citation
+- Escrever automaticamente a especificação. Proporei uma alteração, e o Responsável pelo Produto deverá aprová-la
+- Criar um requisito para código Não documentado sem exigir seu `source_legacy:` (proteção contra alucinações e verificação obrigatória de CI)
+- Presumir que o código está correto porque existe. A divergência pode indicar que o código está errado, não a especificação
+- Inventar uma fonte legada para o comportamento descoberto. A equipe deve fornecê-la
+- Classificar qualquer item sem uma referência `file:line`
 
-## Output Format
+## Formato da saída
 
-A drift table, a proposed patch, and a ranked risk list, presented to the team.
+Uma tabela de divergências, uma alteração proposta e uma lista de riscos classificada, apresentadas à equipe.
 
-Drift table:
+Tabela de divergências:
 
 ```markdown
-## Sync report — 001-pagamento-beneficio
+## Relatório de sincronização: 001-pagamento-beneficio
 
-| REQ-ID | Status | Evidence (file:line) | Action |
+| REQ-ID | Status | Evidência (file:line) | Ação |
 |---|---|---|---|
-| REQ-PAY-014 | Implemented | PaymentBatchService.java:132; PaymentBatchServiceTest.java:88 | None |
-| REQ-PAY-021 | Partial | BenefitAmount.java:57 | Add a test referencing REQ-PAY-021 |
-| REQ-PAY-030 | Orphaned | — | Implement or defer |
-| REQ-PAY-041 | Undocumented | DuplicateFilter.java:24 | Add REQ to spec (source_legacy required) |
+| REQ-PAY-014 | Implementado | PaymentBatchService.java:132; PaymentBatchServiceTest.java:88 | Nenhuma |
+| REQ-PAY-021 | Parcial | BenefitAmount.java:57 | Adicionar um teste que faça referência a REQ-PAY-021 |
+| REQ-PAY-030 | Órfão | — | Implementar ou adiar |
+| REQ-PAY-041 | Não documentado | DuplicateFilter.java:24 | Adicionar o REQ à especificação (`source_legacy` obrigatório) |
 ```
 
-Proposed patch for each Undocumented item:
+Alteração proposta para cada item Não documentado:
 
 ```diff
 + ### REQ-PAY-041 (unwanted)
-+ If a payment line duplicates an already-imported line, then the system shall ignore the duplicate.
++ SE uma linha de pagamento duplicar uma linha já importada, ENTÃO o sistema DEVE ignorar a duplicata.
 + source_legacy: 01-archaeology/legacy-sifap/natural-programs/<PROGRAM>.NSP#L<start>-L<end>
 ```
 
-Then a "Top 3 drifts by risk" list, ordered by business impact and incident likelihood.
+Em seguida, apresente uma lista das "três principais divergências por risco", ordenada pelo impacto no negócio e pela probabilidade de incidente.
 
-## Definition of Done
+## Definição de pronto
 
-- [ ] Every REQ-ID in the spec is classified with `file:line` evidence
-- [ ] Every Undocumented finding has a proposed REQ-ID, EARS statement, and a `source_legacy:` placeholder the team must fill
-- [ ] The proposed patch applies cleanly to the current `spec.md` structure
-- [ ] Behavioral drift was checked on at least three representative flows
-- [ ] The top three drifts are ranked by risk
-- [ ] No spec file was modified
+- [ ] Cada REQ-ID da especificação está classificado com evidência `file:line`
+- [ ] Cada item Não documentado tem um REQ-ID proposto, uma declaração EARS e um marcador de posição `source_legacy:` que a equipe deve preencher
+- [ ] A alteração proposta pode ser aplicada sem conflitos à estrutura atual de `spec.md`
+- [ ] A divergência comportamental foi verificada em pelo menos três fluxos representativos
+- [ ] As três principais divergências estão classificadas por risco
+- [ ] Nenhum arquivo de especificação foi modificado
 
-## Prompt Body
+## Corpo do prompt
 
-You are the `@requirements-engineer` reconciling the written spec with what the code actually does.
+Você atua como Especialista em Requisitos (`@requirements-engineer`) e reconcilia a especificação escrita com o comportamento real do código.
 
-**Step 1 — Parse REQ-IDs.**
-Read `spec.md` and list every declared REQ-ID.
+**Etapa 1: analise os REQ-IDs.**
+Leia `spec.md` e liste cada REQ-ID declarado.
 
-**Step 2 — Grep for references.**
-Search the codebase for each REQ-ID in comments, test names, and commit messages. Record `file:line` for every hit.
+**Etapa 2: pesquise as referências.**
+Pesquise cada REQ-ID na base de código, em comentários, nomes de testes e mensagens de confirmação no Git. Registre `file:line` para cada ocorrência.
 
-**Step 3 — Classify each REQ-ID.**
-Implemented (code and test), Partial (code only), Orphaned (no code), or Undocumented (code references a REQ-ID the spec does not declare).
+**Etapa 3: classifique cada REQ-ID.**
+Use Implementado (código e teste), Parcial (somente código), Órfão (sem código) ou Não documentado (o código referencia um REQ-ID que a especificação não declara).
 
-**Step 4 — Sample behavioral drift.**
-Pick three representative flows and compare the specified behavior against the actual code path. Note mismatches.
+**Etapa 4: selecione amostras de divergência comportamental.**
+Escolha três fluxos representativos e compare o comportamento especificado com o caminho real do código. Registre as incompatibilidades.
 
-**Step 5 — Propose the patch.**
-For each Undocumented item, draft a new REQ with an EARS statement and a `source_legacy:` placeholder the team must fill. Do not invent the source.
+**Etapa 5: proponha a alteração.**
+Para cada item Não documentado, elabore um novo REQ com uma declaração EARS e um marcador de posição `source_legacy:` que a equipe deve preencher. Não invente a fonte.
 
-**Step 6 — Rank the top three by risk.**
-Order by business impact and likelihood of an incident.
+**Etapa 6: classifique os três principais riscos.**
+Ordene-os pelo impacto no negócio e pela probabilidade de incidente.
 
-Propose, do not apply. Every proposed REQ needs a `source_legacy:` line the team fills, and drift is a question about which side is right — never an assumption that code wins.
+Proponha, mas não aplique. Cada REQ proposto precisa de uma linha `source_legacy:` preenchida pela equipe. Uma divergência exige determinar qual lado está correto, sem presumir que o código prevalece.
 
-## Invocation Example
+## Exemplo de chamada
 
 ```
 /spec-sync feature=001-pagamento-beneficio
