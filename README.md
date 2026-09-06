@@ -4,12 +4,14 @@
 
 **Você está na branch `portugues-br`, com o kit em português do Brasil.** Comece por [`00-START-HERE.md`](00-START-HERE.md).
 
-| Idioma | Branch | Clone |
-|---|---|---|
-| **Português (BR)** | [`portugues-br`](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/tree/portugues-br) | `git clone -b portugues-br https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br.git` |
-| **English** | [`main`](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/tree/main) | `git clone https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br.git` |
+| Idioma | Branch | Documentação | Clone |
+|---|---|---|---|
+| **Português (BR)** | [`portugues-br`](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/tree/portugues-br) | [Comece aqui](00-START-HERE.md) · [Índice da documentação](docs/README.md) | `git clone -b portugues-br https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br.git` |
+| **English** | [`main`](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/tree/main) | [Start here](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/blob/main/00-START-HERE.md) · [Documentation index](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/blob/main/docs/README.md) | `git clone https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br.git` |
 
 As duas branches usam os mesmos nomes de arquivo e a mesma estrutura de pastas. Apenas o idioma do conteúdo muda.
+
+Os links relativos mantêm você na branch selecionada. Use a tabela acima para trocar o idioma da documentação.
 
 ![Jornada de modernização do SIFAP: de Natural e Adabas para Java 21 e Next.js 15](assets/hero-sifap-journey.svg)
 

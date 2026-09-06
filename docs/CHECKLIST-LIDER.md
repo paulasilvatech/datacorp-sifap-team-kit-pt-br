@@ -123,7 +123,7 @@ Qualquer resposta negativa exige intervenção imediata.
 | O Developer quer refatorar sem um teste existente | Rejeite. Interrompa a refatoração sem cobertura. |
 | O Agent gera um pull request de baixa qualidade | Não integre. Solicite mudanças ou implemente manualmente. |
 | Restam 30 minutos e a demonstração não funciona | Reduza o escopo da demonstração em vez de tentar corrigir o problema. |
-| O Copilot está indisponível | Use o Plano B em [troubleshooting.md](troubleshooting.md#plan-b--copilot-outage). |
+| O Copilot está indisponível | Use o Plano B em [troubleshooting.md](troubleshooting.md#plano-b--indisponibilidade-do-copilot). |
 
 ---
 
