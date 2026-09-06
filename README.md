@@ -2,6 +2,16 @@
 
 > **Track:** **Team kit** (you are here)
 
+**You are on `main`, the English kit.** Start at [`00-START-HERE.md`](00-START-HERE.md).
+
+| Language | Branch | Documentation | Clone |
+|---|---|---|---|
+| **English** | [`main`](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/tree/main) | [Start here](00-START-HERE.md) · [Documentation index](docs/README.md) | `git clone https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br.git` |
+| **Português (BR)** | [`portugues-br`](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/tree/portugues-br) | [Comece aqui](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/blob/portugues-br/00-START-HERE.md) · [Índice da documentação](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/blob/portugues-br/docs/README.md) | `git clone -b portugues-br https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br.git` |
+
+Both branches share the same file names and folder structure. Relative links keep you on the selected branch.
+Use the table above to change the documentation language.
+
 ![SIFAP modernization journey: from Natural and Adabas to Java 21 and Next.js 15](assets/hero-sifap-journey.svg)
 
 **The mission in one sentence:** you and four teammates have **eight hours** to modernize the 29-year-old **Payment Inspection and Administration System (SIFAP)**, moving from legacy Natural/Adabas to Java 21 + Next.js 15, with full traceability from the modern code back to the original business rules.
