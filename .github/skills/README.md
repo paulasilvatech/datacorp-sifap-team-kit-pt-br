@@ -1,13 +1,13 @@
 # Índice de habilidades
 
-Este diretório contém as habilidades de agentes (Agent Skills) do GitHub Copilot para a imersão: **43** no total, cada uma em seu próprio `<name>/SKILL.md`.
+Este diretório contém as habilidades de agentes (Agent Skills) do GitHub Copilot para a imersão: **42** no total, cada uma em seu próprio `<name>/SKILL.md`.
 
 > [!NOTE]
 > O Copilot descobre arquivos `SKILL.md` em `.github/skills/<name>/` e carrega uma habilidade automaticamente ao comparar semanticamente sua solicitação com a `description`. Essa comparação não é visível para as pessoas, por isso este índice existe. As descrições abaixo são essenciais: cada uma informa *quando usar* a habilidade, portanto mantenha-as precisas.
 
 ## Habilidades por área
 
-Todas as 43 habilidades, agrupadas pelo que fazem. Cada habilidade aparece em apenas um grupo.
+Todas as 42 habilidades, agrupadas pelo que fazem. Cada habilidade aparece em apenas um grupo.
 
 ### Imersão, SDD e requisitos (6 habilidades)
 
