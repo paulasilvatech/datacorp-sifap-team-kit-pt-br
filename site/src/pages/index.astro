@@ -1,0 +1,8 @@
+---
+import { getCatalog, siteHref } from "../lib/catalog";
+const catalog = getCatalog();
+---
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width" /><meta http-equiv="refresh" content={`0;url=${siteHref("en")}`} /><title>SIFAP · Choose your language</title></head>
+<body><main><h1>SIFAP</h1><p>Choose your language · Elige tu idioma · Escolha seu idioma</p>
+<nav aria-label="Language">{catalog.editions.map((edition) => <p><a href={siteHref(edition.code)} lang={edition.code}>{edition.label}</a></p>)}</nav></main></body></html>

@@ -18,11 +18,11 @@
 ## Language branches and integration branches
 
 The published kit keeps `main` as its English default branch and `develop` as its English integration branch.
-The permanent `portugues-br` branch contains Brazilian Portuguese documentation and Copilot instructions, not feature work.
+The permanent `portugues-br` and `espanol` branches contain Brazilian Portuguese and Spanish documentation and Copilot instructions, not feature work.
 Use the [language selector](README.md#repository-languages) to open either edition.
 
 Feature branches follow the `develop` -> `main` workflow below. Merges into `main` require passing CI and at least one peer review.
-For a shared correction, integrate the English change through `develop`, then port and translate the relevant change to `portugues-br`.
+For a shared correction, integrate the English change through `develop`, then port and translate the relevant change to `portugues-br` and `espanol`.
 Keep language-specific corrections on their language branch. Never merge the entire Portuguese documentation tree into `main` or `develop`.
 
 ## What each concept means (quick reference)

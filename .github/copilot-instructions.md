@@ -18,9 +18,10 @@ Use the skills in [`.github/skills/`](skills/) for specialized workflows. Copilo
 
 ## Repository languages
 
-- Keep documentation and all Copilot primitive prose (agents, prompts, instructions, skills, and hooks) on `main` and `develop` in English; publish Brazilian Portuguese on `portugues-br`.
+- Keep documentation and all Copilot primitive prose (agents, prompts, instructions, skills, and hooks) on `main` and `develop` in English; publish Brazilian Portuguese on `portugues-br` and Spanish on `espanol`.
 - Follow the target branch's language, not the conversation language. Never merge the translated documentation tree into `main`.
 - Preserve technical paths, identifiers, and legacy sources. Keep the [language selector](../README.md#repository-languages) linked to existing language branches and their instructions.
+- The documentation portal in `site/` uses Astro + React, independently of the SIFAP application. Its localized interface dictionaries are allowed on `main`; repository documentation remains English. See [ADR-0002](../docs/adr/0002-trilingual-documentation-portal.md).
 
 ## Target Stack
 

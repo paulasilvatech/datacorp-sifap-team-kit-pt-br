@@ -713,6 +713,48 @@ INSTRUCTION_REQUIRED_SECTIONS = [
     "Checklist Before Opening a PR",
 ]
 
+SPANISH_SECTION_NAMES = {
+    "Misión": "Mission",
+    "Personas líderes": "Lead Personas",
+    "Principios operativos": "Operating Principles",
+    "Lo que este agente sabe": "What This Agent Knows",
+    "Lo que este agente NO sabe": "What This Agent Does NOT Know",
+    "Prompts disponibles": "Available Prompts",
+    "Antipatrones que este agente rechaza": "Anti-Patterns This Agent Rejects",
+    "Integración con Spec-Kit": "Spec-Kit Integration",
+    "Objetivo": "Objective",
+    "Cuándo invocar": "When to Invoke",
+    "Precondiciones": "Preconditions",
+    "Entradas que debe proporcionar el equipo": "Inputs the Team Must Provide",
+    "Lo que haré": "What I Will Do",
+    "Lo que NO haré": "What I Will NOT Do",
+    "Formato de salida": "Output Format",
+    "Definición de terminado": "Definition of Done",
+    "Cuerpo del prompt": "Prompt Body",
+    "Ejemplo de invocación": "Invocation Example",
+    "Plantilla de salida": "Output template",
+    "Puerta de calidad": "Quality gate",
+    "Convenciones": "Conventions",
+    "Qué hacer / Qué no hacer": "Do / Do Not",
+    "Lista de verificación antes de abrir una PR": "Checklist Before Opening a PR",
+}
+
+
+def canonical_section_title(title: str) -> str:
+    language_file = REPO_ROOT / ".github/language.json"
+    if not language_file.is_file():
+        return title
+    language = json.loads(language_file.read_text(encoding="utf-8"))["language"]
+    if language not in {"en", "es", "pt-br"}:
+        raise ValueError(f"Unsupported repository language: {language}")
+    if language != "es":
+        return title
+    if title.startswith("Definición de terminado de la Etapa "):
+        return f"{title} Definition of Done"
+    if title.endswith(" Definición de terminado"):
+        return f"{title[:-len(' Definición de terminado')]} Definition of Done"
+    return SPANISH_SECTION_NAMES.get(title, title)
+
 
 def h2_sections(rel: str) -> list[tuple[str, int]]:
     """Return (title, 1-based line) for each real ## heading in a Markdown file.
@@ -729,7 +771,7 @@ def h2_sections(rel: str) -> list[tuple[str, int]]:
             continue
         heading = H2_RE.match(lines[i])
         if heading:
-            title = ATX_CLOSING_RE.sub("", heading.group(1)).strip()
+            title = canonical_section_title(ATX_CLOSING_RE.sub("", heading.group(1)).strip())
             sections.append((title, i + 1))
     return sections
 

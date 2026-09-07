@@ -6,15 +6,21 @@ Start at [`00-START-HERE.md`](00-START-HERE.md).
 
 ## Repository languages
 
-**`main` is always the English edition and the default branch.** The Brazilian Portuguese edition lives on `portugues-br`.
+**`main` is always the English edition and the default branch.** Brazilian Portuguese lives on `portugues-br`, and Spanish on `espanol`.
 
 | Language | Branch | Documentation | Clone |
 |---|---|---|---|
 | **English** | [`main`](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/tree/main) | [Start here](00-START-HERE.md) · [Documentation index](docs/README.md) · [Copilot instructions](.github/copilot-instructions.md) | `git clone --branch main https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit.git` |
 | **Português (BR)** | [`portugues-br`](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/tree/portugues-br) | [Start here (pt-BR)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/portugues-br/00-START-HERE.md) · [Documentation index (pt-BR)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/portugues-br/docs/README.md) · [Copilot instructions (pt-BR)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/portugues-br/.github/copilot-instructions.md) | `git clone --branch portugues-br https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit.git` |
 
+| **Español** | [`espanol`](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/tree/espanol) | [Start here (ES)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/espanol/00-START-HERE.md) · [Documentation index (ES)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/espanol/docs/README.md) · [Copilot instructions (ES)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/espanol/.github/copilot-instructions.md) | `git clone --branch espanol https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit.git` |
+
+**Read the complete kit on the website:** [EN](https://workshop-gbb.github.io/datacorp-sifap-modernization-team-kit/en/) · [ES](https://workshop-gbb.github.io/datacorp-sifap-modernization-team-kit/es/) · [PT-BR](https://workshop-gbb.github.io/datacorp-sifap-modernization-team-kit/pt-br/).
+The portal includes every Markdown document in full, a searchable file catalog, original downloads and links back to the repository. You can follow the same instructions in either place.
+
 - Keep documentation and all Copilot primitive prose on `main` and `develop` in English, regardless of the conversation language.
 - Keep Brazilian Portuguese documentation and Copilot primitive prose on `portugues-br`; do not merge the translated documentation tree into `main`.
+- Keep Spanish documentation and Copilot primitive prose on `espanol`; translations never replace English on `main` or `develop`.
 - Preserve file names, paths, technical identifiers, and original Natural/Adabas sources when translating.
 - Add other languages to this table only after their branches exist. Native language names are allowed in the English language selector.
 
