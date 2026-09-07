@@ -2,6 +2,8 @@
 
 > **Trilha:** [Kit do Time](../README.md) › **Documentação**
 
+**Idioma:** português do Brasil (`portugues-br`). Use o [seletor de idiomas](../README.md#idiomas-do-repositório) para abrir a documentação e as instruções do Copilot de cada branch.
+
 **Índice da documentação transversal da imersão** — recursos usados em qualquer estágio do dia.
 
 | Campo | Valor |

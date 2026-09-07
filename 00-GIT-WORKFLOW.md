@@ -15,6 +15,16 @@
 
 ---
 
+## Branches de idioma e de integração
+
+O kit publicado mantém a `main` como branch padrão em inglês e a `develop` como branch de integração em inglês.
+A branch permanente `portugues-br` contém documentação e instruções do Copilot em português do Brasil, não trabalho de funcionalidades.
+Use o [seletor de idiomas](README.md#idiomas-do-repositório) para abrir qualquer edição.
+
+As branches de funcionalidades seguem o fluxo `develop` -> `main` descrito abaixo. Merges na `main` exigem CI verde e pelo menos uma revisão por pares.
+Para uma correção compartilhada, integre a mudança em inglês pela `develop`, depois porte e traduza a mudança pertinente para `portugues-br`.
+Mantenha correções específicas de idioma na respectiva branch. Nunca faça merge da árvore inteira de documentação em português na `main` ou na `develop`.
+
 ## O que cada conceito significa (referência rápida)
 
 | Conceito Git | Significado prático |

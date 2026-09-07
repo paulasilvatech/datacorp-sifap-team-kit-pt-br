@@ -28,7 +28,7 @@ Prefira atualizar uma primitiva existente em vez de adicionar outra quase duplic
 
 ### Markdown e estilo
 
-- [ ] Somente português do Brasil. Mantenha em inglês os nomes técnicos quando forem oficiais. Não use emojis; comunique NOTE, TIP, IMPORTANT, WARNING e CAUTION com alertas GFM como `> [!NOTE]`.
+- [ ] Inglês na `main` e na `develop`; português do Brasil na `portugues-br`, incluindo a prosa das primitivas. Siga a [política de idiomas](../README.md#idiomas-do-repositório), preservando caminhos, identificadores e schemas. Mantenha os nomes técnicos oficiais. Não use emojis; comunique NOTE, TIP, IMPORTANT, WARNING e CAUTION com alertas GFM como `> [!NOTE]`.
 - [ ] Exatamente um H1 (`#`) por arquivo: o título do documento, abaixo do frontmatter. O validador de primitivas impõe esta regra; a MD025 do markdownlint (vários títulos de nível superior) está desativada.
 - [ ] A linha em branco entre o `---` de fechamento e o H1 é opcional, e as duas formas passam no lint: agentes, prompts e skills a omitem, enquanto os arquivos de instruções a mantêm. A MD022 não dispara no limite do frontmatter e não é sobrescrita. Siga os arquivos vizinhos no mesmo diretório em vez de forçar um diff sem outra finalidade.
 - [ ] Nunca pule um nível de título; use `#`, depois `##` e então `###`.

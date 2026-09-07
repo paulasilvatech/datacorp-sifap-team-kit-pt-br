@@ -2,16 +2,25 @@
 
 > **Trilha:** **Kit do time** (você está aqui)
 
-**Você está na branch `portugues-br`, com o kit em português do Brasil.** Comece por [`00-START-HERE.md`](00-START-HERE.md).
+Comece por [`00-START-HERE.md`](00-START-HERE.md).
+
+## Idiomas do repositório
+
+**A `main` permanece sempre em inglês e é a branch padrão.** Esta edição em português do Brasil fica na branch `portugues-br`.
 
 | Idioma | Branch | Documentação | Clone |
 |---|---|---|---|
-| **Português (BR)** | [`portugues-br`](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/tree/portugues-br) | [Comece aqui](00-START-HERE.md) · [Índice da documentação](docs/README.md) | `git clone -b portugues-br https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br.git` |
-| **English** | [`main`](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/tree/main) | [Start here](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/blob/main/00-START-HERE.md) · [Documentation index](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/blob/main/docs/README.md) | `git clone https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br.git` |
+| **Português (BR)** | [`portugues-br`](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/tree/portugues-br) | [Comece aqui](00-START-HERE.md) · [Índice da documentação](docs/README.md) · [Instruções do Copilot](.github/copilot-instructions.md) | `git clone --branch portugues-br https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br.git` |
+| **English** | [`main`](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/tree/main) | [Comece aqui (inglês)](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/blob/main/00-START-HERE.md) · [Índice da documentação (inglês)](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/blob/main/docs/README.md) · [Instruções do Copilot (inglês)](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/blob/main/.github/copilot-instructions.md) | `git clone --branch main https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br.git` |
 
-As duas branches usam os mesmos nomes de arquivo e a mesma estrutura de pastas. Apenas o idioma do conteúdo muda.
+- Mantenha a documentação e toda a prosa das primitivas do Copilot da `main` e da `develop` em inglês, independentemente do idioma da conversa.
+- Mantenha a documentação e a prosa das primitivas do Copilot em português do Brasil na `portugues-br`; não faça merge da árvore traduzida na `main`.
+- Preserve nomes de arquivos, caminhos, identificadores técnicos e fontes originais Natural/Adabas ao traduzir.
+- Acrescente outros idiomas à tabela somente depois que suas branches existirem. O seletor pode mostrar os nomes nativos dos idiomas.
 
 Os links relativos mantêm você na branch selecionada. Use a tabela acima para trocar o idioma da documentação.
+
+---
 
 ![Jornada de modernização do SIFAP: de Natural e Adabas para Java 21 e Next.js 15](assets/hero-sifap-journey.svg)
 
@@ -194,7 +203,7 @@ Detalhes e comandos de emergência: [`00-GIT-WORKFLOW.md`](00-GIT-WORKFLOW.md)
 ```bash
 # Clone e abra no VS Code
 cd ~/Code
-git clone <url-do-repo-do-seu-time> immersion-team-XX
+git clone --branch main <url-do-repo-do-seu-time> immersion-team-XX
 cd immersion-team-XX
 git checkout develop
 code .

@@ -16,6 +16,12 @@ O kit usa **duas camadas de agentes** (um kit de persona por pessoa + um agente 
 
 Use as skills em [`.github/skills/`](skills/) para fluxos de trabalho especializados. O Copilot seleciona a skill pertinente por sua descrição; não duplique fluxos especializados nestas instruções globais.
 
+## Idiomas do repositório
+
+- Mantenha a documentação e toda a prosa das primitivas do Copilot (agentes, prompts, instruções, skills e hooks) da `main` e da `develop` em inglês; publique português do Brasil na `portugues-br`.
+- Siga o idioma da branch de destino, não o da conversa. Nunca faça merge da árvore de documentação traduzida na `main`.
+- Preserve caminhos técnicos, identificadores e fontes legadas. Mantenha o [seletor de idiomas](../README.md#idiomas-do-repositório) ligado às branches existentes e às respectivas instruções.
+
 ## Stack-alvo
 
 - **Backend:** Java 21 + Spring Boot 3.3 + JPA/Hibernate + PostgreSQL 16

@@ -100,7 +100,7 @@ No seu laptop, você clona só o repositório do seu time:
 
 - [ ] **Crie o repositório a partir do template.**
 
-1. Abra o repositório principal da imersão no GitHub. Os facilitadores vão passar a URL no formato `https://github.com/<TEMPLATE_ORG>/immersion-preto-00`.
+1. Abra o [template público do time](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/tree/main).
 2. Clique em **Use this template** -> **Create a new repository**.
 3. Preencha:
 
@@ -108,10 +108,15 @@ No seu laptop, você clona só o repositório do seu time:
 - **Repository name**: `immersion-team-XX` (troque XX pelo número do seu time, por exemplo `immersion-team-01`)
 - **Description**: `Imersão DATACORP 2026 - Time XX`
 - **Visibility**: Private
+- **Include all branches**: deixe desmarcado. Copie somente a `main` em inglês; o Passo 3 cria a `develop` a partir do mesmo histórico.
 
 4. Clique em **Create repository**.
 
 Agora você deve ver uma cópia completa do kit em `https://github.com/<IMMERSION_ORG>/immersion-team-XX`, incluindo documentação, código legado, templates, workflows e arquivos `.github/`.
+
+O template usa a `main` por padrão, mesmo quando você navega por uma branch traduzida antes de criar o repositório.
+Para ler em português, abra a [edição em português do Brasil](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/tree/portugues-br).
+Mantenha a `main` e a `develop` do time em inglês; branches de idioma não são branches de integração.
 
 ---
 
@@ -124,7 +129,7 @@ Agora você deve ver uma cópia completa do kit em `https://github.com/<IMMERSIO
 mkdir -p ~/Code && cd ~/Code
 
 # 2. Clone o repositório do seu time
-git clone https://github.com/<IMMERSION_ORG>/immersion-team-01.git
+git clone --branch main https://github.com/<IMMERSION_ORG>/immersion-team-01.git
 cd immersion-team-01
 
 # 3. Confirme que o template veio intacto
@@ -229,7 +234,7 @@ done
 mkdir -p ~/Code && cd ~/Code
 
 # Troque 01 pelo número real do seu time e <IMMERSION_ORG> pela organização informada no dia
-git clone https://github.com/<IMMERSION_ORG>/immersion-team-01.git
+git clone --branch main https://github.com/<IMMERSION_ORG>/immersion-team-01.git
 cd immersion-team-01
 
 # Mude para a branch develop, onde acontece o trabalho do dia a dia

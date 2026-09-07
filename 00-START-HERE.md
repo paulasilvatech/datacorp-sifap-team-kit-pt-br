@@ -2,6 +2,8 @@
 
 > **Trilha:** [Kit do time](README.md) › **Comece aqui**
 
+**Idioma:** português do Brasil (`portugues-br`). O [seletor de idiomas e instruções do Copilot](README.md#idiomas-do-repositório) também leva à edição em inglês.
+
 **Se você acabou de chegar e quer saber "e agora, o que eu faço?", esta página é para você.** Não importa se você é Product Owner, Tech Writer, Developer, analista de negócio ou DBA. Os 15 minutos abaixo funcionam para todo mundo.
 
 ![Comece](https://img.shields.io/badge/Comece-00-171717?style=flat-square) ![Duração: 15 min](https://img.shields.io/badge/Dura%C3%A7%C3%A3o-15%20min-737373?style=flat-square) ![Público: time inteiro](https://img.shields.io/badge/P%C3%BAblico-Time%20inteiro-A3A3A3?style=flat-square)
