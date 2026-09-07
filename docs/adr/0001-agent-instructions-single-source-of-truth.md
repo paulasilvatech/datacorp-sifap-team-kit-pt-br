@@ -71,6 +71,6 @@ We will **not** add a root `AGENTS.md` (nor `CLAUDE.md` / `GEMINI.md`). `.github
 
 | Previous | Next |
 |---|---|
-| [ADRs — Index](README.md)<br/><sub>Index of recorded decisions.</sub> | [Failure register](../failures/README.md)<br/><sub>Known agent failures and the guardrail for each.</sub> |
+| [ADRs — Index](README.md)<br/><sub>Index of recorded decisions.</sub> | [Documentation](../README.md)<br/><sub>Index of the kit's cross-cutting resources.</sub> |
 
 <sub>[Back to the kit index](../../README.md)</sub>

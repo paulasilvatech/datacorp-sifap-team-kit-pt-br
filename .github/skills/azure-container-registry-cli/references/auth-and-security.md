@@ -9,7 +9,7 @@
 - [AKS Integration](#aks-integration)
 - [Repository-Scoped Tokens](#repository-scoped-tokens)
 - [Admin User](#admin-user)
-- [Content Trust](#content-trust)
+- [Content Trust (deprecated)](#content-trust-deprecated)
 
 ---
 

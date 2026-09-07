@@ -28,7 +28,7 @@ Prefer updating an existing primitive over adding a near-duplicate one.
 
 ### Markdown and style
 
-- [ ] English only. No emojis — convey NOTE, TIP, IMPORTANT, WARNING, and CAUTION with GFM alerts such as `> [!NOTE]`.
+- [ ] English on `main` and `develop`; Brazilian Portuguese on `portugues-br`, including primitive prose. Follow the [repository language policy](../README.md#repository-languages), preserving paths, identifiers, and schemas. No emojis; convey NOTE, TIP, IMPORTANT, WARNING, and CAUTION with GFM alerts such as `> [!NOTE]`.
 - [ ] Exactly one H1 (`#`) per file — the document title, below the frontmatter. The primitive validator enforces this; markdownlint's MD025 (multiple top-level headings) is disabled.
 - [ ] The blank line between the closing `---` and the H1 is optional, and both forms lint clean: agents, prompts, and skills omit it, while the instruction files keep one. MD022 does not fire on the frontmatter boundary and is not overridden, so match the sibling files in the same directory rather than forcing a churn-only diff.
 - [ ] Never skip a heading level; go `#`, then `##`, then `###`.
