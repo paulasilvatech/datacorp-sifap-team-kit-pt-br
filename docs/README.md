@@ -2,6 +2,8 @@
 
 > **Path:** [Team Kit](../README.md) › **Docs**
 
+**Language:** English (`main`). Use the [language selector](../README.md#repository-languages) for translated documentation and branch-specific Copilot instructions.
+
 **Index of the workshop's cross-cutting documentation** — resources used at any stage of the day.
 
 | Field | Value |

@@ -2,6 +2,8 @@
 
 > **Track:** [Team kit](README.md) › **Start here**
 
+**Language:** English (`main`). The [language selector and Copilot instructions](README.md#repository-languages) also link to the Brazilian Portuguese edition.
+
 **If you just got here and want to know, "What do I do now?" this page is for you.** It does not matter whether you are a Product Owner, Tech Writer, Developer, business analyst, or DBA. The 15 minutes below work for everyone.
 
 ![Start](https://img.shields.io/badge/Start-00-171717?style=flat-square) ![Duration: 15 min](https://img.shields.io/badge/Duration-15%20min-737373?style=flat-square) ![Audience: whole team](https://img.shields.io/badge/Audience-Whole%20team-A3A3A3?style=flat-square)

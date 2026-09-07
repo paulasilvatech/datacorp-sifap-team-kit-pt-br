@@ -21,7 +21,7 @@ no Super Mario analogies, and with Mermaid diagrams in neutral tones
 | R4 | **This guide governs `docs/` and the numbered stage folders — not `.github/`.** Copilot primitives under `.github/` follow their own structural standard (agent, prompt, instruction, and skill templates); a documentation pass must not restructure them as prose. Links *pointing to* `.github/...` remain valid and must be preserved. |
 | R5 | **Do not invent new factual content.** Preserve 100% of the existing technical information, commands, paths, REQ-IDs, file names, and data tables. Changes concern form, educational quality, and organization—not facts. |
 | R6 | **Do not break links.** When renaming a file, update every link that points to it. Relative paths must remain correct. |
-| R7 | Write in **English**, with an educational and instructive tone (see §6). This applies to documentation, Copilot primitives under `.github/`, code, and comments alike. |
+| R7 | Keep documentation prose in **English on `main` and `develop`**, and in **Brazilian Portuguese on `portugues-br`**. Follow the [repository language policy](../README.md#repository-languages); native language names are allowed in the selector, not duplicated translated sections on `main`. Preserve file names, paths, schemas, technical identifiers, code behavior, and original legacy sources. Copilot primitives are outside this guide's scope; their language and structure follow [`.github/PRIMITIVE-STANDARD.md`](../.github/PRIMITIVE-STANDARD.md). |
 
 ---
 

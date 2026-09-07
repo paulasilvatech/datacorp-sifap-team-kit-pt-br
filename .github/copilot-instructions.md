@@ -16,6 +16,12 @@ The kit uses **two agent layers** (one persona kit per person + one stage agent 
 
 Use the skills in [`.github/skills/`](skills/) for specialized workflows. Copilot selects the relevant skill from its description; do not duplicate specialized workflows in these global instructions.
 
+## Repository languages
+
+- Keep documentation and all Copilot primitive prose (agents, prompts, instructions, skills, and hooks) on `main` and `develop` in English; publish Brazilian Portuguese on `portugues-br`.
+- Follow the target branch's language, not the conversation language. Never merge the translated documentation tree into `main`.
+- Preserve technical paths, identifiers, and legacy sources. Keep the [language selector](../README.md#repository-languages) linked to existing language branches and their instructions.
+
 ## Target Stack
 
 - **Backend:** Java 21 + Spring Boot 3.3 + JPA/Hibernate + PostgreSQL 16

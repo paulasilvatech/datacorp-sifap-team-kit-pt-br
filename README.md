@@ -2,15 +2,25 @@
 
 > **Track:** **Team kit** (you are here)
 
-**You are on `main`, the English kit.** Start at [`00-START-HERE.md`](00-START-HERE.md).
+Start at [`00-START-HERE.md`](00-START-HERE.md).
+
+## Repository languages
+
+**`main` is always the English edition and the default branch.** The Brazilian Portuguese edition lives on `portugues-br`.
 
 | Language | Branch | Documentation | Clone |
 |---|---|---|---|
-| **English** | [`main`](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/tree/main) | [Start here](00-START-HERE.md) · [Documentation index](docs/README.md) | `git clone https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br.git` |
-| **Português (BR)** | [`portugues-br`](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/tree/portugues-br) | [Comece aqui](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/blob/portugues-br/00-START-HERE.md) · [Índice da documentação](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/blob/portugues-br/docs/README.md) | `git clone -b portugues-br https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br.git` |
+| **English** | [`main`](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/tree/main) | [Start here](00-START-HERE.md) · [Documentation index](docs/README.md) · [Copilot instructions](.github/copilot-instructions.md) | `git clone --branch main https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit.git` |
+| **Português (BR)** | [`portugues-br`](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/tree/portugues-br) | [Start here (pt-BR)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/portugues-br/00-START-HERE.md) · [Documentation index (pt-BR)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/portugues-br/docs/README.md) · [Copilot instructions (pt-BR)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/portugues-br/.github/copilot-instructions.md) | `git clone --branch portugues-br https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit.git` |
 
-Both branches share the same file names and folder structure. Relative links keep you on the selected branch.
-Use the table above to change the documentation language.
+- Keep documentation and all Copilot primitive prose on `main` and `develop` in English, regardless of the conversation language.
+- Keep Brazilian Portuguese documentation and Copilot primitive prose on `portugues-br`; do not merge the translated documentation tree into `main`.
+- Preserve file names, paths, technical identifiers, and original Natural/Adabas sources when translating.
+- Add other languages to this table only after their branches exist. Native language names are allowed in the English language selector.
+
+Relative links keep you on the selected branch. Use the table above to change the documentation language.
+
+---
 
 ![SIFAP modernization journey: from Natural and Adabas to Java 21 and Next.js 15](assets/hero-sifap-journey.svg)
 
@@ -193,7 +203,7 @@ Details and emergency commands: [`00-GIT-WORKFLOW.md`](00-GIT-WORKFLOW.md)
 ```bash
 # Clone and open in VS Code
 cd ~/Code
-git clone <url-do-repo-do-seu-time> workshop-team-XX
+git clone --branch main <YOUR-TEAM-REPOSITORY-URL> workshop-team-XX
 cd workshop-team-XX
 git checkout develop
 code .

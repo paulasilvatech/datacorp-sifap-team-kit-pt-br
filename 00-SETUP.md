@@ -98,18 +98,26 @@ On your laptop, you clone only your team's repository:
 
 ### Using the template on GitHub
 
+> [!IMPORTANT]
+> This flow requires **Template repository** to be enabled on the public team kit. If **Use this template** is unavailable, contact a facilitator before creating the team repository.
+
 - [ ] **Create the repository from the template.**
 
-1. Open the main workshop repository on GitHub. The facilitators will provide the URL in the format `https://github.com/<TEMPLATE_ORG>/workshop-preto-00`.
+1. Open the [public team kit](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/tree/main).
 2. Click **Use this template** -> **Create a new repository**.
 3. Fill in:
    - **Owner**: the workshop organization provided by the facilitators, inside the `software-gbb-workshops` Enterprise. Do not choose your personal user.
    - **Repository name**: `workshop-team-XX` (replace XX with your team number, for example `workshop-team-01`)
    - **Description**: `DATACORP 2026 Workshop - Team XX`
    - **Visibility**: Private
+   - **Include all branches**: leave unchecked. Copy the English `main` only; Step 3 creates `develop` from the same history.
 4. Click **Create repository**.
 
 You should now see a full copy of the kit at `https://github.com/<WORKSHOP_ORG>/workshop-team-XX`, including documentation, legacy code, templates, workflows, and `.github/` files.
+
+The template uses `main` by default, even when you browse a translated branch before creating the repository.
+For Portuguese reading material, open the [Brazilian Portuguese edition](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/tree/portugues-br).
+Keep the team's `main` and `develop` in English; language branches are not integration branches.
 
 ---
 
@@ -122,7 +130,7 @@ You should now see a full copy of the kit at `https://github.com/<WORKSHOP_ORG>/
 mkdir -p ~/Code && cd ~/Code
 
 # 2. Clone your team's repository
-git clone https://github.com/<WORKSHOP_ORG>/workshop-team-01.git
+git clone --branch main https://github.com/<WORKSHOP_ORG>/workshop-team-01.git
 cd workshop-team-01
 
 # 3. Confirm that the template came across intact
@@ -227,7 +235,7 @@ done
 mkdir -p ~/Code && cd ~/Code
 
 # Replace 01 with your actual team number and <WORKSHOP_ORG> with the organization provided that day
-git clone https://github.com/<WORKSHOP_ORG>/workshop-team-01.git
+git clone --branch main https://github.com/<WORKSHOP_ORG>/workshop-team-01.git
 cd workshop-team-01
 
 # Switch to the develop branch, where day-to-day work happens
