@@ -98,9 +98,12 @@ On your laptop, you clone only your team's repository:
 
 ### Using the template on GitHub
 
+> [!IMPORTANT]
+> This flow requires **Template repository** to be enabled on the public team kit. If **Use this template** is unavailable, contact a facilitator before creating the team repository.
+
 - [ ] **Create the repository from the template.**
 
-1. Open the [public team template](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/tree/main).
+1. Open the [public team kit](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/tree/main).
 2. Click **Use this template** -> **Create a new repository**.
 3. Fill in:
    - **Owner**: the workshop organization provided by the facilitators, inside the `software-gbb-workshops` Enterprise. Do not choose your personal user.
@@ -113,7 +116,7 @@ On your laptop, you clone only your team's repository:
 You should now see a full copy of the kit at `https://github.com/<WORKSHOP_ORG>/workshop-team-XX`, including documentation, legacy code, templates, workflows, and `.github/` files.
 
 The template uses `main` by default, even when you browse a translated branch before creating the repository.
-For Portuguese reading material, open the [Brazilian Portuguese edition](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/tree/portugues-br).
+For Portuguese reading material, open the [Brazilian Portuguese edition](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/tree/portugues-br).
 Keep the team's `main` and `develop` in English; language branches are not integration branches.
 
 ---
