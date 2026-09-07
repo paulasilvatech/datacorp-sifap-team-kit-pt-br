@@ -35,7 +35,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
-          node-version: "24"
+          node-version: "24.20.0"
           cache: npm
           cache-dependency-path: site/package-lock.json
       - name: Verify repository and Pages access
@@ -97,7 +97,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
-          node-version: "24"
+          node-version: "24.20.0"
       - name: Fail closed if private access changed
         env:
           GH_TOKEN: ${{ github.token }}
