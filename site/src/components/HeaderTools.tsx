@@ -96,8 +96,8 @@ export default function HeaderTools({ locale, basePath }: { locale: Locale; base
   }
 
   return <div className="header-island">
-    <button ref={trigger} className="icon-button search-trigger" type="button" aria-label={words.searchHint} onClick={() => setOpen(true)}>
-      <SearchIcon size={18} aria-hidden="true" /><span className="search-label">{words.search} <kbd>⌘K</kbd></span>
+    <button ref={trigger} className="icon-button search-trigger" type="button" aria-label={words.searchHint} aria-keyshortcuts="Control+k Meta+k" onClick={() => setOpen(true)}>
+      <SearchIcon size={18} aria-hidden="true" /><span className="search-label">{words.search} <kbd>Ctrl / ⌘ K</kbd></span>
     </button>
     <button className="icon-button" type="button" onClick={toggleTheme} aria-label={dark ? words.light : words.dark} aria-pressed={dark}>
       {dark ? <SunIcon size={18} aria-hidden="true" /> : <MoonIcon size={18} aria-hidden="true" />}

@@ -1,6 +1,14 @@
 import { expect, test } from "@playwright/test";
 import { t } from "../../src/lib/i18n";
 
+test("lets readers choose a language at the root without a forced redirect", async ({ page }) => {
+  // REQ-PORTAL-002, REQ-PORTAL-006
+  await page.goto("./");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Choose your language.");
+  await expect(page.locator('meta[http-equiv="refresh"]')).toHaveCount(0);
+  await expect(page.getByRole("navigation", { name: "Choose a complete edition" }).getByRole("link")).toHaveCount(3);
+});
+
 test("keeps all languages visible and every viewport within its width", async ({ page }) => {
   // REQ-PORTAL-002, REQ-PORTAL-006
   for (const locale of ["en", "es", "pt-br"] as const) {
@@ -63,6 +71,7 @@ test("searches the active edition using the keyboard-accessible dialog", async (
 test("keeps the complete Markdown and the same source path when switching languages", async ({ page, request }) => {
   // REQ-PORTAL-001, REQ-PORTAL-003, REQ-PORTAL-004, REQ-PORTAL-008
   await page.goto("en/library/");
+  await expect(page.getByRole("searchbox")).toHaveAttribute("placeholder", t("en").filterPlaceholder);
   await page.getByRole("searchbox").fill("00-START-HERE");
   const entry = page.locator(".collection-card").filter({ hasText: "00-START-HERE.md" });
   await expect(entry).toHaveCount(1);

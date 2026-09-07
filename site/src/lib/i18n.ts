@@ -23,6 +23,7 @@ interface Messages {
   reading: string; minutes: string; diagramError: string; viewSource: string;
   technicalNote: string; bytes: string; allFiles: string; builtWith: string;
   markdownSource: string;
+  filterPlaceholder: string;
 }
 
 const messages: Record<Locale, Messages> = {
@@ -61,7 +62,7 @@ const messages: Record<Locale, Messages> = {
     markRead: "Mark as read", markedRead: "Read", reading: "Reading progress", minutes: "min read",
     diagramError: "This diagram could not be rendered. Its original source remains available below.",
     viewSource: "Diagram source", technicalNote: "Technical source is shown in its original form to preserve behavior and provenance.",
-    bytes: "bytes", allFiles: "All repository files", builtWith: "Astro + React · Hub Editorial", markdownSource: "Full Markdown source",
+    bytes: "bytes", allFiles: "All repository files", builtWith: "Astro + React · Hub Editorial", markdownSource: "Full Markdown source", filterPlaceholder: "SIFAP, requirements, Copilot…",
   },
   es: {
     kit: "Kit del equipo", privateKit: "Kit del instructor", privateNotice: "Privado · solo instructores autorizados",
@@ -98,7 +99,7 @@ const messages: Record<Locale, Messages> = {
     markRead: "Marcar como leído", markedRead: "Leído", reading: "Progreso de lectura", minutes: "min de lectura",
     diagramError: "No se pudo representar este diagrama. Su fuente original sigue disponible debajo.",
     viewSource: "Fuente del diagrama", technicalNote: "El código técnico se muestra en su forma original para preservar el comportamiento y la procedencia.",
-    bytes: "bytes", allFiles: "Todos los archivos del repositorio", builtWith: "Astro + React · Hub Editorial", markdownSource: "Fuente Markdown completa",
+    bytes: "bytes", allFiles: "Todos los archivos del repositorio", builtWith: "Astro + React · Hub Editorial", markdownSource: "Fuente Markdown completa", filterPlaceholder: "SIFAP, requisitos, Copilot…",
   },
   "pt-br": {
     kit: "Kit do time", privateKit: "Kit do instrutor", privateNotice: "Privado · somente instrutores autorizados",
@@ -135,7 +136,7 @@ const messages: Record<Locale, Messages> = {
     markRead: "Marcar como lido", markedRead: "Lido", reading: "Progresso de leitura", minutes: "min de leitura",
     diagramError: "Não foi possível renderizar este diagrama. A fonte original continua disponível abaixo.",
     viewSource: "Fonte do diagrama", technicalNote: "O código técnico é exibido em sua forma original para preservar o comportamento e a proveniência.",
-    bytes: "bytes", allFiles: "Todos os arquivos do repositório", builtWith: "Astro + React · Hub Editorial", markdownSource: "Fonte Markdown completa",
+    bytes: "bytes", allFiles: "Todos os arquivos do repositório", builtWith: "Astro + React · Hub Editorial", markdownSource: "Fonte Markdown completa", filterPlaceholder: "SIFAP, requisitos, Copilot…",
   },
 };
 

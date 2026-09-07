@@ -30,7 +30,7 @@ export default function Collection({ locale, items, initialLimit = 24 }: { local
   return <div className="collection">
     <div className="collection-toolbar">
       <label><span className="he-field-label"><SearchIcon size={14} aria-hidden="true" /> {words.filter}</span>
-        <input className="he-field" type="search" value={query} placeholder="SIFAP, REQ-ID, Copilot…" onChange={(event) => { setQuery(event.target.value); setLimit(initialLimit); }} />
+        <input className="he-field" type="search" value={query} placeholder={words.filterPlaceholder} onChange={(event) => { setQuery(event.target.value); setLimit(initialLimit); }} />
       </label>
       <label><span className="he-field-label">{words.category}</span>
         <select className="he-field" value={category} onChange={(event) => { setCategory(event.target.value); setLimit(initialLimit); }}>

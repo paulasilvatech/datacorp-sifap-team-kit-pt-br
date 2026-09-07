@@ -1,8 +1,19 @@
 ---
 import { getCatalog, siteHref } from "../lib/catalog";
+import PortalLayout from "../layouts/PortalLayout.astro";
 const catalog = getCatalog();
 ---
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width" /><meta http-equiv="refresh" content={`0;url=${siteHref("en")}`} /><title>SIFAP · Choose your language</title></head>
-<body><main><h1>SIFAP</h1><p>Choose your language · Elige tu idioma · Escolha seu idioma</p>
-<nav aria-label="Language">{catalog.editions.map((edition) => <p><a href={siteHref(edition.code)} lang={edition.code}>{edition.label}</a></p>)}</nav></main></body></html>
+<PortalLayout locale="en" title="Choose your language">
+  <section class="he-section"><div class="he-container">
+    <p class="he-label">SIFAP / Documentation</p>
+    <h1 class="he-section__title">Choose your language.</h1>
+    <p class="he-section__lead">Elige tu idioma. Escolha seu idioma.</p>
+    <nav class="collection-grid" aria-label="Choose a complete edition">
+      {catalog.editions.map((edition) => <a class="collection-card" href={siteHref(edition.code)} lang={edition.code}>
+        <span class="card-type">{edition.code.toUpperCase()}</span>
+        <h2>{edition.label} →</h2>
+        <code>{edition.branch}</code>
+      </a>)}
+    </nav>
+  </div></section>
+</PortalLayout>

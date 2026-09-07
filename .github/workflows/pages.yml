@@ -5,7 +5,8 @@ on:
   push:
     branches: [main, portugues-br, espanol]
   pull_request:
-    branches: [main, develop]
+    branches: [main, develop, portugues-br, espanol]
+    types: [opened, synchronize, reopened, ready_for_review]
     paths:
       - "site/**"
       - ".github/workflows/pages.yml"
@@ -16,7 +17,7 @@ permissions:
 
 concurrency:
   group: pages-${{ github.repository }}-${{ github.event_name == 'pull_request' && github.ref || 'release' }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -30,9 +31,17 @@ jobs:
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          ref: ${{ github.event_name == 'pull_request' && github.sha || 'main' }}
+          ref: ${{ github.sha }}
           fetch-depth: 0
           persist-credentials: false
+      - name: Verify all language refs fetched with full history
+        shell: bash
+        run: |
+          set -euo pipefail
+          for branch in main espanol portugues-br; do
+            git rev-parse --verify "origin/${branch}^{commit}" ||
+              { echo "::error::Publish the complete ${branch} edition before releasing the portal."; exit 1; }
+          done
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: "24.20.0"
@@ -56,13 +65,10 @@ jobs:
         env:
           SITE_URL: ${{ steps.pages.outputs.site_url }}
           ASTRO_TELEMETRY_DISABLED: "1"
-          CONTENT_REF_EN: ${{ github.event_name == 'pull_request' && 'HEAD' || 'origin/main' }}
+          CONTENT_REF_EN: ${{ (github.event_name == 'pull_request' && (github.base_ref == 'main' || github.base_ref == 'develop') || github.ref_name == 'main' || github.ref_name == 'develop') && 'HEAD' || 'origin/main' }}
+          CONTENT_REF_ES: ${{ (github.base_ref == 'espanol' || github.ref_name == 'espanol') && 'HEAD' || 'origin/espanol' }}
+          CONTENT_REF_PT_BR: ${{ (github.base_ref == 'portugues-br' || github.ref_name == 'portugues-br') && 'HEAD' || 'origin/portugues-br' }}
         run: npm run build
-      - name: Verify access again before creating the deployment artifact
-        if: github.event_name != 'pull_request'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: node site/scripts/pages-guard.mjs
       - name: Install Chromium for browser validation
         working-directory: site
         run: npx playwright install --with-deps chromium
@@ -72,14 +78,20 @@ jobs:
           SITE_URL: ${{ steps.pages.outputs.site_url }}
           CI: "true"
         run: npm run test:browser
+      - name: Verify access immediately before creating the deployment artifact
+        if: github.event_name != 'pull_request' && contains(fromJSON('["main","portugues-br","espanol"]'), github.ref_name)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_SITE_URL: ${{ steps.pages.outputs.site_url }}
+        run: node site/scripts/pages-guard.mjs
       - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && contains(fromJSON('["main","portugues-br","espanol"]'), github.ref_name)
         with:
           path: site/dist
           retention-days: 1
 
   deploy:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && contains(fromJSON('["main","portugues-br","espanol"]'), github.ref_name)
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -93,7 +105,7 @@ jobs:
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          ref: main
+          ref: ${{ github.sha }}
           persist-credentials: false
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
@@ -101,6 +113,7 @@ jobs:
       - name: Fail closed if private access changed
         env:
           GH_TOKEN: ${{ github.token }}
+          EXPECTED_SITE_URL: ${{ needs.build.outputs.site_url }}
         run: node site/scripts/pages-guard.mjs
       - name: Deploy verified Pages artifact
         id: deployment

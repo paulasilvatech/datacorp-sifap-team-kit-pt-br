@@ -14,5 +14,8 @@ const api = (path) => JSON.parse(execFileSync("gh", ["api", path], { encoding: "
 const repository = api(`repos/${name}`);
 const pages = api(`repos/${name}/pages`);
 const siteUrl = assertPagesAccess(repository, pages);
+if (process.env.EXPECTED_SITE_URL && process.env.EXPECTED_SITE_URL !== siteUrl) {
+  throw new Error("Pages URL changed after the build; rebuild before publishing.");
+}
 if (process.env.GITHUB_OUTPUT) appendFileSync(process.env.GITHUB_OUTPUT, `site_url=${siteUrl}\n`);
 console.log(JSON.stringify({ repository: name, privateRepository: repository.private, publicPages: pages.public, siteUrl }));
