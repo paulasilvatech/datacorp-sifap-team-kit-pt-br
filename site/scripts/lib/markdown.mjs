@@ -9,10 +9,10 @@ const labels = {
   "pt-br": { metadata: "Metadados do arquivo", future: "Criado durante o exercício", NOTE: "Nota", TIP: "Dica", IMPORTANT: "Importante", WARNING: "Aviso", CAUTION: "Cuidado" },
 };
 
-function walk(node, visitor) {
-  visitor(node);
+function walk(node, visitor, parent) {
+  visitor(node, parent);
   if (Array.isArray(node.children)) {
-    for (const child of node.children) walk(child, visitor);
+    for (const child of node.children) walk(child, visitor, node);
   }
 }
 
@@ -78,7 +78,7 @@ function portalHtml(options) {
   const text = labels[context.locale];
   if (!text) throw new Error(`Unknown document locale: ${context.locale}`);
   return (tree, file) => {
-    walk(tree, (node) => {
+    walk(tree, (node, parent) => {
       if (node.type !== "element") return;
       node.properties ??= {};
       if (typeof node.properties.id === "string") node.properties.id = `doc-${node.properties.id}`;
@@ -87,7 +87,7 @@ function portalHtml(options) {
         node.tagName = "span";
         node.children = [];
       }
-      if (node.tagName === "p" && !state.description) {
+      if (node.tagName === "p" && parent?.tagName !== "blockquote" && !state.description) {
         const value = plain(node).replace(/\s+/g, " ").trim();
         if (value.length > 40 && !value.startsWith("[!")) state.description = value.slice(0, 230);
       }

@@ -43,7 +43,7 @@ An unavailable or ambiguous privacy setting stops publication; it never enables 
 | Astro | Static routes and typed component templates without a mandatory client framework |
 | `@astrojs/react`, React 19, React DOM and their types | Hydrated search, filters, theme and reading controls while keeping documentation server-rendered |
 | `@storybook/icons` | The outlined icon set supplied with the user's Hub Editorial design reference, without adopting Storybook branding |
-| `@astrojs/markdown-remark` | Astro-compatible Markdown rendering, headings and syntax highlighting |
+| `@astrojs/markdown-remark` | Astro-compatible Markdown rendering, code blocks and heading metadata |
 | `rehype-raw`, `rehype-sanitize` | Preserve supported Markdown HTML while removing executable or unsafe markup |
 | Mermaid | Render the diagrams already present in the repository, with strict security settings |
 | Pagefind | Local, language-aware search without an external indexing service |

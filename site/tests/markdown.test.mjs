@@ -62,3 +62,11 @@ test("should keep all three repository editions inside the same navigation table
   assert.equal((table.match(/<tr>/g) ?? []).length, 4);
   for (const label of ["English", "Español", "Português (BR)"]) assert.ok(table.includes(label));
 });
+
+test("should use the document introduction rather than navigation as its catalog description", async () => {
+  // REQ-PORTAL-005
+  const introduction = "This introduction explains how to follow the complete modernization guide.";
+  const source = `# Guide\n\n> **Path:** Repository documentation and a long navigation breadcrumb.\n\n${introduction}\n`;
+  const result = await renderDocument(source, context());
+  assert.equal(result.description, introduction);
+});

@@ -154,13 +154,50 @@ export function assertCoverage(editions, preserved = new Set()) {
     }
     if (edition.code !== "en") {
       for (const source of english.entries) {
-        if (source.kind === "document" && byPath.get(source.path)?.blob === source.blob &&
-            !preserved.has(source.path)) {
-          throw new Error(`Untranslated ${edition.code} document: ${source.path}`);
+        if (source.kind === "document" && !preserved.has(source.path)) {
+          const translated = byPath.get(source.path);
+          if (translated?.blob === source.blob) {
+            throw new Error(`Untranslated ${edition.code} document: ${source.path}`);
+          }
+          if (typeof source.text === "string") {
+            if (typeof translated?.text !== "string") throw new Error(`Missing document text: ${source.path}`);
+            const unchanged = unchangedProseLines(source.text, translated.text);
+            if (unchanged.length) {
+              throw new Error(`Untranslated prose in ${edition.code}:${source.path} at lines ${unchanged.join(", ")}.`);
+            }
+          }
         }
       }
     }
   }
+}
+
+export function unchangedProseLines(original, translated) {
+  function candidates(text) {
+    let fence;
+    let fenceLength = 0;
+    let frontmatter = text.startsWith("---\n");
+    const lines = [];
+    for (const [index, raw] of text.split("\n").entries()) {
+      const line = raw.trim();
+      if (index === 0 && frontmatter) continue;
+      if (frontmatter) { if (line === "---") frontmatter = false; continue; }
+      const marker = line.match(/^(`{3,}|~{3,})/);
+      if (marker) {
+        if (!fence) { fence = marker[1][0]; fenceLength = marker[1].length; }
+        else if (marker[1][0] === fence && marker[1].length >= fenceLength) fence = undefined;
+        continue;
+      }
+      if (fence || /^[>#<]/.test(line)) continue;
+      const prose = line.replace(/`[^`]*`/g, "").replace(/\[([^\]]*)\]\([^)]*\)/g, "$1");
+      if (prose.length >= 140 && (prose.match(/\p{L}+/gu) ?? []).length >= 20) {
+        lines.push({ line: index + 1, text: line.replace(/\s+/g, " ") });
+      }
+    }
+    return lines;
+  }
+  const source = new Set(candidates(original).map((line) => line.text));
+  return candidates(translated).filter((line) => source.has(line.text)).map((line) => line.line);
 }
 
 export function assertPagesAccess(repository, pages) {

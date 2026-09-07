@@ -12,6 +12,7 @@ import {
   renderSourceLines,
   routeFor,
   siteBase,
+  unchangedProseLines,
 } from "../scripts/lib/content.mjs";
 
 const hash = "a".repeat(40);
@@ -108,6 +109,15 @@ test("should require all three editions and every logical file", () => {
   assert.throws(() => assertCoverage(editions.slice(0, 2)), /three|edition/i);
   assert.throws(() => assertCoverage([editions[0], editions[1], { code: "pt-br", entries: [] }]), /README/);
   assert.throws(() => assertCoverage([editions[0], make("es", hash), editions[2]]), /untranslated/i);
+});
+
+test("should reject a translated heading with an unchanged English document body", () => {
+  // REQ-PORTAL-002
+  const paragraph = "This document explains how every member of the team must read the complete instructions before implementing changes, and why preserving traceability between source files and requirements is essential.";
+  assert.deepEqual(unchangedProseLines(`# Guide\n\n${paragraph}`, `# Guía\n\n${paragraph}`), [3]);
+  const translated = "Este documento explica cómo cada integrante debe leer las instrucciones completas antes de implementar cambios y por qué es esencial conservar la trazabilidad entre las fuentes y los requisitos.";
+  assert.deepEqual(unchangedProseLines(`# Guide\n\n${paragraph}`, `# Guía\n\n${translated}`), []);
+  assert.deepEqual(unchangedProseLines(`\`\`\`text\n${paragraph}\n\`\`\``, `\`\`\`text\n${paragraph}\n\`\`\``), []);
 });
 
 test("should reject route collisions before publishing", () => {
