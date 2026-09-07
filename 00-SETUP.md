@@ -98,9 +98,12 @@ No seu laptop, você clona só o repositório do seu time:
 
 ### Usando o template no GitHub
 
+> [!IMPORTANT]
+> Este fluxo exige **Template repository** habilitado no kit público do time. Se **Use this template** não estiver disponível, fale com um facilitador antes de criar o repositório do time.
+
 - [ ] **Crie o repositório a partir do template.**
 
-1. Abra o [template público do time](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/tree/main).
+1. Abra o [kit público do time](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/tree/main).
 2. Clique em **Use this template** -> **Create a new repository**.
 3. Preencha:
 
@@ -115,7 +118,7 @@ No seu laptop, você clona só o repositório do seu time:
 Agora você deve ver uma cópia completa do kit em `https://github.com/<IMMERSION_ORG>/immersion-team-XX`, incluindo documentação, código legado, templates, workflows e arquivos `.github/`.
 
 O template usa a `main` por padrão, mesmo quando você navega por uma branch traduzida antes de criar o repositório.
-Para ler em português, abra a [edição em português do Brasil](https://github.com/workshop-gbb/datacorp-sifap-team-kit-pt-br/tree/portugues-br).
+Para ler em português, abra a [edição em português do Brasil](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/tree/portugues-br).
 Mantenha a `main` e a `develop` do time em inglês; branches de idioma não são branches de integração.
 
 ---
