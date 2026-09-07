@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFileSync } from "node:fs";
 import { renderDocument } from "../scripts/lib/markdown.mjs";
 
 function context() {
@@ -47,4 +48,17 @@ test("should retain technical examples and render badges without remote tracking
   assert.match(result.html, /Stage: one/);
   assert.doesNotMatch(result.html, /<img[^>]+shields\.io/);
   assert.match(result.html, /language-mermaid/);
+});
+
+test("should keep all three repository editions inside the same navigation table", async () => {
+  // REQ-PORTAL-002
+  const readme = readFileSync(new URL("../../README.md", import.meta.url), "utf8");
+  const section = readme.split(/\n---\n/).find((block) =>
+    ["/tree/main", "/tree/espanol", "/tree/portugues-br"].every((target) => block.includes(target)));
+  assert.ok(section, "The README must expose all three repository language editions.");
+  const result = await renderDocument(section, context());
+  const table = result.html.match(/<table>[\s\S]*?<\/table>/)?.[0];
+  assert.ok(table);
+  assert.equal((table.match(/<tr>/g) ?? []).length, 4);
+  for (const label of ["English", "Español", "Português (BR)"]) assert.ok(table.includes(label));
 });

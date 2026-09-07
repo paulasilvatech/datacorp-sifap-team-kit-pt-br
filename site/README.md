@@ -48,6 +48,7 @@ The browser tests exercise language switching, full Markdown access, search, res
 - [`src/styles/tokens.css`](src/styles/tokens.css) defines its typography, color and spacing tokens; portal-specific styles preserve readable contrast in both themes.
 - React islands provide search, filters, stage navigation and reading preferences. The document text remains available without JavaScript.
 - Fonts and search are self-hosted. Original technical sources and licenses remain unchanged.
+- Original distribution notices are available in [`public/licenses/`](public/licenses/) and through the website's license catalog.
 
 ## GitHub Pages and privacy
 

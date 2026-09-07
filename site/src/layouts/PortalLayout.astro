@@ -62,6 +62,7 @@ const currentUrl = new URL(Astro.url.pathname, catalog.siteUrl).href;
         <a href={siteHref(locale, "library")}>{words.allFiles}</a>
         <a href={`https://github.com/${catalog.repository}`}>GitHub ↗</a>
         <a href="#main">{words.top} ↑</a>
+        <a href={`${siteHref(locale, "library")}?path=site%2Fpublic%2Flicenses%2F`}>{words.licenses}</a>
       </div>
       <div class="he-footer__meta"><span>{words.builtWith}</span><span>{words.generated} · {catalog.generatedAt.slice(0, 10)}</span></div>
     </div></footer>
