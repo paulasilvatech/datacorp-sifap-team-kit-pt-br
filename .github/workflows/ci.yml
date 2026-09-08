@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, develop, "spec/**", "impl/**"]
+    branches: [main, develop, portugues-br, espanol, "spec/**", "impl/**"]
   pull_request:
-    branches: [main, develop]
+    branches: [main, develop, portugues-br, espanol]
 
 permissions:
   contents: read
