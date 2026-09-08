@@ -9,6 +9,7 @@
   },
   "scripts": {
     "prepare:content": "node scripts/build-content.mjs",
+    "content:status": "node scripts/content-status.mjs",
     "test": "node --test tests/*.test.mjs",
     "test:browser": "playwright test",
     "check": "astro check",

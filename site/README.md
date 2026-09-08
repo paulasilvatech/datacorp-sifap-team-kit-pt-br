@@ -18,6 +18,7 @@ Requisitos: Node.js 24, npm, Git e referências remotas locais das três ediçõ
 git fetch origin
 cd site
 npm ci
+npm run content:status
 npm test
 npm run build
 npm run preview
@@ -39,7 +40,9 @@ npm run test:browser
 A compilação de produção resolve todas as branches de idioma para commits imutáveis. Ela falha se houver edição ou arquivo ausente, Markdown ou prosa sem tradução, código do portal desatualizado, link não resolvido, âncora inválida ou download original alterado.
 Mantenha os arquivos que não são Markdown em `site/` idênticos nas três branches ao atualizar o motor compartilhado do portal.
 Os relatórios são gerados em `.generated/coverage.json` e `.generated/site-audit.json`.
+`npm run content:status` informa cada arquivo ausente ou não traduzido sem gerar um catálogo substituto. O relatório distingue prontidão de uma compilação ou implantação concluída.
 Os testes de navegador verificam troca de idioma, acesso ao Markdown integral, busca, layout responsivo, contraste, estado de leitura e movimento reduzido.
+Os testes de navegador usam um servidor local novo por padrão. Defina `PLAYWRIGHT_PORT` para outra porta livre quando necessário; `PLAYWRIGHT_REUSE_SERVER=1` exige consentimento explícito e somente local. Use `PORTAL_TEST_URL` para validar um site já publicado.
 
 ## Conteúdo e design
 

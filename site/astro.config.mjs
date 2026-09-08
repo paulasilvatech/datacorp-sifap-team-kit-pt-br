@@ -17,4 +17,8 @@ export default defineConfig({
   output: "static",
   trailingSlash: "always",
   build: { format: "directory" },
+  vite: {
+    server: { strictPort: true },
+    preview: { strictPort: true },
+  },
 });
