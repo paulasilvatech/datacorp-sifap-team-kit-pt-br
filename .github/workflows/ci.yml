@@ -5,9 +5,9 @@ name: CI
 # `main`, portanto precisa das mesmas verificações.
 on:
   push:
-    branches: [main, develop, portugues-br, "spec/**", "impl/**"]
+    branches: [main, develop, portugues-br, espanol, "spec/**", "impl/**"]
   pull_request:
-    branches: [main, develop, portugues-br]
+    branches: [main, develop, portugues-br, espanol]
 
 permissions:
   contents: read

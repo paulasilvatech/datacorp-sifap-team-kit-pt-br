@@ -15,6 +15,15 @@
 **/.next/
 **/.pnpm-store/
 
+# Generated documentation portal output
+site/dist/
+site/.astro/
+site/.generated/
+site/public/content-raw/
+site/public/content-media/
+site/playwright-report/
+site/test-results/
+
 # Python
 .legacy-docs-venv/
 **/__pycache__/

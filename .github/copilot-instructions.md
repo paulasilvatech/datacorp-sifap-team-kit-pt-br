@@ -18,9 +18,10 @@ Use as skills em [`.github/skills/`](skills/) para fluxos de trabalho especializ
 
 ## Idiomas do repositório
 
-- Mantenha a documentação e toda a prosa das primitivas do Copilot (agentes, prompts, instruções, skills e hooks) da `main` e da `develop` em inglês; publique português do Brasil na `portugues-br`.
+- Mantenha a documentação e toda a prosa das primitivas do Copilot (agentes, prompts, instruções, skills e hooks) da `main` e da `develop` em inglês; publique português do Brasil na `portugues-br` e espanhol na `espanol`.
 - Siga o idioma da branch de destino, não o da conversa. Nunca faça merge da árvore de documentação traduzida na `main`.
 - Preserve caminhos técnicos, identificadores e fontes legadas. Mantenha o [seletor de idiomas](../README.md#idiomas-do-repositório) ligado às branches existentes e às respectivas instruções.
+- O portal de documentação em `site/` usa Astro + React, separado da aplicação SIFAP. Seus dicionários de interface traduzida são permitidos na `main`; a documentação permanece em inglês. Consulte o [ADR-0002](../docs/adr/0002-trilingual-documentation-portal.md).
 
 ## Stack-alvo
 
