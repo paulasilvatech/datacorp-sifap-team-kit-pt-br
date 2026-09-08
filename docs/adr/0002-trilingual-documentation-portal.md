@@ -51,6 +51,7 @@ An unavailable or ambiguous privacy setting stops publication; it never enables 
 | `@astrojs/check`, TypeScript 5, Node.js types | Strict template and TypeScript validation |
 | Node.js built-in test runner | Test Git ingestion, paths, language coverage and deployment guards without another testing framework |
 | Playwright | Verify the actual responsive, interactive website, language navigation, search and text contrast in a browser |
+| `parse5` | Audit real HTML nodes without mistaking escaped Markdown/code examples for live links or IDs |
 
 Pin resolved versions in the lockfile.
 Use Node.js 24 for the portal; do not change the application runtime requirements.
