@@ -18,6 +18,7 @@ Requirements: Node.js 24, npm, Git and local remote-tracking references for all 
 git fetch origin
 cd site
 npm ci
+npm run content:status
 npm test
 npm run build
 npm run preview
@@ -39,7 +40,9 @@ npm run test:browser
 The production build resolves all language branches to immutable commits. It fails for a missing edition, missing file, unchanged untranslated Markdown or prose, stale portal code, unresolved link, invalid anchor or altered original download.
 Keep the non-Markdown files under `site/` identical across the three branches when updating the shared portal engine.
 Reports are generated in `.generated/coverage.json` and `.generated/site-audit.json`.
+`npm run content:status` reports every missing or untranslated file without generating a substitute catalog. Its report distinguishes readiness from a completed build or deployment.
 The browser tests exercise language switching, full Markdown access, search, responsive layout, contrast, reading state and reduced motion.
+Browser tests use a fresh local server by default. Set `PLAYWRIGHT_PORT` to another free port when necessary; `PLAYWRIGHT_REUSE_SERVER=1` is an explicit local-only opt-in. Use `PORTAL_TEST_URL` to validate an already published site.
 
 ## Content and design
 

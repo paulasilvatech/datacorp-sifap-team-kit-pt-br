@@ -1,8 +1,15 @@
 import { defineConfig } from "@playwright/test";
+import { readFileSync } from "node:fs";
+import { browserPreviewConfig } from "./scripts/lib/browser-preview.mjs";
+import { siteBase } from "./scripts/lib/content.mjs";
 
-const published = new URL(process.env.SITE_URL ?? "http://127.0.0.1:4321/preview/");
+const settings: unknown = JSON.parse(readFileSync(new URL("./repository.json", import.meta.url), "utf8"));
+if (!settings || typeof settings !== "object" || !("pagesUrl" in settings) || typeof settings.pagesUrl !== "string") {
+  throw new Error("repository.json must declare the verified Pages URL.");
+}
+const preview = browserPreviewConfig(process.env, settings.pagesUrl);
 const liveURL = process.env.PORTAL_TEST_URL;
-const baseURL = liveURL ?? `http://127.0.0.1:4321${published.pathname.replace(/\/?$/, "/")}`;
+const baseURL = liveURL ? siteBase(liveURL).siteUrl : preview.baseURL;
 
 export default defineConfig({
   testDir: "./tests/browser",
@@ -18,10 +25,10 @@ export default defineConfig({
     { name: "mobile", use: { viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true } },
   ],
   webServer: liveURL ? undefined : {
-    command: "npm run preview -- --port 4321",
+    command: preview.command,
     url: `${baseURL}en/`,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: preview.reuseExistingServer,
     timeout: 30000,
-    env: { SITE_URL: `${published.origin}${published.pathname}`, ASTRO_TELEMETRY_DISABLED: "1" },
+    env: { SITE_URL: preview.siteUrl, ASTRO_TELEMETRY_DISABLED: "1" },
   },
 });
