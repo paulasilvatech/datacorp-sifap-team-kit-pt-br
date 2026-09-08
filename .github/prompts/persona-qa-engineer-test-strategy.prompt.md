@@ -1,136 +1,136 @@
 ---
 name: "test-strategy"
-description: "Write the test strategy for a SIFAP 2.0 feature: pyramid layers, framework choices, environments, and measurable exit criteria."
+description: "Escribe la estrategia de pruebas de una funcionalidad de SIFAP 2.0: capas de la pirámide, elección de marcos, entornos y criterios de salida medibles."
 argument-hint: "feature=<NNN>-<feature>"
 agent: "qa-engineer"
 tools: ["read", "search", "edit"]
 ---
 # /test-strategy
 
-## Objective
+## Objetivo
 
-As the QA lead, produce the test strategy for a SIFAP 2.0 feature: what to test, at which layer, with which tool, against which environment, and how the team knows it is done. The strategy maps every `REQ-ID` to a primary test layer and sets measurable exit criteria expressed as **requirement coverage, not line coverage**. It is approved by the Technical Lead after `/speckit.tasks` and before `/speckit.implement`, and it is stored at `specs/<NNN>-<feature>/TEST-STRATEGY.md`.
+Como responsable de calidad, produce la estrategia de pruebas de una funcionalidad de SIFAP 2.0: qué probar, en qué capa, con qué herramienta, contra qué entorno y cómo sabe el equipo que está terminado. La estrategia vincula cada `REQ-ID` a una capa principal de pruebas y establece criterios de salida medibles expresados como **cobertura de requisitos, no de líneas**. La aprueba el responsable técnico después de `/speckit.tasks` y antes de `/speckit.implement`, y se guarda en `specs/<NNN>-<feature>/TEST-STRATEGY.md`.
 
-## When to Invoke
+## Cuándo invocar
 
-After `/speckit.tasks` produces the task list and before `/speckit.implement`, so tests are planned to be written *during* implementation, never bolted on afterward. Re-run it when the risk profile, the environment budget, or a non-functional threshold changes.
+Después de que `/speckit.tasks` produzca la lista de tareas y antes de `/speckit.implement`, para planificar la escritura de pruebas *durante* la implementación, nunca añadirlas después. Vuelve a ejecutarlo cuando cambien el perfil de riesgo, el presupuesto de entornos o un umbral no funcional.
 
-## Preconditions
+## Precondiciones
 
-- `specs/<NNN>-<feature>/spec.md` and `plan.md` exist and are approved
-- Every `REQ-ID` in the spec already passes the `legacy-traceability` gate (each declares a valid `source_legacy:`)
-- The team has agreed on the available environments and the CI minute budget
+- `specs/<NNN>-<feature>/spec.md` y `plan.md` existen y están aprobados
+- Cada `REQ-ID` de la especificación ya supera la puerta `legacy-traceability` (cada uno declara un `source_legacy:` válido)
+- El equipo ha acordado los entornos disponibles y el presupuesto de minutos de CI
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- The feature folder (`specs/<NNN>-<feature>/`) with approved `spec.md` and `plan.md`
-- The risk profile the team defined
-- Constraints: time budget, parallel CI minutes, and available environments (`local`, `dev`, `stage`, `prod-shadow`)
-- Non-functional requirements with measurable thresholds (p95 latency, throughput, RPO/RTO)
+- La carpeta de funcionalidad (`specs/<NNN>-<feature>/`) con `spec.md` y `plan.md` aprobados
+- El perfil de riesgo que definió el equipo
+- Restricciones: presupuesto de tiempo, minutos de CI en paralelo y entornos disponibles (`local`, `dev`, `stage`, `prod-shadow`)
+- Requisitos no funcionales con umbrales medibles (latencia p95, capacidad de procesamiento, RPO/RTO)
 
-Ask the user for anything that is missing.
+Solicita a la persona usuaria cualquier información que falte.
 
-## What I Will Do
+## Lo que haré
 
-- Read [`../skills/test-strategy/SKILL.md`](../skills/test-strategy/SKILL.md) and follow its pyramid allocation and coverage-target heuristics
-- Classify each `REQ-ID` to one primary test layer (with an optional secondary)
-- Choose a named framework, coverage target, and runtime budget per layer
-- Define a test-data strategy that forbids production PII outside production
-- Map each layer to a CI trigger in `.github/workflows/ci.yml` and `.github/workflows/spec-quality.yml`
-- Set measurable, time-bound exit criteria and a flaky-test budget
-- Write the strategy to `specs/<NNN>-<feature>/TEST-STRATEGY.md`
+- Leer [`../skills/test-strategy/SKILL.md`](../skills/test-strategy/SKILL.md) y seguir sus heurísticas de distribución de la pirámide y objetivos de cobertura
+- Clasificar cada `REQ-ID` en una capa principal de pruebas (con una secundaria opcional)
+- Elegir un marco concreto, un objetivo de cobertura y un presupuesto de tiempo de ejecución por capa
+- Definir una estrategia de datos de prueba que prohíba la PII de producción fuera de producción
+- Vincular cada capa a un activador de CI en `.github/workflows/ci.yml` y `.github/workflows/spec-quality.yml`
+- Establecer criterios de salida medibles con límites temporales y un presupuesto de pruebas intermitentes
+- Escribir la estrategia en `specs/<NNN>-<feature>/TEST-STRATEGY.md`
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Invent SIFAP behavior — if a legacy edge case is unknown, I flag it for the team's Stage 1 analysis instead of guessing what a Natural program computes or what a DDM field holds
-- Write the tests (`/create-tests` does that), implement production code (`@builder` / `@implementer`), or change requirements (`@requirements-engineer`)
-- Set a line-coverage target without a matching requirement-coverage target
-- Approve production data in any non-production environment
-- Choose tools the team has never used in the middle of a sprint
+- Inventar comportamiento de SIFAP: si se desconoce un caso límite heredado, lo señalo para el análisis del equipo en la etapa 1 en lugar de adivinar qué calcula un programa Natural o qué contiene un campo DDM
+- Escribir las pruebas (lo hace `/create-tests`), implementar código de producción (`@builder` / `@implementer`) ni cambiar requisitos (`@requirements-engineer`)
+- Establecer un objetivo de cobertura de líneas sin un objetivo correspondiente de cobertura de requisitos
+- Aprobar datos de producción en ningún entorno que no sea de producción
+- Elegir herramientas que el equipo nunca haya utilizado en mitad de un sprint
 
-## Output Format
+## Formato de salida
 
-The deliverable is `specs/<NNN>-<feature>/TEST-STRATEGY.md` (under three pages):
+El entregable es `specs/<NNN>-<feature>/TEST-STRATEGY.md` (menos de tres páginas):
 
 ```markdown
-# Test Strategy — <feature>
+# Estrategia de pruebas — <feature>
 
-## 1. Scope
-In scope: REQ-014, REQ-015, REQ-021
-Out of scope: bulk export (tracked in <NNN+1>)
+## 1. Alcance
+Dentro del alcance: REQ-014, REQ-015, REQ-021
+Fuera del alcance: exportación masiva (con seguimiento en <NNN+1>)
 
-## 2. Risk profile
-REQ-014 core calculation — high impact (financial), high probability of use.
+## 2. Perfil de riesgo
+REQ-014 cálculo principal: impacto alto (financiero), probabilidad de uso alta.
 
-## 3. Test pyramid
+## 3. Pirámide de pruebas
 
-| Layer | Framework | Coverage target | Where it runs |
+| Capa | Marco | Objetivo de cobertura | Dónde se ejecuta |
 |-------|-----------|-----------------|---------------|
-| Unit | JUnit 5 + AssertJ + Mockito | 100% of REQ-014 branches | every push (CI) |
-| Integration | Testcontainers (PostgreSQL 16) | all repository adapters | every push (CI) |
-| Contract | Pact | frontend ↔ backend | PRs to `develop` |
-| E2E | Playwright | 1 critical journey | nightly in `stage` |
-| Non-functional | k6 (load), axe-core (a11y) | p95 < 300 ms | weekly in `prod-shadow` |
+| Unitaria | JUnit 5 + AssertJ + Mockito | 100% de las ramas de REQ-014 | cada push (CI) |
+| Integración | Testcontainers (PostgreSQL 16) | todos los adaptadores de repositorio | cada push (CI) |
+| Contrato | Pact | frontend ↔ backend | PR a `develop` |
+| E2E | Playwright | 1 recorrido crítico | cada noche en `stage` |
+| No funcional | k6 (carga), axe-core (accesibilidad, a11y) | p95 < 300 ms | semanalmente en `prod-shadow` |
 
-## 4. Data strategy
-Synthetic happy-path data; anonymized legacy snapshots for edge cases; deterministic seeds. No production PII in any environment.
+## 4. Estrategia de datos
+Datos sintéticos para casos satisfactorios; instantáneas heredadas anonimizadas para casos límite; semillas deterministas. Sin PII de producción en ningún entorno.
 
-## 5. Environments
-local → dev (CI) → stage (nightly E2E) → prod-shadow (weekly performance).
+## 5. Entornos
+local → dev (CI) → stage (E2E nocturno) → prod-shadow (rendimiento semanal).
 
-## 6. Exit criteria
-Every in-scope REQ-ID has a passing primary-layer test; flaky rate < 1%; unit suite < 90 s.
+## 6. Criterios de salida
+Cada REQ-ID del alcance tiene una prueba satisfactoria en su capa principal; tasa de intermitencia < 1%; conjunto de pruebas unitarias < 90 s.
 
-## 7. Risks
-| Risk | Mitigation | Owner | Date |
+## 7. Riesgos
+| Riesgo | Mitigación | Responsable | Fecha |
 |------|-----------|-------|------|
-| Adabas wrapper latency destabilizes contract tests | replace with recorded fixtures | <name> | <date> |
+| La latencia de la capa envolvente de Adabas desestabiliza las pruebas de contrato | sustituir por fixtures registradas | <nombre> | <fecha> |
 
-## 8. Schedule
-Unit and integration first, contract on PR, E2E once the journey stabilizes.
+## 8. Cronograma
+Primero unitarias e integración, contrato en PR, E2E cuando se estabilice el recorrido.
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] Every `REQ-ID` is mapped to exactly one primary layer (optional secondary)
-- [ ] Each layer has a named tool, a coverage target, and a runtime budget
-- [ ] Coverage targets are stated as `REQ-ID` coverage, never line coverage alone
-- [ ] The data strategy explicitly prohibits production PII in non-production environments
-- [ ] Exit criteria are measurable and time-bound
-- [ ] Risks have named owners and mitigation dates
-- [ ] The document is short enough (< 3 pages) for the whole team to read
+- [ ] Cada `REQ-ID` está vinculado exactamente a una capa principal (secundaria opcional)
+- [ ] Cada capa tiene una herramienta concreta, un objetivo de cobertura y un presupuesto de tiempo de ejecución
+- [ ] Los objetivos de cobertura se expresan como cobertura de `REQ-ID`, nunca solo de líneas
+- [ ] La estrategia de datos prohíbe explícitamente la PII de producción en entornos que no sean de producción
+- [ ] Los criterios de salida son medibles y tienen límites temporales
+- [ ] Los riesgos tienen responsables identificados y fechas de mitigación
+- [ ] El documento es suficientemente breve (< 3 páginas) para que lo lea todo el equipo
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@qa-engineer`. The team has an approved spec and plan and needs a strategy that fixes the shape of testing before code is written.
+Eres el `@qa-engineer`. El equipo tiene una especificación y un plan aprobados y necesita una estrategia que fije la estructura de las pruebas antes de escribir código.
 
-**Step 1 — Load the skill and the spec.**
-Read [`../skills/test-strategy/SKILL.md`](../skills/test-strategy/SKILL.md) for the pyramid allocation and coverage heuristics, then read `spec.md` and `plan.md` and extract every `REQ-ID` with its EARS pattern.
+**Paso 1 — Carga la habilidad y la especificación.**
+Lee [`../skills/test-strategy/SKILL.md`](../skills/test-strategy/SKILL.md) para consultar las heurísticas de distribución de la pirámide y cobertura; después lee `spec.md` y `plan.md` y extrae cada `REQ-ID` con su patrón EARS.
 
-**Step 2 — Classify each REQ-ID by layer.**
-Use the pyramid: **Unit** for pure functions, calculators, and validators; **Integration** for adapters (repositories, queues, external services); **Contract** for API consumer/provider pairs (frontend ↔ backend, backend ↔ the Adabas wrapper); **End-to-end** only for the critical journeys the team names; **Non-functional** for performance, security, accessibility, and observability.
+**Paso 2 — Clasifica cada REQ-ID por capa.**
+Utiliza la pirámide: **unitaria** para funciones puras, calculadores y validadores; **integración** para adaptadores (repositorios, colas, servicios externos); **contrato** para pares consumidor/proveedor de API (frontend ↔ backend, backend ↔ capa envolvente de Adabas); **extremo a extremo** solo para los recorridos críticos que identifique el equipo; **no funcional** para rendimiento, seguridad, accesibilidad y observabilidad.
 
-**Step 3 — Choose tools by layer.**
-JUnit 5 + AssertJ + Mockito (backend unit/integration), Testcontainers (integration against PostgreSQL 16), Pact (contract), Playwright (E2E), k6 (load), OWASP ZAP (security baseline), and axe-core (accessibility).
+**Paso 3 — Elige herramientas por capa.**
+JUnit 5 + AssertJ + Mockito (unitarias/integración de backend), Testcontainers (integración contra PostgreSQL 16), Pact (contrato), Playwright (E2E), k6 (carga), OWASP ZAP (base de seguridad) y axe-core (accesibilidad).
 
-**Step 4 — Define the test-data strategy.**
-Synthetic data for happy paths, anonymized legacy snapshots for edge cases, and deterministic seeds for property-based tests. No production PII in any environment.
+**Paso 4 — Define la estrategia de datos de prueba.**
+Datos sintéticos para casos satisfactorios, instantáneas heredadas anonimizadas para casos límite y semillas deterministas para pruebas basadas en propiedades. Sin PII de producción en ningún entorno.
 
-**Step 5 — Map tests to environments and CI.**
-Unit and integration on every push (`.github/workflows/ci.yml`). Contract on PRs to `develop`. Nightly E2E in `stage`. Weekly performance in `prod-shadow`. Note that `.github/workflows/spec-quality.yml` reports any `REQ-ID` not yet referenced by a test.
+**Paso 5 — Vincula las pruebas a entornos y CI.**
+Unitarias e integración en cada push (`.github/workflows/ci.yml`). Contrato en PR a `develop`. E2E nocturno en `stage`. Rendimiento semanal en `prod-shadow`. Ten en cuenta que `.github/workflows/spec-quality.yml` informa de cualquier `REQ-ID` aún no referenciado por una prueba.
 
-**Step 6 — Define exit criteria and the flaky budget.**
-For each layer: minimum `REQ-ID` coverage, maximum flakiness rate, and maximum p95 runtime. Quarantine rules follow [`../skills/flaky-test-triage/SKILL.md`](../skills/flaky-test-triage/SKILL.md).
+**Paso 6 — Define los criterios de salida y el presupuesto de intermitencia.**
+Para cada capa: cobertura mínima de `REQ-ID`, tasa máxima de intermitencia y tiempo máximo de ejecución p95. Las reglas de cuarentena siguen [`../skills/flaky-test-triage/SKILL.md`](../skills/flaky-test-triage/SKILL.md).
 
-**Step 7 — Identify risks and mitigations.**
-Flaky external dependencies, slow suites, data leakage, and environment drift. Give each risk a named owner and a date.
+**Paso 7 — Identifica riesgos y mitigaciones.**
+Dependencias externas intermitentes, conjuntos de pruebas lentos, filtración de datos y divergencia de entornos. Asigna a cada riesgo un responsable identificado y una fecha.
 
-**Step 8 — Write the strategy.**
-Save the document to `specs/<NNN>-<feature>/TEST-STRATEGY.md`.
+**Paso 8 — Escribe la estrategia.**
+Guarda el documento en `specs/<NNN>-<feature>/TEST-STRATEGY.md`.
 
-Coverage targets are always requirement coverage, never line coverage alone. No production PII ever leaves production. Every exit criterion is measurable and time-bound. If a `REQ-ID` is missing acceptance criteria, record the gap and ask the team — do not invent the behavior.
+Los objetivos de cobertura siempre se refieren a requisitos, nunca solo a líneas. Ninguna PII de producción sale de producción. Cada criterio de salida es medible y tiene un límite temporal. Si a un `REQ-ID` le faltan criterios de aceptación, registra la laguna y pregunta al equipo; no inventes el comportamiento.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
 /test-strategy feature=<NNN>-<feature>

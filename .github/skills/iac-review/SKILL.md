@@ -1,85 +1,85 @@
 ---
 name: "iac-review"
-description: "Use when reviewing Terraform, Bicep, or CloudFormation, checking drift, or hardening infrastructure code. Triggers include \"review terraform\", \"review bicep\", \"IaC review\", \"drift detection\", and \"state file\"."
+description: "Úsala para revisar Terraform, Bicep o CloudFormation, comprobar desviaciones o reforzar código de infraestructura. Los desencadenantes incluyen \"revisar Terraform\", \"revisar Bicep\", \"revisión de IaC\", \"detección de desviaciones\" y \"archivo de estado\"."
 ---
-# IaC review
+# Revisión de IaC
 
-## When to invoke
+## Cuándo invocar
 
-- "Review this Terraform module."
-- "Why does our plan show drift?"
-- "Is this Bicep ready for production?"
+- "Revisa este módulo de Terraform."
+- "¿Por qué nuestro plan muestra desviaciones?"
+- "¿Está este Bicep listo para producción?"
 
-## Review checklist
+## Lista de verificación de la revisión
 
-### Structure
+### Estructura
 
-- [ ] Modules are **composable** and have a single responsibility (one module = one logical stack, not one resource).
-- [ ] **No hard-coded values**: parameterize everything with sensible defaults.
-- [ ] **Documented inputs** (`description`, `type`, and `validation` rules) and outputs.
-- [ ] A **README** at the module root with a usage example.
+- [ ] Los módulos son **componibles** y tienen una única responsabilidad (un módulo = un stack lógico, no un recurso).
+- [ ] **Ningún valor incrustado en el código**: parametriza todo con valores predeterminados razonables.
+- [ ] **Entradas documentadas** (`description`, `type` y reglas de `validation`) y salidas documentadas.
+- [ ] Un **README** en la raíz del módulo con un ejemplo de uso.
 
-### State and backends
+### Estado y backends
 
-- [ ] **Remote state** with locking (S3+DynamoDB, Azure Storage with a blob lease, GCS).
-- [ ] State is **never committed** to Git; `.gitignore` covers `*.tfstate*`.
-- [ ] State is separated by environment, with no implicit coupling between environments.
-- [ ] IAM controls state access, not shared credentials.
+- [ ] **Estado remoto** con bloqueo (S3+DynamoDB, Azure Storage con un arrendamiento de blob, GCS).
+- [ ] El estado **nunca se incluye en commits** de Git; `.gitignore` cubre `*.tfstate*`.
+- [ ] El estado se separa por entorno, sin acoplamiento implícito entre entornos.
+- [ ] IAM controla el acceso al estado, no las credenciales compartidas.
 
-### Security
+### Seguridad
 
-- [ ] No secrets in code or variable defaults. Use Key Vault / Secrets Manager / SOPS.
-- [ ] IAM follows least privilege, with no `*:*` or `Resource: "*"` unless justified.
-- [ ] Encryption at rest and in transit is enabled for all data stores.
-- [ ] Public access is explicitly denied unless intentional. Document intentional access in the module README.
-- [ ] `tfsec` / `checkov` / `PSRule` report no findings, or exceptions are documented.
+- [ ] No hay secretos en el código ni en los valores predeterminados de variables. Usa Key Vault / Secrets Manager / SOPS.
+- [ ] IAM aplica privilegio mínimo, sin `*:*` ni `Resource: "*"` salvo justificación.
+- [ ] El cifrado en reposo y en tránsito está habilitado para todos los almacenes de datos.
+- [ ] El acceso público se deniega explícitamente, salvo que sea intencional. Documenta el acceso intencional en el README del módulo.
+- [ ] `tfsec` / `checkov` / `PSRule` no informan de hallazgos, o las excepciones están documentadas.
 
-### Change safety
+### Seguridad de los cambios
 
-- [ ] `terraform plan` is included in PRs as a comment (Atlantis / tfcmt / GH Actions).
-- [ ] `prevent_destroy` is set on stateful resources (databases, KV, storage accounts).
-- [ ] Provider versions are **pinned** (`~>` with explicit major and minor versions).
-- [ ] Module versions are pinned.
-- [ ] Destructive diffs require a second approver.
+- [ ] `terraform plan` se incluye como comentario en las PR (Atlantis / tfcmt / GH Actions).
+- [ ] `prevent_destroy` está configurado en los recursos con estado (bases de datos, KV, cuentas de almacenamiento).
+- [ ] Las versiones de los proveedores están **fijadas** (`~>` con versiones principal y secundaria explícitas).
+- [ ] Las versiones de los módulos están fijadas.
+- [ ] Los diffs destructivos requieren una segunda persona aprobadora.
 
-### Drift
+### Desviaciones
 
-- [ ] Scheduled drift detection (`terraform plan -detailed-exitcode` daily, or Driftctl).
-- [ ] Drift automatically creates a ticket and never remains silent.
-- [ ] No manual console changes without subsequently codifying them.
+- [ ] Detección programada de desviaciones (`terraform plan -detailed-exitcode` a diario o Driftctl).
+- [ ] Las desviaciones crean automáticamente un ticket y nunca pasan inadvertidas.
+- [ ] No se realizan cambios manuales en la consola sin reflejarlos después en código.
 
-## Common findings
+## Hallazgos habituales
 
-- **`count` used for lists that can reorder** → use `for_each` with stable keys.
-- **`depends_on` everywhere** → usually signals missing implicit dependencies; remove it unless truly necessary.
-- **Data sources used for values available at plan time** → unnecessary API calls and unstable CI.
-- **Environment differences through `terraform.workspace` string interpolation** → fragile; use tfvars or separate stacks.
+- **Uso de `count` para listas que pueden cambiar de orden** → usa `for_each` con claves estables.
+- **`depends_on` por todas partes** → suele indicar que faltan dependencias implícitas; elimínalo salvo que sea realmente necesario.
+- **Orígenes de datos usados para valores disponibles durante el plan** → llamadas innecesarias a API y CI inestable.
+- **Diferencias entre entornos mediante interpolación de cadenas con `terraform.workspace`** → enfoque frágil; usa tfvars o stacks separados.
 
-## Output template
+## Plantilla de salida
 
 ```markdown
-## IaC review - <module or stack>
+## Revisión de IaC - <módulo o stack>
 
-| Area | Finding | Severity | Recommendation |
+| Área | Hallazgo | Gravedad | Recomendación |
 |---|---|---|---|
-| State | Local state, no locking | High | Move to a remote backend with locking |
-| Security | Storage account allows public access | High | Set public_network_access_enabled = false |
-| Change safety | Provider version unpinned | Medium | Pin with ~> major.minor |
+| Estado | Estado local, sin bloqueo | Alta | Pasar a un backend remoto con bloqueo |
+| Seguridad | La cuenta de almacenamiento permite el acceso público | Alta | Configurar public_network_access_enabled = false |
+| Seguridad de los cambios | Versión del proveedor sin fijar | Media | Fijar con ~> major.minor |
 
-**Blocking findings**: <count>
-**Verdict**: approve / request changes
+**Hallazgos bloqueantes**: <cantidad>
+**Dictamen**: aprobar / solicitar cambios
 ```
 
-## Quality gate
+## Puerta de calidad
 
-- [ ] `terraform fmt` and `terraform validate` pass, and the plan is attached to the PR.
-- [ ] No secrets appear in code, variables, or state; secrets use Key Vault or Secrets Manager.
-- [ ] Provider and module versions are pinned; stateful resources set `prevent_destroy`.
-- [ ] `tfsec` or `checkov` reports no findings, or every exception is documented.
-- [ ] Every resource carries `project`, `environment`, and `owner` tags.
+- [ ] `terraform fmt` y `terraform validate` se superan, y el plan se adjunta a la PR.
+- [ ] No hay secretos en el código, las variables ni el estado; los secretos usan Key Vault o Secrets Manager.
+- [ ] Las versiones de proveedores y módulos están fijadas; los recursos con estado configuran `prevent_destroy`.
+- [ ] `tfsec` o `checkov` no informan de hallazgos, o cada excepción está documentada.
+- [ ] Cada recurso tiene las etiquetas `project`, `environment` y `owner`.
 
-## References
+## Referencias
 
-- [Terraform Style Guide](https://developer.hashicorp.com/terraform/language/style)
+- [Guía de estilo de Terraform](https://developer.hashicorp.com/terraform/language/style)
 - [Azure Verified Modules](https://azure.github.io/Azure-Verified-Modules/)
 - [tfsec](https://aquasecurity.github.io/tfsec/), [checkov](https://www.checkov.io/)

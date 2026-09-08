@@ -1,39 +1,39 @@
-# Stage 4 — Evolution with Agents (40 min)
+# Etapa 4 — Evolución con agentes (40 min)
 
-> **Path:** [Team Kit](../README.md) › [Stage 4](README.md) › **GUIDE**
+> **Ruta:** [Kit del equipo](../README.md) › [Etapa 4](README.md) › **GUÍA**
 
-**This guide leads Pair 5 through experimenting with GitHub Copilot Agent mode: writing a well-formed Issue, delegating it to the Agent, reviewing the resulting PR, and recording honest evidence of what worked.**
+**Esta guía conduce a la Pareja 5 en la experimentación con el modo Agent de GitHub Copilot: escribir una Issue bien estructurada, delegarla al agente, revisar la PR resultante y registrar evidencia honesta de lo que funcionó.**
 
-![Stage 4](https://img.shields.io/badge/Stage-4%20%C2%B7%20Evolution-171717?style=flat-square) ![Duration 40 min](https://img.shields.io/badge/Duration-40%20min-737373?style=flat-square) ![Time 16:10–16:50](https://img.shields.io/badge/Time-16%3A10--16%3A50-A3A3A3?style=flat-square)
+![Etapa 4](https://img.shields.io/badge/Stage-4%20%C2%B7%20Evolution-171717?style=flat-square) ![Duración: 40 min](https://img.shields.io/badge/Duration-40%20min-737373?style=flat-square) ![Horario: 16:10–16:50](https://img.shields.io/badge/Time-16%3A10--16%3A50-A3A3A3?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Pair 5 (DevOps + Tech Writer) leads; Pair 3 co-leads the technical review |
-| **Prerequisites** | H3 handoff received; functional Stage 3 prototype; known build command |
-| **Estimated time** | 40 min |
-| **Stage** | Stage 4 — Evolution |
-| **Expected outcome** | Issue created, delegation recorded, experience report completed |
+| **Público objetivo** | La Pareja 5 (DevOps + Redactor Técnico) lidera; la Pareja 3 colidera la revisión técnica |
+| **Prerrequisitos** | Transición H3 recibida; prototipo funcional de la Etapa 3; comando de build conocido |
+| **Tiempo estimado** | 40 min |
+| **Etapa** | Etapa 4 — Evolución |
+| **Resultado esperado** | Issue creada, delegación registrada e informe de experiencia completado |
 
 > [!NOTE]
-> Official time: 16:10–16:50 in [`00-TEAM-FLOW.md`](../00-TEAM-FLOW.md). Pair 5 leads, and Pair 3 co-leads the technical review.
+> Horario oficial: 16:10–16:50 en [`00-TEAM-FLOW.md`](../00-TEAM-FLOW.md). La Pareja 5 lidera y la Pareja 3 colidera la revisión técnica.
 
 ---
 
-## Concept: GitHub Copilot Agent mode
+## Concepto: modo Agent de GitHub Copilot
 
-GitHub Copilot Agent mode provides autonomous delegation. You supply an Issue with enough context, and the Agent reads the repository, writes code, creates tests, and opens a pull request.
+El modo Agent de GitHub Copilot permite delegar trabajo de forma autónoma. Proporcionas una Issue con suficiente contexto y el agente lee el repositorio, escribe código, crea pruebas y abre una pull request.
 
-**Why it matters:** the Agent does not invent requirements. It reads what you wrote in the Issue and `spec.md`. If the Issue is vague, the PR will be vague. If the Issue is precise, the PR has a chance of approval without major changes.
+**Por qué importa:** el agente no inventa requisitos. Lee lo que escribiste en la Issue y en `spec.md`. Si la Issue es vaga, la PR será vaga. Si la Issue es precisa, la PR tiene posibilidades de aprobarse sin cambios importantes.
 
-**Differences between Copilot modes:**
+**Diferencias entre los modos de Copilot:**
 
-| Mode | When to use it | Human control |
+| Modo | Cuándo usarlo | Control humano |
 |---|---|---|
-| **Ask** | Questions, explanations, and targeted inquiries | Total |
-| **Plan** | Plan a change before execution | High |
-| **Agent** | Delegate a well-defined task with autonomy | Post-execution review |
+| **Ask** | Preguntas, explicaciones y consultas específicas | Total |
+| **Plan** | Planificar un cambio antes de ejecutarlo | Alto |
+| **Agent** | Delegar una tarea bien definida con autonomía | Revisión posterior a la ejecución |
 
-**Issue → Agent → PR → Review cycle:**
+**Ciclo Issue → Agente → PR → Revisión:**
 
 ```mermaid
 %%{init: {'theme':'neutral','themeVariables':{'fontFamily':'ui-sans-serif, system-ui, sans-serif','primaryColor':'#F5F5F5','primaryTextColor':'#171717','primaryBorderColor':'#171717','lineColor':'#525252','secondaryColor':'#FFFFFF','tertiaryColor':'#FAFAFA','background':'#FFFFFF'}}}%%
@@ -42,109 +42,109 @@ flowchart LR
     classDef result fill:#FFFFFF,stroke:#171717,color:#171717,stroke-width:2px
     classDef muted fill:#FAFAFA,stroke:#A3A3A3,color:#404040
 
-    A["Well-formed Issue<br/>(REQ-IDs + criteria)"]:::step --> B["Copilot Agent<br/>reads the repository"]:::step
-    B --> C["PR opened<br/>by the Agent"]:::step
-    C --> D["Human review<br/>(Pair 3 + Pair 5)"]:::step
-    D --> E["Merge into develop<br/>or next step"]:::result
-    D --> F["Manual changes<br/>if needed"]:::muted
+    A["Issue bien estructurada<br/>(REQ-ID + criterios)"]:::step --> B["Copilot Agent<br/>lee el repositorio"]:::step
+    B --> C["PR abierta<br/>por el agente"]:::step
+    C --> D["Revisión humana<br/>(Pareja 3 + Pareja 5)"]:::step
+    D --> E["Integrar en develop<br/>o definir el siguiente paso"]:::result
+    D --> F["Cambios manuales<br/>si son necesarios"]:::muted
     F --> D
 ```
 
 ---
 
-## Concept: IaC with Terraform and CI/CD with GitHub Actions
+## Concepto: IaC con Terraform y CI/CD con GitHub Actions
 
-**Terraform** is the infrastructure-as-code (IaC) tool used in this workshop. It describes Azure resources (App Service, PostgreSQL, and Key Vault) in `.tf` files and creates them in a repeatable, auditable way.
+**Terraform** es la herramienta de infraestructura como código (IaC) usada en esta inmersión. Describe recursos de Azure (App Service, PostgreSQL y Key Vault) en archivos `.tf` y los crea de forma repetible y auditable.
 
 > [!CAUTION]
-> Never run `terraform apply` during the workshop. Validate with `terraform plan` and document the result. Actual infrastructure provisioning is outside the workshop scope.
+> Nunca ejecutes `terraform apply` durante la inmersión. Valida con `terraform plan` y documenta el resultado. El aprovisionamiento real de infraestructura queda fuera del alcance de la inmersión.
 
-**GitHub Actions** is the CI/CD engine. A well-configured pipeline automatically validates every PR: it compiles, tests, checks traceability (the presence of `source_legacy:`), and optionally deploys.
-
----
-
-## Objective
-
-Experiment with one small delegation and leave honest evidence of the outcome. This stage does not promise that an Agent will open a PR, that Terraform will be created, or that a merge will happen before the demo.
+**GitHub Actions** es el motor de CI/CD. Un pipeline bien configurado valida automáticamente cada PR: compila, ejecuta pruebas, verifica la trazabilidad (la presencia de `source_legacy:`) y, opcionalmente, despliega.
 
 ---
 
-## Timed schedule
+## Objetivo
 
-| Time | Activity | Outcome |
+Experimenta con una delegación pequeña y deja evidencia honesta del resultado. Esta etapa no promete que un agente abra una PR, que se cree Terraform ni que se realice una integración antes de la demo.
+
+---
+
+## Cronograma
+
+| Horario | Actividad | Resultado |
 |---|---|---|
-| 16:10–16:15 | Receive the H3 handoff, confirm the build, and select a small pending item. | Safe scope to delegate or record in the backlog. |
-| 16:15–16:25 | Write an Issue with context, REQ-IDs, feature path, verifiable criteria, out-of-scope items, and test method. | Issue created or draft ready for creation. |
-| 16:25–16:35 | Delegate to Copilot Agent, if available, and observe the initial status. | Delegation recorded without waiting for full implementation. |
-| 16:35–16:45 | If a PR exists, conduct a human review. Otherwise, record the status and prepare a post-workshop review. | Review comments or an explicit next step. |
-| 16:45–16:50 | Update the experience report and inform the team for the demo. | Factual account of what worked, failed, or remains pending. |
+| 16:10–16:15 | Recibir la transición H3, confirmar el build y seleccionar un pendiente pequeño. | Alcance seguro para delegar o registrar en el backlog. |
+| 16:15–16:25 | Escribir una Issue con contexto, REQ-ID, ruta de la funcionalidad, criterios verificables, elementos fuera del alcance y método de prueba. | Issue creada o borrador listo para crearla. |
+| 16:25–16:35 | Delegar a Copilot Agent, si está disponible, y observar el estado inicial. | Delegación registrada sin esperar la implementación completa. |
+| 16:35–16:45 | Si existe una PR, realizar una revisión humana. De lo contrario, registrar el estado y preparar una revisión posterior a la inmersión. | Comentarios de revisión o un siguiente paso explícito. |
+| 16:45–16:50 | Actualizar el informe de experiencia e informar al equipo para la demo. | Relato basado en hechos de lo que funcionó, falló o sigue pendiente. |
 
-Use [`../.github/prompts/stage-evolution-write-github-issue.prompt.md`](../.github/prompts/stage-evolution-write-github-issue.prompt.md) as a drafting checklist. Do not ask the Agent to invent missing requirements, architecture, legacy sources, or acceptance criteria.
-
----
-
-## Step by step
-
-- [ ] **Receive the H3 handoff.** Confirm the build status and identify a small, well-bounded pending item.
-- [ ] **Write the Issue.** Use the checklist in `.github/prompts/stage-evolution-write-github-issue.prompt.md`.
-- [ ] **Verify that the Issue includes:** REQ-IDs with existing `source_legacy:` entries in `spec.md`, verifiable acceptance criteria, limited scope, and a test method.
-- [ ] **Delegate to Copilot Agent.** Record the start time and observe the initial status.
-- [ ] **Review the PR** if available, following the criteria below.
-- [ ] **Record the outcome** in the experience report, regardless of the result.
-- [ ] **Inform the team** of the status for the demo.
+Usa [`../.github/prompts/stage-evolution-write-github-issue.prompt.md`](../.github/prompts/stage-evolution-write-github-issue.prompt.md) como lista de verificación para redactar. No pidas al agente que invente requisitos, arquitectura, fuentes del legado ni criterios de aceptación faltantes.
 
 ---
 
-## Scope limits
+## Paso a paso
+
+- [ ] **Recibe la transición H3.** Confirma el estado del build e identifica un pendiente pequeño y bien delimitado.
+- [ ] **Escribe la Issue.** Usa la lista de verificación de `.github/prompts/stage-evolution-write-github-issue.prompt.md`.
+- [ ] **Verifica que la Issue incluya:** REQ-ID con entradas `source_legacy:` existentes en `spec.md`, criterios de aceptación verificables, alcance limitado y un método de prueba.
+- [ ] **Delega a Copilot Agent.** Registra la hora de inicio y observa el estado inicial.
+- [ ] **Revisa la PR**, si está disponible, siguiendo los criterios de abajo.
+- [ ] **Registra lo ocurrido** en el informe de experiencia, independientemente del resultado.
+- [ ] **Informa al equipo** del estado para la demo.
+
+---
+
+## Límites de alcance
 
 > [!IMPORTANT]
-> These limits ensure that the workshop ends with real evidence, not promises.
+> Estos límites garantizan que la inmersión termine con evidencia real, no con promesas.
 
-- The Issue references `specs/<NNN>-<feature>/spec.md`, `plan.md`, and `tasks.md` when the pending item comes from a specified feature.
-- Every `impl/<NNN>-<feature>` branch starts from `develop` and opens a PR into `develop`; there is no `stage` branch.
-- Review every Agent PR as a human PR. Do not merge automatically.
-- CI/CD and Terraform are optional during this interval. Validate or document what already exists. Do not create infrastructure only to meet a target.
+- La Issue referencia `specs/<NNN>-<feature>/spec.md`, `plan.md` y `tasks.md` cuando el pendiente proviene de una funcionalidad especificada.
+- Cada rama `impl/<NNN>-<feature>` parte de `develop` y abre una PR hacia `develop`; no existe una rama `stage`.
+- Revisa cada PR del agente como una PR humana. No la integres automáticamente.
+- CI/CD y Terraform son opcionales durante este intervalo. Valida o documenta lo que ya exista. No crees infraestructura solo para cumplir una meta.
 
 > [!CAUTION]
-> Never run `terraform apply` during the workshop.
+> Nunca ejecutes `terraform apply` durante la inmersión.
 
 ---
 
-## Quick PR review
+## Revisión rápida de PR
 
-Before approving a PR generated by the Agent, confirm:
+Antes de aprobar una PR generada por el agente, confirma:
 
-- [ ] The scope remains limited to the Issue and referenced REQ-IDs.
-- [ ] The referenced requirements and `source_legacy:` entries already exist in `spec.md`.
-- [ ] Tests, input validation, and documentation were addressed when applicable.
-- [ ] There are no secrets, dependencies without a decision, or out-of-scope changes.
-- [ ] The PR targets `develop` and received peer review.
-
----
-
-## Completion criteria
-
-- [ ] A small Issue was created or left as a reviewable draft.
-- [ ] The delegation outcome (PR, in-progress execution, failure, or unavailability) was recorded without promises.
-- [ ] An available PR received human review; if no PR exists, a next step is recorded.
-- [ ] The experience report was completed.
-- [ ] CI/IaC status was communicated for the demo without running `terraform apply`.
+- [ ] El alcance sigue limitado a la Issue y los REQ-ID referenciados.
+- [ ] Los requisitos y las entradas `source_legacy:` referenciados ya existen en `spec.md`.
+- [ ] Se atendieron las pruebas, la validación de entradas y la documentación cuando correspondía.
+- [ ] No hay secretos, dependencias sin una decisión ni cambios fuera del alcance.
+- [ ] La PR tiene como destino `develop` y recibió una revisión por pares.
 
 ---
 
-## References
+## Criterios de finalización
 
-- [Team experience report](agent-experience-report.md)
-- [Report template](templates/agent-experience-report.template.md)
-- [Stage agent @evolution](../06-stage-agents/04-evolution/README.md)
-- [Cheat sheet: 3 Copilot modes](../09-cheat-sheets/copilot-3-modes.md)
+- [ ] Se creó una Issue pequeña o se dejó como borrador revisable.
+- [ ] Se registró el resultado de la delegación (PR, ejecución en curso, fallo o falta de disponibilidad) sin promesas.
+- [ ] Una PR disponible recibió revisión humana; si no existe una PR, se registró un siguiente paso.
+- [ ] Se completó el informe de experiencia.
+- [ ] Se comunicó el estado de CI/IaC para la demo sin ejecutar `terraform apply`.
 
 ---
 
-### Continue reading
+## Referencias
 
-| Previous | Next |
+- [Informe de experiencia del equipo](agent-experience-report.md)
+- [Plantilla del informe](templates/agent-experience-report.template.md)
+- [Agente de etapa @evolution](../06-stage-agents/04-evolution/README.md)
+- [Ficha: 3 modos de Copilot](../09-cheat-sheets/copilot-3-modes.md)
+
+---
+
+### Sigue leyendo
+
+| Anterior | Siguiente |
 |---|---|
-| [Stage 3 — Implementation](../03-implementation/GUIDE.md)<br/><sub>15:00–16:10 · Java 21 + Spring Boot + Next.js, with tests.</sub> | [Experience report](agent-experience-report.md)<br/><sub>Complete it at the end of the stage.</sub> |
+| [Etapa 3 — Implementación](../03-implementation/GUIDE.md)<br/><sub>15:00–16:10 · Java 21 + Spring Boot + Next.js, con pruebas.</sub> | [Informe de experiencia](agent-experience-report.md)<br/><sub>Complétalo al final de la etapa.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

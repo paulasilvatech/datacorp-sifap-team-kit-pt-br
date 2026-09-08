@@ -1,93 +1,93 @@
 ---
 name: "java-docs"
-description: "Apply Javadoc best practices so Java types and members are documented correctly — summary sentences, @param/@return/@throws, {@code} blocks, @since, and inherited docs. Use when the user asks to write, review, or improve Javadoc or API documentation for Java code."
+description: "Aplica buenas prácticas de Javadoc para documentar correctamente tipos y miembros Java: frases de resumen, @param/@return/@throws, bloques {@code}, @since y documentación heredada. Úsala cuando la persona pida escribir, revisar o mejorar Javadoc o la documentación de API de código Java."
 ---
-# Java documentation (Javadoc)
+# Documentación de Java (Javadoc)
 
-Write and review Javadoc for the SIFAP 2.0 backend (Java 21 + Spring Boot 3.3) so every public and protected member carries a correct, consistent contract. This skill owns the Javadoc convention set: it teaches how to document behavior — it does not decide the code's design, and it never puts real regulated values (CPF, benefit amounts) into examples.
+Escribe y revisa Javadoc para el backend de SIFAP 2.0 (Java 21 + Spring Boot 3.3) de modo que cada miembro público y protegido tenga un contrato correcto y coherente. Esta skill define las convenciones de Javadoc: enseña a documentar el comportamiento, no decide el diseño del código y nunca incluye valores reales regulados (CPF, importes de prestaciones) en los ejemplos.
 
-## When to invoke
+## Cuándo invocar
 
-- "Write Javadoc for this service class."
-- "Review the Javadoc on this package and fix what is missing."
-- "Document the public API of this module before we publish it."
-- "Add `@param`/`@return`/`@throws` to these methods."
+- "Escribe Javadoc para esta clase de servicio."
+- "Revisa el Javadoc de este paquete y completa lo que falte."
+- "Documenta la API pública de este módulo antes de publicarlo."
+- "Añade `@param`/`@return`/`@throws` a estos métodos."
 
-## What to document
+## Qué documentar
 
-| Visibility | Rule |
+| Visibilidad | Regla |
 |---|---|
-| `public`, `protected` | Javadoc is mandatory — these form the API contract |
-| package-private | Document when the intent is not obvious from the name |
-| `private` | Document only genuinely complex logic; prefer clear code over comments |
+| `public`, `protected` | Javadoc es obligatorio; estos miembros forman el contrato de la API |
+| package-private | Documenta cuando la intención no resulte evidente a partir del nombre |
+| `private` | Documenta solo la lógica realmente compleja; prefiere código claro a comentarios |
 
 > [!NOTE]
-> Document the contract (what the caller can rely on), not the implementation. Never embed a real CPF, benefit amount, token, or other sensitive value in a Javadoc example — use obviously fake placeholders.
+> Documenta el contrato (lo que puede dar por garantizado quien invoca), no la implementación. Nunca incluyas un CPF, importe de prestación, token u otro valor sensible real en un ejemplo de Javadoc; usa marcadores de posición claramente ficticios.
 
-## Summary sentence
+## Frase de resumen
 
-- The first sentence is the summary; it ends with a period and reads as a short verb phrase ("Returns…", "Registers…").
-- Start method summaries with a third-person verb ("Calculates the tax…"), not "This method…".
-- Keep the summary on the contract; move detail into the paragraphs that follow.
+- La primera frase es el resumen; termina en punto y consiste en una frase verbal breve ("Devuelve…", "Registra…").
+- Empieza los resúmenes de métodos con un verbo en tercera persona ("Calcula el impuesto…"), no con "Este método…".
+- Centra el resumen en el contrato; lleva los detalles a los párrafos siguientes.
 
-## Block tags
+## Etiquetas de bloque
 
-| Tag | When | Format rule |
+| Etiqueta | Cuándo | Regla de formato |
 |---|---|---|
-| `@param name` | Every method/constructor parameter | Description starts lowercase, no trailing period |
-| `@param <T>` | Every type parameter on a generic type or method | Same lowercase, no-period rule |
-| `@return` | Every method that returns a value (omit for `void`) | Describe the value, including `Optional` semantics |
-| `@throws` / `@exception` | Every checked exception and every documented unchecked one | State the condition that triggers it |
-| `@see` | Cross-references to related types or members | Link, do not restate |
-| `@since` | When the member was introduced | Use the project or module version |
-| `@deprecated` | A member scheduled for removal | Name the replacement and add `@Deprecated` on the code |
+| `@param name` | Cada parámetro de método o constructor | La descripción empieza en minúscula y no termina en punto |
+| `@param <T>` | Cada parámetro de tipo de un tipo o método genérico | La misma regla de minúscula y ausencia de punto final |
+| `@return` | Cada método que devuelve un valor (omitir para `void`) | Describe el valor, incluida la semántica de `Optional` |
+| `@throws` / `@exception` | Cada excepción comprobada y cada excepción no comprobada documentada | Indica la condición que la desencadena |
+| `@see` | Referencias cruzadas a tipos o miembros relacionados | Enlaza, no repitas |
+| `@since` | Cuándo se introdujo el miembro | Usa la versión del proyecto o módulo |
+| `@deprecated` | Un miembro cuya eliminación está prevista | Nombra el reemplazo y añade `@Deprecated` en el código |
 
-Optional: `@author` and `@version` — include them only if your team's convention requires it; many style guides omit `@author` in favour of version-control history.
+Opcionales: `@author` y `@version`. Inclúyelas solo si lo exige la convención del equipo; muchas guías de estilo omiten `@author` y prefieren el historial de control de versiones.
 
 > [!WARNING]
-> Order the tags: `@param` (in declaration order), then `@return`, then `@throws`. A misordered or missing `@param` is the most common Javadoc review defect.
+> Ordena las etiquetas: `@param` (en el orden de declaración), después `@return` y luego `@throws`. Un `@param` ausente o desordenado es el defecto más habitual en las revisiones de Javadoc.
 
-## Inline tags and code
+## Etiquetas inline y código
 
-- `{@code ...}` for inline identifiers, keywords, and literals (`{@code null}`, `{@code Optional.empty()}`).
-- `{@link Type#member}` to link to another element; `{@linkplain ...}` when you want plain link text.
-- `<pre>{@code ... }</pre>` for multi-line samples so generics and angle brackets render literally.
-- `{@inheritDoc}` to inherit a supertype's contract — but re-document any behaviour that genuinely differs.
+- `{@code ...}` para identificadores, palabras clave y literales inline (`{@code null}`, `{@code Optional.empty()}`).
+- `{@link Type#member}` para enlazar a otro elemento; `{@linkplain ...}` si quieres texto de enlace sin formato de código.
+- `<pre>{@code ... }</pre>` para ejemplos de varias líneas, de modo que los genéricos y los corchetes angulares se representen literalmente.
+- `{@inheritDoc}` para heredar el contrato de un supertipo; vuelve a documentar cualquier comportamiento que realmente difiera.
 
-## Documenting Java 21 records
+## Documentación de records de Java 21
 
-A record's Javadoc lives on the type; document each component with `@param`. Do not add accessor methods just to hang Javadoc on them.
+El Javadoc de un record se coloca en el tipo; documenta cada componente con `@param`. No añadas métodos de acceso solo para colocar Javadoc en ellos.
 
-## Output template
+## Plantilla de salida
 
 ```java
 /**
- * Registers a payment resource and returns its stored representation.
+ * Registra un recurso de pago y devuelve su representación almacenada.
  *
- * <p>The label must be unique; a duplicate is rejected rather than merged.
+ * <p>La etiqueta debe ser única; los duplicados se rechazan en lugar de fusionarse.
  *
- * @param request the validated creation request; must not be {@code null}
- * @return the persisted resource as a response DTO
- * @throws ResourceConflictException if a resource with the same label already exists
+ * @param request la solicitud de creación validada; no debe ser {@code null}
+ * @return el recurso persistido como DTO de respuesta
+ * @throws ResourceConflictException si ya existe un recurso con la misma etiqueta
  * @since 1.0.0
  * @see ResourceService#getById(java.util.UUID)
  */
 ResourceResponse create(CreateResourceRequest request);
 
 /**
- * Immutable creation request for a payment resource.
+ * Solicitud de creación inmutable de un recurso de pago.
  *
- * @param label  a unique, human-readable label (max 120 characters)
- * @param amount the positive monetary amount to register
+ * @param label  una etiqueta única y legible (máximo 120 caracteres)
+ * @param amount el importe monetario positivo que se registrará
  */
 public record CreateResourceRequest(String label, BigDecimal amount) {}
 ```
 
-## Quality gate
+## Puerta de calidad
 
-- [ ] Every public and protected member has a Javadoc summary sentence ending with a period.
-- [ ] Every parameter (including `<T>` type parameters) has a `@param`; every non-`void` method has a `@return`.
-- [ ] Every documented exception has a `@throws` describing the triggering condition.
-- [ ] `{@code}` / `{@link}` wrap identifiers instead of bare text, and block tags are correctly ordered.
-- [ ] No example embeds a real CPF, benefit amount, or other sensitive value.
-- [ ] `mvn javadoc:javadoc` (or the Gradle `javadoc` task) generates without warnings.
+- [ ] Cada miembro público y protegido tiene una frase de resumen Javadoc terminada en punto.
+- [ ] Cada parámetro (incluidos los parámetros de tipo `<T>`) tiene un `@param`; cada método no `void` tiene un `@return`.
+- [ ] Cada excepción documentada tiene un `@throws` que describe la condición que la desencadena.
+- [ ] Los identificadores usan `{@code}` / `{@link}` en lugar de texto sin formato y las etiquetas de bloque están ordenadas correctamente.
+- [ ] Ningún ejemplo incluye un CPF, importe de prestación u otro valor sensible real.
+- [ ] `mvn javadoc:javadoc` (o la tarea `javadoc` de Gradle) genera la documentación sin advertencias.

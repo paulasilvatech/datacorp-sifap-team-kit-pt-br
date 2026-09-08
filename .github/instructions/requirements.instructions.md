@@ -1,107 +1,107 @@
 ---
-description: "Use when writing or reviewing requirements, EARS specifications, acceptance criteria, traceability, and docs-backed requirements."
+description: "Utiliza al escribir o revisar requisitos, especificaciones EARS, criterios de aceptación, trazabilidad y requisitos fundamentados en documentación."
 applyTo: "docs/**/*.md,specs/**/*.md,02-modern-spec/**/*.md"
 ---
 
-# Requirements Conventions — EARS and Legacy Traceability
+# Convenciones de requisitos — EARS y trazabilidad al sistema heredado
 
-This file activates when you write or review Markdown under `docs/`, `specs/`, or `02-modern-spec/`. It teaches how to phrase requirements in EARS notation, assign REQ-IDs, and attach the mandatory `source_legacy:` line that CI enforces. It teaches the *form* of a good requirement — it does not decide *what* to require; that comes from the team's own reading of the legacy corpus.
+Este archivo se activa al escribir o revisar Markdown en `docs/`, `specs/` o `02-modern-spec/`. Enseña a redactar requisitos en notación EARS, asignar REQ-ID y añadir la línea obligatoria `source_legacy:` que exige la CI. Enseña la *forma* de un buen requisito; no decide *qué* exigir, pues eso proviene de la lectura del conjunto de fuentes heredadas que realiza el propio equipo.
 
 > [!IMPORTANT]
-> Before writing EARS requirements, the pair MUST have read their assigned Natural programs (hard gate — see [`LEGACY-EXPLORATION-CHECKLIST.md`](../../01-archaeology/LEGACY-EXPLORATION-CHECKLIST.md) and [`natural-adabas.instructions.md`](natural-adabas.instructions.md)).
+> Antes de escribir requisitos EARS, la pareja DEBE haber leído los programas Natural que tiene asignados (puerta obligatoria; consulta [`LEGACY-EXPLORATION-CHECKLIST.md`](../../01-archaeology/LEGACY-EXPLORATION-CHECKLIST.md) y [`natural-adabas.instructions.md`](natural-adabas.instructions.md)).
 
-## EARS Patterns
+## Patrones EARS
 
-Every formal requirement uses one EARS template and the keyword `SHALL` for mandatory behavior (`SHOULD` for recommendations).
+Cada requisito formal utiliza una plantilla EARS y la palabra clave `SHALL` para el comportamiento obligatorio (`SHOULD` para recomendaciones).
 
-| Pattern | Template |
+| Patrón | Plantilla |
 |---|---|
-| Ubiquitous | `The <system> SHALL <response>.` |
-| Event-driven | `WHEN <trigger>, the <system> SHALL <response>.` |
-| State-driven | `WHILE <state>, the <system> SHALL <response>.` |
-| Unwanted behavior | `IF <condition>, THEN the <system> SHALL <response>.` |
-| Optional feature | `WHERE <feature is present>, the <system> SHALL <response>.` |
+| Ubicuo | `El <sistema> SHALL <respuesta>.` |
+| Guiado por eventos | `WHEN <activador>, el <sistema> SHALL <respuesta>.` |
+| Guiado por estados | `WHILE <estado>, el <sistema> SHALL <respuesta>.` |
+| Comportamiento no deseado | `IF <condición>, THEN el <sistema> SHALL <respuesta>.` |
+| Funcionalidad opcional | `WHERE <la funcionalidad está presente>, el <sistema> SHALL <respuesta>.` |
 
-The [`ears-validate`](../skills/ears-validate/SKILL.md) skill owns the quality checklist for these statements.
+La habilidad [`ears-validate`](../skills/ears-validate/SKILL.md) define la lista de verificación de calidad para estos enunciados.
 
-## Anatomy of a Requirement
+## Anatomía de un requisito
 
 ```markdown
-### REQ-021 — Reject duplicate resource registration
+### REQ-021 — Rechazar el registro de recursos duplicados
 
-WHEN a resource is submitted with an identifier that already exists,
-the system SHALL reject the request and return HTTP 409.
+WHEN se envía un recurso con un identificador que ya existe,
+el sistema SHALL rechazar la solicitud y devolver HTTP 409.
 
 - source_legacy: 01-archaeology/legacy-sifap/natural-programs/<PROGRAM>.NSP#L40-L88
-- acceptance: Given an existing resource, When the same identifier is submitted,
-  Then the response is 409 and no new record is created.
+- acceptance: Given un recurso existente, When se envía el mismo identificador,
+  Then la respuesta es 409 y no se crea ningún registro nuevo.
 ```
 
-## REQ-ID Format
+## Formato de REQ-ID
 
-IDs are unique and take the form `REQ-NNN` (`REQ-021`) or `REQ-AREA-NNN` (`REQ-PAY-014`, `REQ-AUD-CORE-002`). The traceability gate recognizes a declaration only when the ID is a heading (`### REQ-021 — …`) or the start of a bold/list item (`- **REQ-021**:`, `REQ-021 - …`, `REQ-021:`). Free-standing mentions elsewhere in prose count as references, not declarations.
+Los identificadores son únicos y tienen la forma `REQ-NNN` (`REQ-021`) o `REQ-AREA-NNN` (`REQ-PAY-014`, `REQ-AUD-CORE-002`). La puerta de trazabilidad reconoce una declaración solo cuando el identificador es un encabezado (`### REQ-021 — …`) o aparece al principio de un elemento en negrita o de una lista (`- **REQ-021**:`, `REQ-021 - …`, `REQ-021:`). Las menciones aisladas en otras partes de la prosa cuentan como referencias, no como declaraciones.
 
-## Mandatory `source_legacy` Line
+## Línea obligatoria `source_legacy`
 
-The `legacy-traceability` job in [`spec-quality.yml`](../workflows/spec-quality.yml) **fails the build** if any declared REQ-ID in `specs/` lacks a valid `source_legacy:` line within 20 lines of its declaration. A value is valid when it is one of:
+El trabajo `legacy-traceability` de [`spec-quality.yml`](../workflows/spec-quality.yml) **hace fallar la compilación** si algún REQ-ID declarado en `specs/` carece de una línea `source_legacy:` válida dentro de las 20 líneas siguientes a su declaración. Un valor es válido cuando es uno de los siguientes:
 
-- A path under `01-archaeology/legacy-sifap/natural-programs/` with extension `.NSP`, `.NSN`, `.NSS`, `.NSA`, `.NSL`, `.NSC`, `.NSM`, or `.jcl`.
-- A path under `01-archaeology/legacy-sifap/adabas-ddms/` with extension `.NSD`, `.ddm`, or `.txt`.
-- `[GREENFIELD] <one-line justification>` (justification must be non-empty).
+- Una ruta en `01-archaeology/legacy-sifap/natural-programs/` con extensión `.NSP`, `.NSN`, `.NSS`, `.NSA`, `.NSL`, `.NSC`, `.NSM` o `.jcl`.
+- Una ruta en `01-archaeology/legacy-sifap/adabas-ddms/` con extensión `.NSD`, `.ddm` o `.txt`.
+- `[GREENFIELD] <justificación en una línea>` (la justificación no debe estar vacía).
 
-An optional line anchor `#L<start>` or `#L<start>-L<end>` may follow the path, and the file **must actually exist on disk** — the gate reads it. Quotes are optional but must be balanced.
+La ruta puede ir seguida de un ancla de línea opcional `#L<start>` o `#L<start>-L<end>` y el archivo **debe existir realmente en el disco**: la puerta lo lee. Las comillas son opcionales, pero deben estar equilibradas.
 
 ```markdown
 - source_legacy: 01-archaeology/legacy-sifap/adabas-ddms/<DDM>.ddm#L12-L30
-- source_legacy: "[GREENFIELD] no legacy audit trail exists; required for compliance"
+- source_legacy: "[GREENFIELD] no existe un registro de auditoría heredado; necesario para el cumplimiento normativo"
 ```
 
 > [!WARNING]
-> A `source_legacy:` pointing at a non-existent file, a wrong directory, or an unlisted extension fails the gate exactly as a missing line does.
+> Un `source_legacy:` que apunta a un archivo inexistente, a un directorio incorrecto o a una extensión no enumerada hace fallar la puerta exactamente igual que una línea ausente.
 
-## Acceptance Criteria
+## Criterios de aceptación
 
-Write acceptance criteria in Given/When/Then form, one per behavior, each testable and tied to its REQ-ID. Number them sequentially within the feature.
+Escribe los criterios de aceptación en formato Given/When/Then, uno por comportamiento, cada uno verificable y vinculado a su REQ-ID. Numéralos secuencialmente dentro de la funcionalidad.
 
 ```markdown
-- AC-021.1: Given a unique identifier, When submitted, Then the response is 201.
-- AC-021.2: Given a duplicate identifier, When submitted, Then the response is 409.
+- AC-021.1: Given un identificador único, When se envía, Then la respuesta es 201.
+- AC-021.2: Given un identificador duplicado, When se envía, Then la respuesta es 409.
 ```
 
-## Test Traceability
+## Trazabilidad de pruebas
 
-The non-blocking `spec-traceability` job reports REQ-IDs that no test references yet. Cite the REQ-ID in a test comment so implementation and specification stay linked (see [`tests.instructions.md`](tests.instructions.md)).
+El trabajo no bloqueante `spec-traceability` informa de los REQ-ID que aún no referencia ninguna prueba. Cita el REQ-ID en un comentario de prueba para mantener vinculadas la implementación y la especificación (consulta [`tests.instructions.md`](tests.instructions.md)).
 
 ```java
-// REQ-021: duplicate identifier returns 409
+// REQ-021: un identificador duplicado devuelve 409
 @Test
 void should_return_409_when_identifier_already_exists() { /* ... */ }
 ```
 
-## Conventions
+## Convenciones
 
-| Rule | Rationale |
+| Regla | Justificación |
 |---|---|
-| One EARS template per requirement | Unambiguous, testable phrasing |
-| `SHALL` = mandatory, `SHOULD` = recommended | Consistent obligation language |
-| Unique `REQ-NNN` / `REQ-AREA-NNN` IDs | Stable anchors for tests and traceability |
-| `source_legacy:` within 20 lines of the ID | Passes the blocking legacy gate |
-| Given/When/Then acceptance criteria | Directly convertible into tests |
+| Una plantilla EARS por requisito | Redacción inequívoca y verificable |
+| `SHALL` = obligatorio, `SHOULD` = recomendado | Lenguaje de obligación coherente |
+| Identificadores únicos `REQ-NNN` / `REQ-AREA-NNN` | Anclas estables para pruebas y trazabilidad |
+| `source_legacy:` dentro de las 20 líneas siguientes al identificador | Supera la puerta bloqueante de trazabilidad heredada |
+| Criterios de aceptación Given/When/Then | Convertibles directamente en pruebas |
 
-## Do / Do Not
+## Qué hacer / Qué no hacer
 
-| Do | Do not |
+| Qué hacer | Qué no hacer |
 |---|---|
-| Cite a real legacy file (or `[GREENFIELD]`) | Invent a path or omit `source_legacy:` |
-| Reference the source by `#L` line range | Assert what the legacy program does from memory |
-| Keep IDs unique and declared as headings/list items | Reuse an ID or bury it mid-sentence |
-| Write acceptance criteria as Given/When/Then | Leave a requirement without a testable check |
+| Citar un archivo heredado real (o `[GREENFIELD]`) | Inventar una ruta u omitir `source_legacy:` |
+| Referenciar la fuente mediante un intervalo de líneas `#L` | Afirmar de memoria qué hace el programa heredado |
+| Mantener identificadores únicos declarados como encabezados o elementos de lista | Reutilizar un identificador o esconderlo en medio de una frase |
+| Escribir criterios de aceptación como Given/When/Then | Dejar un requisito sin una comprobación verificable |
 
-## Checklist Before Opening a PR
+## Lista de verificación antes de abrir una PR
 
-- [ ] Every requirement uses an EARS template with `SHALL`/`SHOULD`
-- [ ] Every REQ-ID is unique and declared as a heading or list/bold item
-- [ ] Every REQ-ID has a `source_legacy:` line within 20 lines pointing at a real file or `[GREENFIELD]`
-- [ ] Legacy paths use the allowed directories and extensions, with optional `#L` ranges
-- [ ] Acceptance criteria are Given/When/Then and map to the REQ-ID
-- [ ] The pair read the cited legacy programs before writing the requirements
+- [ ] Cada requisito utiliza una plantilla EARS con `SHALL`/`SHOULD`
+- [ ] Cada REQ-ID es único y está declarado como encabezado o elemento de lista o en negrita
+- [ ] Cada REQ-ID tiene una línea `source_legacy:` dentro de las 20 líneas siguientes, que apunta a un archivo real o a `[GREENFIELD]`
+- [ ] Las rutas heredadas utilizan los directorios y extensiones permitidos, con intervalos `#L` opcionales
+- [ ] Los criterios de aceptación siguen Given/When/Then y se vinculan al REQ-ID
+- [ ] La pareja leyó los programas heredados citados antes de escribir los requisitos

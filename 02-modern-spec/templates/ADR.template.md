@@ -1,90 +1,90 @@
 ---
 
-title: "Template: Architecture Decision Record"
-description: "MADR-format ADR skeleton for /generate-adr"
-author: "Paula Silva, AI-Native Software Engineer, Americas Global Black Belt at Microsoft"
+title: "Plantilla: registro de decisión de arquitectura"
+description: "Estructura de ADR en formato MADR para /generate-adr"
+author: "Paula Silva, ingeniera de software nativo de IA, Global Black Belt para las Américas en Microsoft"
 date: "2026-04-29"
 version: "1.0.0"
 status: "approved"
 tags: ["template", "adr", "architect", "stage-2"]
 ---
 
-<!-- How to use: run /generate-adr. A minimum of 2 options is required. -->
+<!-- Uso: ejecuta /generate-adr. Se requiere un mínimo de 2 opciones. -->
 
-# ADR-<!-- placeholder: NNN -->: <!-- placeholder: Title -->
+# ADR-<!-- placeholder: NNN -->: <!-- placeholder: Título -->
 
-![ADR Template](https://img.shields.io/badge/Template-ADR-737373?style=flat-square) ![Copy — do not edit the original](https://img.shields.io/badge/Copy-do%20not%20edit%20the%20original-A3A3A3?style=flat-square)
+![Plantilla de ADR](https://img.shields.io/badge/Template-ADR-737373?style=flat-square) ![Copia: no edites el original](https://img.shields.io/badge/Copy-do%20not%20edit%20the%20original-A3A3A3?style=flat-square)
 
-> **Path:** [Team Kit](../../README.md) › [Stage 2](../README.md) › Templates › **ADR**
+> **Ruta:** [Kit del equipo](../../README.md) › [Etapa 2](../README.md) › Plantillas › **ADR**
 
 > [!NOTE]
-> This file is a TEMPLATE. Copy it to your team's repository and fill it with actual data. Do not edit the original.
+> Este archivo es una PLANTILLA. Cópiala al repositorio de tu equipo y complétala con datos reales. No edites el original.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Status** | `Proposed` / `Accepted` / `Rejected` / `Superseded` |
-| **Date** | `YYYY-MM-DD` |
-| **Related feature** | `specs/<NNN>-<feature>/` |
+| **Estado** | `Proposed` / `Accepted` / `Rejected` / `Superseded` |
+| **Fecha** | `YYYY-MM-DD` |
+| **Funcionalidad relacionada** | `specs/<NNN>-<feature>/` |
 
 ---
 
-## Context
+## Contexto
 
-<!-- placeholder: why this decision is necessary -->
+<!-- placeholder: por qué es necesaria esta decisión -->
 
 ---
 
-## Options considered
+## Opciones consideradas
 
-### Option 1: <!-- placeholder -->
+### Opción 1: <!-- placeholder -->
 
-| Aspect | Assessment |
+| Aspecto | Evaluación |
 |---|---|
-| **Pros** | <!-- placeholder: team-specific --> |
-| **Cons** | <!-- placeholder: team-specific --> |
+| **Ventajas** | <!-- placeholder: específicas del equipo --> |
+| **Desventajas** | <!-- placeholder: específicas del equipo --> |
 
-### Option 2: <!-- placeholder -->
+### Opción 2: <!-- placeholder -->
 
-| Aspect | Assessment |
+| Aspecto | Evaluación |
 |---|---|
-| **Pros** | <!-- placeholder --> |
-| **Cons** | <!-- placeholder --> |
+| **Ventajas** | <!-- placeholder --> |
+| **Desventajas** | <!-- placeholder --> |
 
 ---
 
-## Decision
+## Decisión
 
-<!-- placeholder: selected option + rationale -->
+<!-- placeholder: opción seleccionada + justificación -->
 
 ---
 
-## Consequences
+## Consecuencias
 
-### Positive
+### Positivas
 
 - <!-- placeholder -->
 
-### Negative
+### Negativas
 
 - <!-- placeholder -->
 
 ---
 
-## Related requirements
+## Requisitos relacionados
 
 - `<!-- placeholder: REQ-NNN -->`
 
 ---
 
 > [!IMPORTANT]
-> ADR Definition of Done: MADR format, at least 2 options, team-specific pros/cons, and a dated decision.
+> Definición de terminado del ADR: formato MADR, al menos 2 opciones, ventajas/desventajas específicas del equipo y una decisión con fecha.
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Stage 2 GUIDE](../GUIDE.md)<br/><sub>Step-by-step instructions.</sub> | [Stage 2 GUIDE](../GUIDE.md)<br/><sub>Lead the decision with the team.</sub> |
+| [GUÍA de la Etapa 2](../GUIDE.md)<br/><sub>Instrucciones paso a paso.</sub> | [GUÍA de la Etapa 2](../GUIDE.md)<br/><sub>Lidera la decisión junto con el equipo.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Volver al índice del kit](../../README.md)</sub>

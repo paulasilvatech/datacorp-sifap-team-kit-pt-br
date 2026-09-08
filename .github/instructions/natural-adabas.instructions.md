@@ -1,199 +1,199 @@
 ---
-description: "Use when reading Natural/Adabas legacy code, language patterns, FDT structure, naming conventions, and batch flows."
+description: "Utiliza al leer código heredado Natural/Adabas, patrones del lenguaje, estructura FDT, convenciones de nomenclatura y flujos por lotes."
 applyTo: "01-archaeology/legacy-sifap/**,**/*.NSP,**/*.nsp,**/*.NSN,**/*.nsn,**/*.NSS,**/*.nss,**/*.NSA,**/*.nsa,**/*.NSL,**/*.nsl,**/*.NSC,**/*.nsc,**/*.NSM,**/*.nsm,**/*.NSD,**/*.nsd,**/*.NAT,**/*.nat,**/*.CPY,**/*.cpy,**/*.DDM,**/*.ddm,**/*.jcl,**/*.JCL"
 ---
 
-# Natural/Adabas Legacy Code — Reading Guide
+# Código heredado Natural/Adabas — Guía de lectura
 
-This file activates when you open Natural programs, Adabas DDMs, JCL, copycodes, or any file within the `01-archaeology/legacy-sifap/` directory. It teaches how to read legacy code for SIFAP (Payment Inspection and Administration System): Natural program structure, CALLNAT and INCLUDE dependencies, Adabas FDTs, legacy naming, batch patterns, packed decimals, and first-pass reading strategy. It does **not** decide modern module boundaries or JPA mappings, which belong to [`modular-monolith.instructions.md`](modular-monolith.instructions.md), and it does not write EARS requirements or traceability records, which belong to [`requirements.instructions.md`](requirements.instructions.md).
+Este archivo se activa al abrir programas Natural, DDM de Adabas, JCL, códigos de copia o cualquier archivo del directorio `01-archaeology/legacy-sifap/`. Enseña a leer el código heredado de SIFAP (Sistema de Fiscalización y Administración de Pagos): estructura de programas Natural, dependencias CALLNAT e INCLUDE, FDT de Adabas, nomenclatura heredada, patrones por lotes, decimales empaquetados y estrategia de primera lectura. **No** decide los límites de módulos modernos ni los mapeos JPA, que corresponden a [`modular-monolith.instructions.md`](modular-monolith.instructions.md), ni escribe requisitos EARS o registros de trazabilidad, que corresponden a [`requirements.instructions.md`](requirements.instructions.md).
 
-## Natural Program Structure
+## Estructura de programas Natural
 
-A Natural program follows this skeleton:
+Un programa Natural sigue esta estructura inicial:
 
 ```
 DEFINE DATA
   LOCAL
-    01 #MY-VARIABLE  (A20)    /* A = alphanumeric, 20 chars */
-    01 #COUNTER      (N5)     /* N = numeric, 5 digits */
-    01 #AMOUNT       (P9.2)   /* P = packed decimal, 9 integer + 2 decimal digits */
-    01 #RATES        (N3.4/1:27)  /* array: 27 occurrences of N3.4 */
+    01 #MY-VARIABLE  (A20)    /* A = alfanumérico, 20 caracteres */
+    01 #COUNTER      (N5)     /* N = numérico, 5 dígitos */
+    01 #AMOUNT       (P9.2)   /* P = decimal empaquetado, 9 dígitos enteros + 2 decimales */
+    01 #RATES        (N3.4/1:27)  /* matriz: 27 ocurrencias de N3.4 */
   END-DEFINE
 
-  /* Main logic here */
+  /* Lógica principal aquí */
 
 END
 ```
 
-> **In this lab, the decimal separator in a format specification is a period.**
-> Natural Community Edition 9.3.3 compiles `(P9.2)` and `(N3.4)`. It rejects `(P9,2)` with `NAT0165`.
-> Natural installations can vary by decimal-character setting; this workshop follows the Community Edition image.
-> This rule applies only to the *declaration* — **literals still use a period**: `MOVE 1.3500 TO #FATOR`.
-> In arrays, the range is part of the notation: `(A60/1:10)`, `(N3.4/1:27)`, `(N3.6/1:10,1:12)`.
+> **En este laboratorio, el separador decimal de una especificación de formato es un punto.**
+> Natural Community Edition 9.3.3 compila `(P9.2)` y `(N3.4)`. Rechaza `(P9,2)` con `NAT0165`.
+> Las instalaciones de Natural pueden variar según la configuración del carácter decimal; esta inmersión sigue la imagen de Community Edition.
+> Esta regla se aplica solo a la *declaración*: **los literales siguen utilizando un punto**: `MOVE 1.3500 TO #FATOR`.
+> En las matrices, el intervalo forma parte de la notación: `(A60/1:10)`, `(N3.4/1:27)`, `(N3.6/1:10,1:12)`.
 
-Key blocks to recognize:
+Bloques clave que debes reconocer:
 
-| Block | Purpose |
+| Bloque | Propósito |
 |-------|---------|
-| `DEFINE DATA LOCAL` | Variable declarations scoped to this program |
-| `DEFINE DATA PARAMETER` | Input/output variables received from a caller |
-| `DEFINE DATA GLOBAL` | Shared among programs in a session (rare, fragile) |
-| `INPUT` | Reads from the terminal (online) or sequential file (batch) |
-| `DISPLAY` / `WRITE` | Output to a screen or report |
-| `MAP` | Screen layout definition (terminal UI) |
+| `DEFINE DATA LOCAL` | Declaraciones de variables cuyo alcance se limita a este programa |
+| `DEFINE DATA PARAMETER` | Variables de entrada/salida recibidas del programa que realiza la llamada |
+| `DEFINE DATA GLOBAL` | Compartidas entre programas de una sesión (poco habitual, frágil) |
+| `INPUT` | Lee del terminal (en línea) o de un archivo secuencial (por lotes) |
+| `DISPLAY` / `WRITE` | Salida a una pantalla o informe |
+| `MAP` | Definición de la distribución de pantalla (interfaz de terminal) |
 
-## CALLNAT vs PERFORM
+## CALLNAT frente a PERFORM
 
-- **`CALLNAT 'SUBPROG' parm1 parm2`** — calls an external subprogram (a separate source file). Parameters are passed by reference unless marked `(AD=O)` for output-only.
-- **`PERFORM subroutine-name`** — calls an internal subroutine defined with `DEFINE SUBROUTINE ... END-SUBROUTINE` within the same program.
+- **`CALLNAT 'SUBPROG' parm1 parm2`**: llama a un subprograma externo (un archivo fuente separado). Los parámetros se pasan por referencia salvo que estén marcados con `(AD=O)` para uso exclusivo de salida.
+- **`PERFORM subroutine-name`**: llama a una subrutina interna definida con `DEFINE SUBROUTINE ... END-SUBROUTINE` dentro del mismo programa.
 
-When mapping call chains, `CALLNAT` is the important one — it crosses file boundaries.
+Al mapear cadenas de llamadas, `CALLNAT` es el elemento importante: cruza los límites de los archivos.
 
-## INCLUDE Copycodes
+## Códigos de copia con INCLUDE
 
-`INCLUDE copycode-name` inserts a shared code fragment at compile time, like a C `#include`. Copycodes typically contain:
+`INCLUDE copycode-name` inserta un fragmento de código compartido durante la compilación, como un `#include` de C. Los códigos de copia suelen contener:
 
-- Shared data area definitions (Natural's "struct")
-- Common validation routines
-- Standard error-handling blocks
+- Definiciones de áreas de datos compartidas (el equivalente a «struct» en Natural)
+- Rutinas de validación comunes
+- Bloques estándar de tratamiento de errores
 
-When you see `INCLUDE`, find the corresponding copycode to understand the complete data layout.
+Cuando veas `INCLUDE`, busca el código de copia correspondiente para comprender la estructura completa de los datos.
 
-### Member Extensions
+### Extensiones de miembros
 
-A Natural library is **flat**: there are no subdirectories, and each member is resolved by name, not by path. The extension indicates the type:
+Una biblioteca Natural es **plana**: no tiene subdirectorios y cada miembro se resuelve por nombre, no por ruta. La extensión indica el tipo:
 
-| Extension | Type | Called by |
+| Extensión | Tipo | Invocado por |
 |----------|------|-------------|
-| `.NSN` | Program or subprogram | executed by JCL or `CALLNAT` |
-| `.NSA` | Parameter Data Area (PDA) | `PARAMETER USING` |
-| `.NSL` | Local Data Area (LDA) | `LOCAL USING` |
-| `.NSC` | Copycode | `INCLUDE` |
-| `.NSM` | Map (3270 screen layout) | `INPUT USING MAP` |
-| `.jcl` | Job Control Language | batch scheduler |
+| `.NSN` | Programa o subprograma | Ejecutado por JCL o `CALLNAT` |
+| `.NSA` | Área de datos de parámetros (PDA) | `PARAMETER USING` |
+| `.NSL` | Área de datos locales (LDA) | `LOCAL USING` |
+| `.NSC` | Código de copia | `INCLUDE` |
+| `.NSM` | Mapa (distribución de pantalla 3270) | `INPUT USING MAP` |
+| `.jcl` | Lenguaje de control de trabajos | Planificador por lotes |
 
-`CALLNAT`, `INCLUDE`, `PARAMETER USING`, and `LOCAL USING` **MUST NOT be ignored**: each pulls code or declarations from another file. A program read in isolation is incomplete.
+`CALLNAT`, `INCLUDE`, `PARAMETER USING` y `LOCAL USING` **NO DEBEN ignorarse**: cada uno incorpora código o declaraciones de otro archivo. La lectura de un programa de forma aislada es incompleta.
 
-Natural member names are limited to 8 characters. In this corpus, the Natural DDM/member names are `BENEFIC`, `SOCPROG`, `PAYMENT`, and `AUDIT`. The Adabas file can still be described conceptually as the Beneficiary or Social Program file, and the DDM field names keep their long names.
+Los nombres de miembros Natural tienen un límite de 8 caracteres. En este conjunto de fuentes, los nombres de DDM/miembros Natural son `BENEFIC`, `SOCPROG`, `PAYMENT` y `AUDIT`. El archivo de Adabas puede seguir describiéndose conceptualmente como archivo de beneficiarios o de programas sociales, y los campos del DDM conservan sus nombres largos.
 
-## Adabas FDT (Field Definition Table)
+## FDT de Adabas (tabla de definición de campos)
 
-Every Adabas file has an FDT that defines its fields. Think of it as the schema:
+Cada archivo de Adabas tiene una FDT que define sus campos. Considérala como el esquema:
 
-| Column | Meaning |
+| Columna | Significado |
 |--------|---------|
-| Level | Hierarchical depth (01 = top level, 02+ = children) |
-| Name | Two-character short name (AA, AB, AC...) |
-| Format | `A` = alpha, `N` = numeric, `P` = packed, `B` = binary, `D` = date, `T` = time |
-| Length | Field size in bytes |
-| Descriptor | `DE` = searchable index, `MU` = multi-value (array), `PE` = periodic group (repeating group) |
+| Nivel | Profundidad jerárquica (01 = nivel superior, 02+ = hijos) |
+| Nombre | Nombre corto de dos caracteres (AA, AB, AC...) |
+| Formato | `A` = alfanumérico, `N` = numérico, `P` = empaquetado, `B` = binario, `D` = fecha, `T` = hora |
+| Longitud | Tamaño del campo en bytes |
+| Descriptor | `DE` = índice que permite búsquedas, `MU` = valores múltiples (matriz), `PE` = grupo periódico (grupo repetido) |
 
-### MU (Multiple-Value) Fields
+### Campos MU (valores múltiples)
 
-A field marked `MU` can contain multiple values (like an array). In Natural, it is accessed by index: `FIELD(1)`, `FIELD(2)`, etc. The maximum number of occurrences is defined in the FDT.
+Un campo marcado con `MU` puede contener varios valores (como una matriz). En Natural se accede a él por índice: `FIELD(1)`, `FIELD(2)`, etc. La FDT define el número máximo de ocurrencias.
 
-**Modern mapping**: `@ElementCollection` in JPA or a JSONB column in PostgreSQL.
+**Mapeo moderno**: `@ElementCollection` en JPA o una columna JSONB en PostgreSQL.
 
-### PE (Periodic Groups)
+### PE (grupos periódicos)
 
-A `PE` group is a repeating group of related fields — like a row in an embedded table. For example, an address history in which each occurrence has a street, city, and date.
+Un grupo `PE` es un grupo repetido de campos relacionados, como una fila de una tabla integrada. Por ejemplo, un historial de direcciones en el que cada ocurrencia contiene una calle, una ciudad y una fecha.
 
-**Modern mapping**: an `@OneToMany` relationship with an embedded entity, or a JSONB array.
+**Mapeo moderno**: una relación `@OneToMany` con una entidad integrada o una matriz JSONB.
 
-### Super-Descriptors
+### Superdescriptores
 
-A super-descriptor combines multiple fields into a single searchable key (composite index). Notation such as `SU = AA + AB(1-4)` means "concatenate field AA with the first 4 bytes of AB."
+Un superdescriptor combina varios campos en una única clave que permite búsquedas (índice compuesto). Una notación como `SU = AA + AB(1-4)` significa «concatenar el campo AA con los primeros 4 bytes de AB».
 
-**Modern mapping**: `@Index(columnList = "col_a, col_b")` in JPA.
+**Mapeo moderno**: `@Index(columnList = "col_a, col_b")` en JPA.
 
-## 1990s Naming Conventions
+## Convenciones de nomenclatura de la década de 1990
 
-Legacy Natural codebases use prefix-based names. Common patterns include:
+Las bases de código Natural heredadas utilizan nombres basados en prefijos. Algunos patrones comunes son:
 
-| Prefix Pattern | Typical Meaning |
+| Patrón de prefijo | Significado habitual |
 |---|---|
-| `BN-` or `BATCH-` | Batch program or batch-related variable |
-| `PG-` or `PROG-` | Main program |
-| `PS-` or `SUB-` | Subprogram (called via CALLNAT) |
-| `AU-` or `AUT-` | Related to authorization or audit |
-| `#` prefix on variables | Local working variable (Natural convention) |
-| `+` prefix on variables | Parameter variable passed by the caller |
+| `BN-` o `BATCH-` | Programa por lotes o variable relacionada con lotes |
+| `PG-` o `PROG-` | Programa principal |
+| `PS-` o `SUB-` | Subprograma (invocado mediante CALLNAT) |
+| `AU-` o `AUT-` | Relacionado con autorización o auditoría |
+| Prefijo `#` en variables | Variable local de trabajo (convención de Natural) |
+| Prefijo `+` en variables | Variable de parámetro pasada por quien realiza la llamada |
 
-These are conventions, not rules — verify by reading the code rather than assuming.
+Son convenciones, no reglas: verifícalas leyendo el código en lugar de suponerlas.
 
-## Batch Job Patterns
+## Patrones de trabajos por lotes
 
-Batch Natural programs typically follow this structure:
+Los programas Natural por lotes suelen seguir esta estructura:
 
 ```
 READ WORK FILE 1 record
-  /* process each record */
+  /* Procesa cada registro */
   AT END OF DATA
-    /* final totals / cleanup */
+    /* Totales finales / limpieza */
   END-ENDDATA
 END-WORK
 ```
 
-Control-break reports use:
+Los informes con rupturas de control utilizan:
 
 ```
 READ logical-file BY descriptor
   AT BREAK OF descriptor
-    /* subtotal when descriptor value changes */
+    /* Subtotal cuando cambia el valor del descriptor */
   BEFORE BREAK PROCESSING
-    /* detail line for each record */
+    /* Línea de detalle para cada registro */
   END-BREAK
 END-READ
 ```
 
-## Packed Decimal Handling
+## Tratamiento de decimales empaquetados
 
-Packed decimal (`P` format) stores digits efficiently: each byte holds two digits, and the final nibble is the sign (C=positive, D=negative). It is common in financial calculations.
+El decimal empaquetado (formato `P`) almacena los dígitos de forma eficiente: cada byte contiene dos dígitos y el último nibble representa el signo (C=positivo, D=negativo). Es habitual en cálculos financieros.
 
-When mapping to Java: ALWAYS use `BigDecimal`, NEVER `double` or `float`. Packed fields with the `P9.2` format mean 9 integer digits plus 2 decimal places → `BigDecimal` with `scale(2)`.
+Al mapear a Java, utiliza SIEMPRE `BigDecimal`, NUNCA `double` ni `float`. Los campos empaquetados con formato `P9.2` representan 9 dígitos enteros y 2 posiciones decimales → `BigDecimal` con `scale(2)`.
 
-**On the mainframe, money is packed (`P`), not `N`.** When reading the corpus, a monetary value declared as `N` is a warning sign — it may be an oversight by the original author or a deliberate divergence between the program and DDM. ALWAYS compare the format in the program with the format of the same field in the `.ddm`: type and size mismatches are a classic source of silent truncation and overflow.
+**En el mainframe, el dinero utiliza formato empaquetado (`P`), no `N`.** Al leer el conjunto de fuentes, un valor monetario declarado como `N` es una señal de alerta: puede ser un descuido de la autoría original o una divergencia deliberada entre el programa y el DDM. Compara SIEMPRE el formato del programa con el del mismo campo en el `.ddm`: las discrepancias de tipo y tamaño son una fuente clásica de truncamientos silenciosos y desbordamientos.
 
-## Reading Strategy
+## Estrategia de lectura
 
-When approaching a legacy program for the first time:
+Al abordar un programa heredado por primera vez:
 
-1. **Start with DEFINE DATA** — understand the variables and their types
-2. **Find the main READ or FIND** — this reveals which data the program processes
-3. **Trace CALLNAT calls** — these are the dependencies
-4. **Look for INCLUDE copycodes** — they expand the data definitions
-5. **Check AT BREAK / AT END OF DATA** — they reveal reporting or processing logic
-6. **Note every ESCAPE or ON ERROR** — these are error-handling paths
-7. **Check `IF NO RECORDS FOUND`** — the `FIND ... IF NO RECORDS FOUND ... END-NOREC` block defines what happens when the search returns nothing; this is where silent defaults hide. Remember that view fields have values only **inside** the `FIND`/`READ` block.
-8. **Check `FIND ... WITH` against the DDM** — searches are possible only on fields marked as descriptors (`D`, `S`, or `H`) in the DDM listing. A search on a non-descriptor field does not compile.
+1. **Comienza por DEFINE DATA**: comprende las variables y sus tipos
+2. **Busca el READ o FIND principal**: revela qué datos procesa el programa
+3. **Rastrea las llamadas CALLNAT**: son las dependencias
+4. **Busca los códigos de copia INCLUDE**: amplían las definiciones de datos
+5. **Comprueba AT BREAK / AT END OF DATA**: revelan lógica de informes o procesamiento
+6. **Anota cada ESCAPE u ON ERROR**: son rutas de tratamiento de errores
+7. **Comprueba `IF NO RECORDS FOUND`**: el bloque `FIND ... IF NO RECORDS FOUND ... END-NOREC` define qué ocurre cuando la búsqueda no devuelve nada; aquí se ocultan los valores predeterminados silenciosos. Recuerda que los campos de vista tienen valores solo **dentro** del bloque `FIND`/`READ`.
+8. **Contrasta `FIND ... WITH` con el DDM**: las búsquedas solo son posibles en campos marcados como descriptores (`D`, `S` o `H`) en el listado DDM. Una búsqueda sobre un campo que no es descriptor no compila.
 
-## Conventions
+## Convenciones
 
-| Rule | Rationale |
+| Regla | Justificación |
 |---|---|
-| In this lab, Natural declarations use period decimal notation such as `(P9.2)` | Comma notation such as `(P9,2)` fails with `NAT0165` in Natural CE 9.3.3 |
-| Trace `CALLNAT`, `INCLUDE`, `PARAMETER USING`, and `LOCAL USING` | A Natural member read in isolation is incomplete |
-| Compare program field formats with the matching DDM | Type and size mismatches can cause silent truncation or overflow |
-| Map packed money fields to `BigDecimal` | `double` and `float` lose financial precision |
-| Verify descriptors before interpreting `FIND ... WITH` | Searches compile only on descriptor fields in the DDM |
-| Treat prefixes as clues, not proof | Legacy naming conventions vary and must be verified in code |
+| En este laboratorio, las declaraciones Natural utilizan notación decimal con punto, como `(P9.2)` | La notación con coma, como `(P9,2)`, falla con `NAT0165` en Natural CE 9.3.3 |
+| Rastrear `CALLNAT`, `INCLUDE`, `PARAMETER USING` y `LOCAL USING` | La lectura de un miembro Natural de forma aislada es incompleta |
+| Comparar los formatos de campos del programa con el DDM correspondiente | Las discrepancias de tipo y tamaño pueden causar truncamientos silenciosos o desbordamientos |
+| Mapear los campos monetarios empaquetados a `BigDecimal` | `double` y `float` pierden precisión financiera |
+| Verificar los descriptores antes de interpretar `FIND ... WITH` | Las búsquedas solo compilan sobre campos descriptores del DDM |
+| Tratar los prefijos como pistas, no como pruebas | Las convenciones de nomenclatura heredadas varían y deben verificarse en el código |
 
-## Do / Do Not
+## Qué hacer / Qué no hacer
 
-| Do | Do not |
+| Qué hacer | Qué no hacer |
 |---|---|
-| Start with `DEFINE DATA` to understand variables and types | Interpret business rules before knowing the data layout |
-| Find the main `READ` or `FIND` to identify processed data | Assume the program's primary file from its name alone |
-| Trace every `CALLNAT` dependency and `INCLUDE` copycode | Ignore external subprograms, PDAs, LDAs, copycodes, or maps |
-| Check `AT BREAK`, `AT END OF DATA`, `ESCAPE`, and `ON ERROR` paths | Read only the happy path through the program |
-| Check `IF NO RECORDS FOUND` and view-field scope inside `FIND`/`READ` blocks | Assume missing records and view fields behave like normal variables |
-| Check `FIND ... WITH` against DDM descriptors | Assume a non-descriptor field can be searched |
+| Comenzar por `DEFINE DATA` para comprender las variables y los tipos | Interpretar reglas de negocio antes de conocer la estructura de los datos |
+| Buscar el `READ` o `FIND` principal para identificar los datos procesados | Deducir el archivo principal del programa solo por su nombre |
+| Rastrear cada dependencia `CALLNAT` y código de copia `INCLUDE` | Ignorar subprogramas externos, PDA, LDA, códigos de copia o mapas |
+| Comprobar las rutas `AT BREAK`, `AT END OF DATA`, `ESCAPE` y `ON ERROR` | Leer solo el recorrido satisfactorio del programa |
+| Comprobar `IF NO RECORDS FOUND` y el alcance de los campos de vista dentro de bloques `FIND`/`READ` | Suponer que los registros ausentes y los campos de vista se comportan como variables normales |
+| Contrastar `FIND ... WITH` con los descriptores del DDM | Suponer que se puede buscar sobre un campo que no es descriptor |
 
-## Checklist Before Opening a PR
+## Lista de verificación antes de abrir una PR
 
-- [ ] `DEFINE DATA` variables, arrays, parameters, and relevant formats were captured before summarizing behavior
-- [ ] Main `READ`, `FIND`, work-file, report, and control-break paths were identified
-- [ ] Every `CALLNAT`, `INCLUDE`, `PARAMETER USING`, `LOCAL USING`, map, and JCL dependency was traced or noted as open
-- [ ] Program field formats were compared with the DDM for type, size, descriptor, MU, PE, and super-descriptor semantics
-- [ ] Packed decimal and monetary values were mapped or documented as `BigDecimal` candidates, never floating-point values
-- [ ] Error, escape, no-records, end-of-data, and silent-default paths were included in the extracted business rules
+- [ ] Se registraron las variables, matrices, parámetros y formatos relevantes de `DEFINE DATA` antes de resumir el comportamiento
+- [ ] Se identificaron las rutas principales de `READ`, `FIND`, archivos de trabajo, informes y rupturas de control
+- [ ] Se rastreó cada dependencia de `CALLNAT`, `INCLUDE`, `PARAMETER USING`, `LOCAL USING`, mapas y JCL, o se registró como pendiente
+- [ ] Se compararon los formatos de campos del programa con el DDM en cuanto a tipo, tamaño y semántica de descriptores, MU, PE y superdescriptores
+- [ ] Los valores decimales empaquetados y monetarios se mapearon o documentaron como candidatos a `BigDecimal`, nunca a valores de coma flotante
+- [ ] Las reglas de negocio extraídas incluyen las rutas de error, escape, ausencia de registros, fin de datos y valores predeterminados silenciosos

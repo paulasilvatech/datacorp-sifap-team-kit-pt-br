@@ -1,70 +1,70 @@
-# Stage 1 — Archaeology
+# Etapa 1 — Arqueología
 
-> **Track:** [Team Kit](../README.md) › **Stage 1 — Archaeology**
+> **Ruta:** [Kit del equipo](../README.md) › **Etapa 1 — Arqueología**
 
-**Stage 1 overview.** Read this page before opening the GUIDE; it presents the objective, expected artifacts, and participants.
+**Descripción general de la Etapa 1.** Lee esta página antes de abrir la GUÍA; presenta el objetivo, los artefactos esperados y los participantes.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | All 5 team pairs |
-| **Prerequisites** | None — this is the starting point |
-| **Estimated time** | 90 min (11:00–12:00 + 13:30–14:00) |
-| **Stage** | Stage 1 — Archaeology |
-| **Expected outcome** | Rules catalog, dependency map, glossary, and discovery report |
+| **Público objetivo** | Las 5 parejas del equipo |
+| **Prerrequisitos** | Ninguno: este es el punto de partida |
+| **Tiempo estimado** | 90 min (11:00–12:00 + 13:30–14:00) |
+| **Etapa** | Etapa 1 — Arqueología |
+| **Resultado esperado** | Catálogo de reglas, mapa de dependencias, glosario e informe de descubrimiento |
 
-![Stage 1](https://img.shields.io/badge/Stage-1%20%C2%B7%20Archaeology-171717?style=flat-square) ![Mandatory gate](https://img.shields.io/badge/Gate-Hard%20Gate-404040?style=flat-square) ![All pairs in parallel](https://img.shields.io/badge/Pairs-All%20in%20parallel-737373?style=flat-square)
+![Etapa 1](https://img.shields.io/badge/Stage-1%20%C2%B7%20Archaeology-171717?style=flat-square) ![Puerta obligatoria](https://img.shields.io/badge/Gate-Hard%20Gate-404040?style=flat-square) ![Todas las parejas en paralelo](https://img.shields.io/badge/Pairs-All%20in%20parallel-737373?style=flat-square)
 
 > [!IMPORTANT]
-> **Read first:** [`LEGACY-EXPLORATION-CHECKLIST.md`](LEGACY-EXPLORATION-CHECKLIST.md) — mandatory gate before starting Stage 2. No EARS requirement is accepted without traceability to legacy code.
+> **Lee primero:** [`LEGACY-EXPLORATION-CHECKLIST.md`](LEGACY-EXPLORATION-CHECKLIST.md) — puerta obligatoria antes de iniciar la Etapa 2. No se acepta ningún requisito EARS sin trazabilidad al código heredado.
 
 > [!TIP]
-> **The system is running, not just archived.** The same data you are about to study can be queried through the shared viewer terminal at <https://sifap-lab-438k30.eastus2.cloudapp.azure.com/terminal/>. Sign in as `viewer` with the password shared privately by the facilitator. Reading the source is still the gate; the live screen only makes the evidence concrete.
+> **El sistema está en ejecución, no solo archivado.** Los mismos datos que vas a estudiar pueden consultarse desde el terminal del visor compartido en <https://sifap-lab-438k30.eastus2.cloudapp.azure.com/terminal/>. Inicia sesión como `viewer` con la contraseña que la persona facilitadora comparte en privado. Leer el código fuente sigue siendo la puerta de entrada; la pantalla en vivo solo hace tangible la evidencia.
 
 ---
 
-## What Stage 1 is
+## Qué es la Etapa 1
 
-**Software archaeology** is the practice of extracting knowledge from legacy systems by systematically reading source code without modifying it. In this workshop, archaeology has a precise objective: gather enough evidence to write traceable requirements in Stage 2.
+La **arqueología de software** es la práctica de extraer conocimiento de sistemas heredados mediante la lectura sistemática del código fuente sin modificarlo. En esta inmersión, la arqueología tiene un objetivo preciso: reunir suficiente evidencia para escribir requisitos trazables en la Etapa 2.
 
-SIFAP, the Payment Inspection and Administration System, has operated for 29 years. Most knowledge about its business rules is in the Natural code, not in documentation. Without reading the code, the team would write specifications based on assumptions—which CI rejects because it requires a valid `source_legacy:`.
-
----
-
-## Where this fits in the workshop flow
-
-![Day timeline: pre-event, 4 stages, and demo, with the three H1, H2, and H3 handoffs](../assets/timeline-stages.svg)
+SIFAP, el Sistema de Fiscalización y Administración de Pagos, lleva 29 años en funcionamiento. La mayor parte del conocimiento sobre sus reglas de negocio está en el código Natural, no en la documentación. Sin leer el código, el equipo escribiría especificaciones basadas en suposiciones, algo que la CI rechaza porque exige un `source_legacy:` válido.
 
 ---
 
-## Who works here
+## Dónde encaja en el flujo de la inmersión
 
-All 5 pairs work in parallel, each responsible for 3 Natural programs. Pair 1 (Vision) leads the synthesis at the end of the stage. See [`GUIDE.md`](GUIDE.md) for the full assignment.
+![Cronograma del día: preparación previa, 4 etapas y demo, con las tres transiciones H1, H2 y H3](../assets/timeline-stages.svg)
 
 ---
 
-## Stage 1 artifacts
+## Quién trabaja aquí
 
-| File | Purpose |
+Las 5 parejas trabajan en paralelo, cada una responsable de 3 programas Natural. La Pareja 1 (Visión) lidera la síntesis al final de la etapa. Consulta la asignación completa en [`GUIDE.md`](GUIDE.md).
+
+---
+
+## Artefactos de la Etapa 1
+
+| Archivo | Propósito |
 |---|---|
-| [`LEGACY-EXPLORATION-CHECKLIST.md`](LEGACY-EXPLORATION-CHECKLIST.md) | **Mandatory gate.** Program ownership by pair and completion criteria before Stage 2. |
-| [`GUIDE.md`](GUIDE.md) | Step-by-step guide with a timed schedule. |
-| [`glossary.md`](glossary.md) | Glossary of SIFAP domain terms and abbreviations. |
-| [`business-rules-catalog.md`](business-rules-catalog.md) | Catalog of extracted business rules with mandatory `Source Program`. |
-| [`dependency-map.md`](dependency-map.md) | Dependency map between programs and DDMs. |
-| [`discovery-report.md`](discovery-report.md) | Discovery report consolidating the stage evidence. |
-| [`mysteries-checklist.md`](mysteries-checklist.md) | Traceability checklist for open questions. |
-| [`mysteries-found.md`](mysteries-found.md) | Detailed record of open questions with evidence and owner. |
+| [`LEGACY-EXPLORATION-CHECKLIST.md`](LEGACY-EXPLORATION-CHECKLIST.md) | **Puerta obligatoria.** Responsabilidad de los programas por pareja y criterios de finalización antes de la Etapa 2. |
+| [`GUIDE.md`](GUIDE.md) | Guía paso a paso con un cronograma. |
+| [`glossary.md`](glossary.md) | Glosario de términos y abreviaturas del dominio SIFAP. |
+| [`business-rules-catalog.md`](business-rules-catalog.md) | Catálogo de reglas de negocio extraídas con `Programa de origen` obligatorio. |
+| [`dependency-map.md`](dependency-map.md) | Mapa de dependencias entre programas y DDM. |
+| [`discovery-report.md`](discovery-report.md) | Informe de descubrimiento que consolida la evidencia de la etapa. |
+| [`mysteries-checklist.md`](mysteries-checklist.md) | Lista de verificación de trazabilidad para preguntas abiertas. |
+| [`mysteries-found.md`](mysteries-found.md) | Registro detallado de preguntas abiertas con evidencia y persona responsable. |
 
-The legacy code is in [`legacy-sifap/`](legacy-sifap/) (shared by the kit).
+El código heredado está en [`legacy-sifap/`](legacy-sifap/) (compartido por el kit).
 
-The shared Azure lab is operated outside this repository. Participants do not receive deployment or administration material; use the read-only viewer described in [`docs/legacy-system-access.md`](../docs/legacy-system-access.md).
+El laboratorio compartido de Azure se opera fuera de este repositorio. Los participantes no reciben material de despliegue ni administración; usa el visor de solo lectura descrito en [`docs/legacy-system-access.md`](../docs/legacy-system-access.md).
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Team Kit](../README.md)<br/><sub>Main repository hub.</sub> | [Stage 1 GUIDE](GUIDE.md)<br/><sub>90-minute timed schedule for reading the legacy system and cataloging rules.</sub> |
+| [Kit del equipo](../README.md)<br/><sub>Centro principal del repositorio.</sub> | [GUÍA de la Etapa 1](GUIDE.md)<br/><sub>Cronograma de 90 minutos para leer el sistema heredado y catalogar reglas.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

@@ -1,102 +1,102 @@
 ---
 name: "update-spec"
-description: "Update an existing spec.md to add or change requirements while preserving traceability and unchanged rules."
+description: "Actualiza un spec.md existente para añadir o cambiar requisitos, conservando la trazabilidad y las reglas no modificadas."
 argument-hint: "feature=NNN-feature-name change=<description>"
 agent: "product-owner"
 tools: ["read", "search", "edit"]
 ---
 # /update-spec
 
-## Objective
+## Objetivo
 
-Safely evolve `specs/<NNN>-<feature>/spec.md` — add or modify requirements for a changed feature — without dropping existing REQ-IDs, breaking traceability, or violating the constitution. The deliverable is an edited spec plus a change report.
+Haz evolucionar de forma segura `specs/<NNN>-<feature>/spec.md`: añade o modifica requisitos para una funcionalidad que ha cambiado, sin eliminar REQ-ID existentes, romper la trazabilidad ni incumplir la constitución. El entregable es una especificación editada junto con un informe de cambios.
 
-## When to Invoke
+## Cuándo invocar
 
-When a feature's scope changes after the spec already exists, before implementation starts, or when a change request lands mid-Stage-3.
+Cuando el alcance de una funcionalidad cambia después de que la especificación ya exista, antes de comenzar la implementación o cuando llega una solicitud de cambio a mitad de la etapa 3.
 
-## Preconditions
+## Precondiciones
 
-- `specs/<NNN>-<feature>/spec.md` already exists with REQ-IDs and a frontmatter version
-- `.specify/memory/constitution.md` exists
-- The change is described and its legacy source (or `[GREENFIELD]`) is known
+- Ya existe `specs/<NNN>-<feature>/spec.md` con REQ-ID y una versión en el frontmatter
+- Existe `.specify/memory/constitution.md`
+- El cambio está descrito y se conoce su fuente heredada (o `[GREENFIELD]`)
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
 - `feature=<NNN>-<feature>`
-- The change to apply: a new requirement, a modification, or a removal with its reason
-- For any new or changed requirement, its `source_legacy:` value
-- Ask the user for anything that is missing.
+- El cambio que aplicar: un requisito nuevo, una modificación o una eliminación con su motivo
+- Para cada requisito nuevo o modificado, su valor `source_legacy:`
+- Solicita a la persona usuaria cualquier información que falte.
 
-## What I Will Do
+## Lo que haré
 
-- Read the current spec and the constitution and note the current version
-- Locate the exact section and REQ-IDs the change touches
-- Preserve every untouched requirement verbatim
-- Add or modify only the targeted requirements, each with EARS wording, `source_legacy:`, and acceptance criteria
-- Bump the spec version in the frontmatter and add a changelog line
-- Emit a change report listing every REQ-ID added, modified, or removed
+- Leer la especificación actual y la constitución y anotar la versión actual
+- Localizar la sección exacta y los REQ-ID a los que afecta el cambio
+- Conservar literalmente cada requisito no afectado
+- Añadir o modificar solo los requisitos objetivo, cada uno con redacción EARS, `source_legacy:` y criterios de aceptación
+- Incrementar la versión de la especificación en el frontmatter y añadir una línea al historial de cambios
+- Emitir un informe de cambios que enumere cada REQ-ID añadido, modificado o eliminado
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Silently delete or renumber existing REQ-IDs — removals are explicit and justified, because tests and ADRs reference these IDs
-- Add a requirement without a `source_legacy:` line (anti-hallucination guardrail and CI gate)
-- Invent legacy behavior — I read the cited file or ask the team
-- Author a brand-new spec from scratch — that is `/spec`
-- Re-audit the whole spec for contradictions — that is `/contradiction-check` on `@requirements-engineer`
+- Eliminar o renumerar silenciosamente REQ-ID existentes: las eliminaciones son explícitas y justificadas, porque las pruebas y los ADR referencian estos identificadores
+- Añadir un requisito sin una línea `source_legacy:` (protección contra invenciones y puerta de CI)
+- Inventar comportamiento heredado: leo el archivo citado o pregunto al equipo
+- Crear una especificación nueva desde cero: corresponde a `/spec`
+- Volver a auditar toda la especificación en busca de contradicciones: corresponde a `/contradiction-check` con `@requirements-engineer`
 
-## Output Format
+## Formato de salida
 
-An edited `spec.md` plus a change report presented to the team:
+Un `spec.md` editado y un informe de cambios presentado al equipo:
 
 ```markdown
-## Change report — 001-pagamento-beneficio (v1.2.0 -> v1.3.0)
+## Informe de cambios — 001-pagamento-beneficio (v1.2.0 -> v1.3.0)
 
-| REQ-ID | Action | source_legacy | Note |
+| REQ-ID | Acción | source_legacy | Nota |
 |---|---|---|---|
-| REQ-PAY-021 | Added | 01-archaeology/legacy-sifap/natural-programs/<PROGRAM>.NSP#L<start>-L<end> | New rounding rule confirmed with the team |
-| REQ-PAY-014 | Modified | (unchanged) | Threshold changed from 30 to 45 days |
-| REQ-PAY-009 | Removed | (n/a) | Superseded by REQ-PAY-021; deferred to backlog |
+| REQ-PAY-021 | Añadido | 01-archaeology/legacy-sifap/natural-programs/<PROGRAM>.NSP#L<start>-L<end> | Nueva regla de redondeo confirmada con el equipo |
+| REQ-PAY-014 | Modificado | (sin cambios) | Umbral cambiado de 30 a 45 días |
+| REQ-PAY-009 | Eliminado | (no corresponde) | Sustituido por REQ-PAY-021; aplazado a la lista de trabajo pendiente |
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] Every pre-existing REQ-ID that is out of scope is byte-identical
-- [ ] Added or modified requirements keep EARS wording and a valid `source_legacy:` line
-- [ ] Every removal is listed with a justification and any superseding REQ-ID
-- [ ] The spec version is bumped in the frontmatter (semver) with a changelog entry
-- [ ] No new contradiction with `.specify/memory/constitution.md`
-- [ ] A change report lists every REQ-ID added, modified, or removed
+- [ ] Cada REQ-ID preexistente fuera del alcance permanece idéntico byte por byte
+- [ ] Los requisitos añadidos o modificados conservan la redacción EARS y una línea `source_legacy:` válida
+- [ ] Cada eliminación se enumera con una justificación y el REQ-ID que la sustituya, si existe
+- [ ] La versión de la especificación se incrementa en el frontmatter (semver) con una entrada en el historial de cambios
+- [ ] No hay nuevas contradicciones con `.specify/memory/constitution.md`
+- [ ] Un informe de cambios enumera cada REQ-ID añadido, modificado o eliminado
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@product-owner`. A feature already has a spec, and a change must be folded in without collateral damage.
+Eres el `@product-owner`. Una funcionalidad ya tiene una especificación y debe incorporarse un cambio sin daños colaterales.
 
-**Step 1 — Read the current state.**
-Open `spec.md` and `.specify/memory/constitution.md`. Note the current frontmatter version.
+**Paso 1 — Lee el estado actual.**
+Abre `spec.md` y `.specify/memory/constitution.md`. Anota la versión actual del frontmatter.
 
-**Step 2 — Scope the change.**
-Identify exactly which section and REQ-IDs the change touches. Everything else is frozen.
+**Paso 2 — Delimita el cambio.**
+Identifica exactamente a qué sección y REQ-ID afecta el cambio. Todo lo demás queda congelado.
 
-**Step 3 — Demand the source.**
-For each new or changed requirement, require a legacy path or a `[GREENFIELD]` justification. If it is missing, ask and stop.
+**Paso 3 — Exige la fuente.**
+Para cada requisito nuevo o modificado, exige una ruta heredada o una justificación `[GREENFIELD]`. Si falta, pregunta y detente.
 
-**Step 4 — Apply the edit.**
-Add or modify only in-scope requirements. Keep untouched requirements verbatim — do not reflow, renumber, or reword them.
+**Paso 4 — Aplica la edición.**
+Añade o modifica solo requisitos dentro del alcance. Conserva literalmente los no afectados: no redistribuyas sus líneas, no los renumeres ni los reformules.
 
-**Step 5 — Handle removals explicitly.**
-If a requirement is removed, record it in the change report with the reason and any superseding REQ-ID. Never delete silently.
+**Paso 5 — Gestiona las eliminaciones explícitamente.**
+Si se elimina un requisito, regístralo en el informe de cambios con el motivo y el REQ-ID que lo sustituya, si existe. Nunca elimines silenciosamente.
 
-**Step 6 — Bump the version.**
-Update the frontmatter version (semver) and add a changelog line describing the change.
+**Paso 6 — Incrementa la versión.**
+Actualiza la versión del frontmatter (semver) y añade una línea al historial que describa el cambio.
 
-**Step 7 — Report.**
-Emit the change report table.
+**Paso 7 — Informa.**
+Emite la tabla del informe de cambios.
 
-Preserve REQ-ID stability above convenience — other artifacts reference these IDs. Never drop a `source_legacy:` line, and never invent legacy behavior to justify a change.
+Prioriza la estabilidad de los REQ-ID frente a la comodidad: otros artefactos referencian estos identificadores. Nunca elimines una línea `source_legacy:` ni inventes comportamiento heredado para justificar un cambio.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
-/update-spec feature=001-pagamento-beneficio change="Add rounding rule for corrected benefit amounts"
+/update-spec feature=001-pagamento-beneficio change="Añadir una regla de redondeo para los importes de prestaciones corregidos"
 ```

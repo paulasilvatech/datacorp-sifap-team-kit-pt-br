@@ -1,59 +1,59 @@
 ---
 
-title: "Template: Stage 1 Inventory"
-description: "Skeleton for the legacy codebase inventory produced by /archaeology-kickoff"
-author: "Paula Silva, AI-Native Software Engineer, Americas Global Black Belt at Microsoft"
+title: "Plantilla: inventario de la Etapa 1"
+description: "Estructura del inventario de la base de código heredada generado por /archaeology-kickoff"
+author: "Paula Silva, ingeniera de software nativo de IA, Global Black Belt para las Américas en Microsoft"
 date: "2026-04-29"
 version: "1.0.0"
 status: "approved"
 tags: ["template", "inventory", "archaeology", "stage-1"]
 ---
 
-# Template: Legacy Inventory — Stage 1
+# Plantilla: inventario del legado — Etapa 1
 
-> **Track:** [Team Kit](../../README.md) › [Stage 1](../README.md) › **Templates** › **inventory**
+> **Ruta:** [Kit del equipo](../../README.md) › [Etapa 1](../README.md) › **Plantillas** › **inventory**
 
-**Legacy codebase inventory template for Stage 1, Step 1.**
+**Plantilla de inventario de la base de código heredada para el Paso 1 de la Etapa 1.**
 
 > [!NOTE]
-> **This file is a template.** Copy it to your team repository and complete it with real data. Do not edit the original.
+> **Este archivo es una plantilla.** Cópiala al repositorio de tu equipo y complétala con datos reales. No edites el original.
 
 > [!TIP]
-> Build the inventory without opening any program. Work only from file names and folder structure.
+> Elabora el inventario sin abrir ningún programa. Trabaja solo con los nombres de archivo y la estructura de carpetas.
 
-**Date:** <!-- placeholder: YYYY-MM-DD -->
-**Scanned path:** `01-archaeology/legacy-sifap/`
+**Fecha:** <!-- placeholder: YYYY-MM-DD -->
+**Ruta examinada:** `01-archaeology/legacy-sifap/`
 
 ---
 
-## Folder structure
+## Estructura de carpetas
 
 ```text
-<!-- placeholder: directory tree -->
+<!-- placeholder: árbol de directorios -->
 ```
 
 ---
 
-## File count by type
+## Cantidad de archivos por tipo
 
-| Extension | Count | Likely purpose |
+| Extensión | Cantidad | Propósito probable |
 |---|---|---|
-| `.NSN` | <!-- placeholder --> | Natural source programs |
-| `.ddm` | <!-- placeholder --> | Data Definition Modules (Adabas) |
+| `.NSN` | <!-- placeholder --> | Programas fuente de Natural |
+| `.ddm` | <!-- placeholder --> | Módulos de definición de datos (Adabas) |
 
 ---
 
-## Naming convention patterns
+## Patrones de convenciones de nombres
 
-| Prefix | Count | Domain hypothesis |
+| Prefijo | Cantidad | Hipótesis de dominio |
 |---|---|---|
 | <!-- placeholder --> | <!-- placeholder --> | <!-- placeholder --> |
 
 ---
 
-## Unusual items (top 3)
+## Elementos inusuales (los 3 principales)
 
-| # | File path | What makes it unusual | Suggested investigation |
+| # | Ruta del archivo | Qué lo hace inusual | Investigación sugerida |
 |---|---|---|---|
 | 1 | <!-- placeholder --> | <!-- placeholder --> | <!-- placeholder --> |
 | 2 | <!-- placeholder --> | <!-- placeholder --> | <!-- placeholder --> |
@@ -61,26 +61,26 @@ tags: ["template", "inventory", "archaeology", "stage-1"]
 
 ---
 
-## Proposed reading order
+## Orden de lectura propuesto
 
-1. DDM files first.
-2. <!-- placeholder: batch entry points -->
-3. <!-- placeholder: most connected programs -->
-
----
-
-## Definition of done
-
-- [ ] The inventory exists with accurate counts.
-- [ ] 3 or more naming patterns identified.
-- [ ] 3 unusual items flagged.
+1. Primero, los archivos DDM.
+2. <!-- placeholder: puntos de entrada batch -->
+3. <!-- placeholder: programas con más conexiones -->
 
 ---
 
-### Continue reading
+## Definición de terminado
 
-| Previous | Next |
+- [ ] El inventario existe y contiene cantidades exactas.
+- [ ] Se identificaron 3 o más patrones de nombres.
+- [ ] Se señalaron 3 elementos inusuales.
+
+---
+
+### Sigue leyendo
+
+| Anterior | Siguiente |
 |---|---|
-| [Stage 1 GUIDE](../GUIDE.md)<br/><sub>Step-by-step schedule.</sub> | [Other templates](.) <br/><sub>Other stage templates.</sub> |
+| [GUÍA de la Etapa 1](../GUIDE.md)<br/><sub>Cronograma paso a paso.</sub> | [Otras plantillas](.) <br/><sub>Otras plantillas de la etapa.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Volver al índice del kit](../../README.md)</sub>

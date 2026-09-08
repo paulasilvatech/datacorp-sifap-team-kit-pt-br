@@ -1,127 +1,127 @@
 ---
 name: "carve-bounded-contexts"
-description: "Evaluates the Stage 1 boundary hypotheses and decides bounded contexts for the Modular Monolith."
+description: "Evalúa las hipótesis de límites de la etapa 1 y decide los contextos delimitados del monolito modular."
 argument-hint: "report=01-archaeology/discovery-report.md"
 agent: "architect"
 tools: ["read", "search", "edit"]
 ---
 # /carve-bounded-contexts
 
-## Objective
+## Objetivo
 
-Transform the boundary hypotheses from the Stage 1 discovery report into evaluated and decided bounded contexts. Each context receives a name, responsibilities, owned data, and inter-context communication rules.
+Transforma las hipótesis de límites del informe de descubrimiento de la etapa 1 en contextos delimitados evaluados y decididos. Cada contexto recibe un nombre, responsabilidades, datos propios y reglas de comunicación entre contextos.
 
-## When to Invoke
+## Cuándo invocar
 
-At the beginning of Stage 2, immediately after reviewing the Stage 1 discovery report.
+Al comienzo de la etapa 2, inmediatamente después de revisar el informe de descubrimiento de la etapa 1.
 
-## Preconditions
+## Precondiciones
 
-- `01-archaeology/discovery-report.md` exists with at least 3 boundary hypotheses
-- The team reviewed the discovery report and is ready to make architectural decisions
+- Existe `01-archaeology/discovery-report.md` con al menos 3 hipótesis de límites
+- El equipo revisó el informe de descubrimiento y está listo para tomar decisiones arquitectónicas
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- Path to the discovery report
-- Any additional team constraints or preferences
+- La ruta del informe de descubrimiento
+- Cualquier restricción o preferencia adicional del equipo
 
-## What I Will Do
+## Lo que haré
 
-- Read the boundary hypotheses from the discovery report
-- Evaluate each hypothesis against three criteria: cohesion, coupling, and frequency of change
-- Present the analysis for each hypothesis to the team
-- Document rejections with rationale
-- Formalize accepted contexts with names, responsibilities, and data ownership
+- Leer las hipótesis de límites del informe de descubrimiento
+- Evaluar cada hipótesis frente a tres criterios: cohesión, acoplamiento y frecuencia de cambio
+- Presentar al equipo el análisis de cada hipótesis
+- Documentar los rechazos con su justificación
+- Formalizar los contextos aceptados con nombres, responsabilidades y propiedad de datos
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Automatically decide which hypotheses to accept — the team makes the final decision
-- Propose microservices — this is a Modular Monolith
-- Fabricate business context for the hypotheses — I work only with what Stage 1 discovered
-- Skip the evaluation criteria — every hypothesis receives the complete analysis
+- Decidir automáticamente qué hipótesis aceptar: el equipo toma la decisión final
+- Proponer microservicios: esto es un monolito modular
+- Inventar contexto de negocio para las hipótesis: trabajo solo con lo descubierto en la etapa 1
+- Omitir los criterios de evaluación: cada hipótesis recibe el análisis completo
 
-## Output Format
+## Formato de salida
 
-A Markdown file at `02-modern-spec/bounded-contexts.md`:
+Un archivo Markdown en `02-modern-spec/bounded-contexts.md`:
 
 ```markdown
-# Bounded Context Map
-## Evaluation Criteria
-## Hypothesis Evaluation
-### [Hypothesis Name] — ACCEPTED / REJECTED
-## Final Bounded Contexts
-### [Context Name]
-- Responsibility:
-- Owned data (DDMs/tables):
-- Public interface:
-- Why it is a separate context:
-## Inter-Context Communication
-## Context Map Mermaid Diagram
+# Mapa de contextos delimitados
+## Criterios de evaluación
+## Evaluación de hipótesis
+### [Nombre de la hipótesis] — ACEPTADA / RECHAZADA
+## Contextos delimitados finales
+### [Nombre del contexto]
+- Responsabilidad:
+- Datos propios (DDM/tablas):
+- Interfaz pública:
+- Por qué es un contexto separado:
+## Comunicación entre contextos
+## Diagrama Mermaid del mapa de contextos
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] Every discovery-report hypothesis is evaluated against the three criteria
-- [ ] Rejected hypotheses have documented rationale
-- [ ] 2–5 bounded contexts are finalized with business-language names
-- [ ] Each context has a responsibility paragraph, owned-data list, and public-interface outline
-- [ ] A Mermaid context-map diagram shows relationships between contexts
-- [ ] No context is an isolated island — communication paths are defined
+- [ ] Cada hipótesis del informe de descubrimiento se evalúa frente a los tres criterios
+- [ ] Las hipótesis rechazadas tienen una justificación documentada
+- [ ] Se concretan 2–5 contextos delimitados con nombres en lenguaje de negocio
+- [ ] Cada contexto tiene un párrafo de responsabilidad, una lista de datos propios y un esquema de interfaz pública
+- [ ] Un diagrama Mermaid del mapa de contextos muestra las relaciones entre ellos
+- [ ] Ningún contexto es una isla aislada: se definen las rutas de comunicación
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@architect`. The team is starting Stage 2 and needs to decide bounded contexts for the Modular Monolith.
+Eres el `@architect`. El equipo está comenzando la etapa 2 y necesita decidir los contextos delimitados del monolito modular.
 
-**Step 1 — Read the discovery report.**
-Open `01-archaeology/discovery-report.md`. Extract the boundary-hypothesis section. List each hypothesis with its name, included programs, owned DDMs, and rationale.
+**Paso 1 — Lee el informe de descubrimiento.**
+Abre `01-archaeology/discovery-report.md`. Extrae la sección de hipótesis de límites. Enumera cada hipótesis con su nombre, programas incluidos, DDM propios y justificación.
 
-**Step 2 — Evaluate against three criteria.**
-For each hypothesis, analyze:
+**Paso 2 — Evalúa frente a tres criterios.**
+Para cada hipótesis, analiza:
 
-**Cohesion** — Do the business rules in this group relate to the same business capability? Check by reviewing the confirmed rules in `01-archaeology/business-rules-catalog.md` that belong to this group. High cohesion = strong candidate.
+**Cohesión**: ¿las reglas de negocio de este grupo se relacionan con la misma capacidad de negocio? Compruébalo revisando las reglas confirmadas de `01-archaeology/business-rules-catalog.md` que pertenecen al grupo. Cohesión alta = candidato sólido.
 
-**Coupling** — How many dependencies cross this boundary? Check the dependency map in `01-archaeology/dependency-map.md`. Count edges that would cross between this context and others. Low coupling = strong candidate. High coupling suggests the boundary may be misplaced.
+**Acoplamiento**: ¿cuántas dependencias cruzan este límite? Consulta el mapa de dependencias de `01-archaeology/dependency-map.md`. Cuenta las aristas que cruzarían entre este contexto y otros. Acoplamiento bajo = candidato sólido. Un acoplamiento alto sugiere que el límite podría estar mal situado.
 
-**Frequency of change** — In the legacy system, which programs in this group were likely modified together? Use file-naming patterns and call relationships as proxies. Programs that call one another extensively probably change together and belong in the same context.
+**Frecuencia de cambio**: en el sistema heredado, ¿qué programas de este grupo probablemente se modificaban juntos? Utiliza los patrones de nombres de archivo y las relaciones de llamadas como indicadores indirectos. Los programas que se llaman entre sí de forma extensa probablemente cambian juntos y pertenecen al mismo contexto.
 
-Present each evaluation as a scorecard: High/Medium/Low for each criterion.
+Presenta cada evaluación como una tabla de puntuación: alto/medio/bajo para cada criterio.
 
-**Step 3 — Present to the team for a decision.**
-For each hypothesis, present:
+**Paso 3 — Presenta al equipo para decidir.**
+Para cada hipótesis, presenta:
 
-- The scorecard
-- A recommendation (accept, reject, or merge with another hypothesis)
-- The rationale
+- La tabla de puntuación
+- Una recomendación (aceptar, rechazar o fusionar con otra hipótesis)
+- La justificación
 
-Then ask the team: "Do you accept this recommendation? If not, what would you change?"
+Después pregunta al equipo: «¿Aceptan esta recomendación? Si no, ¿qué cambiarían?».
 
-The team makes the final decision. If the team overrides your recommendation, document its rationale.
+El equipo toma la decisión final. Si el equipo decide en contra de tu recomendación, documenta su justificación.
 
-**Step 4 — Formalize accepted contexts.**
-For each accepted bounded context, write:
+**Paso 4 — Formaliza los contextos aceptados.**
+Para cada contexto delimitado aceptado, escribe:
 
-- **Name**: A team-confirmed business-language name, not a technical service name
-- **Responsibility**: One paragraph describing what this context owns
-- **Owned data**: Which DDMs/tables belong exclusively to this context
-- **Public interface**: Which operations this context exposes to other contexts (method signatures or event names — not implementation)
-- **Why it's its own context**: One sentence connecting it to the evaluation criteria
+- **Nombre**: un nombre en lenguaje de negocio confirmado por el equipo, no un nombre técnico de servicio
+- **Responsabilidad**: un párrafo que describa de qué es responsable este contexto
+- **Datos propios**: qué DDM o tablas pertenecen exclusivamente a este contexto
+- **Interfaz pública**: qué operaciones expone este contexto a otros (firmas de métodos o nombres de eventos, no implementación)
+- **Por qué es un contexto propio**: una frase que lo conecte con los criterios de evaluación
 
-**Step 5 — Define inter-context communication.**
-For each pair of contexts that needs to communicate, specify:
+**Paso 5 — Define la comunicación entre contextos.**
+Para cada par de contextos que necesite comunicarse, especifica:
 
-- The direction (A calls B, or bidirectional)
-- The mechanism: in-process method call through an interface, domain event, or shared-kernel type
-- The exchanged data (IDs only? Complete DTOs? Events?)
+- La dirección (A llama a B o bidireccional)
+- El mecanismo: llamada a un método dentro del proceso mediante una interfaz, evento de dominio o tipo del núcleo compartido
+- Los datos intercambiados (¿solo identificadores? ¿DTO completos? ¿Eventos?)
 
-Reinforce that this is a Modular Monolith. Communication is in-process, not HTTP between services.
+Recalca que esto es un monolito modular. La comunicación ocurre dentro del proceso, no por HTTP entre servicios.
 
-**Step 6 — Draw the context map.**
-Create a Mermaid diagram showing all contexts as boxes, with labeled arrows for communication relationships. Use the kit color palette: fill `#0f172a`, stroke `#334155`, text `#e2e8f0`.
+**Paso 6 — Dibuja el mapa de contextos.**
+Crea un diagrama Mermaid que muestre todos los contextos como cajas, con flechas etiquetadas para las relaciones de comunicación. Utiliza la paleta del kit: relleno `#0f172a`, borde `#334155`, texto `#e2e8f0`.
 
-**Step 7 — Write the output.**
-Write to `02-modern-spec/bounded-contexts.md`.
+**Paso 7 — Escribe la salida.**
+Escribe en `02-modern-spec/bounded-contexts.md`.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
 /carve-bounded-contexts report=01-archaeology/discovery-report.md

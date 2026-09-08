@@ -1,74 +1,74 @@
-# DBA — Copilot Kit
+# DBA — Kit de Copilot
 
-> **Track:** [Team Kit](../../README.md) › [Personas](../OVERVIEW.md) › **DBA**
+> **Ruta:** [Kit del equipo](../../README.md) › [Personas](../OVERVIEW.md) › **DBA**
 
-**Reference kit for the DBA persona in the SIFAP modernization workshop.**
+**Kit de referencia para la persona DBA en la inmersión de modernización de SIFAP.**
 
-![Persona](https://img.shields.io/badge/Persona-DBA-171717?style=flat-square) ![Pair 4](https://img.shields.io/badge/Par-4%20%C2%B7%20Qualidade-404040?style=flat-square) ![Stage 3](https://img.shields.io/badge/Est%C3%A1gio-3%20%C2%B7%20Implementa%C3%A7%C3%A3o-737373?style=flat-square)
+![Persona](https://img.shields.io/badge/Persona-DBA-171717?style=flat-square) ![Pareja 4](https://img.shields.io/badge/Par-4%20%C2%B7%20Qualidade-404040?style=flat-square) ![Etapa 3](https://img.shields.io/badge/Est%C3%A1gio-3%20%C2%B7%20Implementa%C3%A7%C3%A3o-737373?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Person taking the DBA persona in the workshop |
-| **Focus** | Data modeling, Flyway migrations, query optimization, and SQL injection auditing |
-| **SDLC phase** | Stage 3 — Implementation (schema + migrations) |
-| **Expected outcome** | PostgreSQL 16 schema consistent with JPA entities and test seed data |
+| **Público objetivo** | Quien asume la persona DBA en la inmersión |
+| **Enfoque** | Modelado de datos, migraciones Flyway, optimización de consultas y auditoría de inyección SQL |
+| **Fase del SDLC** | Etapa 3 — Implementación (esquema + migraciones) |
+| **Resultado esperado** | Esquema PostgreSQL 16 coherente con las entidades JPA y los datos iniciales de prueba |
 
-Read first: [PERSONA.md](PERSONA.md).
+Lee primero: [PERSONA.md](PERSONA.md).
 
 ---
 
-## Concept
+## Concepto
 
-The DBA (Database Administrator) is responsible for the SIFAP 2.0 data layer. In the legacy modernization, this means translating the 4 Adabas DDMs—with their MU (multiple-value) and PE (periodic) fields—into a normalized PostgreSQL 16 relational schema, writing idempotent Flyway migrations, and protecting data integrity throughout the project.
+El DBA (Administrador de Bases de Datos) es responsable de la capa de datos de SIFAP 2.0. En la modernización del legado, esto significa traducir los 4 DDM de Adabas —con sus campos MU (multivalor) y PE (periódicos)— a un esquema relacional normalizado de PostgreSQL 16, escribir migraciones Flyway idempotentes y proteger la integridad de los datos durante todo el proyecto.
 
-Why it matters: the data model is the foundation for the Developer's JPA entities and the infrastructure provisioned by DevOps. A fragile schema or irreversible migrations compromise all of Stage 3.
+Por qué importa: el modelo de datos es la base de las entidades JPA del Desarrollador y de la infraestructura aprovisionada por DevOps. Un esquema frágil o unas migraciones irreversibles comprometen toda la Etapa 3.
 
-## Persona kit
+## Kit de la persona
 
-All active artifacts live in the repository root `.github/` directory. This folder is a reference; edit the files under `.github/` when maintenance is needed.
+Todos los artefactos activos residen en el directorio `.github/` de la raíz del repositorio. Esta carpeta es una referencia; edita los archivos de `.github/` cuando necesiten mantenimiento.
 
-| File | Type | Purpose |
+| Archivo | Tipo | Propósito |
 |---|---|---|
-| `PERSONA.md` | Profile | DBA responsibilities, stages, prompts, and rubrics |
-| `.github/agents/dba.agent.md` | Agent | Data modeling, migrations, and SQL auditing |
+| `PERSONA.md` | Perfil | Responsabilidades, etapas, prompts y rúbricas del DBA |
+| `.github/agents/dba.agent.md` | Agente | Modelado de datos, migraciones y auditoría SQL |
 | `.github/prompts/persona-dba-migration.prompt.md` | Prompt | `/migration` |
 | `.github/prompts/persona-dba-query-audit.prompt.md` | Prompt | `/query-audit` |
-| `.github/instructions/database.instructions.md` | Instructions | Database conventions |
+| `.github/instructions/database.instructions.md` | Instrucciones | Convenciones de base de datos |
 
 > [!TIP]
-> If the facilitator requests a local MCP configuration and this kit has `mcp.json`, copy only that file to `.vscode/mcp.json`.
+> Si la persona facilitadora solicita una configuración MCP local y este kit tiene `mcp.json`, copia solo ese archivo a `.vscode/mcp.json`.
 
-## Where active artifacts live
+## Dónde residen los artefactos activos
 
-- Agents: `.github/agents/`
+- Agentes: `.github/agents/`
 - Prompts: `.github/prompts/persona-*.prompt.md`
 - Skills: `.github/skills/`
-- Instructions: `.github/instructions/`
+- Instrucciones: `.github/instructions/`
 
-## Best practices
+## Prácticas recomendadas
 
-- [ ] **Measure index impact in both directions.** Indexes accelerate reads and slow writes; measure both before creating one.
-- [ ] **Use expand-contract for migrations.** Schema changes must remain compatible for at least two consecutive deployments.
-- [ ] **Detect N+1 queries before staging.** They are performance bugs, not optional improvements.
-- [ ] **Validate backups by restoring them.** A backup that has never been restored is not reliable.
+- [ ] **Mide el impacto de los índices en ambas direcciones.** Los índices aceleran las lecturas y ralentizan las escrituras; mide ambas antes de crear uno.
+- [ ] **Usa expand-contract para las migraciones.** Los cambios de esquema deben mantener la compatibilidad durante al menos dos despliegues consecutivos.
+- [ ] **Detecta las consultas N+1 antes de staging.** Son errores de rendimiento, no mejoras opcionales.
+- [ ] **Valida las copias de seguridad restaurándolas.** Una copia que nunca se ha restaurado no es confiable.
 
-## SIFAP example
+## Ejemplo de SIFAP
 
-In Stage 1, the DBA reads the `SIFAP-BEN.ddm` DDM and maps beneficiary MU fields to candidate related tables. In Stage 3, they write `V2__create_beneficiarios.sql` with Flyway, define indexes for fields used in `WHERE` clauses by critical monthly-cycle queries, and populate `src/test/resources/seed.sql` for the QA Engineer's integration tests.
+En la Etapa 1, el DBA lee el DDM `SIFAP-BEN.ddm` y mapea los campos MU de beneficiarios a posibles tablas relacionadas. En la Etapa 3, escribe `V2__create_beneficiarios.sql` con Flyway, define índices para los campos usados en cláusulas `WHERE` de consultas críticas del ciclo mensual y carga `src/test/resources/seed.sql` para las pruebas de integración del Ingeniero de Calidad.
 
-## References
+## Referencias
 
-- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
+- [Documentación de PostgreSQL](https://www.postgresql.org/docs/)
 - [Use the Index, Luke — Markus Winand](https://use-the-index-luke.com/)
 - [High Performance MySQL / PostgreSQL — Schwartz et al.](https://www.oreilly.com/)
-- [Azure Database for PostgreSQL Best Practices](https://learn.microsoft.com/azure/postgresql/)
+- [Prácticas recomendadas de Azure Database for PostgreSQL](https://learn.microsoft.com/azure/postgresql/)
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Persona overview](../OVERVIEW.md)<br/><sub>Table of the 10 personas and their pairs.</sub> | [PERSONA.md](PERSONA.md)<br/><sub>Complete DBA persona profile.</sub> |
+| [Descripción general de las personas](../OVERVIEW.md)<br/><sub>Tabla de las 10 personas y sus parejas.</sub> | [PERSONA.md](PERSONA.md)<br/><sub>Perfil completo de la persona DBA.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Volver al índice del kit](../../README.md)</sub>

@@ -1,132 +1,132 @@
 ---
 name: "incident-rca"
-description: "Facilitate a blameless root-cause analysis for a SIFAP 2.0 incident: timeline, contributing factors, and prioritized, owned actions."
+description: "Facilita un análisis de causa raíz sin culpabilización para un incidente de SIFAP 2.0: cronología, factores contribuyentes y acciones priorizadas con responsables."
 argument-hint: "incident=<ticket-id> severity=SEV-N"
 agent: "devops-engineer"
 tools: ["read", "search", "edit"]
 ---
 # /incident-rca
 
-## Objective
+## Objetivo
 
-Facilitate a **blameless root cause analysis** for a SIFAP 2.0 incident. The deliverable is a single document — `docs/incidents/<YYYYMMDD>-<short-slug>.md` — that captures the timeline, what happened, why it happened, which changes prevent recurrence, and how the team will know they worked. It is read by engineering, SRE, the InfoSec officer, and the platform architect, and it is about systems, never people.
+Facilita un **análisis de causa raíz sin culpabilización** para un incidente de SIFAP 2.0. El entregable es un único documento, `docs/incidents/<YYYYMMDD>-<short-slug>.md`, que recoge la cronología, qué ocurrió, por qué ocurrió, qué cambios evitarán que se repita y cómo sabrá el equipo que funcionaron. Lo leen ingeniería, SRE, la persona responsable de InfoSec y la persona especialista en arquitectura de plataforma; trata sobre sistemas, nunca sobre personas.
 
-## When to Invoke
+## Cuándo invocar
 
-After an incident is mitigated and resolved, once the responders can reconstruct the timeline from evidence. Run it while the data (PagerDuty, Slack, Application Insights, deployment logs) is still fresh.
+Después de mitigar y resolver un incidente, cuando el equipo de respuesta pueda reconstruir la cronología a partir de evidencia. Ejecútalo mientras los datos (PagerDuty, Slack, Application Insights y registros de despliegue) todavía estén recientes.
 
-## Preconditions
+## Precondiciones
 
-- The incident is resolved (customer impact has stopped)
-- Timeline evidence is available: alerts, chat, traces, and deployment timestamps
-- The affected SLOs and any linked `REQ-ID`s are identified
+- El incidente está resuelto (ha cesado el impacto en clientes)
+- Hay evidencia cronológica disponible: alertas, chat, trazas y marcas de tiempo de despliegue
+- Están identificados los SLO afectados y los `REQ-ID` vinculados
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- The incident ticket ID and severity (`SEV-1` through `SEV-4`)
-- Detection, mitigation, and resolution times (UTC)
-- Affected systems and the `REQ-ID`s linked to violated SLOs
-- Raw timeline data: PagerDuty, the Slack channel, Application Insights traces, deployment timestamps
-- Responder names (for the timeline only — never for assigning blame)
+- El identificador del ticket de incidente y su gravedad (`SEV-1` a `SEV-4`)
+- Las horas de detección, mitigación y resolución (UTC)
+- Los sistemas afectados y los `REQ-ID` vinculados a los SLO incumplidos
+- Los datos cronológicos originales: PagerDuty, el canal de Slack, trazas de Application Insights y marcas de tiempo de despliegue
+- Los nombres de las personas que respondieron (solo para la cronología, nunca para atribuir culpas)
 
-Ask the user for anything that is missing.
+Solicita a la persona usuaria cualquier información que falte.
 
-## What I Will Do
+## Lo que haré
 
-- Restate the impact in customer terms, not internal infrastructure symptoms
-- Reconstruct the timeline minute by minute in UTC, citing a source for every entry
-- Separate detection, mitigation, and resolution (`T0`, `Td`, `Tm`, `Tr`)
-- Find multiple contributing factors with the Five Whys and categorize each
-- Capture what *almost* worked, then propose owned, dated, verifiable actions
-- Record at least one honestly accepted risk
+- Reformular el impacto en términos de clientes, no de síntomas internos de infraestructura
+- Reconstruir la cronología minuto a minuto en UTC, citando una fuente para cada entrada
+- Separar detección, mitigación y resolución (`T0`, `Td`, `Tm`, `Tr`)
+- Encontrar varios factores contribuyentes mediante los cinco porqués y categorizar cada uno
+- Recoger lo que *casi* funcionó y después proponer acciones verificables con responsable y fecha
+- Registrar al menos un riesgo aceptado con honestidad
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Fabricate a timeline entry or an SLO threshold — every entry cites a log, metric, chat message, or `[recall]`, and unknown values are asked, not guessed
-- Name an individual beside a mistake — RCAs are about systems ("the process did not catch the typo", not "the engineer made a typo")
-- Implement the fixes — I create action items; pipeline changes go to `/pipeline`, infra changes to `/iac-module`, and code changes to `@builder`
-- Declare a single "root cause" — there are always multiple contributing factors
-- Write an action without an owner, a due date, and verification criteria
+- Inventar una entrada de la cronología ni un umbral de SLO: cada entrada cita un registro, métrica, mensaje de chat o `[recall]`, y los valores desconocidos se preguntan, no se adivinan
+- Asociar el nombre de una persona con un error: los análisis de causa raíz tratan sobre sistemas («el proceso no detectó la errata», no «la persona ingeniera cometió una errata»)
+- Implementar las correcciones: creo acciones; los cambios de canalización se dirigen a `/pipeline`, los de infraestructura a `/iac-module` y los de código a `@builder`
+- Declarar una única «causa raíz»: siempre hay varios factores contribuyentes
+- Escribir una acción sin responsable, fecha límite y criterios de verificación
 
-## Output Format
+## Formato de salida
 
-The deliverable is `docs/incidents/<YYYYMMDD>-<slug>.md`:
+El entregable es `docs/incidents/<YYYYMMDD>-<slug>.md`:
 
 ```markdown
-# Incident 20260817-payment-timeout
+# Incidente 20260817-payment-timeout
 
-- **Severity**: SEV-2
-- **Customer impact**: submissions failed for ~18 min (HTTP 504)
-- **SLO violation**: REQ-045 (99.9% availability) — breached
-- **Total duration**: T0 09:12Z → Tr 09:41Z (29 min)
+- **Gravedad**: SEV-2
+- **Impacto en clientes**: los envíos fallaron durante ~18 min (HTTP 504)
+- **Incumplimiento de SLO**: REQ-045 (99.9% de disponibilidad) — incumplido
+- **Duración total**: T0 09:12Z → Tr 09:41Z (29 min)
 
-## 1. Summary
-Two paragraphs. What happened, why, what we did, and what will change.
+## 1. Resumen
+Dos párrafos. Qué ocurrió, por qué, qué hicimos y qué cambiará.
 
-## 2. Timeline (UTC)
-| Time | Source | Event |
+## 2. Cronología (UTC)
+| Hora | Fuente | Evento |
 |-------|--------|-------|
-| 09:12Z | App Insights | p95 latency crosses 3 s |
-| 09:15Z | PagerDuty | on-call paged |
-| 09:30Z | Slack [recall] | rollback started |
-| 09:41Z | deploy log | previous image restored; latency normal |
+| 09:12Z | App Insights | la latencia p95 supera 3 s |
+| 09:15Z | PagerDuty | se avisa a la persona de guardia |
+| 09:30Z | Slack [recall] | comienza la reversión |
+| 09:41Z | registro de despliegue | imagen anterior restaurada; latencia normal |
 
-## 3. Contributing Factors
-- code: unbounded connection pool wait (Five Whys → missing timeout)
-- config: health check interval too long to detect the stall
-- process: no load test on the changed query path
+## 3. Factores contribuyentes
+- code: espera ilimitada del grupo de conexiones (cinco porqués → falta un tiempo de espera máximo)
+- config: intervalo de comprobación de estado demasiado largo para detectar el bloqueo
+- process: ninguna prueba de carga sobre la ruta de consulta modificada
 
-## 4. What Almost Worked
-- The alert fired, but 3 minutes too late to prevent impact.
+## 4. Lo que casi funcionó
+- La alerta se activó, pero 3 minutos demasiado tarde para evitar el impacto.
 
-## 5. Actions
-| # | Action | Owner | Type | Due Date | Verification |
+## 5. Acciones
+| # | Acción | Responsable | Tipo | Fecha límite | Verificación |
 |---|--------|-------|------|----------|--------------|
-| 1 | Set a 2 s pool-acquire timeout | <name> | code | <date> | load test shows fast failure |
-| 2 | Shorten health-check interval | <name> | config | <date> | detection < 60 s in game day |
+| 1 | Establecer un tiempo máximo de 2 s para adquirir una conexión | <nombre> | code | <fecha> | la prueba de carga muestra un fallo rápido |
+| 2 | Acortar el intervalo de comprobación de estado | <nombre> | config | <fecha> | detección < 60 s en el simulacro |
 
-## 6. Accepted Risks (for now)
-- Single-region database; multi-region deferred. Owner: <name>. Reassess: <quarter>.
+## 6. Riesgos aceptados (por ahora)
+- Base de datos en una sola región; varias regiones aplazadas. Responsable: <nombre>. Reevaluar: <trimestre>.
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] The customer-impact statement is in plain language
-- [ ] The timeline includes at least detection, mitigation, and resolution timestamps with sources
-- [ ] At least three contributing factors across at least two categories
-- [ ] Every action has an owner, a type, a due date, and verification criteria
-- [ ] At least one "what almost worked" item is recorded
-- [ ] At least one accepted risk is named honestly
-- [ ] No individual is blamed by name; violated SLO / `REQ-ID` references are included
+- [ ] El enunciado del impacto en clientes está en lenguaje claro
+- [ ] La cronología incluye al menos las marcas de tiempo de detección, mitigación y resolución, con sus fuentes
+- [ ] Hay al menos tres factores contribuyentes distribuidos en al menos dos categorías
+- [ ] Cada acción tiene responsable, tipo, fecha límite y criterios de verificación
+- [ ] Se registra al menos un elemento de «lo que casi funcionó»
+- [ ] Se identifica con honestidad al menos un riesgo aceptado
+- [ ] No se culpa por nombre a ninguna persona; se incluyen referencias a SLO incumplidos / `REQ-ID`
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@devops-engineer` facilitating a learning review, not a trial.
+Eres el `@devops-engineer` facilitando una revisión para aprender, no un juicio.
 
-**Step 1 — Restate the impact in customer terms.**
-Describe the observable effect, not only the internal infrastructure symptom.
+**Paso 1 — Reformula el impacto en términos de clientes.**
+Describe el efecto observable, no solo el síntoma interno de infraestructura.
 
-**Step 2 — Reconstruct the timeline.**
-Minute by minute, in UTC. Cite the source for every entry — log, metric, chat message, or human recollection marked `[recall]`.
+**Paso 2 — Reconstruye la cronología.**
+Minuto a minuto, en UTC. Cita la fuente de cada entrada: registro, métrica, mensaje de chat o recuerdo humano marcado como `[recall]`.
 
-**Step 3 — Distinguish detection, mitigation, and resolution.**
-`T0` first symptom in production, `Td` first detection, `Tm` mitigation (impact stops), `Tr` full resolution.
+**Paso 3 — Distingue detección, mitigación y resolución.**
+`T0` primer síntoma en producción, `Td` primera detección, `Tm` mitigación (cesa el impacto), `Tr` resolución completa.
 
-**Step 4 — Find contributing factors, not "the" cause.**
-Use the Five Whys, then categorize each factor as code, configuration, dependency, process, observability, or organizational.
+**Paso 4 — Encuentra factores contribuyentes, no «la» causa.**
+Utiliza los cinco porqués y después categoriza cada factor como código, configuración, dependencia, proceso, observabilidad u organización.
 
-**Step 5 — Identify what almost worked.**
-Defenses that activated but were insufficient — alerts that paged too late, runbooks that were 80% correct, fallbacks that timed out. This is valuable prevention evidence.
+**Paso 5 — Identifica lo que casi funcionó.**
+Defensas que se activaron, pero fueron insuficientes: alertas que avisaron demasiado tarde, guías operativas correctas al 80% o alternativas cuyo tiempo de espera se agotó. Es evidencia valiosa para la prevención.
 
-**Step 6 — Propose actions.**
-For every contributing factor, write at least one action with an owner (one person), a target date, verification criteria, and a type (`code`, `config`, `monitoring`, `process`, `documentation`, or `architecture`).
+**Paso 6 — Propón acciones.**
+Para cada factor contribuyente, escribe al menos una acción con un responsable (una persona), una fecha objetivo, criterios de verificación y un tipo (`code`, `config`, `monitoring`, `process`, `documentation` o `architecture`).
 
-**Step 7 — Stay blameless and honest.**
-Never associate a personal name with a mistake. Add at least one risk you did not fix, with an owner and a reassessment date.
+**Paso 7 — Mantén la honestidad y evita culpabilizar.**
+Nunca asocies el nombre de una persona con un error. Añade al menos un riesgo que no hayas corregido, con responsable y fecha de reevaluación.
 
-The RCA is a learning artifact, not a punishment artifact. There is never a single cause. Every action has an owner, a date, and verification criteria. The timeline is the evidence base — never skip it and never fabricate an entry.
+El análisis de causa raíz es un artefacto de aprendizaje, no de castigo. Nunca existe una única causa. Cada acción tiene un responsable, una fecha y criterios de verificación. La cronología es la base de evidencia: nunca la omitas ni inventes una entrada.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
 /incident-rca incident=<ticket-id> severity=SEV-2

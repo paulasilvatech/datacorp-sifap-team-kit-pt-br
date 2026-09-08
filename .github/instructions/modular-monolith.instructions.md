@@ -1,79 +1,79 @@
 ---
-description: "Use when designing or reviewing Modular Monolith architecture, package-by-feature boundaries, JPA mapping, and Strangler Fig migration."
+description: "Utiliza al diseñar o revisar la arquitectura de monolito modular, los límites de paquetes por funcionalidad, el mapeo JPA y la migración Strangler Fig."
 applyTo: "backend/src/main/java/**,backend/pom.xml,backend/build.gradle*"
 ---
 
-# Modular Monolith Architecture Guide
+# Guía de arquitectura de monolito modular
 
-This file activates when you work on Java source files or backend build configurations. It teaches the target architecture: a **Modular Monolith** — not microservices — with package-by-feature boundaries, bounded contexts, Adabas FDT to JPA mapping, Spring Boot 3.3 architectural conventions, and the Strangler Fig migration shape. It does **not** define controller, DTO, validation, or error-response details, which belong to [`backend.instructions.md`](backend.instructions.md); security belongs to [`security.instructions.md`](security.instructions.md); schema migrations belong to [`database.instructions.md`](database.instructions.md); and legacy-source reading belongs to [`natural-adabas.instructions.md`](natural-adabas.instructions.md).
+Este archivo se activa al trabajar en archivos fuente Java o configuraciones de compilación del backend. Enseña la arquitectura de destino: un **monolito modular**, no microservicios, con límites de paquetes por funcionalidad, contextos delimitados, mapeo de FDT de Adabas a JPA, convenciones arquitectónicas de Spring Boot 3.3 y estructura de migración Strangler Fig. **No** define los detalles de controladores, DTO, validación ni respuestas de error, que corresponden a [`backend.instructions.md`](backend.instructions.md); la seguridad corresponde a [`security.instructions.md`](security.instructions.md); las migraciones de esquema, a [`database.instructions.md`](database.instructions.md); y la lectura de fuentes heredadas, a [`natural-adabas.instructions.md`](natural-adabas.instructions.md).
 
-## Core Principle: One Deployable, Many Modules
+## Principio central: una unidad desplegable, muchos módulos
 
-The target system is a single Spring Boot application with clear internal module boundaries. Each bounded context is a Maven module (or top-level package) that owns its domain, repository, and service layers.
+El sistema de destino es una única aplicación Spring Boot con límites internos de módulos claros. Cada contexto delimitado es un módulo Maven (o paquete de nivel superior) que contiene sus propias capas de dominio, repositorio y servicio.
 
-Why a Modular Monolith rather than microservices:
+Por qué un monolito modular en lugar de microservicios:
 
-- **Workshop constraint**: 8 hours is not enough time to manage distributed systems, service discovery, and inter-service communication.
-- **Complexity budget**: A monolith with strong module boundaries provides 80% of the benefits of microservices (team autonomy, clear ownership) at 20% of the operational cost.
-- **Migration path**: A well-structured Modular Monolith can be decomposed into microservices later if necessary. The reverse is much harder.
+- **Restricción de la inmersión**: 8 horas no bastan para gestionar sistemas distribuidos, descubrimiento de servicios y comunicación entre servicios.
+- **Presupuesto de complejidad**: un monolito con límites de módulos sólidos ofrece el 80% de los beneficios de los microservicios (autonomía del equipo, responsabilidad clara) con el 20% del costo operativo.
+- **Ruta de migración**: un monolito modular bien estructurado puede descomponerse más adelante en microservicios si es necesario. El camino inverso es mucho más difícil.
 
-## Package-by-Feature Structure
+## Estructura de paquetes por funcionalidad
 
-Organize code by business capability, not by technical layer:
+Organiza el código por capacidad de negocio, no por capa técnica:
 
 ```
 src/main/java/com/example/app/
-├── <feature>/                  # Bounded context defined by the team
+├── <feature>/                  # Contexto delimitado definido por el equipo
 │   ├── <Feature>Controller.java
 │   ├── <Feature>Service.java
 │   ├── <Feature>Repository.java
 │   ├── <Feature>.java
 │   └── <Feature>Dto.java
-├── shared/                     # Shared kernel
-│   ├── audit/                  # Cross-cutting: audit trail
-│   └── exception/              # Cross-cutting: error handling
-└── Application.java            # Spring Boot entry point
+├── shared/                     # Núcleo compartido
+│   ├── audit/                  # Aspecto transversal: registro de auditoría
+│   └── exception/              # Aspecto transversal: tratamiento de errores
+└── Application.java            # Punto de entrada de Spring Boot
 ```
 
-Rules:
+Reglas:
 
-- A module MUST **NEVER** directly import internal classes from another module. Use interfaces or events.
-- The `shared/` package contains only cross-cutting concerns (audit, exceptions, base entities).
-- Each module has its own `*Repository`, `*Service`, and `*Controller`.
+- Un módulo **NUNCA** DEBE importar directamente clases internas de otro módulo. Utiliza interfaces o eventos.
+- El paquete `shared/` contiene solo aspectos transversales (auditoría, excepciones y entidades base).
+- Cada módulo tiene sus propios `*Repository`, `*Service` y `*Controller`.
 
-## Bounded Context Boundaries
+## Límites de contextos delimitados
 
-When deciding where to draw module boundaries, ask:
+Al decidir dónde establecer los límites de los módulos, pregunta:
 
-1. **Who owns this data?** If two features share the same table, they may belong to the same context.
-2. **What changes together?** Features modified in the same sprint belong together.
-3. **What can fail independently?** If Feature A failing MUST NOT break Feature B, they belong to separate contexts.
+1. **¿Quién es responsable de estos datos?** Si dos funcionalidades comparten la misma tabla, pueden pertenecer al mismo contexto.
+2. **¿Qué cambia conjuntamente?** Las funcionalidades modificadas en el mismo sprint deben agruparse.
+3. **¿Qué puede fallar de forma independiente?** Si un fallo de la funcionalidad A NO DEBE romper la funcionalidad B, pertenecen a contextos separados.
 
-A common pattern in Natural/Adabas legacy modernization is that each Adabas file (FNR) often maps to a bounded context, although some files contain shared reference data that belongs in a shared kernel.
+Un patrón habitual en la modernización de sistemas heredados Natural/Adabas es que cada archivo de Adabas (FNR) suele corresponder a un contexto delimitado, aunque algunos archivos contienen datos de referencia compartidos que pertenecen a un núcleo compartido.
 
-## JPA Mapping from Adabas FDT
+## Mapeo JPA a partir de FDT de Adabas
 
-### Simple Fields
+### Campos simples
 
-| Adabas Format | Java Type | JPA Annotation |
+| Formato de Adabas | Tipo Java | Anotación JPA |
 |---|---|---|
-| `A` (alphanumeric) | `String` | `@Column(length = N)` |
-| `N` (numeric, no decimal) | `Long` or `Integer` | `@Column` |
-| `N` (numeric, with decimal) | `BigDecimal` | `@Column(precision = P, scale = S)` |
-| `P` (packed decimal) | `BigDecimal` | `@Column(precision = P, scale = S)` |
-| `D` (date) | `LocalDate` | `@Column` |
-| `T` (time/datetime) | `LocalDateTime` | `@Column` |
-| `B` (binary) | `byte[]` | `@Column` / `@Lob` |
+| `A` (alfanumérico) | `String` | `@Column(length = N)` |
+| `N` (numérico, sin decimales) | `Long` o `Integer` | `@Column` |
+| `N` (numérico, con decimales) | `BigDecimal` | `@Column(precision = P, scale = S)` |
+| `P` (decimal empaquetado) | `BigDecimal` | `@Column(precision = P, scale = S)` |
+| `D` (fecha) | `LocalDate` | `@Column` |
+| `T` (hora/fecha y hora) | `LocalDateTime` | `@Column` |
+| `B` (binario) | `byte[]` | `@Column` / `@Lob` |
 
-### MU (Multiple-Value) Fields → JSONB
+### Campos MU (valores múltiples) → JSONB
 
 ```java
 @Column(columnDefinition = "jsonb")
 @JdbcTypeCode(SqlTypes.JSON)
-private List<String> alternateNames;  // Was MU field in Adabas
+private List<String> alternateNames;  // Era un campo MU en Adabas
 ```
 
-Or use `@ElementCollection` if query capability is required:
+O utiliza `@ElementCollection` si se necesita capacidad de consulta:
 
 ```java
 @ElementCollection
@@ -81,26 +81,26 @@ Or use `@ElementCollection` if query capability is required:
 private List<String> alternateNames;
 ```
 
-### PE (Periodic Groups) → @OneToMany
+### PE (grupos periódicos) → @OneToMany
 
 ```java
 @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 @JoinColumn(name = "person_id")
-private List<AddressHistory> addressHistory;  // Was PE group
+private List<AddressHistory> addressHistory;  // Era un grupo PE
 ```
 
-Where `AddressHistory` is an `@Entity` with its own table.
+Donde `AddressHistory` es una `@Entity` con su propia tabla.
 
-## Spring Boot 3.3 Conventions
+## Convenciones de Spring Boot 3.3
 
-- **Constructor injection**: No field-level `@Autowired`. Use `@RequiredArgsConstructor` (Lombok) or explicit constructors.
-- **Records for DTOs**: `public record ResourceDto(Long id, String label) {}`
-- **Validation in the controller layer**: `@Valid @RequestBody ResourceDto dto` with Bean Validation annotations on the DTO.
-- **@Transactional only in the service layer**: NEVER in repositories, NEVER in controllers.
-- **Optional for nullable returns**: `Optional<Resource> findById(Long id)` — NEVER return `null` from public methods.
-- **Sealed interfaces for type unions**: `sealed interface ResourceState permits StateA, StateB {}`
+- **Inyección por constructor**: sin `@Autowired` a nivel de campo. Utiliza `@RequiredArgsConstructor` (Lombok) o constructores explícitos.
+- **Registros para DTO**: `public record ResourceDto(Long id, String label) {}`
+- **Validación en la capa de controladores**: `@Valid @RequestBody ResourceDto dto` con anotaciones de Bean Validation en el DTO.
+- **@Transactional solo en la capa de servicios**: NUNCA en repositorios, NUNCA en controladores.
+- **Optional para retornos que pueden estar ausentes**: `Optional<Resource> findById(Long id)`; NUNCA devuelvas `null` desde métodos públicos.
+- **Interfaces selladas para uniones de tipos**: `sealed interface ResourceState permits StateA, StateB {}`
 
-## Error Handling Pattern
+## Patrón de tratamiento de errores
 
 ```java
 @RestControllerAdvice
@@ -114,46 +114,46 @@ public class GlobalExceptionHandler {
 }
 ```
 
-Use `ProblemDetail` (RFC 7807) for all error responses.
+Utiliza `ProblemDetail` (RFC 7807) para todas las respuestas de error.
 
-## Strangler Fig Pattern
+## Patrón Strangler Fig
 
-When the modern system must coexist with the legacy system:
+Cuando el sistema moderno deba coexistir con el sistema heredado:
 
-1. **Facade**: All requests pass through a routing layer
-2. **New path**: New or migrated features are handled by the Spring Boot modules
-3. **Legacy path**: Unmigrated features are proxied to the legacy system
-4. **Gradual migration**: As each feature is migrated, its route switches from legacy to modern
+1. **Fachada**: todas las solicitudes pasan por una capa de enrutamiento
+2. **Ruta nueva**: los módulos Spring Boot gestionan las funcionalidades nuevas o migradas
+3. **Ruta heredada**: las funcionalidades no migradas se redirigen al sistema heredado mediante un proxy
+4. **Migración gradual**: a medida que se migra cada funcionalidad, su ruta cambia del sistema heredado al moderno
 
-This pattern applies even within the workshop scope: teams may not migrate everything, and that is acceptable. The architecture MUST support partial migration gracefully.
+Este patrón se aplica incluso dentro del alcance de la inmersión: es posible que los equipos no migren todo y eso es aceptable. La arquitectura DEBE admitir una migración parcial sin problemas.
 
-## Conventions
+## Convenciones
 
-| Rule | Rationale |
+| Regla | Justificación |
 |---|---|
-| One Spring Boot deployable with many internal modules | Preserves workshop delivery speed while keeping boundaries explicit |
-| Package by business capability | Modules map to bounded contexts instead of technical layers |
-| Module internals stay private; cross-module access uses interfaces or events | Prevents hidden coupling between contexts |
-| Adabas FDT types map deliberately to Java/JPA types | Avoids silent truncation, precision loss, and incorrect relationships |
-| `@Transactional` only in services and constructor injection everywhere | Keeps persistence boundaries and dependencies explicit |
-| `ProblemDetail` for errors | Gives every module one machine-readable error shape |
+| Una unidad desplegable Spring Boot con muchos módulos internos | Conserva la rapidez de entrega de la inmersión y mantiene explícitos los límites |
+| Paquetes por capacidad de negocio | Los módulos se corresponden con contextos delimitados en lugar de capas técnicas |
+| Los detalles internos de los módulos permanecen privados; el acceso entre módulos utiliza interfaces o eventos | Evita el acoplamiento oculto entre contextos |
+| Los tipos de FDT de Adabas se mapean deliberadamente a tipos Java/JPA | Evita truncamientos silenciosos, pérdida de precisión y relaciones incorrectas |
+| `@Transactional` solo en servicios e inyección por constructor en todas partes | Mantiene explícitos los límites de persistencia y las dependencias |
+| `ProblemDetail` para errores | Ofrece a cada módulo una única estructura de error legible por máquinas |
 
-## Do / Do Not
+## Qué hacer / Qué no hacer
 
-| Do | Do not |
+| Qué hacer | Qué no hacer |
 |---|---|
-| Keep one Spring Boot application with clear internal modules | Create separate Spring Boot applications or microservices for each context |
-| Put business logic in Java services | Move business logic into PostgreSQL stored procedures or functions |
-| Use JPA/JPQL or Spring Data derived queries | Concatenate strings to build SQL |
-| Use constructor injection | Use field injection with `@Autowired` |
-| Return `Optional` when a result may be absent | Return `null` from public methods |
-| Support partial migration with a Strangler Fig facade | Assume the whole legacy system is migrated at once |
+| Mantener una única aplicación Spring Boot con módulos internos claros | Crear aplicaciones Spring Boot o microservicios separados para cada contexto |
+| Situar la lógica de negocio en servicios Java | Trasladar la lógica de negocio a procedimientos almacenados o funciones de PostgreSQL |
+| Utilizar JPA/JPQL o consultas derivadas de Spring Data | Concatenar cadenas para construir SQL |
+| Utilizar inyección por constructor | Utilizar inyección de campos con `@Autowired` |
+| Devolver `Optional` cuando un resultado pueda estar ausente | Devolver `null` desde métodos públicos |
+| Admitir la migración parcial con una fachada Strangler Fig | Suponer que todo el sistema heredado se migra de una vez |
 
-## Checklist Before Opening a PR
+## Lista de verificación antes de abrir una PR
 
-- [ ] New code is inside one Spring Boot deployable and organized by business capability
-- [ ] No module imports another module's internal classes directly; interfaces or events define the boundary
-- [ ] Repositories, services, controllers, entities, and DTOs stay inside the owning module or shared kernel
-- [ ] Adabas FDT fields were mapped to Java/JPA types with precision, MU, PE, and descriptor semantics preserved
-- [ ] `@Transactional` appears only in services, dependencies use constructor injection, and public methods do not return `null`
-- [ ] The design can coexist with unmigrated legacy paths through the Strangler Fig routing shape
+- [ ] El código nuevo está dentro de una única unidad desplegable Spring Boot y organizado por capacidad de negocio
+- [ ] Ningún módulo importa directamente clases internas de otro módulo; las interfaces o los eventos definen el límite
+- [ ] Los repositorios, servicios, controladores, entidades y DTO permanecen dentro del módulo responsable o del núcleo compartido
+- [ ] Los campos de FDT de Adabas se han mapeado a tipos Java/JPA conservando la precisión y la semántica de MU, PE y descriptores
+- [ ] `@Transactional` aparece solo en servicios, las dependencias utilizan inyección por constructor y los métodos públicos no devuelven `null`
+- [ ] El diseño puede coexistir con rutas heredadas no migradas mediante el enrutamiento Strangler Fig

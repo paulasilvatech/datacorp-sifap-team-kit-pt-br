@@ -1,24 +1,24 @@
 ---
 name: "azure-devops-cli"
-description: "Use when managing Azure DevOps resources from the CLI — projects, repos, pipelines, builds, pull requests, work items, artifacts, and service endpoints. Applies only when a team integrates with an existing Azure DevOps organization. Triggers include \"az devops\", \"az pipelines\", \"az boards\", \"az repos\", and \"Azure DevOps automation\"."
+description: "Úsala para gestionar recursos de Azure DevOps desde la CLI: proyectos, repositorios, canalizaciones, compilaciones, solicitudes de incorporación de cambios, elementos de trabajo, artefactos y puntos de conexión de servicio. Se aplica solo cuando un equipo se integra con una organización de Azure DevOps existente. Los desencadenantes incluyen \"az devops\", \"az pipelines\", \"az boards\", \"az repos\" y \"automatización de Azure DevOps\"."
 ---
-# Azure DevOps CLI
+# CLI de Azure DevOps
 
-Manage Azure DevOps resources with the Azure CLI plus the `azure-devops` extension.
+Gestiona recursos de Azure DevOps con Azure CLI y la extensión `azure-devops`.
 
 > [!NOTE]
-> This kit's source of truth for work, code, and CI is **GitHub** (Issues, Pull Requests, Actions, Projects). Use this skill only when a team must also drive an existing Azure DevOps organization. Do not migrate the kit's workflow to Azure DevOps.
+> La fuente de verdad de este kit para el trabajo, el código y la CI es **GitHub** (Issues, Pull Requests, Actions, Projects). Usa esta skill solo cuando un equipo también deba operar una organización de Azure DevOps existente. No migres el flujo de trabajo del kit a Azure DevOps.
 
-## When to invoke
+## Cuándo invocar
 
-- "Create a pull request in our Azure DevOps repo from the CLI."
-- "Queue a pipeline run and watch its status without opening the portal."
-- "Bulk-update work items from a script."
-- "List the branch policies on our Azure DevOps repository."
+- "Crea una solicitud de incorporación de cambios en nuestro repositorio de Azure DevOps desde la CLI."
+- "Pon en cola una ejecución de canalización y supervisa su estado sin abrir el portal."
+- "Actualiza elementos de trabajo en bloque desde un script."
+- "Enumera las políticas de ramas de nuestro repositorio de Azure DevOps."
 
-## Prerequisites
+## Prerrequisitos
 
-Install the Azure CLI and the Azure DevOps extension:
+Instala Azure CLI y la extensión de Azure DevOps:
 
 ```bash
 brew install azure-cli                                     # macOS
@@ -26,9 +26,9 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash     # Linux
 az extension add --name azure-devops
 ```
 
-## Authentication
+## Autenticación
 
-Authenticate with a Personal Access Token (PAT), then set defaults so you do not repeat `--org`/`--project`:
+Autentícate con un token de acceso personal (PAT) y después establece valores predeterminados para no repetir `--org`/`--project`:
 
 ```bash
 export AZURE_DEVOPS_EXT_PAT="<your-pat>"
@@ -38,68 +38,68 @@ az devops configure --list
 ```
 
 > [!WARNING]
-> Never hardcode a PAT in a script, commit, or command that will be logged. Pass it through the `AZURE_DEVOPS_EXT_PAT` environment variable (or a secret store) and scope it to the minimum required permissions.
+> Nunca incrustes un PAT en un script, commit o comando que vaya a registrarse. Pásalo mediante la variable de entorno `AZURE_DEVOPS_EXT_PAT` (o un almacén de secretos) y limítalo a los permisos mínimos necesarios.
 
 > [!NOTE]
-> The legacy URL `https://{org}.visualstudio.com` should be replaced with `https://dev.azure.com/{org}`.
+> La URL heredada `https://{org}.visualstudio.com` debe sustituirse por `https://dev.azure.com/{org}`.
 
-## CLI structure
+## Estructura de la CLI
 
 ```text
-az devops          Main DevOps commands
-├── admin          Administration (banner)
-├── extension      Extension management
-├── project        Team projects
-├── security       Security operations (group, permission)
-├── service-endpoint   Service connections
-├── team           Teams
-├── user           Users
+az devops          Comandos principales de DevOps
+├── admin          Administración (avisos)
+├── extension      Gestión de extensiones
+├── project        Proyectos de equipo
+├── security       Operaciones de seguridad (group, permission)
+├── service-endpoint   Conexiones de servicio
+├── team           Equipos
+├── user           Usuarios
 ├── wiki           Wikis
-├── configure      Set defaults
-├── invoke         Invoke REST API
-├── login / logout Authenticate / clear credentials
+├── configure      Establecer valores predeterminados
+├── invoke         Invocar la API REST
+├── login / logout Autenticarse / limpiar credenciales
 
 az pipelines       Azure Pipelines
-├── agent / pool / queue   Agents, pools, queues
-├── build          Builds
-├── folder         Pipeline folders
-├── release        Releases
-├── runs           Pipeline runs
-└── variable / variable-group   Variables and groups
+├── agent / pool / queue   Agentes, grupos, colas
+├── build          Compilaciones
+├── folder         Carpetas de canalizaciones
+├── release        Versiones
+├── runs           Ejecuciones de canalizaciones
+└── variable / variable-group   Variables y grupos
 
 az boards          Azure Boards
-├── area           Area paths
-├── iteration      Iterations
-└── work-item      Work items
+├── area           Rutas de área
+├── iteration      Iteraciones
+└── work-item      Elementos de trabajo
 
 az repos           Azure Repos
-├── import         Git imports
-├── policy         Branch policies
-├── pr             Pull requests
-└── ref            Git references
+├── import         Importaciones de Git
+├── policy         Políticas de ramas
+├── pr             Solicitudes de incorporación de cambios
+└── ref            Referencias de Git
 
 az artifacts       Azure Artifacts
-└── universal      Universal Packages
+└── universal      Paquetes universales
 ```
 
-## Reference files
+## Archivos de referencia
 
-Read the relevant reference file based on the task. Each contains complete command syntax and examples for its domain.
+Lee el archivo de referencia pertinente para la tarea. Cada uno contiene la sintaxis completa de los comandos y ejemplos de su dominio.
 
-| File | When to read | Covers |
+| Archivo | Cuándo leerlo | Contenido |
 |---|---|---|
-| [references/repos-and-prs.md](references/repos-and-prs.md) | Repos, branches, pull requests, branch policies | Repositories, import, PRs (create/list/vote/reviewers/policies), Git refs, branch policies |
-| [references/pipelines-and-builds.md](references/pipelines-and-builds.md) | Pipelines, builds, releases, artifacts | Pipelines CRUD, runs, builds, releases, artifacts download/upload |
-| [references/boards-and-iterations.md](references/boards-and-iterations.md) | Work items, sprints, area paths | Work items (WIQL/create/update/relations), area paths, iterations, team iterations |
-| [references/variables-and-agents.md](references/variables-and-agents.md) | Pipeline variables, agent pools | Pipeline variables, variable groups, pipeline folders, agent pools/queues |
-| [references/org-and-security.md](references/org-and-security.md) | Projects, teams, users, permissions, wikis | Projects, extensions, teams, users, security groups/permissions, service endpoints, wikis, admin |
-| [references/advanced-usage.md](references/advanced-usage.md) | Output formatting, JMESPath queries | Output formats, JMESPath queries, global args, common params, Git aliases |
-| [references/workflows-and-patterns.md](references/workflows-and-patterns.md) | Automation scripts, best practices, error handling | Common workflows, best practices, error handling, scripting patterns, real-world examples |
-| [references/long-comments-on-windows.md](references/long-comments-on-windows.md) | Long `--discussion`, `--description`, or `--content` values failing on Windows | The `cmd.exe` 8191-char cap on `az.cmd`, shell detection, and three verified workarounds (`azps.ps1`, native `--file-path`, `az devops invoke --in-file`) |
+| [references/repos-and-prs.md](references/repos-and-prs.md) | Repositorios, ramas, solicitudes de incorporación de cambios y políticas de ramas | Repositorios, importación, PR (crear/enumerar/votar/revisores/políticas), referencias de Git y políticas de ramas |
+| [references/pipelines-and-builds.md](references/pipelines-and-builds.md) | Canalizaciones, compilaciones, versiones y artefactos | CRUD de canalizaciones, ejecuciones, compilaciones, versiones y descarga/carga de artefactos |
+| [references/boards-and-iterations.md](references/boards-and-iterations.md) | Elementos de trabajo, sprints y rutas de área | Elementos de trabajo (WIQL/crear/actualizar/relaciones), rutas de área, iteraciones e iteraciones de equipo |
+| [references/variables-and-agents.md](references/variables-and-agents.md) | Variables de canalizaciones y grupos de agentes | Variables de canalizaciones, grupos de variables, carpetas de canalizaciones y grupos/colas de agentes |
+| [references/org-and-security.md](references/org-and-security.md) | Proyectos, equipos, usuarios, permisos y wikis | Proyectos, extensiones, equipos, usuarios, grupos y permisos de seguridad, puntos de conexión de servicio, wikis y administración |
+| [references/advanced-usage.md](references/advanced-usage.md) | Formato de salida y consultas JMESPath | Formatos de salida, consultas JMESPath, argumentos globales, parámetros habituales y alias de Git |
+| [references/workflows-and-patterns.md](references/workflows-and-patterns.md) | Scripts de automatización, buenas prácticas y gestión de errores | Flujos de trabajo habituales, buenas prácticas, gestión de errores, patrones de scripting y ejemplos reales |
+| [references/long-comments-on-windows.md](references/long-comments-on-windows.md) | Valores largos de `--discussion`, `--description` o `--content` que fallan en Windows | Límite de 8191 caracteres de `cmd.exe` sobre `az.cmd`, detección del shell y tres alternativas verificadas (`azps.ps1`, `--file-path` nativo, `az devops invoke --in-file`) |
 
-## Output template
+## Plantilla de salida
 
-Deliver a runnable command sequence plus the identifiers it returns:
+Entrega una secuencia de comandos ejecutables y los identificadores que devuelve:
 
 ```bash
 az repos pr create \
@@ -112,17 +112,17 @@ az repos pr create \
 az pipelines run --name sifap-ci --branch feature/import-report --output table
 ```
 
-Summarize the result:
+Resume el resultado:
 
 ```text
 PR: !128 sifap feature/import-report -> main (active)
-Pipeline: sifap-ci run #345 queued on feature/import-report
+Canalización: ejecución #345 de sifap-ci en cola sobre feature/import-report
 ```
 
-## Quality gate
+## Puerta de calidad
 
-- [ ] `az devops configure --list` shows the intended default organization and project.
-- [ ] The PAT is supplied via `AZURE_DEVOPS_EXT_PAT` or a secret store, never hardcoded or logged.
-- [ ] Commands specify `--output table`/`--output json` explicitly so results are parseable.
-- [ ] Long `--description`/`--discussion` values on Windows use one of the documented workarounds.
-- [ ] The action was verified (PR, run, or work item ID returned) rather than assumed successful.
+- [ ] `az devops configure --list` muestra la organización y el proyecto predeterminados previstos.
+- [ ] El PAT se proporciona mediante `AZURE_DEVOPS_EXT_PAT` o un almacén de secretos, nunca incrustado ni registrado.
+- [ ] Los comandos especifican `--output table`/`--output json` explícitamente para poder procesar los resultados.
+- [ ] Los valores largos de `--description`/`--discussion` en Windows usan una de las alternativas documentadas.
+- [ ] La acción se verificó (se devolvió el ID de PR, ejecución o elemento de trabajo), en lugar de dar por supuesto el éxito.

@@ -1,30 +1,30 @@
-# Pull Request
+# Solicitud de cambios
 
-## Description
+## Descripción
 
-<!-- Describe what was implemented in this PR -->
+<!-- Describe lo que se implementó en esta PR -->
 
-## Stage
+## Etapa
 
-- [ ] Stage 1 - Archaeology
-- [ ] Stage 2 - Modern Specification
-- [ ] Stage 3 - Implementation
-- [ ] Stage 4 - Evolution (IaC)
+- [ ] Etapa 1 - Arqueología
+- [ ] Etapa 2 - Especificación moderna
+- [ ] Etapa 3 - Implementación
+- [ ] Etapa 4 - Evolución (IaC)
 
-## Responsible Persona
+## Persona responsable
 
-<!-- Which persona created this PR? -->
+<!-- ¿Qué persona creó esta PR? -->
 
-## Checklist
+## Lista de verificación
 
-- [ ] Code compiles without errors
-- [ ] Unit tests pass
-- [ ] No sensitive data is exposed
-- [ ] CHANGELOG or README updated if necessary
-- [ ] Linked to the corresponding REQ-ID in the specification (when applicable)
-- [ ] Every new or changed REQ-ID includes a valid `source_legacy:` or justified `[GREENFIELD]`
-- [ ] Workflow changes use least-privilege permissions and actions pinned by SHA
+- [ ] El código compila sin errores
+- [ ] Las pruebas unitarias se superan
+- [ ] No se exponen datos sensibles
+- [ ] CHANGELOG o README actualizado si es necesario
+- [ ] Vinculado al REQ-ID correspondiente en la especificación (cuando corresponda)
+- [ ] Cada REQ-ID nuevo o modificado incluye un `source_legacy:` válido o un `[GREENFIELD]` justificado
+- [ ] Los cambios en los flujos de trabajo utilizan permisos de privilegio mínimo y acciones fijadas por SHA
 
-## REQ-IDs Addressed
+## REQ-ID abordados
 
-<!-- Example: REQ-001, REQ-003 -->
+<!-- Ejemplo: REQ-001, REQ-003 -->

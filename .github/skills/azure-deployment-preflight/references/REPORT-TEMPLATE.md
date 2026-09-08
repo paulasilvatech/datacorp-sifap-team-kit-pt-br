@@ -1,52 +1,52 @@
-# Preflight Report Template
+# Plantilla del informe de comprobaciones previas
 
-Use this template structure when generating `preflight-report.md` in the project root.
+Usa esta estructura de plantilla al generar `preflight-report.md` en la raíz del proyecto.
 
 ---
 
-## Template
+## Plantilla
 
 ````markdown
-# Azure Deployment Preflight Report
+# Informe de comprobaciones previas al despliegue en Azure
 
-**Generated:** {timestamp}
-**Status:** {overall-status}
+**Generado:** {timestamp}
+**Estado:** {overall-status}
 
 ---
 
-## Summary
+## Resumen
 
-| Property | Value |
+| Propiedad | Valor |
 |----------|-------|
-| **Template File(s)** | {bicep-files} |
-| **Parameter File(s)** | {param-files-or-none} |
-| **Project Type** | {azd-project | standalone-bicep} |
-| **Deployment Scope** | {resourceGroup | subscription | managementGroup | tenant} |
-| **Target** | {resource-group-name | subscription-name | mg-id} |
-| **Validation Level** | {Provider | ProviderNoRbac} |
+| **Archivos de plantilla** | {bicep-files} |
+| **Archivos de parámetros** | {param-files-or-none} |
+| **Tipo de proyecto** | {azd-project | standalone-bicep} |
+| **Ámbito del despliegue** | {resourceGroup | subscription | managementGroup | tenant} |
+| **Destino** | {resource-group-name | subscription-name | mg-id} |
+| **Nivel de validación** | {Provider | ProviderNoRbac} |
 
-### Validation Results
+### Resultados de validación
 
-| Check | Status | Details |
+| Comprobación | Estado | Detalles |
 |-------|--------|---------|
-| Bicep Syntax | {✅ Pass | ❌ Fail | ⚠️ Warnings | ⏭️ Skipped} | {details} |
-| What-If Analysis | {✅ Pass | ❌ Fail | ⏭️ Skipped} | {details} |
-| Permission Check | {✅ Pass | ⚠️ Limited | ❌ Fail} | {details} |
+| Sintaxis de Bicep | {✅ Aprobado | ❌ Fallido | ⚠️ Advertencias | ⏭️ Omitido} | {details} |
+| Análisis What-If | {✅ Aprobado | ❌ Fallido | ⏭️ Omitido} | {details} |
+| Comprobación de permisos | {✅ Aprobado | ⚠️ Limitado | ❌ Fallido} | {details} |
 
 ---
 
-## Tools Executed
+## Herramientas ejecutadas
 
-### Commands Run
+### Comandos ejecutados
 
-| Step | Command | Exit Code | Duration |
+| Paso | Comando | Código de salida | Duración |
 |------|---------|-----------|----------|
 | 1 | `{command}` | {0 | non-zero} | {duration} |
 | 2 | `{command}` | {0 | non-zero} | {duration} |
 
-### Tool Versions
+### Versiones de herramientas
 
-| Tool | Version |
+| Herramienta | Versión |
 |------|---------|
 | Azure CLI | {version} |
 | Bicep CLI | {version} |
@@ -54,108 +54,108 @@ Use this template structure when generating `preflight-report.md` in the project
 
 ---
 
-## Issues
+## Problemas
 
 {if-no-issues}
-✅ **No issues found.** The deployment is ready to proceed.
+✅ **No se encontraron problemas.** Se puede continuar con el despliegue.
 {end-if}
 
 {if-issues-exist}
-### Errors
+### Errores
 
 {for-each-error}
 #### ❌ {error-title}
 
-- **Severity:** Error
-- **Source:** {bicep-build | what-if | permissions}
-- **Location:** {file-path}:{line}:{column} (if applicable)
-- **Message:** {error-message}
-- **Remediation:** {suggested-fix}
-- **Documentation:** {link-if-available}
+- **Gravedad:** Error
+- **Origen:** {bicep-build | what-if | permissions}
+- **Ubicación:** {file-path}:{line}:{column} (si corresponde)
+- **Mensaje:** {error-message}
+- **Corrección:** {suggested-fix}
+- **Documentación:** {link-if-available}
 
 {end-for-each}
 
-### Warnings
+### Advertencias
 
 {for-each-warning}
 #### ⚠️ {warning-title}
 
-- **Severity:** Warning
-- **Source:** {source}
-- **Message:** {warning-message}
-- **Recommendation:** {suggested-action}
+- **Gravedad:** Advertencia
+- **Origen:** {source}
+- **Mensaje:** {warning-message}
+- **Recomendación:** {suggested-action}
 
 {end-for-each}
 {end-if}
 
 ---
 
-## What-If Results
+## Resultados What-If
 
 {if-what-if-succeeded}
 
-### Change Summary
+### Resumen de cambios
 
-| Change Type | Count |
+| Tipo de cambio | Cantidad |
 |-------------|-------|
-| 🆕 Create | {count} |
-| 📝 Modify | {count} |
-| 🗑️ Delete | {count} |
-| ✓ No Change | {count} |
-| ⚠️ Ignore | {count} |
+| 🆕 Crear | {count} |
+| 📝 Modificar | {count} |
+| 🗑️ Eliminar | {count} |
+| ✓ Sin cambios | {count} |
+| ⚠️ Ignorar | {count} |
 
-### Resources to Create
+### Recursos que se crearán
 
 {if-resources-to-create}
-| Resource Type | Resource Name |
+| Tipo de recurso | Nombre del recurso |
 |---------------|---------------|
 | {type} | {name} |
 {end-if}
 
 {if-no-resources-to-create}
-*No resources will be created.*
+*No se creará ningún recurso.*
 {end-if}
 
-### Resources to Modify
+### Recursos que se modificarán
 
 {if-resources-to-modify}
 #### {resource-type}/{resource-name}
 
-| Property | Current Value | New Value |
+| Propiedad | Valor actual | Valor nuevo |
 |----------|---------------|-----------|
 | {property-path} | {current} | {new} |
 
 {end-if}
 
 {if-no-resources-to-modify}
-*No resources will be modified.*
+*No se modificará ningún recurso.*
 {end-if}
 
-### Resources to Delete
+### Recursos que se eliminarán
 
 {if-resources-to-delete}
-| Resource Type | Resource Name |
+| Tipo de recurso | Nombre del recurso |
 |---------------|---------------|
 | {type} | {name} |
 
-> ⚠️ **Warning:** Resources listed for deletion will be permanently removed.
+> ⚠️ **Advertencia:** Los recursos indicados para eliminación se borrarán de forma permanente.
 {end-if}
 
 {if-no-resources-to-delete}
-*No resources will be deleted.*
+*No se eliminará ningún recurso.*
 {end-if}
 
 {end-if-what-if-succeeded}
 
 {if-what-if-failed}
-### What-If Analysis Failed
+### El análisis What-If falló
 
-The what-if operation could not complete. See the Issues section for details.
+La operación what-if no pudo completarse. Consulta los detalles en la sección Problemas.
 {end-if}
 
 ---
 
-## Recommendations
+## Recomendaciones
 
 {generate-based-on-findings}
 
@@ -165,19 +165,19 @@ The what-if operation could not complete. See the Issues section for details.
 
 ---
 
-## Next Steps
+## Pasos siguientes
 
 {if-all-passed}
-The preflight validation passed. You can proceed with deployment:
+La validación previa se superó. Puedes continuar con el despliegue:
 
-**For azd projects:**
+**Para proyectos azd:**
 ```bash
 azd provision
-# or
+# o
 azd up
 ```
 
-**For standalone Bicep:**
+**Para Bicep independiente:**
 ```bash
 az deployment group create \
   --resource-group {rg-name} \
@@ -187,83 +187,83 @@ az deployment group create \
 {end-if}
 
 {if-issues-exist}
-Please resolve the issues listed above before deploying. After fixes:
+Resuelve los problemas indicados antes de desplegar. Después de corregirlos:
 
-1. Re-run preflight validation to verify fixes
-2. Proceed with deployment once all checks pass
+1. Vuelve a ejecutar la validación previa para verificar las correcciones
+2. Continúa con el despliegue cuando se superen todas las comprobaciones
 {end-if}
 
 ---
 
-*Report generated by Azure Deployment Preflight Skill*
+*Informe generado por la skill de comprobaciones previas al despliegue en Azure*
 ````
 
 ---
 
-## Status Values
+## Valores de estado
 
-### Overall Status
+### Estado general
 
-| Status | Meaning | Visual |
+| Estado | Significado | Indicador visual |
 |--------|---------|--------|
-| **Pass** | All checks succeeded, safe to deploy | ✅ |
-| **Pass with Warnings** | Checks succeeded but review warnings | ⚠️ |
-| **Fail** | One or more checks failed | ❌ |
+| **Aprobado** | Todas las comprobaciones se superaron; es seguro desplegar | ✅ |
+| **Aprobado con advertencias** | Las comprobaciones se superaron, pero hay que revisar las advertencias | ⚠️ |
+| **Fallido** | Falló una o más comprobaciones | ❌ |
 
-### Individual Check Status
+### Estado de cada comprobación
 
-| Status | Meaning |
+| Estado | Significado |
 |--------|---------|
-| ✅ Pass | Check completed successfully |
-| ❌ Fail | Check found errors |
-| ⚠️ Warnings | Check passed with warnings |
-| ⏭️ Skipped | Check was skipped (tool unavailable, etc.) |
+| ✅ Aprobado | La comprobación se completó correctamente |
+| ❌ Fallido | La comprobación encontró errores |
+| ⚠️ Advertencias | La comprobación se superó con advertencias |
+| ⏭️ Omitido | Se omitió la comprobación (herramienta no disponible, etc.) |
 
 ---
 
-## Example Report
+## Informe de ejemplo
 
 ````markdown
-# Azure Deployment Preflight Report
+# Informe de comprobaciones previas al despliegue en Azure
 
-**Generated:** 2026-01-16T14:32:00Z
-**Status:** ⚠️ Pass with Warnings
+**Generado:** 2026-01-16T14:32:00Z
+**Estado:** ⚠️ Aprobado con advertencias
 
 ---
 
-## Summary
+## Resumen
 
-| Property | Value |
+| Propiedad | Valor |
 |----------|-------|
-| **Template File(s)** | `infra/main.bicep` |
-| **Parameter File(s)** | `infra/main.bicepparam` |
-| **Project Type** | azd project |
-| **Deployment Scope** | subscription |
-| **Target** | my-subscription |
-| **Validation Level** | Provider |
+| **Archivos de plantilla** | `infra/main.bicep` |
+| **Archivos de parámetros** | `infra/main.bicepparam` |
+| **Tipo de proyecto** | Proyecto azd |
+| **Ámbito del despliegue** | subscription |
+| **Destino** | my-subscription |
+| **Nivel de validación** | Provider |
 
-### Validation Results
+### Resultados de validación
 
-| Check | Status | Details |
+| Comprobación | Estado | Detalles |
 |-------|--------|---------|
-| Bicep Syntax | ✅ Pass | No errors found |
-| What-If Analysis | ⚠️ Warnings | 1 resource ignored due to nested template limits |
-| Permission Check | ✅ Pass | Full deployment permissions verified |
+| Sintaxis de Bicep | ✅ Aprobado | No se encontraron errores |
+| Análisis What-If | ⚠️ Advertencias | 1 recurso ignorado debido a los límites de plantillas anidadas |
+| Comprobación de permisos | ✅ Aprobado | Permisos completos de despliegue verificados |
 
 ---
 
-## Tools Executed
+## Herramientas ejecutadas
 
-### Commands Run
+### Comandos ejecutados
 
-| Step | Command | Exit Code | Duration |
+| Paso | Comando | Código de salida | Duración |
 |------|---------|-----------|----------|
 | 1 | `bicep build infra/main.bicep --stdout` | 0 | 1.2s |
 | 2 | `azd provision --preview --environment dev` | 0 | 8.4s |
 
-### Tool Versions
+### Versiones de herramientas
 
-| Tool | Version |
+| Herramienta | Versión |
 |------|---------|
 | Azure CLI | 2.76.0 |
 | Bicep CLI | 0.25.3 |
@@ -271,65 +271,65 @@ Please resolve the issues listed above before deploying. After fixes:
 
 ---
 
-## Issues
+## Problemas
 
-### Warnings
+### Advertencias
 
-#### ⚠️ Nested Template Limit Reached
+#### ⚠️ Se alcanzó el límite de plantillas anidadas
 
-- **Severity:** Warning
-- **Source:** what-if
-- **Message:** 1 resource was ignored because nested template expansion limits were reached
-- **Recommendation:** Review the ignored resource manually after deployment
+- **Gravedad:** Advertencia
+- **Origen:** what-if
+- **Mensaje:** Se ignoró 1 recurso porque se alcanzaron los límites de expansión de plantillas anidadas
+- **Recomendación:** Revisar manualmente el recurso ignorado después del despliegue
 
 ---
 
-## What-If Results
+## Resultados What-If
 
-### Change Summary
+### Resumen de cambios
 
-| Change Type | Count |
+| Tipo de cambio | Cantidad |
 |-------------|-------|
-| 🆕 Create | 3 |
-| 📝 Modify | 1 |
-| 🗑️ Delete | 0 |
-| ✓ No Change | 2 |
-| ⚠️ Ignore | 1 |
+| 🆕 Crear | 3 |
+| 📝 Modificar | 1 |
+| 🗑️ Eliminar | 0 |
+| ✓ Sin cambios | 2 |
+| ⚠️ Ignorar | 1 |
 
-### Resources to Create
+### Recursos que se crearán
 
-| Resource Type | Resource Name |
+| Tipo de recurso | Nombre del recurso |
 |---------------|---------------|
 | Microsoft.Resources/resourceGroups | rg-myapp-dev |
 | Microsoft.Storage/storageAccounts | stmyappdev |
 | Microsoft.Web/sites | app-myapp-dev |
 
-### Resources to Modify
+### Recursos que se modificarán
 
 #### Microsoft.KeyVault/vaults/kv-myapp-dev
 
-| Property | Current Value | New Value |
+| Propiedad | Valor actual | Valor nuevo |
 |----------|---------------|-----------|
 | properties.sku.name | standard | premium |
 | tags.environment | staging | dev |
 
-### Resources to Delete
+### Recursos que se eliminarán
 
-*No resources will be deleted.*
-
----
-
-## Recommendations
-
-1. Review the storage account name `stmyappdev` to ensure it meets naming requirements
-2. Confirm the Key Vault SKU upgrade from standard to premium is intentional
-3. The ignored nested template resource should be verified after deployment
+*No se eliminará ningún recurso.*
 
 ---
 
-## Next Steps
+## Recomendaciones
 
-The preflight validation passed with warnings. Review the warnings above, then proceed:
+1. Revisa el nombre de la cuenta de almacenamiento `stmyappdev` para comprobar que cumple los requisitos de nomenclatura
+2. Confirma que el cambio de SKU de Key Vault de standard a premium es intencional
+3. El recurso de la plantilla anidada ignorado debe verificarse después del despliegue
+
+---
+
+## Pasos siguientes
+
+La validación previa se superó con advertencias. Revisa las advertencias anteriores y después continúa:
 
 ```bash
 azd provision --environment dev
@@ -337,16 +337,16 @@ azd provision --environment dev
 
 ---
 
-*Report generated by Azure Deployment Preflight Skill*
+*Informe generado por la skill de comprobaciones previas al despliegue en Azure*
 ````
 
 ---
 
-## Formatting Guidelines
+## Directrices de formato
 
-1. **Use consistent emoji** for visual scanning
-2. **Include line numbers** when referencing Bicep errors
-3. **Provide actionable remediation** for each issue
-4. **Link to documentation** when available
-5. **Order issues by severity** (errors first, then warnings)
-6. **Include command examples** in Next Steps
+1. **Usa emojis de forma coherente** para facilitar la lectura visual
+2. **Incluye números de línea** al hacer referencia a errores de Bicep
+3. **Proporciona medidas de corrección concretas** para cada problema
+4. **Enlaza a la documentación** cuando esté disponible
+5. **Ordena los problemas por gravedad** (primero los errores, después las advertencias)
+6. **Incluye ejemplos de comandos** en Pasos siguientes

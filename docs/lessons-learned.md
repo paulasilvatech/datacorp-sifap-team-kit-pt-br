@@ -1,96 +1,96 @@
-# Lessons Learned — Common Team Mistakes
+# Lecciones aprendidas — Errores comunes de los equipos
 
-![Reference Type](https://img.shields.io/badge/Type-Reference-171717?style=flat-square)
-![5 min read](https://img.shields.io/badge/Read-5%20min-737373?style=flat-square)
+![Tipo: referencia](https://img.shields.io/badge/Type-Reference-171717?style=flat-square)
+![Lectura de 5 min](https://img.shields.io/badge/Read-5%20min-737373?style=flat-square)
 
-> **Path:** [Team Kit](../README.md) › [Docs](README.md) › **Lessons Learned**
+> **Ruta:** [Kit del equipo](../README.md) › [Documentación](README.md) › **Lecciones aprendidas**
 
-**A record of the ten most common mistakes observed in previous teams**, with their consequences and remedies.
+**Registro de los diez errores más comunes observados en equipos anteriores**, con sus consecuencias y medidas correctivas.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | The entire team, especially the Technical Lead |
-| **When to read** | Before the workshop starts |
-| **Expected outcome** | Recognize failure patterns and know the remedy before it is needed |
+| **Público objetivo** | Todo el equipo, especialmente el Líder Técnico |
+| **Cuándo leerlo** | Antes de que empiece la inmersión |
+| **Resultado esperado** | Reconocer patrones de fallo y conocer la solución antes de necesitarla |
 
 ---
 
-## The ten most common mistakes
+## Los diez errores más comunes
 
-### 1. "We do not need to inspect the legacy system — the briefing is enough"
+### 1. "No necesitamos inspeccionar el sistema heredado: basta con el resumen del proyecto"
 
-- **Consequence:** the team writes EARS without `source_legacy:`. CI rejects the pull request at 14:30. The team loses an hour redoing the work.
-- **Remedy:** enforce the Stage 1 hard gate — the facilitator validates it at 13:50. See [`01-archaeology/LEGACY-EXPLORATION-CHECKLIST.md`](../01-archaeology/LEGACY-EXPLORATION-CHECKLIST.md).
+- **Consecuencia:** el equipo escribe EARS sin `source_legacy:`. La CI rechaza la pull request a las 14:30. El equipo pierde una hora rehaciendo el trabajo.
+- **Solución:** aplica la puerta obligatoria de la Etapa 1: la persona facilitadora la valida a las 13:50. Consulta [`01-archaeology/LEGACY-EXPLORATION-CHECKLIST.md`](../01-archaeology/LEGACY-EXPLORATION-CHECKLIST.md).
 
-### 2. "I will start coding while someone else writes the specification"
+### 2. "Empezaré a programar mientras otra persona escribe la especificación"
 
-- **Consequence:** the code does not match the EARS requirements. Refactoring happens at the end of the day. The demonstration is incomplete.
-- **Remedy:** Stage 3 starts only after handoff H2. The Technical Lead stops attempts to work ahead.
+- **Consecuencia:** el código no coincide con los requisitos EARS. La refactorización llega al final del día. La demostración queda incompleta.
+- **Solución:** la Etapa 3 empieza solo después de la transición H2. El Líder Técnico detiene los intentos de adelantarse.
 
-### 3. The Product Owner approves everything and nothing becomes out of scope
+### 3. El Responsable de Producto aprueba todo y nada queda fuera del alcance
 
-- **Consequence:** the team tries to implement 12 features in three hours and completes none.
-- **Remedy:** the Product Owner declines requests at least three times during the day. Decision rule: _"Does it affect the monthly payment cycle? Yes → v1. No → backlog."_
+- **Consecuencia:** el equipo intenta implementar 12 funcionalidades en tres horas y no completa ninguna.
+- **Solución:** el Responsable de Producto rechaza solicitudes al menos tres veces durante el día. Regla de decisión: _"¿Afecta al ciclo mensual de pagos? Sí → v1. No → backlog."_
 
-### 4. Everyone uses Copilot differently
+### 4. Cada integrante usa Copilot de una manera diferente
 
-- **Consequence:** responses are inconsistent. The team debates with the assistant instead of producing artifacts.
-- **Remedy:** the entire team selects the same stage agent (`@archaeologist`, `@architect`, and so on) in Chat.
+- **Consecuencia:** las respuestas son incoherentes. El equipo debate con el asistente en lugar de producir artefactos.
+- **Solución:** todo el equipo selecciona el mismo agente de etapa (`@archaeologist`, `@architect`, etc.) en el chat.
 
-### 5. Skipping `/speckit.clarify` to save time
+### 5. Omitir `/speckit.clarify` para ahorrar tiempo
 
-- **Consequence:** ambiguities become bugs in Stage 3. Thirty minutes of questions now prevents two hours of rework later.
-- **Remedy:** each `clarify` question represents a bug avoided. Answer all of them.
+- **Consecuencia:** las ambigüedades se convierten en errores en la Etapa 3. Treinta minutos de preguntas ahora evitan dos horas de trabajo repetido después.
+- **Solución:** cada pregunta de `clarify` representa un error evitado. Respóndelas todas.
 
-### 6. Running `git push --force` on `develop`
+### 6. Ejecutar `git push --force` en `develop`
 
-- **Consequence:** two people's work is lost without a straightforward recovery path.
-- **Remedy:** protect `develop` (Step 4 of `00-SETUP.md`). Never use `--force` on a shared branch.
+- **Consecuencia:** se pierde el trabajo de dos personas sin una vía sencilla de recuperación.
+- **Solución:** protege `develop` (Paso 4 de `00-SETUP.md`). Nunca uses `--force` en una rama compartida.
 
-### 7. Editing an old migration instead of creating a new one
+### 7. Editar una migración antigua en lugar de crear una nueva
 
-- **Consequence:** Flyway detects a checksum mismatch and the database stops starting.
-- **Remedy:** never edit an applied migration file. Always create `V<N+1>__description.sql`. See [`docs/troubleshooting.md`](troubleshooting.md).
+- **Consecuencia:** Flyway detecta una discrepancia de checksum y la base de datos deja de iniciarse.
+- **Solución:** nunca edites un archivo de migración ya aplicado. Crea siempre `V<N+1>__description.sql`. Consulta [`docs/troubleshooting.md`](troubleshooting.md).
 
-### 8. Delegating a vague Issue to Copilot Agent
+### 8. Delegar una Issue vaga a Copilot Agent
 
-- **Consequence:** the generated pull request is unusable and the work is discarded.
-- **Remedy:** link the Issue to evidence and write verifiable acceptance criteria before delegating. A well-written Issue produces a usable pull request.
+- **Consecuencia:** la pull request generada no se puede usar y se descarta el trabajo.
+- **Solución:** vincula la Issue a la evidencia y escribe criterios de aceptación verificables antes de delegar. Una Issue bien escrita produce una pull request utilizable.
 
-### 9. Running `terraform apply` instead of `plan`
+### 9. Ejecutar `terraform apply` en lugar de `plan`
 
-- **Consequence:** Azure resources are created and billed immediately. The workshop does not authorize `apply`.
-- **Remedy:** run only `terraform plan`. See [`04-evolution/GUIDE.md`](../04-evolution/GUIDE.md).
+- **Consecuencia:** se crean recursos de Azure y se facturan de inmediato. La inmersión no autoriza `apply`.
+- **Solución:** ejecuta solo `terraform plan`. Consulta [`04-evolution/GUIDE.md`](../04-evolution/GUIDE.md).
 
-### 10. Not rehearsing the demonstration
+### 10. No ensayar la demostración
 
-- **Consequence:** the team spends its three demonstration minutes searching for the correct tab, a failing command, or a lost pull request.
-- **Remedy:** 16:50–17:00 is reserved for rehearsal. Use [`demo-script.md`](demo-script.md).
-
----
-
-## Five habits that distinguish good teams from excellent teams
-
-1. **Two-minute stand-up** at the end of each stage — everyone knows the current state.
-2. **Every pull request has a description** — use the GitHub template.
-3. **Small commits include a REQ-ID** in the commit message.
-4. **The 20-minute rule** — blocked? Ask for help. Do not struggle in silence.
-5. **Trust the process** — do not invent a different workflow halfway through the day.
+- **Consecuencia:** el equipo dedica sus tres minutos de demostración a buscar la pestaña correcta, un comando que falla o una pull request perdida.
+- **Solución:** el horario 16:50–17:00 está reservado para ensayar. Usa [`demo-script.md`](demo-script.md).
 
 ---
 
-## The fundamental rule
+## Cinco hábitos que distinguen a los buenos equipos de los excelentes
 
-> **Modernization is digital archaeology, not a greenfield project.**
-> A team that treats SIFAP as a new system loses 29 years of business rules.
-> A team that performs the archaeology first delivers a SIFAP 2.0 that can truly replace version 1.0.
+1. **Reunión breve de dos minutos** al final de cada etapa: todos conocen el estado actual.
+2. **Cada pull request tiene una descripción**: usa la plantilla de GitHub.
+3. **Los commits pequeños incluyen un REQ-ID** en el mensaje.
+4. **La regla de los 20 minutos**: ¿no puedes avanzar? Pide ayuda. No luches en silencio.
+5. **Confía en el proceso**: no inventes un flujo diferente a mitad del día.
 
 ---
 
-### Continue reading
+## La regla fundamental
 
-| Previous | Next |
+> **La modernización es arqueología digital, no un proyecto greenfield.**
+> Un equipo que trate SIFAP como un sistema nuevo pierde 29 años de reglas de negocio.
+> Un equipo que primero haga arqueología entrega un SIFAP 2.0 que realmente puede reemplazar la versión 1.0.
+
+---
+
+### Sigue leyendo
+
+| Anterior | Siguiente |
 |---|---|
-| [Leader Checklist](CHECKLIST-LIDER.md)<br/><sub>Hour-by-hour checks for the day.</sub> | [Demo Script](demo-script.md)<br/><sub>Script for the final minutes.</sub> |
+| [Lista de verificación del líder](CHECKLIST-LIDER.md)<br/><sub>Comprobaciones hora por hora para el día.</sub> | [Guion de la demo](demo-script.md)<br/><sub>Guion para los minutos finales.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

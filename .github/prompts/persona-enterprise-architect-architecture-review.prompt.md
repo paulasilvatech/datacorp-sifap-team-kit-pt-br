@@ -1,115 +1,115 @@
 ---
 name: "architecture-review"
-description: "Review plan.md against the Azure Well-Architected pillars and produce prioritized, cited findings."
+description: "Revisa plan.md frente a los pilares de Azure Well-Architected y produce hallazgos priorizados con citas."
 argument-hint: "feature=NNN-feature-name"
 agent: "enterprise-architect"
 tools: ["read", "search"]
 ---
 # /architecture-review
 
-## Objective
+## Objetivo
 
-Review `specs/<NNN>-<feature>/plan.md` (or a proposed architectural change) against the five Microsoft Azure Well-Architected pillars and produce a scorecard plus a severity-prioritized findings list. Every finding cites a specific artifact and proposes a concrete, plan-specific remediation.
+Revisa `specs/<NNN>-<feature>/plan.md` (o un cambio arquitectónico propuesto) frente a los cinco pilares de Microsoft Azure Well-Architected y produce una tabla de puntuación y una lista de hallazgos priorizada por gravedad. Cada hallazgo cita un artefacto específico y propone una corrección concreta y propia del plan.
 
-## When to Invoke
+## Cuándo invocar
 
-When `plan.md` exists and before the build starts, or whenever an architectural change is proposed.
+Cuando exista `plan.md` y antes de comenzar la construcción, o siempre que se proponga un cambio arquitectónico.
 
-## Preconditions
+## Precondiciones
 
-- `specs/<NNN>-<feature>/plan.md` exists, or a change proposal is provided
-- Relevant ADRs and `.specify/memory/constitution.md` are accessible
+- Existe `specs/<NNN>-<feature>/plan.md` o se proporciona una propuesta de cambio
+- Los ADR pertinentes y `.specify/memory/constitution.md` están accesibles
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- `feature=<NNN>-<feature>` — the `plan.md` to review
-- Any relevant ADRs
-- Ask the user for anything that is missing.
+- `feature=<NNN>-<feature>`: el `plan.md` que se revisará
+- Los ADR pertinentes
+- Solicita a la persona usuaria cualquier información que falte.
 
-## What I Will Do
+## Lo que haré
 
-- Load `plan.md` and any relevant ADRs
-- Score each pillar (Reliability, Security, Cost, Operational Excellence, Performance Efficiency) 1–5 on concrete evidence
-- Classify each finding Critical (blocks go-live), Major (fix before GA), or Minor (backlog)
-- Tie every finding to a specific diagram, ADR, or paragraph
-- Propose a concrete remediation with an effort estimate (S/M/L)
-- Offer three options for the most critical finding
-- Cross-check the design against the constitution (for example, Azure-only, Managed Identity)
+- Cargar `plan.md` y los ADR pertinentes
+- Puntuar cada pilar (confiabilidad, seguridad, costos, excelencia operativa, eficiencia del rendimiento) de 1–5 con evidencia concreta
+- Clasificar cada hallazgo como crítico (bloquea la puesta en producción), mayor (corregir antes de la disponibilidad general, GA) o menor (trabajo pendiente)
+- Vincular cada hallazgo a un diagrama, ADR o párrafo específico
+- Proponer una corrección concreta con una estimación de esfuerzo (S/M/L)
+- Ofrecer tres opciones para el hallazgo más crítico
+- Contrastar el diseño con la constitución (por ejemplo, solo Azure, identidad administrada)
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Skip a pillar — all five are scored
-- Offer generic best-practice advice — every remediation is specific to this plan
-- Edit `plan.md` or the ADRs — this is a read-only review
-- Invent architecture the plan does not describe — I cite what is written or ask
-- Decide the trade-off for the team — I propose options; the choice is recorded via `/create-adr`
+- Omitir un pilar: se puntúan los cinco
+- Ofrecer consejos genéricos de buenas prácticas: cada corrección es específica de este plan
+- Editar `plan.md` ni los ADR: esta es una revisión de solo lectura
+- Inventar una arquitectura que no describa el plan: cito lo escrito o pregunto
+- Decidir el compromiso técnico por el equipo: propongo opciones; la elección se registra mediante `/create-adr`
 
-## Output Format
+## Formato de salida
 
-A report presented to the team:
+Un informe presentado al equipo:
 
 ```markdown
-## Architecture review — 001-pagamento-beneficio
+## Revisión de arquitectura — 001-pagamento-beneficio
 
-| Pillar | Score (1-5) | Top finding | Remediation |
+| Pilar | Puntuación (1-5) | Hallazgo principal | Corrección |
 |---|---|---|---|
-| Reliability | 3 | No retry policy on the batch writer | Idempotent retries with backoff (M) |
-| Security | 2 | Client secret in app config (violates C4) | Switch to Azure Managed Identity (M) |
-| Cost | 4 | Oversized dev database | Right-size to a Burstable tier (S) |
-| Operational Excellence | 3 | No runbook for batch failure | Add a runbook and alerts (S) |
-| Performance Efficiency | 3 | Full-table scan on lookups | Add an index; page the results (M) |
+| Confiabilidad | 3 | Sin política de reintentos en el componente de escritura por lotes | Reintentos idempotentes con espera progresiva (M) |
+| Seguridad | 2 | Secreto de cliente en la configuración de la aplicación (incumple C4) | Cambiar a identidad administrada de Azure (M) |
+| Costos | 4 | Base de datos de desarrollo sobredimensionada | Ajustar el tamaño a un nivel Burstable (S) |
+| Excelencia operativa | 3 | Sin guía operativa para fallos de lotes | Añadir una guía operativa y alertas (S) |
+| Eficiencia del rendimiento | 3 | Recorrido completo de tabla en las búsquedas | Añadir un índice; paginar los resultados (M) |
 
-### Findings by severity
-- **Critical** — Security: client secret in config (violates constitution C4). Remediation: Managed Identity (M).
-- **Major** — Reliability: no retry policy on the batch writer. Remediation: idempotent retries (M).
-- **Minor** — Cost: dev database oversized. Remediation: Burstable tier (S).
+### Hallazgos por gravedad
+- **Crítico** — Seguridad: secreto de cliente en la configuración (incumple C4 de la constitución). Corrección: identidad administrada (M).
+- **Mayor** — Confiabilidad: sin política de reintentos en el componente de escritura por lotes. Corrección: reintentos idempotentes (M).
+- **Menor** — Costos: base de datos de desarrollo sobredimensionada. Corrección: nivel Burstable (S).
 
-### Options for the top finding (client secret)
-1. Managed Identity with Key Vault references (preferred).
-2. Key Vault with a short-lived, rotated secret.
-3. Workload identity federation.
+### Opciones para el hallazgo principal (secreto de cliente)
+1. Identidad administrada con referencias de Key Vault (preferida).
+2. Key Vault con un secreto de corta duración y rotación.
+3. Federación de identidades de cargas de trabajo.
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] All five pillars are scored with evidence; none is skipped
-- [ ] Every finding cites a specific artifact (diagram, ADR, paragraph)
-- [ ] Each finding is Critical, Major, or Minor, with a specific remediation and an S/M/L effort
-- [ ] At least one cost-optimization finding exists (or is marked "already optimal")
-- [ ] Three options are given for the most critical finding
-- [ ] Constitution conflicts (for example, Azure-only, Managed Identity) are flagged
-- [ ] No `plan.md` or ADR file was modified
+- [ ] Los cinco pilares se puntúan con evidencia; no se omite ninguno
+- [ ] Cada hallazgo cita un artefacto específico (diagrama, ADR, párrafo)
+- [ ] Cada hallazgo es crítico, mayor o menor, con una corrección específica y un esfuerzo S/M/L
+- [ ] Existe al menos un hallazgo de optimización de costos (o se marca como «ya óptimo»)
+- [ ] Se proporcionan tres opciones para el hallazgo más crítico
+- [ ] Se señalan los conflictos con la constitución (por ejemplo, solo Azure, identidad administrada)
+- [ ] No se modificó ningún archivo `plan.md` ni ADR
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@enterprise-architect` reviewing a design before it becomes expensive to change.
+Eres el `@enterprise-architect` que revisa un diseño antes de que resulte costoso cambiarlo.
 
-**Step 1 — Load the inputs.**
-Read `plan.md` and any relevant ADRs.
+**Paso 1 — Carga las entradas.**
+Lee `plan.md` y los ADR pertinentes.
 
-**Step 2 — Score each pillar on evidence.**
+**Paso 2 — Puntúa cada pilar con evidencia.**
 
-- **Reliability** — SLOs, redundancy, failure modes, retry policies.
-- **Security** — identity, network, data, secrets, threat model.
-- **Cost** — right-sizing, reserved capacity, idle resources.
-- **Operational Excellence** — IaC, observability, runbooks.
-- **Performance Efficiency** — scaling, caching, data-access patterns.
+- **Confiabilidad**: SLO, redundancia, modos de fallo y políticas de reintentos.
+- **Seguridad**: identidad, red, datos, secretos y modelo de amenazas.
+- **Costos**: dimensionamiento adecuado, capacidad reservada y recursos inactivos.
+- **Excelencia operativa**: IaC, observabilidad y guías operativas.
+- **Eficiencia del rendimiento**: escalado, caché y patrones de acceso a datos.
 
-**Step 3 — Classify and anchor findings.**
-Critical (blocks go-live), Major (fix before GA), or Minor (backlog). Tie each finding to a specific diagram, ADR, or paragraph.
+**Paso 3 — Clasifica y fundamenta los hallazgos.**
+Crítico (bloquea la puesta en producción), mayor (corregir antes de GA) o menor (trabajo pendiente). Vincula cada hallazgo a un diagrama, ADR o párrafo específico.
 
-**Step 4 — Propose remediations.**
-Each remediation is specific to this plan and carries an S/M/L effort estimate.
+**Paso 4 — Propón correcciones.**
+Cada corrección es específica de este plan e incluye una estimación de esfuerzo S/M/L.
 
-**Step 5 — Offer options for the top finding.**
-Give three concrete alternatives for the most critical finding.
+**Paso 5 — Ofrece opciones para el hallazgo principal.**
+Proporciona tres alternativas concretas para el hallazgo más crítico.
 
-**Step 6 — Cross-check the constitution.**
-Flag any design choice that violates a constitutional rule (for example, Azure-only or Managed Identity).
+**Paso 6 — Contrasta con la constitución.**
+Señala cualquier elección de diseño que incumpla una regla de la constitución (por ejemplo, solo Azure o identidad administrada).
 
-Stay read-only and cite the artifact behind every finding. Remediations must be specific to this plan, and the team decides the trade-off — record it via `/create-adr`.
+Mantente en modo de solo lectura y cita el artefacto que respalda cada hallazgo. Las correcciones deben ser específicas de este plan y el equipo decide el compromiso técnico; regístralo mediante `/create-adr`.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
 /architecture-review feature=001-pagamento-beneficio

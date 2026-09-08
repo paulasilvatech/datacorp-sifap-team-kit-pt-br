@@ -1,36 +1,36 @@
 ---
-description: "Use when implementing or reviewing Next.js 15 App Router, TypeScript, Tailwind CSS, shadcn/ui, and server components under frontend/."
+description: "Utiliza al implementar o revisar Next.js 15 App Router, TypeScript, Tailwind CSS, shadcn/ui y componentes de servidor en frontend/."
 applyTo: "frontend/app/**,frontend/components/**,frontend/src/app/**,frontend/src/components/**,frontend/**/*.ts,frontend/**/*.tsx"
 ---
 
-# Frontend Specification — Next.js 15 + TypeScript
+# Especificación de frontend — Next.js 15 + TypeScript
 
-This file activates when you work with TypeScript, TSX, App Router routes, or reusable components within `frontend/`. It teaches the platform contract for the modernized SIFAP (Payment Inspection and Administration System): Next.js 15 App Router, Server Components, Server Actions, strict TypeScript, Tailwind CSS, shadcn/ui, accessibility baseline, and Vitest integration. It owns framework, typing, styling, and server/client boundary rules; [`frontend.instructions.md`](frontend.instructions.md) owns component craft, client interaction details, state choreography, accessibility execution, and user-facing flows.
+Este archivo se activa al trabajar con TypeScript, TSX, rutas de App Router o componentes reutilizables en `frontend/`. Enseña el contrato de plataforma del SIFAP modernizado (Sistema de Fiscalización y Administración de Pagos): Next.js 15 App Router, componentes de servidor (Server Components), acciones de servidor (Server Actions), TypeScript estricto, Tailwind CSS, shadcn/ui, requisitos básicos de accesibilidad e integración con Vitest. Define las reglas del marco, el tipado, los estilos y los límites entre servidor y cliente; [`frontend.instructions.md`](frontend.instructions.md) define la construcción de componentes, los detalles de interacción en el cliente, la coordinación del estado, la aplicación de accesibilidad y los flujos de uso.
 
-## Stack Summary
+## Resumen de tecnologías
 
-| Layer | Technology | Version |
+| Capa | Tecnología | Versión |
 |-------|-----------|---------|
-| Framework | Next.js (App Router) | 15 |
-| Language | TypeScript (strict mode) | 5+ |
-| Styling | Tailwind CSS | 3.4+ |
-| Components | shadcn/ui | Latest |
-| State (client) | React `useState` and Context when necessary | Native |
-| Server data | Server Components and Server Actions | Native |
-| Testing | Vitest + Testing Library | Latest |
+| Marco | Next.js (App Router) | 15 |
+| Lenguaje | TypeScript (modo estricto) | 5+ |
+| Estilos | Tailwind CSS | 3.4+ |
+| Componentes | shadcn/ui | Más reciente |
+| Estado (cliente) | React `useState` y Context cuando sea necesario | Nativo |
+| Datos del servidor | Componentes de servidor y acciones de servidor | Nativo |
+| Pruebas | Vitest + Testing Library | Más reciente |
 
-## App Router Patterns
+## Patrones de App Router
 
-### Server Components (Default)
+### Componentes de servidor (predeterminados)
 
-Every component is a Server Component unless explicitly marked otherwise. Server Components:
+Cada componente es un componente de servidor salvo que se indique explícitamente lo contrario. Los componentes de servidor:
 
-- Run on the server and never send JS to the client
-- Can use `await` directly for data fetching
-- Cannot use hooks, event handlers, or browser APIs
+- Se ejecutan en el servidor y nunca envían JS al cliente
+- Pueden utilizar `await` directamente para obtener datos
+- No pueden utilizar hooks, controladores de eventos ni API del navegador
 
 ```tsx
-// app/<resource>/page.tsx — Server Component (default)
+// app/<resource>/page.tsx — Componente de servidor (predeterminado)
 export default async function ResourcePage() {
   const response = await fetch('/api/v1/<resource>');
   if (!response.ok) throw new Error('Resource loading failed');
@@ -39,9 +39,9 @@ export default async function ResourcePage() {
 }
 ```
 
-### Client Components
+### Componentes de cliente
 
-Add `'use client'` only when interactivity is required:
+Añade `'use client'` solo cuando se requiera interactividad:
 
 ```tsx
 'use client';
@@ -60,15 +60,15 @@ export function ResourceFilter({ onFilter }: { onFilter: (term: string) => void 
 }
 ```
 
-Rules:
+Reglas:
 
-- **Minimize the `'use client'` surface area**: Push interactivity into the smallest possible component. A page that fetches data MUST be a Server Component; only the interactive filter/form within it MUST be a Client Component.
-- **NEVER expose secrets in client components**: API keys, tokens, and internal URLs MUST remain server-side.
-- **Avoid state dependencies by default**: Use local `useState` and Context for shared client state. Add a state or caching library only with an ADR that justifies the dependency.
+- **Minimiza la superficie de `'use client'`**: sitúa la interactividad en el componente más pequeño posible. Una página que obtiene datos DEBE ser un componente de servidor; solo el filtro o formulario interactivo que contiene DEBE ser un componente de cliente.
+- **NUNCA expongas secretos en componentes de cliente**: las claves de API, los tokens y las URL internas DEBEN permanecer en el servidor.
+- **Evita las dependencias de gestión de estado de forma predeterminada**: utiliza `useState` local y Context para el estado compartido del cliente. Añade una biblioteca de estado o caché solo con un ADR que justifique la dependencia.
 
-### Server Actions for Mutations
+### Acciones de servidor para mutaciones
 
-Use server actions instead of API route handlers for form submissions:
+Utiliza acciones de servidor en lugar de controladores de rutas de API para enviar formularios:
 
 ```tsx
 // app/<resource>/actions.ts
@@ -76,7 +76,7 @@ Use server actions instead of API route handlers for form submissions:
 
 export async function createResource(formData: FormData) {
   const value = formData.get('value');
-  // Validate and call the backend API
+  // Valida y llama a la API del backend
   const res = await fetch(`${process.env.API_URL}/api/v1/<resource>`, {
     method: 'POST',
     body: JSON.stringify({ value }),
@@ -86,30 +86,30 @@ export async function createResource(formData: FormData) {
 }
 ```
 
-## TypeScript Conventions
+## Convenciones de TypeScript
 
-- **`strict: true`** in `tsconfig.json` — no exceptions, no `// @ts-ignore`
-- **No `any`**: Use `unknown` and narrow it with type guards
-- **Named exports only in reusable components**: `export function ResourceCard()`. App Router route files may use the `export default` required by Next.js.
-- **Interface instead of type** for object shapes that can be extended
-- **Utility types**: Use `Pick`, `Omit`, and `Partial` instead of duplicating interfaces
+- **`strict: true`** en `tsconfig.json`: sin excepciones ni `// @ts-ignore`
+- **Sin `any`**: utiliza `unknown` y acótalo con guardas de tipo
+- **Solo exportaciones con nombre en componentes reutilizables**: `export function ResourceCard()`. Los archivos de rutas de App Router pueden utilizar el `export default` que exige Next.js.
+- **Interface en lugar de type** para estructuras de objetos que puedan ampliarse
+- **Tipos de utilidad**: utiliza `Pick`, `Omit` y `Partial` en lugar de duplicar interfaces
 
 ```tsx
-// Good: named export, typed props
+// Correcto: exportación con nombre y propiedades tipadas
 export function ResourceCard({ resource }: { resource: ResourceDto }) {
   return <div>{resource.label}</div>;
 }
 
-// Bad: default export, any type
+// Incorrecto: exportación predeterminada y tipo any
 export default function ResourceCard({ resource }: { resource: any }) { ... }
 ```
 
 ## Tailwind CSS + shadcn/ui
 
-- Use Tailwind utility classes directly — no separate CSS files unless absolutely necessary
-- Use shadcn/ui components for standard UI elements (Button, Card, Table, Dialog, etc.)
-- When the team defines design system tokens, use them for colors and spacing
-- Responsive by default: mobile-first with `sm:`, `md:`, and `lg:` breakpoints
+- Utiliza directamente las clases de utilidad de Tailwind; no crees archivos CSS separados salvo que sea absolutamente necesario
+- Utiliza componentes shadcn/ui para los elementos estándar de la interfaz (Button, Card, Table, Dialog, etc.)
+- Cuando el equipo defina tokens del sistema de diseño, utilízalos para los colores y el espaciado
+- Diseño adaptable de forma predeterminada: primero móvil, con puntos de interrupción `sm:`, `md:` y `lg:`
 
 ```tsx
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -128,17 +128,17 @@ export function ResourceSummary({ total }: { total: number }) {
 }
 ```
 
-## Accessibility Baseline
+## Requisitos básicos de accesibilidad
 
-Every page and component MUST meet these minimum requirements:
+Cada página y componente DEBE cumplir estos requisitos mínimos:
 
-- All images have `alt` text
-- Form inputs have associated `<label>` elements
-- Interactive elements are keyboard-navigable
-- Color is not the only means of conveying information
-- The page has a single `<h1>`, and headings follow a logical order
+- Todas las imágenes tienen texto `alt`
+- Las entradas de formularios tienen elementos `<label>` asociados
+- Los elementos interactivos permiten navegar con el teclado
+- El color no es el único medio para transmitir información
+- La página tiene un único `<h1>` y los encabezados siguen un orden lógico
 
-## Testing with Vitest
+## Pruebas con Vitest
 
 ```tsx
 import { render, screen } from '@testing-library/react';
@@ -153,36 +153,36 @@ describe('ResourceCard', () => {
 });
 ```
 
-Test name: `should_[expected behavior]_when_[condition]` or `displays [what] when [condition]`.
+Nombre de la prueba: `should_[expected behavior]_when_[condition]` o `displays [what] when [condition]`.
 
-## Conventions
+## Convenciones
 
-| Rule | Rationale |
+| Regla | Justificación |
 |---|---|
-| Next.js 15 App Router with Server Components by default | Minimizes client JavaScript and keeps data access server-side |
-| `strict: true`, no `any`, and no `// @ts-ignore` | Type errors surface before runtime |
-| Named exports for reusable components | Imports stay consistent; App Router route files may keep required defaults |
-| Server Actions for mutations | Forms mutate through a server boundary instead of client-side API calls |
-| Tailwind CSS and shadcn/ui for UI | Avoids ad hoc styling stacks and keeps components consistent |
-| Vitest + Testing Library with behavior-focused names | Tests describe user-visible behavior and expected conditions |
+| Next.js 15 App Router con componentes de servidor de forma predeterminada | Minimiza el JavaScript del cliente y mantiene el acceso a los datos en el servidor |
+| `strict: true`, sin `any` ni `// @ts-ignore` | Los errores de tipo aparecen antes de la ejecución |
+| Exportaciones con nombre para componentes reutilizables | Las importaciones son coherentes; los archivos de rutas de App Router pueden conservar las exportaciones predeterminadas obligatorias |
+| Acciones de servidor para mutaciones | Los formularios realizan mutaciones a través de un límite de servidor, en lugar de llamadas a API desde el cliente |
+| Tailwind CSS y shadcn/ui para la interfaz | Evita conjuntos de estilos ad hoc y mantiene coherentes los componentes |
+| Vitest + Testing Library con nombres centrados en el comportamiento | Las pruebas describen el comportamiento visible y las condiciones esperadas |
 
-## Do / Do Not
+## Qué hacer / Qué no hacer
 
-| Do | Do not |
+| Qué hacer | Qué no hacer |
 |---|---|
-| Use named exports in component files | Use `export default` for reusable components |
-| Use `unknown` with type guards | Use `any` or suppress strict TypeScript |
-| Use `async`/`await` for async flows | Chain `.then()` calls |
-| Style with Tailwind and shadcn/ui | Add CSS modules or styled-components |
-| Fetch directly with `await` in Server Components | Add client-side data fetching to Server Components |
-| Keep secrets server-side | Put secrets in `'use client'` files or `NEXT_PUBLIC_` variables |
+| Utilizar exportaciones con nombre en archivos de componentes | Utilizar `export default` para componentes reutilizables |
+| Utilizar `unknown` con guardas de tipo | Utilizar `any` o desactivar el modo estricto de TypeScript |
+| Utilizar `async`/`await` para flujos asíncronos | Encadenar llamadas a `.then()` |
+| Aplicar estilos con Tailwind y shadcn/ui | Añadir módulos CSS o styled-components |
+| Obtener datos directamente con `await` en componentes de servidor | Añadir obtención de datos del lado del cliente a componentes de servidor |
+| Mantener los secretos en el servidor | Poner secretos en archivos `'use client'` o variables `NEXT_PUBLIC_` |
 
-## Checklist Before Opening a PR
+## Lista de verificación antes de abrir una PR
 
-- [ ] `tsconfig.json` stays strict; no `any` or `// @ts-ignore` was added
-- [ ] Server Components remain the default and `'use client'` appears only where interaction requires it
-- [ ] Mutations use Server Actions and validate data before calling the backend API
-- [ ] Reusable components use named exports; App Router route files use defaults only where Next.js requires them
-- [ ] Styling uses Tailwind utilities and shadcn/ui components without a new styling dependency
-- [ ] Accessibility basics are covered: labels, keyboard operation, heading order, and non-color signals
-- [ ] Vitest + Testing Library tests cover changed behavior with the agreed test naming pattern
+- [ ] `tsconfig.json` mantiene el modo estricto; no se ha añadido `any` ni `// @ts-ignore`
+- [ ] Los componentes de servidor siguen siendo los predeterminados y `'use client'` aparece solo donde la interacción lo requiere
+- [ ] Las mutaciones utilizan acciones de servidor y validan los datos antes de llamar a la API del backend
+- [ ] Los componentes reutilizables utilizan exportaciones con nombre; los archivos de rutas de App Router utilizan exportaciones predeterminadas solo cuando Next.js las exige
+- [ ] Los estilos utilizan utilidades de Tailwind y componentes shadcn/ui sin añadir dependencias de estilos
+- [ ] Se cubren los fundamentos de accesibilidad: etiquetas, manejo con teclado, orden de encabezados y señales que no dependen del color
+- [ ] Las pruebas Vitest + Testing Library cubren el comportamiento modificado con el patrón de nombres de pruebas acordado

@@ -1,12 +1,12 @@
 # @MockitoBean
 
-Mocking dependencies in Spring Boot tests (replaces deprecated @MockBean in Spring Boot 4+).
+Simulación de dependencias en pruebas Spring Boot (reemplaza a @MockBean, obsoleto en Spring Boot 4+).
 
-## Overview
+## Descripción general
 
-`@MockitoBean` replaces the deprecated `@MockBean` annotation in Spring Boot 4.0+. It creates a Mockito mock and registers it in the Spring context, replacing any existing bean of the same type.
+`@MockitoBean` reemplaza a la anotación obsoleta `@MockBean` en Spring Boot 4.0+. Crea una simulación de Mockito y la registra en el contexto de Spring, reemplazando cualquier bean existente del mismo tipo.
 
-## Basic Usage
+## Uso básico
 
 ```java
 @WebMvcTest(OrderController.class)
@@ -20,15 +20,15 @@ class OrderControllerTest {
 }
 ```
 
-## Supported Test Slices
+## Segmentos de prueba compatibles
 
-- `@WebMvcTest` - Mock service/repository dependencies
-- `@WebFluxTest` - Mock reactive service dependencies
-- `@SpringBootTest` - Replace real beans with mocks
+- `@WebMvcTest`: simular dependencias de servicios y repositorios
+- `@WebFluxTest`: simular dependencias de servicios reactivos
+- `@SpringBootTest`: reemplazar beans reales por simulaciones
 
-## Stubbing Methods
+## Configuración de respuestas de métodos
 
-### Basic Stub
+### Stub básico
 
 ```java
 @Test
@@ -36,11 +36,11 @@ void shouldReturnOrder() {
   Order order = new Order(1L, "PENDING");
   given(orderService.findById(1L)).willReturn(order);
 
-  // Test code
+  // Código de prueba
 }
 ```
 
-### Multiple Returns
+### Varios valores de retorno
 
 ```java
 given(orderService.findById(anyLong()))
@@ -48,14 +48,14 @@ given(orderService.findById(anyLong()))
   .willReturn(new Order(2L, "COMPLETED"));
 ```
 
-### Throwing Exceptions
+### Lanzamiento de excepciones
 
 ```java
 given(orderService.findById(999L))
   .willThrow(new OrderNotFoundException(999L));
 ```
 
-### Argument Matching
+### Coincidencia de argumentos
 
 ```java
 given(orderService.create(argThat(req -> req.getQuantity() > 0)))
@@ -65,28 +65,28 @@ given(orderService.findByStatus(eq("PENDING")))
   .willReturn(List.of(new Order()));
 ```
 
-## Verifying Interactions
+## Verificación de interacciones
 
-### Verify Method Called
+### Comprobar que se invocó un método
 
 ```java
 verify(orderService).findById(1L);
 ```
 
-### Verify Never Called
+### Comprobar que nunca se invocó
 
 ```java
 verify(orderService, never()).delete(any());
 ```
 
-### Verify Count
+### Comprobar el número de invocaciones
 
 ```java
 verify(orderService, times(2)).findById(anyLong());
 verify(orderService, atLeastOnce()).findByStatus(anyString());
 ```
 
-### Verify Order
+### Comprobar el orden
 
 ```java
 InOrder inOrder = inOrder(orderService, userService);
@@ -94,17 +94,17 @@ inOrder.verify(orderService).findById(1L);
 inOrder.verify(userService).getUser(any());
 ```
 
-## Resetting Mocks
+## Restablecer simulaciones
 
-Mocks are reset between tests automatically. To reset mid-test:
+Las simulaciones se restablecen automáticamente entre pruebas. Para restablecerlas durante una prueba:
 
 ```java
 Mockito.reset(orderService);
 ```
 
-## @MockitoSpyBean for Partial Mocking
+## @MockitoSpyBean para simulación parcial
 
-Use `@MockitoSpyBean` to wrap a real bean with Mockito.
+Usa `@MockitoSpyBean` para envolver un bean real con Mockito.
 
 ```java
 @SpringBootTest
@@ -117,14 +117,14 @@ class OrderServiceIntegrationTest {
   void shouldProcessOrder() {
     doReturn(true).when(paymentClient).processPayment(any());
 
-    // Test with real service but mocked payment client
+    // Probar con el servicio real, pero con el cliente de pagos simulado
   }
 }
 ```
 
-## @TestBean for Custom Test Beans
+## @TestBean para beans de prueba personalizados
 
-Register a custom bean instance in the test context:
+Registra una instancia de bean personalizada en el contexto de prueba:
 
 ```java
 @SpringBootTest
@@ -137,9 +137,9 @@ class OrderServiceTest {
 }
 ```
 
-## Scoping: Singleton vs Prototype
+## Ámbitos: singleton frente a prototype
 
-Spring Framework 7+ (Spring Boot 4+) supports mocking non-singleton beans:
+Spring Framework 7+ (Spring Boot 4+) permite simular beans que no son singleton:
 
 ```java
 @Component
@@ -156,14 +156,14 @@ class OrderServiceTest {
   @Test
   void shouldWorkWithPrototype() {
     given(orderProcessor.process()).willReturn("mocked");
-    // Test code
+    // Código de prueba
   }
 }
 ```
 
-## Common Patterns
+## Patrones habituales
 
-### Mocking Repository in Service Test
+### Simular un repositorio en una prueba de servicio
 
 ```java
 @SpringBootTest
@@ -186,9 +186,9 @@ class OrderServiceTest {
 }
 ```
 
-### Multiple Mocks of Same Type
+### Varias simulaciones del mismo tipo
 
-Use bean names:
+Usa los nombres de los beans:
 
 ```java
 @MockitoBean(name = "primaryDataSource")
@@ -198,35 +198,35 @@ private DataSource primaryDataSource;
 private DataSource secondaryDataSource;
 ```
 
-## Migration from @MockBean
+## Migración desde @MockBean
 
-### Before (Deprecated)
+### Antes (obsoleto)
 
 ```java
 @MockBean
 private OrderService orderService;
 ```
 
-### After (Spring Boot 4+)
+### Después (Spring Boot 4+)
 
 ```java
 @MockitoBean
 private OrderService orderService;
 ```
 
-## Key Differences from Mockito @Mock
+## Diferencias principales respecto de @Mock de Mockito
 
-| Feature | @MockitoBean | @Mock |
+| Funcionalidad | @MockitoBean | @Mock |
 | ------- | ------------ | ----- |
-| Context integration | Yes | No |
-| Spring lifecycle | Participates | None |
-| Works with @Autowired | Yes | No |
-| Test slice support | Yes | Limited |
+| Integración con el contexto | Sí | No |
+| Ciclo de vida de Spring | Participa | Ninguno |
+| Funciona con @Autowired | Sí | No |
+| Compatibilidad con pruebas segmentadas | Sí | Limitada |
 
-## Best Practices
+## Buenas prácticas
 
-1. Use `@MockitoBean` only when Spring context is involved
-2. For pure unit tests, use Mockito's `@Mock` or `Mockito.mock()`
-3. Always verify interactions that have side effects
-4. Don't verify simple queries (stubbing is enough)
-5. Reset mocks if test modifies shared mock state
+1. Usa `@MockitoBean` solo cuando intervenga el contexto de Spring
+2. Para pruebas unitarias puras, usa `@Mock` o `Mockito.mock()` de Mockito
+3. Verifica siempre las interacciones que tengan efectos secundarios
+4. No verifiques consultas sencillas (basta con configurar sus respuestas)
+5. Restablece las simulaciones si la prueba modifica un estado simulado compartido

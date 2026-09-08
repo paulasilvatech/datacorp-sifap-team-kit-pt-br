@@ -1,10 +1,10 @@
-# Azure Service Names Reference
+# Referencia de nombres de servicios de Azure
 
-The `serviceName` field in the Azure Retail Prices API is **case-sensitive**. Use this reference to find the exact service name to use in filters.
+El campo `serviceName` de la API Azure Retail Prices **distingue entre mayúsculas y minúsculas**. Usa esta referencia para encontrar el nombre exacto del servicio que debes utilizar en los filtros.
 
-## Compute
+## Proceso
 
-| Service | `serviceName` Value |
+| Servicio | Valor de `serviceName` |
 |---------|-------------------|
 | Virtual Machines | `Virtual Machines` |
 | Azure Functions | `Functions` |
@@ -16,20 +16,20 @@ The `serviceName` field in the Azure Retail Prices API is **case-sensitive**. Us
 | Azure Spring Apps | `Azure Spring Apps` |
 | Azure VMware Solution | `Azure VMware Solution` |
 
-## Storage
+## Almacenamiento
 
-| Service | `serviceName` Value |
+| Servicio | Valor de `serviceName` |
 |---------|-------------------|
 | Azure Storage (Blob, Files, Queues, Tables) | `Storage` |
 | Azure NetApp Files | `Azure NetApp Files` |
 | Azure Backup | `Backup` |
 | Azure Data Box | `Data Box` |
 
-> **Note**: Blob Storage, Files, Disk Storage, and Data Lake Storage are all under the single `Storage` service name. Use `meterName` or `productName` to distinguish between them (e.g., `contains(meterName, 'Blob')`).
+> **Nota**: Blob Storage, Files, Disk Storage y Data Lake Storage se agrupan bajo el único nombre de servicio `Storage`. Usa `meterName` o `productName` para distinguirlos (por ejemplo, `contains(meterName, 'Blob')`).
 
-## Databases
+## Bases de datos
 
-| Service | `serviceName` Value |
+| Servicio | Valor de `serviceName` |
 |---------|-------------------|
 | Azure Cosmos DB | `Azure Cosmos DB` |
 | Azure SQL Database | `SQL Database` |
@@ -38,21 +38,21 @@ The `serviceName` field in the Azure Retail Prices API is **case-sensitive**. Us
 | Azure Database for MySQL | `Azure Database for MySQL` |
 | Azure Cache for Redis | `Redis Cache` |
 
-## AI + Machine Learning
+## IA y aprendizaje automático
 
-| Service | `serviceName` Value |
+| Servicio | Valor de `serviceName` |
 |---------|-------------------|
-| Azure AI Foundry Models (incl. OpenAI) | `Foundry Models` |
+| Azure AI Foundry Models (incluido OpenAI) | `Foundry Models` |
 | Azure AI Foundry Tools | `Foundry Tools` |
 | Azure Machine Learning | `Azure Machine Learning` |
 | Azure Cognitive Search (AI Search) | `Azure Cognitive Search` |
 | Azure Bot Service | `Azure Bot Service` |
 
-> **Note**: Azure OpenAI pricing is now under `Foundry Models`. Use `contains(productName, 'OpenAI')` or `contains(meterName, 'GPT')` to filter for OpenAI-specific models.
+> **Nota**: Los precios de Azure OpenAI ahora se encuentran bajo `Foundry Models`. Usa `contains(productName, 'OpenAI')` o `contains(meterName, 'GPT')` para filtrar los modelos específicos de OpenAI.
 
-## Networking
+## Redes
 
-| Service | `serviceName` Value |
+| Servicio | Valor de `serviceName` |
 |---------|-------------------|
 | Azure Load Balancer | `Load Balancer` |
 | Azure Application Gateway | `Application Gateway` |
@@ -64,9 +64,9 @@ The `serviceName` field in the Azure Retail Prices API is **case-sensitive**. Us
 | Azure ExpressRoute | `ExpressRoute` |
 | Azure Firewall | `Azure Firewall` |
 
-## Analytics
+## Análisis
 
-| Service | `serviceName` Value |
+| Servicio | Valor de `serviceName` |
 |---------|-------------------|
 | Azure Synapse Analytics | `Azure Synapse Analytics` |
 | Azure Data Factory | `Azure Data Factory v2` |
@@ -74,18 +74,18 @@ The `serviceName` field in the Azure Retail Prices API is **case-sensitive**. Us
 | Azure Databricks | `Azure Databricks` |
 | Azure Event Hubs | `Event Hubs` |
 
-## Integration
+## Integración
 
-| Service | `serviceName` Value |
+| Servicio | Valor de `serviceName` |
 |---------|-------------------|
 | Azure Service Bus | `Service Bus` |
 | Azure Logic Apps | `Logic Apps` |
 | Azure API Management | `API Management` |
 | Azure Event Grid | `Event Grid` |
 
-## Management & Monitoring
+## Administración y supervisión
 
-| Service | `serviceName` Value |
+| Servicio | Valor de `serviceName` |
 |---------|-------------------|
 | Azure Monitor | `Azure Monitor` |
 | Azure Log Analytics | `Log Analytics` |
@@ -94,13 +94,13 @@ The `serviceName` field in the Azure Retail Prices API is **case-sensitive**. Us
 
 ## Web
 
-| Service | `serviceName` Value |
+| Servicio | Valor de `serviceName` |
 |---------|-------------------|
 | Azure Static Web Apps | `Azure Static Web Apps` |
 | Azure SignalR | `Azure SignalR Service` |
 
-## Tips
+## Consejos
 
-- If you're unsure about a service name, **filter by `serviceFamily` first** to discover valid `serviceName` values in the response.
-- Example: `serviceFamily eq 'Databases' and armRegionName eq 'eastus'` will return all database service names.
-- Some services have multiple `serviceName` entries for different tiers or generations.
+- Si no tienes claro el nombre de un servicio, **filtra primero por `serviceFamily`** para descubrir los valores válidos de `serviceName` en la respuesta.
+- Ejemplo: `serviceFamily eq 'Databases' and armRegionName eq 'eastus'` devolverá todos los nombres de servicios de bases de datos.
+- Algunos servicios tienen varias entradas `serviceName` para distintos niveles o generaciones.

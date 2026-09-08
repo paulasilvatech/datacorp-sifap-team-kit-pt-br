@@ -1,144 +1,144 @@
-# Team Leader Checklist
+# Lista de verificación del líder del equipo
 
-![Checklist](https://img.shields.io/badge/Type-Checklist-171717?style=flat-square)
-![Technical Lead Persona](https://img.shields.io/badge/Persona-Technical%20Lead-737373?style=flat-square)
-![Duration All day](https://img.shields.io/badge/Duration-All%20day-A3A3A3?style=flat-square)
+![Lista de verificación](https://img.shields.io/badge/Type-Checklist-171717?style=flat-square)
+![Persona Líder Técnico](https://img.shields.io/badge/Persona-Technical%20Lead-737373?style=flat-square)
+![Duración: todo el día](https://img.shields.io/badge/Duration-All%20day-A3A3A3?style=flat-square)
 
-> **Path:** [Team Kit](../README.md) › [Docs](README.md) › **Leader Checklist**
+> **Ruta:** [Kit del equipo](../README.md) › [Documentación](README.md) › **Lista de verificación del líder**
 
-**Chronological checklist for the Technical Lead** — from the period before the workshop through the final demonstration.
+**Lista cronológica para el Líder Técnico** — desde la preparación previa a la inmersión hasta la demostración final.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Person with the Technical Lead persona (Pair 3) |
-| **Prerequisites** | Read [`00-TEAM-FLOW.md`](../00-TEAM-FLOW.md) |
-| **Expected outcome** | Team maintains pace, handoffs occur on time, and the demo is delivered |
+| **Público objetivo** | Quien desempeña la persona Líder Técnico (Pareja 3) |
+| **Prerrequisitos** | Leer [`00-TEAM-FLOW.md`](../00-TEAM-FLOW.md) |
+| **Resultado esperado** | El equipo mantiene el ritmo, las transiciones ocurren a tiempo y se realiza la demo |
 
 ---
 
-## Before the workshop starts (D-1, previous evening)
+## Antes de que empiece la inmersión (D-1, la noche anterior)
 
-- [ ] **Check laptops** — five laptops have VS Code Insiders installed.
-- [ ] **Check GitHub accounts** — five accounts have active Copilot access (verify at <https://github.com/settings/copilot>).
-- [ ] **Check repository** — `workshop-team-XX` is created and cloned by everyone.
-- [ ] **Validate local tools** — Git, Java 21, Node, Docker, and Spec-Kit work on at least one laptop.
-- [ ] **Protect branch** — `develop` exists and is protected.
-- [ ] **Confirm attendance** — all five members are confirmed (one pair and two personas per person).
+- [ ] **Comprueba los portátiles** — los cinco tienen VS Code Insiders instalado.
+- [ ] **Comprueba las cuentas de GitHub** — las cinco tienen acceso activo a Copilot (verificar en <https://github.com/settings/copilot>).
+- [ ] **Comprueba el repositorio** — `workshop-team-XX` está creado y todos lo han clonado.
+- [ ] **Valida las herramientas locales** — Git, Java 21, Node, Docker y Spec-Kit funcionan en al menos un portátil.
+- [ ] **Protege la rama** — `develop` existe y está protegida.
+- [ ] **Confirma la asistencia** — los cinco integrantes están confirmados (una pareja y dos personas por integrante).
 
 ---
 
-## Hour-by-hour checkpoints
+## Puntos de control hora por hora
 
-### 10:00–11:00 · Setup and personas
+### 10:00–11:00 · Configuración y personas
 
-- [ ] **10:15** — Every laptop has opened the repository in VS Code.
-- [ ] **10:30** — Git, Java/Node, Docker, and Spec-Kit are validated on every laptop.
-- [ ] **10:45** — Everyone has read their two `PERSONA.md` files and confirmed that `.github/` is consolidated.
-- [ ] **10:55** — Everyone has tested one slash command from their persona.
+- [ ] **10:15** — Todos los portátiles tienen el repositorio abierto en VS Code.
+- [ ] **10:30** — Git, Java/Node, Docker y Spec-Kit están validados en todos los portátiles.
+- [ ] **10:45** — Todos han leído sus dos archivos `PERSONA.md` y confirmado que `.github/` está consolidado.
+- [ ] **10:55** — Todos han probado un comando de barra de su persona.
 
-### 11:00–12:00 · Stage 1 — Archaeology (part 1)
+### 11:00–12:00 · Etapa 1 — Arqueología (parte 1)
 
-- [ ] **11:00** — The entire team has selected `@archaeologist` in Chat.
-- [ ] **11:10** — Every pair knows which three Natural programs it will read.
-- [ ] **11:10** — Every pair knows **which four canonical mysteries** it owns (`SIFAP-M-NN`; see [`mysteries-checklist.md`](../01-archaeology/mysteries-checklist.md)).
-- [ ] **11:30** — Two-minute stand-up: each pair states one finding.
-- [ ] **11:45** — Every pair has recorded evidence and questions from its assigned programs.
+- [ ] **11:00** — Todo el equipo ha seleccionado `@archaeologist` en el chat.
+- [ ] **11:10** — Cada pareja sabe qué tres programas Natural leerá.
+- [ ] **11:10** — Cada pareja sabe **qué cuatro misterios canónicos** le corresponden (`SIFAP-M-NN`; consulta [`mysteries-checklist.md`](../01-archaeology/mysteries-checklist.md)).
+- [ ] **11:30** — Reunión breve de dos minutos: cada pareja comunica un hallazgo.
+- [ ] **11:45** — Cada pareja ha registrado evidencia y preguntas de sus programas asignados.
 
 > [!TIP]
-> **Mysteries use a denominator of 20** (four per pair). The answer key **does not live in this repository** because the repository is public; facilitators receive it through a private channel. Never project the answer key. A hint does not reduce the score, but a pair blocked for more than 40 minutes does — provide the hint.
+> **Los misterios usan un denominador de 20** (cuatro por pareja). La clave de respuestas **no reside en este repositorio** porque es público; las personas facilitadoras la reciben por un canal privado. Nunca proyectes la clave de respuestas. Una pista no reduce la puntuación, pero una pareja bloqueada durante más de 40 minutos sí: proporciona la pista.
 
-### 13:30–14:00 · Stage 1 — Synthesis and Handoff H1
+### 13:30–14:00 · Etapa 1 — Síntesis y transición H1
 
-- [ ] **13:35** — The catalog contains sources for rules considered for the scope.
-- [ ] **13:40** — Mystery score consolidated: **≥16/20**, with no pair below 2/4.
-- [ ] **13:45** — Product Owner has selected one thin feature and recorded deferrals.
-- [ ] **13:50** — Facilitator has validated `LEGACY-EXPLORATION-CHECKLIST.md`.
-- [ ] **14:00** — **Handoff H1**: Pair 1 delivers `discovery-report.md` to Pair 2.
-
-> [!WARNING]
-> If any rule lacks a `Source Program` at 13:50, pause everything and complete it. CI rejects pull requests without this field.
-
-### 14:00–15:00 · Stage 2 — Modern Specification
-
-- [ ] **14:05** — The team has selected `@architect`.
-- [ ] **14:30** — Product Owner has approved one thin feature.
-- [ ] **14:45** — `spec.md`, `plan.md`, and `tasks.md` are in the feature folder.
-- [ ] **15:00** — **Handoff H2**: formal artifacts delivered to Pairs 3 and 4.
+- [ ] **13:35** — El catálogo contiene fuentes de las reglas consideradas para el alcance.
+- [ ] **13:40** — Puntuación de misterios consolidada: **≥16/20**, sin ninguna pareja por debajo de 2/4.
+- [ ] **13:45** — El Responsable de Producto ha seleccionado una funcionalidad acotada y registrado los aplazamientos.
+- [ ] **13:50** — La persona facilitadora ha validado `LEGACY-EXPLORATION-CHECKLIST.md`.
+- [ ] **14:00** — **Transición H1**: la Pareja 1 entrega `discovery-report.md` a la Pareja 2.
 
 > [!WARNING]
-> Any REQ-ID without `source_legacy:` blocks the pull request. Check every requirement before the handoff.
+> Si alguna regla carece de `Programa de origen` a las 13:50, pausa todo y complétalo. La CI rechaza las pull requests sin este campo.
 
-### 15:00–16:10 · Stage 3 — Implementation
+### 14:00–15:00 · Etapa 2 — Especificación moderna
 
-- [ ] **15:05** — The team has selected `@builder`.
-- [ ] **15:30** — Flyway migration V2 has been created and runs locally.
-- [ ] **15:50** — One or more REST endpoints work through Swagger.
-- [ ] **16:00** — At least one test passes.
-- [ ] **16:10** — **Handoff H3**: code merged into `develop`, CI green.
+- [ ] **14:05** — El equipo ha seleccionado `@architect`.
+- [ ] **14:30** — El Responsable de Producto ha aprobado una funcionalidad acotada.
+- [ ] **14:45** — `spec.md`, `plan.md` y `tasks.md` están en la carpeta de la funcionalidad.
+- [ ] **15:00** — **Transición H2**: artefactos formales entregados a las Parejas 3 y 4.
 
 > [!WARNING]
-> If CI fails or coverage is below 70%, prioritize the fix before adding features.
+> Cualquier REQ-ID sin `source_legacy:` bloquea la pull request. Comprueba cada requisito antes de la transición.
 
-### 16:10–16:50 · Stage 4 — Evolution with Agent
+### 15:00–16:10 · Etapa 3 — Implementación
 
-- [ ] **16:15** — The team has selected `@evolution`.
-- [ ] **16:20** — At least one well-written Issue exists for Copilot Agent.
-- [ ] **16:35** — Available pull request reviewed; if there is no PR, the next step is recorded.
-- [ ] **16:45** — CI/IaC status recorded, without creating infrastructure merely to meet a metric.
-- [ ] **16:50** — `agent-experience-report.md` completed.
+- [ ] **15:05** — El equipo ha seleccionado `@builder`.
+- [ ] **15:30** — La migración Flyway V2 está creada y se ejecuta localmente.
+- [ ] **15:50** — Uno o más endpoints REST funcionan mediante Swagger.
+- [ ] **16:00** — Al menos una prueba se aprueba.
+- [ ] **16:10** — **Transición H3**: código integrado en `develop`, CI en verde.
 
-### 16:50–17:00 · Demo preparation
+> [!WARNING]
+> Si la CI falla o la cobertura está por debajo del 70%, prioriza la corrección antes de añadir funcionalidades.
 
-- [ ] **Coordinate speaking roles** — each pair has a defined 30-second segment.
-- [ ] **Test execution** — run the demo once using the approach created by the team.
-- [ ] **Prepare the browser** — Swagger, frontend, and merged PR are open and ready.
+### 16:10–16:50 · Etapa 4 — Evolución con Agent
 
-### 17:00–17:30 · Demonstrations
+- [ ] **16:15** — El equipo ha seleccionado `@evolution`.
+- [ ] **16:20** — Existe al menos una Issue bien escrita para Copilot Agent.
+- [ ] **16:35** — Pull request disponible revisada; si no hay PR, el siguiente paso está registrado.
+- [ ] **16:45** — Estado de CI/IaC registrado, sin crear infraestructura solo para cumplir una métrica.
+- [ ] **16:50** — `agent-experience-report.md` completado.
 
-- [ ] Product Owner presents and keeps time.
-- [ ] Entire team is visible on camera.
-- [ ] SIFAP 2.0 is demonstrated live.
+### 16:50–17:00 · Preparación de la demo
+
+- [ ] **Coordina los turnos de palabra** — cada pareja tiene un segmento definido de 30 segundos.
+- [ ] **Prueba la ejecución** — ejecuta la demo una vez con el enfoque creado por el equipo.
+- [ ] **Prepara el navegador** — Swagger, frontend y PR integrada están abiertos y listos.
+
+### 17:00–17:30 · Demostraciones
+
+- [ ] El Responsable de Producto presenta y controla el tiempo.
+- [ ] Todo el equipo es visible en cámara.
+- [ ] SIFAP 2.0 se demuestra en vivo.
 
 ---
 
-## Three questions the Technical Lead asks every 30 minutes
+## Tres preguntas que hace el Líder Técnico cada 30 minutos
 
 ```text
-1. Has anyone been blocked for more than 20 minutes?
-2. Is CI green?
-3. Is the next handoff (H1/H2/H3) on schedule?
+1. ¿Alguien lleva más de 20 minutos bloqueado?
+2. ¿La CI está en verde?
+3. ¿La siguiente transición (H1/H2/H3) sigue el cronograma?
 ```
 
-Any negative answer requires immediate intervention.
+Cualquier respuesta negativa requiere una intervención inmediata.
 
 ---
 
-## Emergency responses
+## Respuestas de emergencia
 
-| Situation | Technical Lead action |
+| Situación | Acción del Líder Técnico |
 |---|---|
-| Pair lacks direction for 15 minutes | Sit with them and ask: "What is the objective right now?" |
-| CI has failed for 30 minutes | Stop other work and focus the team on the fix |
-| Product Owner changes scope after H2 | Reject the change. Scope freezes at H2. |
-| Developer wants to refactor without an existing test | Reject it. Abort refactoring without coverage. |
-| Agent generates a low-quality pull request | Do not merge. Request changes or implement manually. |
-| Thirty minutes remain and the demo does not work | Reduce demo scope instead of trying to fix the problem. |
-| Copilot is unavailable | Use Plan B in [troubleshooting.md](troubleshooting.md#plan-b--copilot-outage). |
+| Una pareja lleva 15 minutos sin rumbo | Siéntate con ella y pregunta: "¿Cuál es el objetivo ahora mismo?" |
+| La CI lleva 30 minutos fallando | Detén el resto del trabajo y concentra al equipo en la corrección |
+| El Responsable de Producto cambia el alcance después de H2 | Rechaza el cambio. El alcance se congela en H2. |
+| El Desarrollador quiere refactorizar sin una prueba existente | Recházalo. Interrumpe la refactorización sin cobertura. |
+| El agente genera una pull request de baja calidad | No la integres. Solicita cambios o implementa manualmente. |
+| Quedan treinta minutos y la demo no funciona | Reduce el alcance de la demo en lugar de intentar corregir el problema. |
+| Copilot no está disponible | Usa el Plan B de [troubleshooting.md](troubleshooting.md#plan-b--interrupción-de-copilot). |
 
 ---
 
-## Technical Lead objective
+## Objetivo del Líder Técnico
 
-> The Technical Lead's role is not to do everyone's work — it is to ensure no one is idle.
+> El rol del Líder Técnico no es hacer el trabajo de todos, sino garantizar que nadie esté inactivo.
 
-You contribute code in the same proportion as everyone else. Your distinct responsibility is to maintain **pace** and **scope**.
+Contribuyes código en la misma proporción que los demás. Tu responsabilidad específica es mantener el **ritmo** y el **alcance**.
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [TEAM-FLOW](../00-TEAM-FLOW.md)<br/><sub>Complete schedule for the day.</sub> | [Lessons Learned](lessons-learned.md)<br/><sub>Common team mistakes.</sub> |
+| [Flujo del equipo](../00-TEAM-FLOW.md)<br/><sub>Cronograma completo del día.</sub> | [Lecciones aprendidas](lessons-learned.md)<br/><sub>Errores comunes de los equipos.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

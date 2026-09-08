@@ -1,148 +1,148 @@
-# Error Handling Guide
+# Guía de gestión de errores
 
-This reference documents common errors during preflight validation and how to handle them.
+Esta referencia documenta errores habituales durante la validación previa y cómo gestionarlos.
 
-## Core Principle
+## Principio central
 
-**Continue on failure.** Capture all issues in the final report rather than stopping at the first error. This gives users a complete picture of what needs to be fixed.
+**Continuar ante los fallos.** Recopila todos los problemas en el informe final en lugar de detenerte en el primer error. Así la persona obtiene una visión completa de lo que debe corregirse.
 
 ---
 
-## Authentication Errors
+## Errores de autenticación
 
-### Not Logged In (Azure CLI)
+### Sesión no iniciada (Azure CLI)
 
-**Detection:**
+**Detección:**
 
 ```
 ERROR: Please run 'az login' to setup account.
 ERROR: AADSTS700082: The refresh token has expired
 ```
 
-**Exit Codes:** Non-zero
+**Códigos de salida:** Distintos de cero
 
-**Handling:**
+**Tratamiento:**
 
-1. Note the error in the report
-2. Include remediation steps
-3. Skip remaining Azure CLI commands
-4. Continue with other validation steps if possible
+1. Anota el error en el informe
+2. Incluye pasos de corrección
+3. Omite los comandos restantes de Azure CLI
+4. Continúa con otros pasos de validación si es posible
 
-**Report Entry:**
+**Entrada del informe:**
 
 ```markdown
-#### ❌ Azure CLI Authentication Required
+#### ❌ Se requiere autenticación en Azure CLI
 
-- **Severity:** Error
-- **Source:** az cli
-- **Message:** Not logged in to Azure CLI
-- **Remediation:** Run `az login` to authenticate, then re-run preflight validation
-- **Documentation:** https://learn.microsoft.com/en-us/cli/azure/authenticate-azure-cli
+- **Gravedad:** Error
+- **Origen:** az cli
+- **Mensaje:** No se ha iniciado sesión en Azure CLI
+- **Corrección:** Ejecutar `az login` para autenticarse y después repetir la validación previa
+- **Documentación:** https://learn.microsoft.com/en-us/cli/azure/authenticate-azure-cli
 ```
 
-### Not Logged In (azd)
+### Sesión no iniciada (azd)
 
-**Detection:**
+**Detección:**
 
 ```
 ERROR: not logged in, run `azd auth login` to login
 ```
 
-**Handling:**
+**Tratamiento:**
 
-1. Note the error in the report
-2. Skip azd commands
-3. Suggest `azd auth login`
+1. Anota el error en el informe
+2. Omite los comandos azd
+3. Sugiere `azd auth login`
 
-**Report Entry:**
+**Entrada del informe:**
 
 ```markdown
-#### ❌ Azure Developer CLI Authentication Required
+#### ❌ Se requiere autenticación en Azure Developer CLI
 
-- **Severity:** Error
-- **Source:** azd
-- **Message:** Not logged in to Azure Developer CLI
-- **Remediation:** Run `azd auth login` to authenticate, then re-run preflight validation
+- **Gravedad:** Error
+- **Origen:** azd
+- **Mensaje:** No se ha iniciado sesión en Azure Developer CLI
+- **Corrección:** Ejecutar `azd auth login` para autenticarse y después repetir la validación previa
 ```
 
-### Token Expired
+### Token caducado
 
-**Detection:**
+**Detección:**
 
 ```
 AADSTS700024: Client assertion is not within its valid time range
 AADSTS50173: The provided grant has expired
 ```
 
-**Handling:**
+**Tratamiento:**
 
-1. Note the error
-2. Suggest re-authentication
-3. Skip Azure operations
+1. Anota el error
+2. Sugiere autenticarse de nuevo
+3. Omite las operaciones de Azure
 
 ---
 
-## Permission Errors
+## Errores de permisos
 
-### Insufficient RBAC Permissions
+### Permisos RBAC insuficientes
 
-**Detection:**
+**Detección:**
 
 ```
 AuthorizationFailed: The client '...' with object id '...' does not have authorization
 to perform action '...' over scope '...'
 ```
 
-**Handling:**
+**Tratamiento:**
 
-1. **First attempt:** Retry with `--validation-level ProviderNoRbac`
-2. Note the permission limitation in the report
-3. If ProviderNoRbac also fails, report the specific missing permission
+1. **Primer intento:** Reintenta con `--validation-level ProviderNoRbac`
+2. Anota la limitación de permisos en el informe
+3. Si ProviderNoRbac también falla, informa del permiso concreto que falta
 
-**Report Entry:**
+**Entrada del informe:**
 
 ```markdown
-#### ⚠️ Limited Permission Validation
+#### ⚠️ Validación con permisos limitados
 
-- **Severity:** Warning
-- **Source:** what-if
-- **Message:** Full RBAC validation failed; using read-only validation
-- **Detail:** Missing permission: `Microsoft.Resources/deployments/write` on scope `/subscriptions/xxx`
-- **Recommendation:** Request Contributor role on the target resource group, or verify deployment permissions with your administrator
+- **Gravedad:** Advertencia
+- **Origen:** what-if
+- **Mensaje:** Falló la validación RBAC completa; se usa validación de solo lectura
+- **Detalle:** Falta el permiso `Microsoft.Resources/deployments/write` en el ámbito `/subscriptions/xxx`
+- **Recomendación:** Solicitar el rol Contributor en el grupo de recursos de destino o verificar los permisos de despliegue con la persona administradora
 ```
 
-### Resource Group Not Found
+### Grupo de recursos no encontrado
 
-**Detection:**
+**Detección:**
 
 ```
 ResourceGroupNotFound: Resource group 'xxx' could not be found.
 ```
 
-**Handling:**
+**Tratamiento:**
 
-1. Note in report
-2. Suggest creating the resource group
-3. Skip what-if for this scope
+1. Anótalo en el informe
+2. Sugiere crear el grupo de recursos
+3. Omite what-if para este ámbito
 
-**Report Entry:**
+**Entrada del informe:**
 
 ```markdown
-#### ❌ Resource Group Does Not Exist
+#### ❌ El grupo de recursos no existe
 
-- **Severity:** Error
-- **Source:** what-if
-- **Message:** Resource group 'my-rg' does not exist
-- **Remediation:** Create the resource group before deployment:
+- **Gravedad:** Error
+- **Origen:** what-if
+- **Mensaje:** El grupo de recursos 'my-rg' no existe
+- **Corrección:** Crear el grupo de recursos antes del despliegue:
   ```bash
   az group create --name my-rg --location eastus
   ```
 
 ```
 
-### Subscription Access Denied
+### Acceso denegado a la suscripción
 
-**Detection:**
+**Detección:**
 ```
 
 SubscriptionNotFound: The subscription 'xxx' could not be found.
@@ -150,18 +150,18 @@ InvalidSubscriptionId: Subscription '...' is not valid
 
 ```
 
-**Handling:**
-1. Note in report
-2. Suggest checking subscription ID
-3. List available subscriptions
+**Tratamiento:**
+1. Anótalo en el informe
+2. Sugiere comprobar el ID de la suscripción
+3. Enumera las suscripciones disponibles
 
 ---
 
-## Bicep Syntax Errors
+## Errores de sintaxis de Bicep
 
-### Compilation Errors
+### Errores de compilación
 
-**Detection:**
+**Detección:**
 ```
 
 /path/main.bicep(22,51) : Error BCP064: Found unexpected tokens
@@ -169,267 +169,267 @@ InvalidSubscriptionId: Subscription '...' is not valid
 
 ```
 
-**Handling:**
-1. Parse error output for line/column numbers
-2. Include all errors in report (don't stop at first)
-3. Continue to what-if (may provide additional context)
+**Tratamiento:**
+1. Analiza la salida de errores para obtener los números de línea y columna
+2. Incluye todos los errores en el informe (no te detengas en el primero)
+3. Continúa con what-if (puede aportar contexto adicional)
 
-**Report Entry:**
+**Entrada del informe:**
 ```markdown
-#### ❌ Bicep Syntax Error
+#### ❌ Error de sintaxis de Bicep
 
-- **Severity:** Error
-- **Source:** bicep build
-- **Location:** `main.bicep:22:51`
-- **Code:** BCP064
-- **Message:** Found unexpected tokens in interpolated expression
-- **Remediation:** Check the string interpolation syntax at line 22
-- **Documentation:** https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/diagnostics/bcp064
+- **Gravedad:** Error
+- **Origen:** bicep build
+- **Ubicación:** `main.bicep:22:51`
+- **Código:** BCP064
+- **Mensaje:** Se encontraron tokens inesperados en una expresión interpolada
+- **Corrección:** Comprobar la sintaxis de interpolación de cadenas en la línea 22
+- **Documentación:** https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/diagnostics/bcp064
 ```
 
-### Module Not Found
+### Módulo no encontrado
 
-**Detection:**
+**Detección:**
 
 ```
 Error BCP091: An error occurred reading file. Could not find file '...'
 Error BCP190: The module is not valid
 ```
 
-**Handling:**
+**Tratamiento:**
 
-1. Note missing module
-2. Check if `bicep restore` is needed
-3. Verify module path
+1. Anota el módulo que falta
+2. Comprueba si se necesita `bicep restore`
+3. Verifica la ruta del módulo
 
-### Parameter File Issues
+### Problemas de archivos de parámetros
 
-**Detection:**
+**Detección:**
 
 ```
 Error BCP032: The value must be a compile-time constant
 Error BCP035: The specified object is missing required properties
 ```
 
-**Handling:**
+**Tratamiento:**
 
-1. Note parameter issues
-2. Indicate which parameters are problematic
-3. Suggest fixes
+1. Anota los problemas de parámetros
+2. Indica qué parámetros presentan problemas
+3. Sugiere correcciones
 
 ---
 
-## Tool Not Installed
+## Herramienta no instalada
 
-### Azure CLI Not Found
+### Azure CLI no encontrada
 
-**Detection:**
+**Detección:**
 
 ```
 'az' is not recognized as an internal or external command
 az: command not found
 ```
 
-**Handling:**
+**Tratamiento:**
 
-1. Note in report
-2. Provide installation instructions.
+1. Anótalo en el informe
+2. Proporciona instrucciones de instalación.
 
-- If available use the Azure MCP `extension_cli_install` tool to get installation instructions.
-- Otherwise look for instructions at https://learn.microsoft.com/en-us/cli/azure/install-azure-cli.
+- Si está disponible, usa la herramienta `extension_cli_install` de Azure MCP para obtener instrucciones de instalación.
+- En otro caso, busca las instrucciones en https://learn.microsoft.com/en-us/cli/azure/install-azure-cli.
 
-3. Skip az commands
+3. Omite los comandos az
 
-**Report Entry:**
+**Entrada del informe:**
 
 ```markdown
-#### ⏭️ Azure CLI Not Installed
+#### ⏭️ Azure CLI no instalada
 
-- **Severity:** Warning
-- **Source:** environment
-- **Message:** Azure CLI (az) is not installed or not in PATH
-- **Remediation:** Install the Azure CLI <ADD INSTALLATION INSTRUCTIONS HERE>
-- **Impact:** What-if validation using az commands was skipped
+- **Gravedad:** Advertencia
+- **Origen:** Entorno
+- **Mensaje:** Azure CLI (az) no está instalada o no está en PATH
+- **Corrección:** Instalar Azure CLI <AÑADIR AQUÍ LAS INSTRUCCIONES DE INSTALACIÓN>
+- **Impacto:** Se omitió la validación what-if mediante comandos az
 ```
 
-### Bicep CLI Not Found
+### CLI de Bicep no encontrada
 
-**Detection:**
+**Detección:**
 
 ```
 'bicep' is not recognized as an internal or external command
 bicep: command not found
 ```
 
-**Handling:**
+**Tratamiento:**
 
-1. Note in report
-2. Azure CLI may have built-in Bicep - try `az bicep build`
-3. Provide installation link
+1. Anótalo en el informe
+2. Azure CLI puede tener Bicep integrado; prueba `az bicep build`
+3. Proporciona el enlace de instalación
 
-**Report Entry:**
+**Entrada del informe:**
 
 ```markdown
-#### ⏭️ Bicep CLI Not Installed
+#### ⏭️ CLI de Bicep no instalada
 
-- **Severity:** Warning
-- **Source:** environment
-- **Message:** Bicep CLI is not installed
-- **Remediation:** Install Bicep CLI: https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/install
-- **Impact:** Syntax validation was skipped; Azure will validate during what-if
+- **Gravedad:** Advertencia
+- **Origen:** Entorno
+- **Mensaje:** La CLI de Bicep no está instalada
+- **Corrección:** Instalar la CLI de Bicep: https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/install
+- **Impacto:** Se omitió la validación de sintaxis; Azure validará durante what-if
 ```
 
-### Azure Developer CLI Not Found
+### Azure Developer CLI no encontrada
 
-**Detection:**
+**Detección:**
 
 ```
 'azd' is not recognized as an internal or external command
 azd: command not found
 ```
 
-**Handling:**
+**Tratamiento:**
 
-1. If `azure.yaml` exists, this is required
-2. Fall back to az CLI commands if possible
-3. Note in report
+1. Si existe `azure.yaml`, esta herramienta es obligatoria
+2. Recurre a comandos de az CLI si es posible
+3. Anótalo en el informe
 
 ---
 
-## What-If Specific Errors
+## Errores específicos de What-If
 
-### Nested Template Limits
+### Límites de plantillas anidadas
 
-**Detection:**
+**Detección:**
 
 ```
 The deployment exceeded the nested template limit of 500
 ```
 
-**Handling:**
+**Tratamiento:**
 
-1. Note as warning (not error)
-2. Explain affected resources show as "Ignore"
-3. Suggest manual review
+1. Anótalo como advertencia (no como error)
+2. Explica que los recursos afectados aparecen como "Ignore"
+3. Sugiere una revisión manual
 
-### Template Link Not Supported
+### Enlace de plantilla no compatible
 
-**Detection:**
+**Detección:**
 
 ```
 templateLink references in nested deployments won't be visible in what-if
 ```
 
-**Handling:**
+**Tratamiento:**
 
-1. Note as warning
-2. Explain limitation
-3. Resources will be verified during actual deployment
+1. Anótalo como advertencia
+2. Explica la limitación
+3. Los recursos se verificarán durante el despliegue real
 
-### Unevaluated Expressions
+### Expresiones sin evaluar
 
-**Detection:** Properties showing function names like `[utcNow()]` instead of values
+**Detección:** Propiedades que muestran nombres de funciones como `[utcNow()]` en lugar de valores
 
-**Handling:**
+**Tratamiento:**
 
-1. Note as informational
-2. Explain these are evaluated at deployment time
-3. Not an error
+1. Anótalo como información
+2. Explica que se evalúan durante el despliegue
+3. No es un error
 
 ---
 
-## Network Errors
+## Errores de red
 
-### Timeout
+### Tiempo de espera agotado
 
-**Detection:**
+**Detección:**
 
 ```
 Connection timed out
 Request timed out
 ```
 
-**Handling:**
+**Tratamiento:**
 
-1. Suggest retry
-2. Check network connectivity
-3. May indicate Azure service issues
+1. Sugiere reintentar
+2. Comprueba la conectividad de red
+3. Puede indicar problemas en los servicios de Azure
 
-### SSL/TLS Errors
+### Errores SSL/TLS
 
-**Detection:**
+**Detección:**
 
 ```
 SSL: CERTIFICATE_VERIFY_FAILED
 unable to get local issuer certificate
 ```
 
-**Handling:**
+**Tratamiento:**
 
-1. Note in report
-2. May indicate proxy or corporate firewall
-3. Suggest checking SSL settings
-
----
-
-## Fallback Strategy
-
-When primary validation fails, attempt fallbacks in order:
-
-```
-Provider (full RBAC validation)
-    ↓ fails with permission error
-ProviderNoRbac (validation without write permission check)
-    ↓ fails
-Template (static syntax only)
-    ↓ fails
-Report all failures and skip what-if analysis
-```
-
-**Always continue to generate the report**, even if all validation steps fail.
+1. Anótalo en el informe
+2. Puede indicar la presencia de un proxy o firewall corporativo
+3. Sugiere comprobar la configuración SSL
 
 ---
 
-## Error Report Aggregation
+## Estrategia de alternativas
 
-When multiple errors occur, aggregate them logically:
+Cuando falle la validación principal, intenta las alternativas en orden:
 
-1. **Group by source** (bicep, what-if, permissions)
-2. **Order by severity** (errors before warnings)
-3. **Deduplicate** similar errors
-4. **Provide summary count** at the top
+```
+Provider (validación RBAC completa)
+    ↓ falla con un error de permisos
+ProviderNoRbac (validación sin comprobar permisos de escritura)
+    ↓ falla
+Template (solo sintaxis estática)
+    ↓ falla
+Informar de todos los fallos y omitir el análisis what-if
+```
 
-Example:
+**Continúa siempre hasta generar el informe**, aunque fallen todos los pasos de validación.
+
+---
+
+## Agrupación de errores en el informe
+
+Cuando se produzcan varios errores, agrúpalos de forma lógica:
+
+1. **Agrupa por origen** (bicep, what-if, permisos)
+2. **Ordena por gravedad** (errores antes que advertencias)
+3. **Elimina duplicados** de errores similares
+4. **Proporciona un recuento resumido** al principio
+
+Ejemplo:
 
 ```markdown
-## Issues
+## Problemas
 
-Found **3 errors** and **2 warnings**
+Se encontraron **3 errores** y **2 advertencias**
 
-### Errors (3)
+### Errores (3)
 
-1. [Bicep Syntax Error - main.bicep:22:51](#error-1)
-2. [Bicep Syntax Error - main.bicep:45:10](#error-2)
-3. [Resource Group Not Found](#error-3)
+1. [Error de sintaxis de Bicep - main.bicep:22:51](#error-1)
+2. [Error de sintaxis de Bicep - main.bicep:45:10](#error-2)
+3. [Grupo de recursos no encontrado](#error-3)
 
-### Warnings (2)
+### Advertencias (2)
 
-1. [Limited Permission Validation](#warning-1)
-2. [Nested Template Limit Reached](#warning-2)
+1. [Validación con permisos limitados](#warning-1)
+2. [Límite de plantillas anidadas alcanzado](#warning-2)
 ```
 
 ---
 
-## Exit Code Reference
+## Referencia de códigos de salida
 
-| Tool | Exit Code | Meaning |
+| Herramienta | Código de salida | Significado |
 |------|-----------|---------|
-| az | 0 | Success |
-| az | 1 | General error |
-| az | 2 | Command not found |
-| az | 3 | Required argument missing |
-| azd | 0 | Success |
+| az | 0 | Correcto |
+| az | 1 | Error general |
+| az | 2 | Comando no encontrado |
+| az | 3 | Falta un argumento obligatorio |
+| azd | 0 | Correcto |
 | azd | 1 | Error |
-| bicep | 0 | Build succeeded |
-| bicep | 1 | Build failed (errors) |
-| bicep | 2 | Build succeeded with warnings |
+| bicep | 0 | Compilación correcta |
+| bicep | 1 | Compilación fallida (errores) |
+| bicep | 2 | Compilación correcta con advertencias |

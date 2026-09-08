@@ -1,124 +1,124 @@
 ---
 name: "migration"
-description: "Produce a versioned, reversible PostgreSQL 16 Flyway migration with online-safe steps, batched backfill, and a rollback script."
+description: "Produce una migración Flyway de PostgreSQL 16 versionada y reversible, con pasos seguros durante la operación, relleno de datos por lotes y un script de reversión."
 argument-hint: "req=REQ-NNN change=<natural-language-change>"
 agent: "dba"
 tools: ["read", "search", "edit", "execute"]
 ---
 # /migration
 
-## Objective
+## Objetivo
 
-Produce a **PostgreSQL 16** Flyway migration for a schema change that is (a) idempotent, (b) reversible, (c) safe to run while the application serves traffic, and (d) traced to a `REQ-ID` in `specs/<NNN>-<feature>/spec.md`. The deliverable is a versioned forward migration, a batched backfill when needed, and a matching rollback script—tested against a staging snapshot.
+Produce una migración Flyway de **PostgreSQL 16** para un cambio de esquema que sea (a) idempotente, (b) reversible, (c) seguro de ejecutar mientras la aplicación atiende tráfico y (d) trazado a un `REQ-ID` en `specs/<NNN>-<feature>/spec.md`. El entregable es una migración de avance versionada, un relleno de datos por lotes cuando sea necesario y su script de reversión correspondiente, probados contra una instantánea del entorno de preproducción.
 
 > [!WARNING]
-> Destructive changes (drop or rename a column, change a type, add `NOT NULL`) never ship in a single deployment. Expand, migrate, then contract.
+> Los cambios destructivos (eliminar o renombrar una columna, cambiar un tipo, añadir `NOT NULL`) nunca se entregan en un único despliegue. Expande, migra y después contrae.
 
-## When to Invoke
+## Cuándo invocar
 
-During Stage 3/4, when a task in `plan.md` requires a schema change, or when mapping an Adabas DDM to its first PostgreSQL table. Run it after the change is already recorded in the plan—never to invent schema.
+Durante las etapas 3/4, cuando una tarea de `plan.md` requiere un cambio de esquema o al mapear un DDM de Adabas a su primera tabla PostgreSQL. Ejecútalo después de que el cambio esté registrado en el plan, nunca para inventar un esquema.
 
-## Preconditions
+## Precondiciones
 
-- The change is present in `specs/<NNN>-<feature>/plan.md`; if it is not, it goes to architecture review first
-- `specs/<NNN>-<feature>/spec.md` holds the `REQ-ID` and EARS statement the change satisfies
-- A `db/migration/` folder exists (or is created by this migration) under the backend module
-- A staging snapshot of the target database is available to test against
+- El cambio está presente en `specs/<NNN>-<feature>/plan.md`; si no lo está, pasa primero a revisión de arquitectura
+- `specs/<NNN>-<feature>/spec.md` contiene el `REQ-ID` y el enunciado EARS que satisface el cambio
+- Existe una carpeta `db/migration/` (o la crea esta migración) dentro del módulo de backend
+- Hay disponible una instantánea de preproducción de la base de datos de destino para realizar pruebas
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- The requested change in natural language
-- The linked `REQ-ID` and its EARS statement
-- The data scale: row counts for affected tables and peak QPS
-- The deployment window: mandatory zero downtime, or an allowed maintenance window
-- The legacy reference, if any—the Adabas DDM in `01-archaeology/legacy-sifap/adabas-ddms/` this maps from
-- Ask the user for anything that is missing.
+- El cambio solicitado en lenguaje natural
+- El `REQ-ID` vinculado y su enunciado EARS
+- La escala de datos: número de filas de las tablas afectadas y pico de QPS
+- La ventana de despliegue: cero interrupciones obligatorio o una ventana de mantenimiento permitida
+- La referencia heredada, si existe: el DDM de Adabas en `01-archaeology/legacy-sifap/adabas-ddms/` del que parte este mapeo
+- Solicita a la persona usuaria cualquier información que falte.
 
-## What I Will Do
+## Lo que haré
 
-- Confirm the change is in `plan.md`, then choose a Flyway version `Vyyyymmddhhmm__short_description.sql`
-- Design an online-safe sequence: nullable column, then batched backfill, then constraints last
-- Map Adabas formats faithfully (Natural packed `P9.2` / DDM `P 9,2` → `NUMERIC(9,2)`, `MU` → child table or JSONB, `PE` → child table, super-descriptor → composite index)
-- Write a separate idempotent backfill for large tables and apply constraints only after it completes
-- Write the paired `*.undo.sql` rollback and document replication, vacuum, and plan-cache side effects
-- Test forward and rollback against a staging snapshot and paste the output
+- Confirmar que el cambio está en `plan.md` y después elegir una versión Flyway `Vyyyymmddhhmm__short_description.sql`
+- Diseñar una secuencia segura durante la operación: columna que admite nulos, después relleno de datos por lotes y las restricciones al final
+- Mapear fielmente los formatos de Adabas (empaquetado Natural `P9.2` / DDM `P 9,2` → `NUMERIC(9,2)`, `MU` → tabla hija o JSONB, `PE` → tabla hija, superdescriptor → índice compuesto)
+- Escribir un relleno de datos idempotente separado para tablas grandes y aplicar las restricciones solo después de que termine
+- Escribir la reversión `*.undo.sql` correspondiente y documentar los efectos secundarios sobre replicación, vacuum y caché de planes
+- Probar el avance y la reversión contra una instantánea de preproducción y pegar la salida
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Design schema that is not in `plan.md`—unplanned changes go back to architecture review
-- Add a `NOT NULL DEFAULT`, drop, or rename a column on a large hot table in one statement—it rewrites or blocks the table
-- Ship a forward migration without a matching rollback
-- Build an index without `CONCURRENTLY`, or backfill an entire table in one transaction
-- Store PII (CPF, benefit amounts) in a new column without flagging it and adding a column `COMMENT`
-- Write business logic into the database (stored procedures)—logic lives in Java
-- Assume what an Adabas field means or holds—I map only the format the team points at in the DDM
+- Diseñar un esquema que no esté en `plan.md`: los cambios no planificados vuelven a revisión de arquitectura
+- Añadir un `NOT NULL DEFAULT`, eliminar o renombrar una columna de una tabla grande de uso intensivo en una sola sentencia: reescribe o bloquea la tabla
+- Entregar una migración de avance sin su reversión correspondiente
+- Construir un índice sin `CONCURRENTLY` ni rellenar una tabla completa en una sola transacción
+- Almacenar datos personales (PII: CPF, importes de prestaciones) en una nueva columna sin señalarlo y añadir un `COMMENT` de columna
+- Escribir lógica de negocio en la base de datos (procedimientos almacenados): la lógica permanece en Java
+- Suponer qué significa o contiene un campo de Adabas: mapeo solo el formato que el equipo señala en el DDM
 
-## Output Format
+## Formato de salida
 
 ```markdown
-### Migration metadata
-Version `V202603171430__add_reviewed_at.sql` · REQ-031 · online-safe: yes · ~2 min at 4M rows.
+### Metadatos de migración
+Versión `V202603171430__add_reviewed_at.sql` · REQ-031 · segura durante la operación: sí · ~2 min con 4M filas.
 
-### Forward — V202603171430__add_reviewed_at.sql
--- REQ-031: While a payment is under review, the system shall record the review timestamp.
--- Online-safe: nullable add + CONCURRENTLY index; no table rewrite.
+### Avance — V202603171430__add_reviewed_at.sql
+-- REQ-031: While un pago está en revisión, el sistema shall registrar la marca de tiempo de la revisión.
+-- Segura durante la operación: columna que admite nulos + índice CONCURRENTLY; sin reescribir la tabla.
 ALTER TABLE payment ADD COLUMN IF NOT EXISTS reviewed_at TIMESTAMPTZ;
 CREATE INDEX CONCURRENTLY idx_payment_reviewed_at ON payment (reviewed_at);
 COMMENT ON COLUMN payment.reviewed_at IS 'Review timestamp; not PII.';
 
-### Backfill (separate, idempotent) — batches of 5k
--- Run outside the migration; commit between batches until no rows remain.
+### Relleno de datos (separado, idempotente) — lotes de 5k
+-- Ejecutar fuera de la migración; realizar commit entre lotes hasta que no queden filas.
 
-### Rollback — V202603171430__add_reviewed_at.undo.sql
+### Reversión — V202603171430__add_reviewed_at.undo.sql
 DROP INDEX CONCURRENTLY IF EXISTS idx_payment_reviewed_at;
 ALTER TABLE payment DROP COLUMN IF EXISTS reviewed_at;
 
-### Application coordination
-Deploy the writer that populates reviewed_at after this migration; readers tolerate NULL until backfill completes.
+### Coordinación con la aplicación
+Desplegar el componente que rellena reviewed_at después de esta migración; los lectores admiten NULL hasta que termine el relleno de datos.
 
-### Risk register
-Locking: none (CONCURRENTLY). Replication: index build adds lag—monitor. Plan cache: invalidated on column add.
+### Registro de riesgos
+Bloqueo: ninguno (CONCURRENTLY). Replicación: la construcción del índice añade retraso; supervisar. Caché de planes: se invalida al añadir la columna.
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] Forward and rollback scripts are both committed under `db/migration/`
-- [ ] The forward script is idempotent (`IF NOT EXISTS`, `IF EXISTS`)
-- [ ] No `ACCESS EXCLUSIVE` lock on a hot table without an explicit maintenance-window note
-- [ ] The backfill handles more than 100k rows in batches of 1k–10k with a commit between batches
-- [ ] The linked `REQ-ID` and EARS statement appear in a top-of-file comment
-- [ ] `flyway migrate` and `flyway undo` output against a staging snapshot is pasted
-- [ ] The application coordination plan is stated explicitly
+- [ ] Los scripts de avance y reversión están incluidos en commits dentro de `db/migration/`
+- [ ] El script de avance es idempotente (`IF NOT EXISTS`, `IF EXISTS`)
+- [ ] No hay bloqueo `ACCESS EXCLUSIVE` sobre una tabla de uso intensivo sin una nota explícita de ventana de mantenimiento
+- [ ] El relleno procesa más de 100k filas en lotes de 1k–10k, con un commit entre lotes
+- [ ] El `REQ-ID` vinculado y el enunciado EARS aparecen en un comentario al principio del archivo
+- [ ] Se ha pegado la salida de `flyway migrate` y `flyway undo` contra una instantánea de preproducción
+- [ ] El plan de coordinación con la aplicación está expresado explícitamente
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@dba`. The team needs a schema change turned into a safe, reversible migration. Read [`safe-migration`](../skills/safe-migration/SKILL.md) before you start; it owns the expand/migrate/contract pattern and the pre-flight checklist.
+Eres el `@dba`. El equipo necesita convertir un cambio de esquema en una migración segura y reversible. Lee [`safe-migration`](../skills/safe-migration/SKILL.md) antes de comenzar; define el patrón expandir/migrar/contraer y la lista de verificación previa.
 
-**Step 1 — Confirm the change is planned.**
-Verify the change appears in `plan.md`. If it does not, stop and route it to architecture review—the migration follows the plan, never the other way around. Record the `REQ-ID` and EARS statement.
+**Paso 1 — Confirma que el cambio está planificado.**
+Verifica que el cambio aparezca en `plan.md`. Si no aparece, detente y dirígelo a revisión de arquitectura: la migración sigue al plan, nunca al revés. Registra el `REQ-ID` y el enunciado EARS.
 
-**Step 2 — Choose the version and map the types.**
-Name the file `Vyyyymmddhhmm__short_description.sql`. When mapping an Adabas DDM, translate formats faithfully: Natural packed `P9.2` / DDM `P 9,2` → `NUMERIC(9,2)` (money is `NUMERIC`, never `FLOAT`); `MU` → a child table or JSONB; `PE` → a child table; a super-descriptor → a composite index. In the Natural CE 9.3.3 lab image, Natural format specs use a period decimal separator, so `P9.2` means 9 integer plus 2 fractional digits. Comma forms such as `P9,2` fail with `NAT0165` in source declarations (see [`natural-adabas`](../instructions/natural-adabas.instructions.md)).
+**Paso 2 — Elige la versión y mapea los tipos.**
+Nombra el archivo `Vyyyymmddhhmm__short_description.sql`. Al mapear un DDM de Adabas, traduce fielmente los formatos: empaquetado Natural `P9.2` / DDM `P 9,2` → `NUMERIC(9,2)` (el dinero utiliza `NUMERIC`, nunca `FLOAT`); `MU` → tabla hija o JSONB; `PE` → tabla hija; superdescriptor → índice compuesto. En la imagen de laboratorio de Natural CE 9.3.3, las especificaciones de formato de Natural utilizan un punto como separador decimal, por lo que `P9.2` significa 9 dígitos enteros más 2 fraccionarios. Las formas con coma, como `P9,2`, fallan con `NAT0165` en declaraciones del código fuente (consulta [`natural-adabas`](../instructions/natural-adabas.instructions.md)).
 
-**Step 3 — Design for online migration.**
-Prefer additive, non-blocking steps: add a nullable column, then backfill, then add constraints last. Build indexes with `CREATE INDEX CONCURRENTLY` (without `IF NOT EXISTS`, which needs a separate guard). Avoid `ALTER TABLE` operations that require an `ACCESS EXCLUSIVE` lock on a hot table; if one is unavoidable, schedule a maintenance window and say so.
+**Paso 3 — Diseña para una migración durante la operación.**
+Prioriza pasos aditivos y no bloqueantes: añade una columna que admita nulos, rellena los datos y añade las restricciones al final. Construye índices con `CREATE INDEX CONCURRENTLY` (sin `IF NOT EXISTS`, que necesita una protección separada). Evita operaciones `ALTER TABLE` que requieran un bloqueo `ACCESS EXCLUSIVE` sobre una tabla de uso intensivo; si alguna es inevitable, programa una ventana de mantenimiento e indícalo.
 
-**Step 4 — Plan the backfill.**
-For non-trivial data, write a separate idempotent backfill that processes 1k–10k rows per batch with a `commit` between batches. Never backfill inside the migration when the table exceeds 100k rows.
+**Paso 4 — Planifica el relleno de datos.**
+Para volúmenes de datos no triviales, escribe un relleno idempotente separado que procese 1k–10k filas por lote con un `commit` entre lotes. Nunca rellenes datos dentro de la migración cuando la tabla supere las 100k filas.
 
-**Step 5 — Apply constraints after the backfill.**
-Add `NOT NULL`, `CHECK`, foreign keys, and unique indexes only after the data is consistent.
+**Paso 5 — Aplica las restricciones después del relleno.**
+Añade `NOT NULL`, `CHECK`, claves foráneas e índices únicos solo después de que los datos sean coherentes.
 
-**Step 6 — Write the rollback.**
-Pair every forward migration with `Vyyyymmddhhmm__short_description.undo.sql` that restores the previous schema, even from an intermediate state.
+**Paso 6 — Escribe la reversión.**
+Acompaña cada migración de avance con un `Vyyyymmddhhmm__short_description.undo.sql` que restaure el esquema anterior, incluso desde un estado intermedio.
 
-**Step 7 — Document side effects and test.**
-Note replication-slot drift, vacuum implications, plan-cache invalidation, and any application code that must ship in lockstep. Restore the staging snapshot, run `flyway migrate`, verify, run `flyway undo`, verify again, and paste the output.
+**Paso 7 — Documenta los efectos secundarios y prueba.**
+Anota las divergencias de ranuras de replicación, las implicaciones de vacuum, la invalidación de la caché de planes y cualquier código de aplicación que deba entregarse de forma coordinada. Restaura la instantánea de preproducción, ejecuta `flyway migrate`, verifica, ejecuta `flyway undo`, vuelve a verificar y pega la salida.
 
-Never put business logic in the database. Mask CPF and benefit amounts, and flag any new PII column for the DevOps Engineer and technical leadership.
+Nunca pongas lógica de negocio en la base de datos. Enmascara el CPF y los importes de prestaciones, y señala cualquier nueva columna de PII a la persona especialista en DevOps y al liderazgo técnico.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
-/migration req=REQ-031 change="add a nullable review timestamp to the payment table"
+/migration req=REQ-031 change="añadir a la tabla de pagos una marca de tiempo de revisión que admita nulos"
 ```

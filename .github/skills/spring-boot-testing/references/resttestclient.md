@@ -1,14 +1,14 @@
 # RestTestClient
 
-Modern REST client testing with Spring Boot 4+ (replaces TestRestTemplate).
+Pruebas modernas de clientes REST con Spring Boot 4+ (reemplaza a TestRestTemplate).
 
-## Overview
+## Descripción general
 
-RestTestClient is the modern alternative to TestRestTemplate in Spring Boot 4.0+. It provides a fluent, reactive API for testing REST endpoints.
+RestTestClient es la alternativa moderna a TestRestTemplate en Spring Boot 4.0+. Proporciona una API fluida y reactiva para probar puntos de conexión REST.
 
-## Setup
+## Configuración
 
-### Dependency (Spring Boot 4+)
+### Dependencia (Spring Boot 4+)
 
 ```xml
 <dependency>
@@ -18,7 +18,7 @@ RestTestClient is the modern alternative to TestRestTemplate in Spring Boot 4.0+
 </dependency>
 ```
 
-### Basic Configuration
+### Configuración básica
 
 ```java
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -30,9 +30,9 @@ class OrderIntegrationTest {
 }
 ```
 
-## HTTP Methods
+## Métodos HTTP
 
-### GET Request
+### Solicitud GET
 
 ```java
 @Test
@@ -51,7 +51,7 @@ void shouldGetOrder() {
 }
 ```
 
-### POST Request
+### Solicitud POST
 
 ```java
 @Test
@@ -73,7 +73,7 @@ void shouldCreateOrder() {
 }
 ```
 
-### PUT Request
+### Solicitud PUT
 
 ```java
 @Test
@@ -88,7 +88,7 @@ void shouldUpdateOrder() {
 }
 ```
 
-### DELETE Request
+### Solicitud DELETE
 
 ```java
 @Test
@@ -102,9 +102,9 @@ void shouldDeleteOrder() {
 }
 ```
 
-## Response Assertions
+## Aserciones de respuesta
 
-### Status Codes
+### Códigos de estado
 
 ```java
 restClient
@@ -118,10 +118,10 @@ restClient
   .isBadRequest()   // 400
   .isNotFound()     // 404
   .is5xxServerError() // 5xx
-  .isEqualTo(200);  // Specific code
+  .isEqualTo(200);  // Código concreto
 ```
 
-### Response Headers
+### Encabezados de respuesta
 
 ```java
 restClient
@@ -135,7 +135,7 @@ restClient
   .valueEquals("X-Api-Version", "v1");
 ```
 
-### Body Assertions
+### Aserciones sobre el cuerpo
 
 ```java
 restClient
@@ -160,9 +160,9 @@ restClient
   .jsonPath("$.totalElements").isNumber();
 ```
 
-## Request Configuration
+## Configuración de solicitudes
 
-### Request Headers
+### Encabezados de solicitud
 
 ```java
 restClient
@@ -173,7 +173,7 @@ restClient
   .exchange();
 ```
 
-### Query Parameters
+### Parámetros de consulta
 
 ```java
 restClient
@@ -187,7 +187,7 @@ restClient
   .exchange();
 ```
 
-### Path Variables
+### Variables de ruta
 
 ```java
 restClient
@@ -196,9 +196,9 @@ restClient
   .exchange();
 ```
 
-## With MockMvc
+## Con MockMvc
 
-RestTestClient can also work with MockMvc (no server startup):
+RestTestClient también puede funcionar con MockMvc (sin iniciar un servidor):
 
 ```java
 @SpringBootTest
@@ -211,7 +211,7 @@ class OrderMockMvcTest {
 
   @Test
   void shouldWorkWithMockMvc() {
-    // Uses MockMvc under the hood - no server startup
+    // Usa MockMvc internamente, sin iniciar un servidor
     restClient
       .get()
       .uri("/orders/1")
@@ -222,19 +222,19 @@ class OrderMockMvcTest {
 }
 ```
 
-## Comparison: RestTestClient vs TestRestTemplate
+## Comparación: RestTestClient frente a TestRestTemplate
 
-| Feature | RestTestClient | TestRestTemplate |
+| Característica | RestTestClient | TestRestTemplate |
 | ------- | -------------- | ---------------- |
-| Style | Fluent/reactive | Imperative |
-| Spring Boot | 4.0+ | All versions (deprecated in 4) |
-| Assertions | Built-in | Manual |
-| MockMvc support | Yes | No |
-| Async | Native | Requires extra handling |
+| Estilo | Fluido/reactivo | Imperativo |
+| Spring Boot | 4.0+ | Todas las versiones (obsoleto en 4) |
+| Aserciones | Integradas | Manuales |
+| Compatibilidad con MockMvc | Sí | No |
+| Asincronía | Nativa | Requiere gestión adicional |
 
-## Migration from TestRestTemplate
+## Migración desde TestRestTemplate
 
-### Before (Deprecated)
+### Antes (obsoleto)
 
 ```java
 @Autowired
@@ -250,7 +250,7 @@ void shouldGetOrder() {
 }
 ```
 
-### After (RestTestClient)
+### Después (RestTestClient)
 
 ```java
 @Autowired
@@ -269,10 +269,10 @@ void shouldGetOrder() {
 }
 ```
 
-## Best Practices
+## Buenas prácticas
 
-1. Use with @SpringBootTest(WebEnvironment.RANDOM_PORT) for real HTTP
-2. Use with @AutoConfigureMockMvc for faster tests without server
-3. Leverage fluent assertions for readability
-4. Test both success and error scenarios
-5. Verify headers for security/API versioning
+1. Úsalo con @SpringBootTest(WebEnvironment.RANDOM_PORT) para HTTP real
+2. Úsalo con @AutoConfigureMockMvc para pruebas más rápidas sin servidor
+3. Aprovecha las aserciones fluidas para mejorar la legibilidad
+4. Prueba tanto los escenarios correctos como los de error
+5. Verifica los encabezados de seguridad y versionado de API

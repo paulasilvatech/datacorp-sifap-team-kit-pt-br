@@ -1,56 +1,56 @@
-# Codebase Concerns
+# Aspectos problemáticos de la base de código
 
-## Core Sections (Required)
+## Secciones básicas (obligatorias)
 
-### 1) Top Risks (Prioritized)
+### 1) Riesgos principales (priorizados)
 
-| Severity | Concern | Evidence | Impact | Suggested action |
+| Gravedad | Problema | Evidencia | Impacto | Acción sugerida |
 |----------|---------|----------|--------|------------------|
-| [high/med/low] | [issue] | [file or scan output] | [impact] | [next action] |
+| [alta/media/baja] | [problema] | [archivo o salida del análisis] | [impacto] | [siguiente acción] |
 
-### 2) Technical Debt
+### 2) Deuda técnica
 
-List the most important debt items only.
+Enumera únicamente los elementos de deuda más importantes.
 
-| Debt item | Why it exists | Where | Risk if ignored | Suggested fix |
+| Elemento de deuda | Por qué existe | Dónde | Riesgo de ignorarlo | Corrección sugerida |
 |-----------|---------------|-------|-----------------|---------------|
-| [item] | [reason] | [path] | [risk] | [fix] |
+| [elemento] | [motivo] | [ruta] | [riesgo] | [corrección] |
 
-### 3) Security Concerns
+### 3) Problemas de seguridad
 
-| Risk | OWASP category (if applicable) | Evidence | Current mitigation | Gap |
+| Riesgo | Categoría OWASP (si corresponde) | Evidencia | Mitigación actual | Carencia |
 |------|--------------------------------|----------|--------------------|-----|
-| [risk] | [A01/A03/etc or N/A] | [path] | [what exists] | [what is missing] |
+| [riesgo] | [A01/A03/etc. o N/A] | [ruta] | [lo que existe] | [lo que falta] |
 
-### 4) Performance and Scaling Concerns
+### 4) Problemas de rendimiento y escalabilidad
 
-| Concern | Evidence | Current symptom | Scaling risk | Suggested improvement |
+| Problema | Evidencia | Síntoma actual | Riesgo al escalar | Mejora sugerida |
 |---------|----------|-----------------|-------------|-----------------------|
-| [issue] | [path/metric] | [symptom] | [risk] | [action] |
+| [problema] | [ruta/métrica] | [síntoma] | [riesgo] | [acción] |
 
-### 5) Fragile/High-Churn Areas
+### 5) Áreas frágiles o con cambios frecuentes
 
-| Area | Why fragile | Churn signal | Safe change strategy |
+| Área | Motivo de su fragilidad | Indicio de cambios frecuentes | Estrategia de cambio seguro |
 |------|-------------|-------------|----------------------|
-| [path] | [reason] | [recent churn evidence] | [approach] |
+| [ruta] | [motivo] | [evidencia de cambios recientes] | [enfoque] |
 
-### 6) `[ASK USER]` Questions
+### 6) Preguntas `[ASK USER]`
 
-Add unresolved intent-dependent questions as a numbered list.
+Añade en una lista numerada las preguntas pendientes cuya respuesta dependa de la intención.
 
-1. [ASK USER] [question]
+1. [ASK USER] [pregunta]
 
-### 7) Evidence
+### 7) Evidencia
 
-- [scan output section reference]
+- [referencia a la sección de salida del análisis]
 - [path/to/code-file]
 - [path/to/config-or-history-evidence]
 
-## Extended Sections (Optional)
+## Secciones ampliadas (opcionales)
 
-Add only when needed:
+Añade estas secciones solo cuando sean necesarias:
 
-- Full bug inventory
-- Component-level remediation roadmap
-- Cost/effort estimates by concern
-- Dependency-risk and ownership mapping
+- Inventario completo de errores
+- Hoja de ruta de corrección por componente
+- Estimaciones de costo y esfuerzo por problema
+- Mapa de riesgos de dependencias y responsables

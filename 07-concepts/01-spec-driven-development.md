@@ -1,44 +1,44 @@
-# Spec-Driven Development and Spec-Kit
+# Desarrollo guiado por especificaciones y Spec-Kit
 
-> **Path:** [Team Kit](../README.md) › [Concepts](00-README.md) › **Spec-Driven Development**
+> **Ruta:** [Kit del equipo](../README.md) › [Conceptos](00-README.md) › **Desarrollo guiado por especificaciones**
 
-**Spec-Driven Development (SDD) is the practice of fully specifying expected behavior before writing code—and Spec-Kit is the command set that structures this process in Copilot Chat.**
+**El desarrollo guiado por especificaciones (SDD) es la práctica de especificar por completo el comportamiento esperado antes de escribir código, y Spec-Kit es el conjunto de comandos que estructura este proceso en Copilot Chat.**
 
-![Concept 01](https://img.shields.io/badge/Concept-01-171717?style=flat-square) ![Stage 2](https://img.shields.io/badge/Stage-2%20%C2%B7%20Specification-737373?style=flat-square) ![Duration 20 min](https://img.shields.io/badge/Duration-20%20min-A3A3A3?style=flat-square)
+![Concepto 01](https://img.shields.io/badge/Concept-01-171717?style=flat-square) ![Etapa 2](https://img.shields.io/badge/Stage-2%20%C2%B7%20Specification-737373?style=flat-square) ![Duración: 20 min](https://img.shields.io/badge/Duration-20%20min-A3A3A3?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | All personas, especially Requirements Engineers and Software Architects |
-| **Prerequisites** | Read the `.NSN` programs assigned in Stage 1 |
-| **Estimated time** | 20 minutes |
-| **Stage** | Stage 2 — Specification |
-| **Expected outcome** | Understand the Spec-Kit cycle and know when to run each command |
+| **Público objetivo** | Todas las personas, especialmente Especialistas en Requisitos y Arquitectos de Software |
+| **Prerrequisitos** | Leer los programas `.NSN` asignados en la Etapa 1 |
+| **Tiempo estimado** | 20 minutos |
+| **Etapa** | Etapa 2 — Especificación |
+| **Resultado esperado** | Comprender el ciclo de Spec-Kit y saber cuándo ejecutar cada comando |
 
 ---
 
-## Concept
+## Concepto
 
-Spec-Driven Development is an approach in which the team produces a formal specification—with requirements, an architecture plan, and tasks—before writing any code. As a result, five people working in parallel build compatible parts of the same system instead of five divergent versions.
+El desarrollo guiado por especificaciones es un enfoque en el que el equipo produce una especificación formal —con requisitos, un plan de arquitectura y tareas— antes de escribir cualquier código. Así, cinco personas que trabajan en paralelo construyen partes compatibles del mismo sistema en lugar de cinco versiones divergentes.
 
-**Spec-Kit** (official repository: [github/spec-kit](https://github.com/github/spec-kit)) is the practical implementation of SDD for teams using GitHub Copilot. It provides a sequence of commands in Copilot Chat that guides the team from a vague idea to concrete tasks with ownership and traceability.
-
----
-
-## Why it matters in this workshop
-
-In the SIFAP workshop, five people have a few hours to modernize a 29-year-old system. Without a shared specification, each person implements their interpretation of the legacy system—resulting in incompatible code, duplicated rules, or missing functionality.
-
-Spec-Kit solves this problem by enforcing the cycle:
-
-> specify expected behavior → plan the architecture → distribute tasks → implement
-
-No code should be written before `/speckit.plan` has been run and validated.
+**Spec-Kit** (repositorio oficial: [github/spec-kit](https://github.com/github/spec-kit)) es la implementación práctica de SDD para equipos que usan GitHub Copilot. Proporciona una secuencia de comandos en Copilot Chat que guía al equipo desde una idea vaga hasta tareas concretas con responsables y trazabilidad.
 
 ---
 
-## How it works
+## Por qué importa en esta inmersión
 
-The complete Spec-Kit cycle has seven commands. Each produces a concrete artifact:
+En la inmersión SIFAP, cinco personas tienen unas pocas horas para modernizar un sistema de 29 años. Sin una especificación compartida, cada integrante implementa su interpretación del sistema heredado, lo que da lugar a código incompatible, reglas duplicadas o funcionalidades ausentes.
+
+Spec-Kit resuelve este problema al exigir el ciclo:
+
+> especificar el comportamiento esperado → planificar la arquitectura → distribuir tareas → implementar
+
+No debe escribirse código antes de ejecutar y validar `/speckit.plan`.
+
+---
+
+## Cómo funciona
+
+El ciclo completo de Spec-Kit tiene siete comandos. Cada uno produce un artefacto concreto:
 
 ```mermaid
 %%{init: {'theme':'neutral','themeVariables':{'fontFamily':'ui-sans-serif, system-ui, sans-serif','primaryColor':'#F5F5F5','primaryTextColor':'#171717','primaryBorderColor':'#171717','lineColor':'#525252','secondaryColor':'#FFFFFF','tertiaryColor':'#FAFAFA','background':'#FFFFFF'}}}%%
@@ -47,109 +47,109 @@ flowchart TD
     classDef gate fill:#FFFFFF,stroke:#171717,color:#171717,stroke-width:2px
     classDef muted fill:#FAFAFA,stroke:#A3A3A3,color:#404040
 
-    A["/speckit.specify<br/><sub>EARS requirements with source_legacy</sub>"]:::step
-    B["/speckit.clarify<br/><sub>Unanswered questions before planning</sub>"]:::step
-    C["/speckit.plan<br/><sub>Modules, contracts, data, risks</sub>"]:::step
-    D["/speckit.tasks<br/><sub>Tasks with owners and dependencies</sub>"]:::step
-    E["/speckit.analyze<br/><sub>Gaps between requirements and plan</sub>"]:::gate
-    F["/speckit.implement<br/><sub>Code linked to REQ-IDs</sub>"]:::step
-    G["constitution.md<br/><sub>Principles already defined in the repository</sub>"]:::muted
+    A["/speckit.specify<br/><sub>Requisitos EARS con source_legacy</sub>"]:::step
+    B["/speckit.clarify<br/><sub>Preguntas sin respuesta antes de planificar</sub>"]:::step
+    C["/speckit.plan<br/><sub>Módulos, contratos, datos y riesgos</sub>"]:::step
+    D["/speckit.tasks<br/><sub>Tareas con responsables y dependencias</sub>"]:::step
+    E["/speckit.analyze<br/><sub>Lagunas entre requisitos y plan</sub>"]:::gate
+    F["/speckit.implement<br/><sub>Código vinculado a REQ-ID</sub>"]:::step
+    G["constitution.md<br/><sub>Principios ya definidos en el repositorio</sub>"]:::muted
 
-    G -. "read first" .-> A
+    G -. "leer primero" .-> A
     A --> B --> C --> D --> E
-    E -- "no gaps" --> F
-    E -- "gap found" --> C
+    E -- "sin lagunas" --> F
+    E -- "laguna encontrada" --> C
 ```
 
-| Command | What it produces | When to use it |
+| Comando | Qué produce | Cuándo usarlo |
 |---|---|---|
-| `/speckit.constitution` | General system principles (stack, patterns, constraints) | Once per project—already in `.specify/memory/constitution.md` |
-| `/speckit.specify` | EARS requirements with REQ-IDs and `source_legacy:` | At the start of Stage 2, for each confirmed feature |
-| `/speckit.clarify` | Questions about behaviors with no legacy evidence | After `specify`, before planning |
-| `/speckit.plan` | Modules, API contracts, data model, and risks | After answering all `clarify` questions |
-| `/speckit.tasks` | Tasks with estimates, owners, and dependencies | After the team approves the plan |
-| `/speckit.analyze` | Consistency report: gaps, conflicts, and coverage | Before implementation—mandatory |
-| `/speckit.implement` | Code, tests, and migrations with traceable REQ-IDs | Only after `analyze` reports no critical gaps |
+| `/speckit.constitution` | Principios generales del sistema (tecnologías, patrones y restricciones) | Una vez por proyecto: ya están en `.specify/memory/constitution.md` |
+| `/speckit.specify` | Requisitos EARS con REQ-ID y `source_legacy:` | Al inicio de la Etapa 2, para cada funcionalidad confirmada |
+| `/speckit.clarify` | Preguntas sobre comportamientos sin evidencia en el legado | Después de `specify`, antes de planificar |
+| `/speckit.plan` | Módulos, contratos de API, modelo de datos y riesgos | Después de responder todas las preguntas de `clarify` |
+| `/speckit.tasks` | Tareas con estimaciones, responsables y dependencias | Después de que el equipo apruebe el plan |
+| `/speckit.analyze` | Informe de coherencia: lagunas, conflictos y cobertura | Antes de implementar: obligatorio |
+| `/speckit.implement` | Código, pruebas y migraciones con REQ-ID trazables | Solo después de que `analyze` no informe de lagunas críticas |
 
 ---
 
-## SIFAP example
+## Ejemplo de SIFAP
 
-Suppose Stage 1 revealed that `CALCPGTO.NSN` calculates the net benefit amount by deducting contributions. The Stage 2 flow would be:
+Supongamos que la Etapa 1 reveló que `CALCPGTO.NSN` calcula el importe neto del beneficio descontando las contribuciones. El flujo de la Etapa 2 sería:
 
 ```bash
-# 1. Check the system principles
+# 1. Consulta los principios del sistema
 cat .specify/memory/constitution.md
 
-# 2. Specify the feature
-/speckit.specify calculate the net benefit amount according to CALCPGTO.NSN.
-Include source_legacy in every requirement.
+# 2. Especifica la funcionalidad
+/speckit.specify calcular el importe neto del beneficio según CALCPGTO.NSN.
+Incluye source_legacy en cada requisito.
 
-# 3. Resolve open questions
+# 3. Resuelve las preguntas abiertas
 /speckit.clarify
-# Example generated question: "When a contribution is overdue, is the deduction
-# calculated from the gross amount or from the amount after other deductions?"
-# → Answer by consulting the legacy code or the PO before continuing.
+# Ejemplo de pregunta generada: "Cuando una contribución está vencida, ¿se calcula
+# la deducción sobre el importe bruto o sobre el importe después de otras deducciones?"
+# → Responde consultando el código heredado o al PO antes de continuar.
 
-# 4. Plan the architecture
+# 4. Planifica la arquitectura
 /speckit.plan
-# Use the workshop stack: Java 21 + Spring Boot 3.3 + PostgreSQL 16.
+# Usa las tecnologías de la inmersión: Java 21 + Spring Boot 3.3 + PostgreSQL 16.
 
-# 5. Distribute tasks
+# 5. Distribuye las tareas
 /speckit.tasks
 
-# 6. Check consistency
+# 6. Comprueba la coherencia
 /speckit.analyze
 
-# 7. Implement
+# 7. Implementa
 /speckit.implement
 ```
 
-Every REQ-ID generated by `/speckit.specify` must contain a `source_legacy:` line pointing to the exact `.NSN` section. Without it, the `legacy-traceability` CI job rejects the PR.
+Cada REQ-ID generado por `/speckit.specify` debe contener una línea `source_legacy:` que apunte a la sección exacta del `.NSN`. Sin ella, el trabajo de CI `legacy-traceability` rechaza la PR.
 
 ---
 
-## Use case
+## Caso de uso
 
-Use Spec-Kit whenever the team starts a new feature in Stage 2. Even when a feature appears simple, running the full cycle prevents the workshop's primary risk: **modernizing what the team thinks the system does rather than what it actually does**.
+Usa Spec-Kit siempre que el equipo inicie una funcionalidad nueva en la Etapa 2. Incluso cuando una funcionalidad parezca sencilla, ejecutar el ciclo completo previene el riesgo principal de la inmersión: **modernizar lo que el equipo cree que hace el sistema en lugar de lo que realmente hace**.
 
 ---
 
-## Common mistakes and how to avoid them
+## Errores comunes y cómo evitarlos
 
-| Symptom | Cause | Correction |
+| Síntoma | Causa | Corrección |
 |---|---|---|
-| Code written before `plan` | The team skipped the initial steps | Return to `specify`. Code without a spec guarantees rework. |
-| Missing `source_legacy:` in a REQ-ID | Requirement written from memory without legacy evidence | Open the corresponding `.NSN` and locate the exact section. |
-| Twelve questions from `clarify` | Normal—not a problem | Answer all of them. Every unanswered question becomes a bug. |
-| `analyze` reports gaps | Incomplete or inconsistent plan | Do not continue to `implement`. Correct the plan and rerun it. |
-| Spec-Kit not found | Incomplete installation | See [`09-cheat-sheets/spec-kit-workflow.md`](../09-cheat-sheets/spec-kit-workflow.md). |
+| Código escrito antes de `plan` | El equipo omitió los pasos iniciales | Vuelve a `specify`. El código sin especificación garantiza trabajo repetido. |
+| Falta `source_legacy:` en un REQ-ID | Requisito escrito de memoria, sin evidencia del legado | Abre el `.NSN` correspondiente y localiza la sección exacta. |
+| Doce preguntas de `clarify` | Es normal, no es un problema | Respóndelas todas. Cada pregunta sin respuesta se convierte en un error. |
+| `analyze` informa de lagunas | Plan incompleto o incoherente | No continúes a `implement`. Corrige el plan y vuelve a ejecutarlo. |
+| Spec-Kit no se encuentra | Instalación incompleta | Consulta [`09-cheat-sheets/spec-kit-workflow.md`](../09-cheat-sheets/spec-kit-workflow.md). |
 
 ---
 
-## Usage checklist
+## Lista de verificación de uso
 
-- [ ] **Read `constitution.md` first.** Confirm the project's stack, patterns, and constraints.
-- [ ] **Run `/speckit.specify` based on legacy evidence.** Never rely on memory.
-- [ ] **Answer every `/speckit.clarify` question.** Record decisions.
-- [ ] **Have the team approve the plan before `/speckit.tasks`.** The plan is a shared artifact.
-- [ ] **Run `/speckit.analyze` and correct gaps before implementing.**
-- [ ] **Every REQ-ID has `source_legacy:` or `[GREENFIELD] + justification`.**
-
----
-
-## References
-
-- [Official Spec-Kit repository](https://github.com/github/spec-kit)
-- [Command cheat sheet](../09-cheat-sheets/spec-kit-workflow.md)
-- [Stage 2 Guide](../02-modern-spec/GUIDE.md)
+- [ ] **Lee primero `constitution.md`.** Confirma las tecnologías, los patrones y las restricciones del proyecto.
+- [ ] **Ejecuta `/speckit.specify` basándote en evidencia del legado.** Nunca dependas de la memoria.
+- [ ] **Responde todas las preguntas de `/speckit.clarify`.** Registra las decisiones.
+- [ ] **Haz que el equipo apruebe el plan antes de `/speckit.tasks`.** El plan es un artefacto compartido.
+- [ ] **Ejecuta `/speckit.analyze` y corrige las lagunas antes de implementar.**
+- [ ] **Cada REQ-ID tiene `source_legacy:` o `[GREENFIELD] + justificación`.**
 
 ---
 
-### Continue reading
+## Referencias
 
-| Previous | Next |
+- [Repositorio oficial de Spec-Kit](https://github.com/github/spec-kit)
+- [Ficha de comandos](../09-cheat-sheets/spec-kit-workflow.md)
+- [Guía de la Etapa 2](../02-modern-spec/GUIDE.md)
+
+---
+
+### Sigue leyendo
+
+| Anterior | Siguiente |
 |---|---|
-| [Concepts Index](00-README.md)<br/><sub>What you will learn and in what order.</sub> | [Agents and Personas](02-agents-and-personas.md)<br/><sub>The two context layers in Copilot Chat.</sub> |
+| [Índice de conceptos](00-README.md)<br/><sub>Qué aprenderás y en qué orden.</sub> | [Agentes y personas](02-agents-and-personas.md)<br/><sub>Las dos capas de contexto de Copilot Chat.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

@@ -1,62 +1,62 @@
 ---
 name: "setup-project"
-description: "Initialize a project's Copilot context-engineering scaffold: AGENTS.md, CODEMAP.md, and the .github instructions, prompts, and agents baseline."
+description: "Inicializa la estructura de ingeniería de contexto de Copilot de un proyecto: AGENTS.md, CODEMAP.md y la base de instrucciones, prompts y agentes de .github."
 argument-hint: "root=<repo-root>"
 agent: "tech-lead"
 tools: ["read", "search", "edit", "execute"]
 ---
 # /setup-project
 
-## Objective
+## Objetivo
 
-Bootstrap the Copilot context-engineering scaffold for a project that lacks one:
-`AGENTS.md`, `CODEMAP.md`, `.github/copilot-instructions.md`, and baseline
-`.github/instructions/`, `.github/prompts/`, and `.github/agents/` files. The
-result is stack-specific, scoped, and secret-free — ready for the team to extend.
+Inicializa la estructura de ingeniería de contexto de Copilot para un proyecto que no tenga una:
+`AGENTS.md`, `CODEMAP.md`, `.github/copilot-instructions.md` y archivos básicos de
+`.github/instructions/`, `.github/prompts/` y `.github/agents/`. El
+resultado es específico de las tecnologías, tiene un alcance delimitado y está libre de secretos, listo para que el equipo lo amplíe.
 
-## When to Invoke
+## Cuándo invocar
 
-At the start of a project, or when an existing project lacks a Copilot context
-surface. In this workshop the team creates `backend/`, `frontend/`, and `infra/`
-from scratch in Stage 3 — this prompt scaffolds the context files, never an
-application prototype.
+Al inicio de un proyecto o cuando un proyecto existente carece de una superficie de contexto
+de Copilot. En esta inmersión, el equipo crea `backend/`, `frontend/` e `infra/`
+desde cero en la etapa 3; este prompt crea la estructura de archivos de contexto, nunca un
+prototipo de aplicación.
 
-## Preconditions
+## Precondiciones
 
-- A repository root the team can write to
-- Agreement to use the approved toolchain in [`../copilot-instructions.md`](../copilot-instructions.md) (VS Code, GitHub Copilot Ask/Plan/Agent, Copilot CLI, Spec-Kit, GitHub, Docker Compose, Terraform)
+- Una raíz de repositorio en la que el equipo pueda escribir
+- Acuerdo de utilizar la cadena de herramientas aprobada en [`../copilot-instructions.md`](../copilot-instructions.md) (VS Code, GitHub Copilot Ask/Plan/Agent, Copilot CLI, Spec-Kit, GitHub, Docker Compose, Terraform)
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- The repository root path
-- The primary stack, if it cannot be detected from manifests
+- La ruta raíz del repositorio
+- Las tecnologías principales, si no pueden detectarse a partir de los manifiestos
 
-Ask the user for anything that is missing.
+Solicita a la persona usuaria cualquier información que falte.
 
-## What I Will Do
+## Lo que haré
 
-- Detect the stack from `package.json`, `pom.xml`, `requirements.txt`, or `*.csproj`
-- Create `AGENTS.md` with a stack summary and the verified build, test, and lint commands
-- Create a `CODEMAP.md` skeleton with `## Modules`, `## Data Flow`, and `## External Integrations`
-- Create `.github/copilot-instructions.md` with the team's language, tone, and security rules
-- Add baseline `.github/instructions/*.instructions.md` files, each with a specific `applyTo:` scope
-- Stage the changes without committing, and print the created files
-- Recommend running [`/audit-context`](persona-technical-lead-audit-context.prompt.md) and the [`../skills/context-audit/SKILL.md`](../skills/context-audit/SKILL.md) skill afterward
+- Detectar las tecnologías a partir de `package.json`, `pom.xml`, `requirements.txt` o `*.csproj`
+- Crear `AGENTS.md` con un resumen de las tecnologías y los comandos verificados de compilación, pruebas y lint
+- Crear una estructura inicial de `CODEMAP.md` con `## Módulos`, `## Flujo de datos` e `## Integraciones externas`
+- Crear `.github/copilot-instructions.md` con el idioma de la rama de destino, el tono y las reglas de seguridad del equipo
+- Añadir archivos básicos `.github/instructions/*.instructions.md`, cada uno con un alcance `applyTo:` específico
+- Preparar los cambios en el área de staging sin crear un commit y mostrar los archivos creados
+- Recomendar ejecutar después [`/audit-context`](persona-technical-lead-audit-context.prompt.md) y la habilidad [`../skills/context-audit/SKILL.md`](../skills/context-audit/SKILL.md)
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Create an application prototype, `backend/`, `frontend/`, or `infra/` — those are the team's Stage 3 work
-- Write a generic `AGENTS.md` — it must reflect the detected stack
-- Use `applyTo: "**"` — every instructions file gets a specific glob
-- Commit, or write any secret, credential, or `TODO` placeholder into the scaffold
-- Add a tool outside the approved toolchain — an exception is redirected to an ADR via [`../skills/adr-draft/SKILL.md`](../skills/adr-draft/SKILL.md)
+- Crear un prototipo de aplicación, `backend/`, `frontend/` ni `infra/`: son trabajo del equipo en la etapa 3
+- Escribir un `AGENTS.md` genérico: debe reflejar las tecnologías detectadas
+- Utilizar `applyTo: "**"`: cada archivo de instrucciones recibe un patrón glob específico
+- Crear commits ni escribir secretos, credenciales o marcadores de posición `TODO` en la estructura inicial
+- Añadir una herramienta fuera de la cadena aprobada: una excepción se redirige a un ADR mediante [`../skills/adr-draft/SKILL.md`](../skills/adr-draft/SKILL.md)
 
-## Output Format
+## Formato de salida
 
-A created-file report printed after staging. Example (illustrative):
+Un informe de archivos creados mostrado después de preparar los cambios en staging. Ejemplo (ilustrativo):
 
 ```markdown
-## Scaffold created — 6 files staged
+## Estructura inicial creada — 6 archivos preparados en staging
 
 - /repo/AGENTS.md
 - /repo/CODEMAP.md
@@ -65,62 +65,62 @@ A created-file report printed after staging. Example (illustrative):
 - /repo/.github/instructions/frontend.instructions.md  (applyTo: frontend/**/*.ts)
 - /repo/.github/prompts/README.md
 
-Suggested first commit: "chore: add Copilot context-engineering scaffold"
+Primer commit sugerido: "chore: añadir estructura de ingeniería de contexto de Copilot"
 
-Follow-up (manual):
-1. Fill CODEMAP.md once the first module exists.
-2. Run /audit-context to verify scopes.
-3. Review copilot-instructions.md security rules with the team.
+Seguimiento (manual):
+1. Completar CODEMAP.md cuando exista el primer módulo.
+2. Ejecutar /audit-context para verificar los alcances.
+3. Revisar con el equipo las reglas de seguridad de copilot-instructions.md.
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] `AGENTS.md` is specific to the detected stack, not generic
-- [ ] Every instructions file has a specific `applyTo:` scope (no `**`)
-- [ ] No secrets, credentials, or `TODO` placeholders are present
-- [ ] `.gitignore` is updated if new folders need tracking rules
-- [ ] Changes are staged but not committed, with the file list printed
-- [ ] A suggested commit message and three manual follow-ups are included
+- [ ] `AGENTS.md` es específico de las tecnologías detectadas, no genérico
+- [ ] Cada archivo de instrucciones tiene un alcance `applyTo:` específico (sin `**`)
+- [ ] No hay secretos, credenciales ni marcadores de posición `TODO`
+- [ ] `.gitignore` se actualiza si las carpetas nuevas necesitan reglas de seguimiento
+- [ ] Los cambios están preparados en staging, pero no incluidos en un commit, y se muestra la lista de archivos
+- [ ] Se incluyen un mensaje de commit sugerido y tres pasos manuales de seguimiento
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@tech-lead`. The team wants a clean Copilot context scaffold to build
-on.
+Eres el `@tech-lead`. El equipo quiere una estructura limpia de contexto de Copilot sobre la que
+construir.
 
-**Step 1 — Detect the stack.**
-Inspect `package.json`, `pom.xml`, `requirements.txt`, and `*.csproj` to identify
-languages, frameworks, and the build, test, and lint commands. If nothing is
-detectable, ask the team for the primary stack.
+**Paso 1 — Detecta las tecnologías.**
+Inspecciona `package.json`, `pom.xml`, `requirements.txt` y `*.csproj` para identificar
+lenguajes, marcos y comandos de compilación, pruebas y lint. Si no se puede detectar
+nada, solicita al equipo las tecnologías principales.
 
-**Step 2 — Write AGENTS.md.**
-Summarize the detected stack, code conventions, and the verified build, test, and
-lint commands. Keep it specific — a newcomer should learn the stack from this file
-alone.
+**Paso 2 — Escribe AGENTS.md.**
+Resume las tecnologías detectadas, las convenciones de código y los comandos verificados de compilación, pruebas y
+lint. Mantén la especificidad: una persona recién incorporada debería conocer las tecnologías solo con este
+archivo.
 
-**Step 3 — Write the CODEMAP.md skeleton.**
-Create `CODEMAP.md` with `## Modules`, `## Data Flow`, and `## External
-Integrations`. Leave the module list for the team to populate through
-[`/update-codemap`](persona-tech-writer-update-codemap.prompt.md) once modules exist.
+**Paso 3 — Escribe la estructura inicial de CODEMAP.md.**
+Crea `CODEMAP.md` con `## Módulos`, `## Flujo de datos` e `## Integraciones
+externas`. Deja la lista de módulos para que el equipo la complete mediante
+[`/update-codemap`](persona-tech-writer-update-codemap.prompt.md) cuando existan módulos.
 
-**Step 4 — Write copilot-instructions.md.**
-Record the team's language, tone, security rules, and the approved toolchain. Do
-not restate the whole global file — link to it and add only what is
-project-specific.
+**Paso 4 — Escribe copilot-instructions.md.**
+Registra el idioma por rama de destino (inglés en `main` y `develop`, portugués de Brasil en `portugues-br`, español en `espanol`), el tono y las reglas de seguridad del equipo y la cadena de herramientas aprobada.
+El idioma de la conversación no cambia esta política; nunca integres el árbol de documentación traducida en `main` ni en `develop`.
+No repitas todo el archivo global: enlázalo y añade solo lo específico del proyecto.
 
-**Step 5 — Add scoped instruction files.**
-For each detected area, add a `*.instructions.md` file with a specific `applyTo:`
-glob (for example, `backend/**/*.java`, `frontend/**/*.ts`). Follow the
-conventions in [`../instructions/README.md`](../instructions/README.md). Never use
+**Paso 5 — Añade archivos de instrucciones con alcance delimitado.**
+Para cada área detectada, añade un archivo `*.instructions.md` con un patrón glob `applyTo:`
+específico (por ejemplo, `backend/**/*.java`, `frontend/**/*.ts`). Sigue las
+convenciones de [`../instructions/README.md`](../instructions/README.md). Nunca utilices
 `applyTo: "**"`.
 
-**Step 6 — Stage and report.**
-Stage the changes with git but do not commit. Print the absolute paths of created
-files, a suggested first commit message, and three manual follow-ups.
+**Paso 6 — Prepara en staging e informa.**
+Prepara los cambios con git, pero no crees un commit. Muestra las rutas absolutas de los archivos
+creados, un mensaje sugerido para el primer commit y tres pasos manuales de seguimiento.
 
-Never write a secret or a placeholder into the scaffold, and never scaffold an
-application prototype — the team owns that.
+Nunca escribas un secreto ni un marcador de posición en la estructura inicial y nunca crees un
+prototipo de aplicación: eso corresponde al equipo.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
 /setup-project root=.

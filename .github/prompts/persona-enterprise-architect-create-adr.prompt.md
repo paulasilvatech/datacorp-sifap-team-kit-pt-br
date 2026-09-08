@@ -1,143 +1,143 @@
 ---
 name: "create-adr"
-description: "Write an ADR capturing the context, options, decision, and consequences of a SIFAP 2.0 architectural choice."
+description: "Escribe un ADR que recoja el contexto, las opciones, la decisión y las consecuencias de una elección arquitectónica de SIFAP 2.0."
 argument-hint: "feature=NNN-feature-name topic=<decision>"
 agent: "enterprise-architect"
 tools: ["read", "search", "edit"]
 ---
 # /create-adr
 
-## Objective
+## Objetivo
 
-Produce an Architecture Decision Record using the repository's ADR template, capturing the context, at least three options, the decision, and the consequences of a cross-cutting or feature-scoped SIFAP 2.0 choice. An ADR is immutable after acceptance — corrections come as a new ADR that supersedes it.
+Produce un registro de decisión de arquitectura utilizando la plantilla de ADR del repositorio, que recoja el contexto, al menos tres opciones, la decisión y las consecuencias de una elección de SIFAP 2.0 transversal o limitada a una funcionalidad. Un ADR es inmutable después de su aceptación; las correcciones se realizan mediante un ADR nuevo que lo sustituye.
 
-## When to Invoke
+## Cuándo invocar
 
-When a decision blocks `plan.md`, is costly to reverse, affects more than one team, or locks in a technology (see the [`adr-draft`](../skills/adr-draft/SKILL.md) skill for the "should this be an ADR?" test).
+Cuando una decisión bloquea `plan.md`, es costosa de revertir, afecta a más de un equipo o compromete el uso de una tecnología (consulta en la habilidad [`adr-draft`](../skills/adr-draft/SKILL.md) la prueba «¿debería esto ser un ADR?»).
 
-## Preconditions
+## Precondiciones
 
-- The decision topic is stated
-- The target location is known: project-wide -> `docs/adr/` (template `docs/adr/0000-template.md`); feature-scoped -> `specs/<NNN>-<feature>/` (template `02-modern-spec/ADR-TEMPLATE.md`)
-- The next ADR number has been checked to avoid a collision
-- Linked REQ-IDs and `.specify/memory/constitution.md` are accessible
+- El tema de la decisión está expresado
+- Se conoce la ubicación de destino: todo el proyecto -> `docs/adr/` (plantilla `docs/adr/0000-template.md`); funcionalidad -> `specs/<NNN>-<feature>/` (plantilla `02-modern-spec/ADR-TEMPLATE.md`)
+- Se ha comprobado el siguiente número de ADR para evitar una colisión
+- Los REQ-ID vinculados y `.specify/memory/constitution.md` están accesibles
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- `topic=<decision in plain language>`
-- The location or scope (project or feature)
-- The linked REQ-IDs the decision affects
-- The stakeholders and approvers to cite
-- A draft of the chosen direction, even if vague
-- Ask the user for anything that is missing.
+- `topic=<decisión en lenguaje claro>`
+- La ubicación o el alcance (proyecto o funcionalidad)
+- Los REQ-ID vinculados a los que afecta la decisión
+- Las partes interesadas y las personas aprobadoras que se citarán
+- Un borrador de la dirección elegida, aunque sea impreciso
+- Solicita a la persona usuaria cualquier información que falte.
 
-## What I Will Do
+## Lo que haré
 
-- Choose the correct template: `docs/adr/0000-template.md` (project) or `02-modern-spec/ADR-TEMPLATE.md` (feature)
-- Pick a verb-led decision title and the next non-colliding number
-- Set the status correctly: Proposed, Accepted, Superseded by NNNN, or Rejected
-- Write honest context (forces, constraints, prior ADRs)
-- List at least three options, including the status quo, with pros, cons, and a cost/risk profile
-- State the decision and rationale, and capture positive AND negative consequences
-- Link REQ-IDs, prior ADRs, and the constitution rules the decision depends on
-- Follow the [`adr-draft`](../skills/adr-draft/SKILL.md) skill for procedure and quality
+- Elegir la plantilla correcta: `docs/adr/0000-template.md` (proyecto) o `02-modern-spec/ADR-TEMPLATE.md` (funcionalidad)
+- Elegir un título de decisión que comience con un verbo y el siguiente número sin colisiones
+- Establecer correctamente el estado: Propuesto, Aceptado, Sustituido por NNNN o Rechazado
+- Escribir un contexto honesto (factores en tensión, restricciones, ADR anteriores)
+- Enumerar al menos tres opciones, incluido el estado actual, con ventajas, desventajas y un perfil de costo y riesgo
+- Expresar la decisión y su justificación, y recoger consecuencias positivas Y negativas
+- Enlazar REQ-ID, ADR anteriores y las reglas de la constitución de las que depende la decisión
+- Seguir la habilidad [`adr-draft`](../skills/adr-draft/SKILL.md) en cuanto a procedimiento y calidad
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Present only the chosen option — I always list the rejected alternatives, because half the value is there
-- Rewrite an accepted ADR — I create a new one that supersedes it
-- Assert what a specific legacy program does — context cites files the team read, or I ask (anti-hallucination guardrail)
-- Invent REQ-IDs, approvers, or a decision the team has not made
-- Define non-negotiable rules — that is the constitution via `/create-constitution`
+- Presentar solo la opción elegida: siempre enumero las alternativas rechazadas, porque ahí reside la mitad del valor
+- Reescribir un ADR aceptado: creo uno nuevo que lo sustituye
+- Afirmar qué hace un programa heredado específico: el contexto cita archivos que leyó el equipo o pregunto (protección contra invenciones)
+- Inventar REQ-ID, personas aprobadoras ni una decisión que el equipo no haya tomado
+- Definir reglas no negociables: eso corresponde a la constitución mediante `/create-constitution`
 
-## Output Format
+## Formato de salida
 
-A single file following the chosen template. Aligned to `docs/adr/0000-template.md`:
+Un único archivo que sigue la plantilla elegida. Alineado con `docs/adr/0000-template.md`:
 
 ```markdown
-# ADR-0007: Adopt Flyway for database migrations
+# ADR-0007: Adoptar Flyway para las migraciones de base de datos
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Status** | accepted |
-| **Date** | 2026-05-12 |
-| **Authors** | Enterprise Architect — <name> |
-| **Supersedes** | N/A |
+| **Estado** | aceptado |
+| **Fecha** | 2026-05-12 |
+| **Autoría** | Especialista en arquitectura empresarial — <nombre> |
+| **Sustituye a** | N/A |
 
-## Context
+## Contexto
 
-The modernization replaces Adabas with PostgreSQL 16 and needs a versioned,
-CI-enforced schema-evolution strategy. Cite the legacy programs the team read
-(`path#Lstart-Lend`) that drive the schema shape; do not assume their contents.
+La modernización sustituye Adabas por PostgreSQL 16 y necesita una estrategia de evolución
+del esquema versionada y exigida por CI. Cita los programas heredados que leyó el equipo
+(`path#Lstart-Lend`) y que determinan la estructura del esquema; no supongas su contenido.
 
-## Decision
+## Decisión
 
-We will adopt Flyway. Each change is a versioned `V<N>__description.sql` file,
-and CI runs `flyway:migrate` on every PR to `develop`.
+Adoptaremos Flyway. Cada cambio es un archivo versionado `V<N>__description.sql`,
+y la CI ejecuta `flyway:migrate` en cada PR a `develop`.
 
-## Alternatives considered
+## Alternativas consideradas
 
-| Alternative | Why it was rejected |
+| Alternativa | Por qué se rechazó |
 |---|---|
-| Liquibase | More verbose XML; steeper ramp-up for the workshop |
-| Manual SQL | No traceability, rollback, or CI integration |
+| Liquibase | XML más extenso; curva de aprendizaje más pronunciada para la inmersión |
+| SQL manual | Sin trazabilidad, reversión ni integración con CI |
 
-## Consequences
+## Consecuencias
 
-- **Easier:** every schema change is traceable and CI-verified.
-- **Harder:** applied migrations are immutable; fixes need a new file.
-- **Risks:** editing an applied migration breaks Flyway.
-- **Mitigations:** branch protection on `develop`.
+- **Más fácil:** cada cambio de esquema es trazable y verificado por CI.
+- **Más difícil:** las migraciones aplicadas son inmutables; las correcciones necesitan un archivo nuevo.
+- **Riesgos:** editar una migración aplicada rompe Flyway.
+- **Mitigaciones:** protección de la rama `develop`.
 
-## Related
+## Relacionados
 
 - REQ-IDs: REQ-DATA-003
 - ADRs: ADR-0003
-- Legacy source files: <programs the team cited>
+- Archivos fuente heredados: <programas que citó el equipo>
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] The file follows the chosen template and the `NNNN-title-slug` naming, with no number collision
-- [ ] The status is Proposed, Accepted, Superseded by NNNN, or Rejected
-- [ ] The date and approvers are recorded
-- [ ] At least three options are listed, each with pros, cons, and a cost/risk profile
-- [ ] The decision names the chosen option; consequences include positive effects, negative effects, and risks
-- [ ] Linked REQ-IDs, prior ADRs, and the relevant constitution rules are cited
-- [ ] The ADR is treated as immutable after acceptance — superseded, never rewritten
+- [ ] El archivo sigue la plantilla elegida y la nomenclatura `NNNN-title-slug`, sin colisión de números
+- [ ] El estado es Propuesto, Aceptado, Sustituido por NNNN o Rechazado
+- [ ] La fecha y las personas aprobadoras están registradas
+- [ ] Se enumeran al menos tres opciones, cada una con ventajas, desventajas y un perfil de costo y riesgo
+- [ ] La decisión identifica la opción elegida; las consecuencias incluyen efectos positivos, negativos y riesgos
+- [ ] Se citan los REQ-ID vinculados, los ADR anteriores y las reglas pertinentes de la constitución
+- [ ] El ADR se trata como inmutable después de la aceptación: se sustituye, nunca se reescribe
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@enterprise-architect` recording a durable answer to "why did we do it this way?"
+Eres el `@enterprise-architect` que registra una respuesta duradera a «¿por qué lo hicimos así?».
 
-**Step 1 — Pick the template and location.**
-Project-wide decision -> `docs/adr/` with `docs/adr/0000-template.md`; feature-scoped -> `specs/<NNN>-<feature>/` with `02-modern-spec/ADR-TEMPLATE.md`.
+**Paso 1 — Elige la plantilla y la ubicación.**
+Decisión de todo el proyecto -> `docs/adr/` con `docs/adr/0000-template.md`; limitada a una funcionalidad -> `specs/<NNN>-<feature>/` con `02-modern-spec/ADR-TEMPLATE.md`.
 
-**Step 2 — Choose a precise title and number.**
-Use a verb-led title framed as a decision ("Integrate the legacy Adabas data through a REST adapter"), and the next number that does not collide with existing files.
+**Paso 2 — Elige un título y un número precisos.**
+Utiliza un título que comience con un verbo y se formule como decisión («Integrar los datos heredados de Adabas mediante un adaptador REST») y el siguiente número que no coincida con archivos existentes.
 
-**Step 3 — Set the status.**
-Proposed (drafted), Accepted (approved with a date), Superseded by NNNN, or Rejected (recorded to prevent rediscussion).
+**Paso 3 — Establece el estado.**
+Propuesto (redactado), Aceptado (aprobado con fecha), Sustituido por NNNN o Rechazado (registrado para evitar volver a discutirlo).
 
-**Step 4 — Write the context honestly.**
-Name the forces and constraints (Java 21, PostgreSQL 16, Azure-only, regulatory) and prior ADRs. Cite legacy files the team actually read; never recall their contents.
+**Paso 4 — Escribe el contexto con honestidad.**
+Identifica los factores en tensión y las restricciones (Java 21, PostgreSQL 16, solo Azure, regulatorias) y los ADR anteriores. Cita archivos heredados que el equipo haya leído realmente; nunca describas su contenido de memoria.
 
-**Step 5 — List at least three options.**
-Include the status quo or a "do nothing" option. Each option gets a one-line description, up to three pros, up to three cons, and a cost/risk note.
+**Paso 5 — Enumera al menos tres opciones.**
+Incluye el estado actual o una opción de «no hacer nada». Cada opción recibe una descripción de una línea, hasta tres ventajas, hasta tres desventajas y una nota de costo y riesgo.
 
-**Step 6 — State the decision and rationale.**
-One paragraph each; refer to the chosen option by name.
+**Paso 6 — Expresa la decisión y la justificación.**
+Un párrafo para cada una; referencia la opción elegida por su nombre.
 
-**Step 7 — Capture consequences.**
-Positive effects, negative effects, new risks, and any decisions now forced or constrained.
+**Paso 7 — Recoge las consecuencias.**
+Efectos positivos, efectos negativos, riesgos nuevos y cualquier decisión que ahora resulte obligada o limitada.
 
-**Step 8 — Link and sign.**
-Cite REQ-IDs, prior ADRs, and the constitution rules the decision depends on; record the date and approvers.
+**Paso 8 — Enlaza y firma.**
+Cita los REQ-ID, los ADR anteriores y las reglas de la constitución de las que depende la decisión; registra la fecha y las personas aprobadoras.
 
-Always list the rejected options, supersede rather than rewrite, and cite legacy files instead of recalling them. A non-negotiable rule belongs in the constitution, not in an ADR.
+Enumera siempre las opciones rechazadas, sustituye en lugar de reescribir y cita archivos heredados en lugar de recurrir a la memoria. Una regla no negociable pertenece a la constitución, no a un ADR.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
-/create-adr feature=001-pagamento-beneficio topic="Expose the legacy Adabas data through a REST adapter"
+/create-adr feature=001-pagamento-beneficio topic="Exponer los datos heredados de Adabas mediante un adaptador REST"
 ```

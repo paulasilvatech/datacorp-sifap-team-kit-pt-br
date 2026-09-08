@@ -1,154 +1,154 @@
 ---
 name: "azure-resource-visualizer"
-description: "Use when the user wants a read-only Mermaid diagram of an existing Azure resource group or help understanding how deployed resources relate to each other. Examines resource groups, maps relationships, and generates a documented Mermaid architecture diagram. Triggers include \"diagram my resource group\", \"visualize Azure resources\", \"how do these resources connect\", and \"draw my architecture\". For a full design-and-deploy pipeline, use azure-architecture-autopilot."
+description: "Úsala cuando la persona quiera un diagrama Mermaid de solo lectura de un grupo de recursos existente de Azure o ayuda para comprender las relaciones entre recursos desplegados. Examina grupos de recursos, mapea relaciones y genera un diagrama Mermaid de arquitectura documentado. Los desencadenantes incluyen \"diagramar mi grupo de recursos\", \"visualizar recursos de Azure\", \"cómo se conectan estos recursos\" y \"dibujar mi arquitectura\". Para un flujo completo de diseño y despliegue, usa azure-architecture-autopilot."
 ---
-# Azure Resource Visualizer
+# Visualizador de recursos de Azure
 
-Examine Azure resource groups, understand their structure and relationships, and generate comprehensive Mermaid diagrams that clearly illustrate the architecture. This is a **read-only** analysis skill; it never modifies or deletes Azure resources.
+Examina grupos de recursos de Azure, comprende su estructura y relaciones y genera diagramas Mermaid completos que ilustren claramente la arquitectura. Esta es una skill de análisis de **solo lectura**; nunca modifica ni elimina recursos de Azure.
 
 > [!NOTE]
-> This skill depends on the **Azure MCP server** (or the `az` CLI) to list and describe resources. If neither is available, say so and request an exported resource inventory instead.
+> Esta skill depende del **servidor Azure MCP** (o de la CLI `az`) para enumerar y describir recursos. Si ninguno está disponible, indícalo y solicita en su lugar un inventario de recursos exportado.
 
-## When to invoke
+## Cuándo invocar
 
-- "Draw a Mermaid diagram of my production resource group."
-- "Help me understand how the resources in rg-sifap connect."
-- "Visualize the network and data flows in this subscription."
-- "Document the architecture of our deployed Azure environment."
+- "Dibuja un diagrama Mermaid de mi grupo de recursos de producción."
+- "Ayúdame a comprender cómo se conectan los recursos de rg-sifap."
+- "Visualiza la red y los flujos de datos de esta suscripción."
+- "Documenta la arquitectura de nuestro entorno desplegado en Azure."
 
-## Core responsibilities
+## Responsabilidades principales
 
-1. **Resource group discovery**: list available resource groups when one is not specified.
-2. **Deep resource analysis**: examine all resources, their configurations, and interdependencies.
-3. **Relationship mapping**: identify and document every connection between resources.
-4. **Diagram generation**: create a detailed, accurate Mermaid diagram.
-5. **Documentation**: produce a clear Markdown file with the embedded diagram.
+1. **Descubrimiento de grupos de recursos**: enumerar los grupos disponibles cuando no se especifique uno.
+2. **Análisis profundo de recursos**: examinar todos los recursos, sus configuraciones e interdependencias.
+3. **Mapeo de relaciones**: identificar y documentar cada conexión entre recursos.
+4. **Generación de diagramas**: crear un diagrama Mermaid detallado y preciso.
+5. **Documentación**: producir un archivo Markdown claro con el diagrama integrado.
 
-## Workflow
+## Flujo de trabajo
 
-### Step 1: Resource group selection
+### Paso 1: Selección del grupo de recursos
 
-If the user has not specified a resource group:
+Si la persona no ha especificado un grupo de recursos:
 
-1. Query available resource groups (Azure MCP tools, or `az group list` as a fallback).
-2. Present a numbered list of resource groups with their locations.
-3. Ask the user to select one by number or name and wait for the response.
+1. Consulta los grupos disponibles (herramientas Azure MCP o `az group list` como alternativa).
+2. Presenta una lista numerada de grupos de recursos con sus ubicaciones.
+3. Pide a la persona que seleccione uno por número o nombre y espera la respuesta.
 
-If a resource group is specified, validate that it exists and proceed.
+Si se especifica un grupo de recursos, valida que exista y continúa.
 
-### Step 2: Resource discovery and analysis
+### Paso 2: Descubrimiento y análisis de recursos
 
-1. **Query all resources** in the resource group (Azure MCP tools, or `az resource list --resource-group <name> --output json`).
-2. **Analyze each resource** and capture: name and type, SKU/tier, location, key configuration, network settings (VNets, subnets, private endpoints), identity and access (managed identity, RBAC), and dependencies.
-3. **Map relationships**:
-   - **Network**: VNet peering, subnet assignments, NSG rules, private endpoints.
-   - **Data flow**: apps to databases, functions to storage, API Management to backends.
-   - **Identity**: managed identities connecting to resources.
-   - **Configuration**: app settings pointing to Key Vaults, connection strings.
-   - **Dependencies**: parent-child and required-resource relationships.
+1. **Consulta todos los recursos** del grupo (herramientas Azure MCP o `az resource list --resource-group <name> --output json`).
+2. **Analiza cada recurso** y recopila: nombre y tipo, SKU o nivel, ubicación, configuración principal, ajustes de red (VNet, subredes, puntos de conexión privados), identidad y acceso (identidad administrada, RBAC) y dependencias.
+3. **Mapea las relaciones**:
+   - **Red**: emparejamiento de VNet, asignaciones de subredes, reglas NSG y puntos de conexión privados.
+   - **Flujo de datos**: aplicaciones a bases de datos, funciones a almacenamiento, API Management a backends.
+   - **Identidad**: identidades administradas que se conectan a recursos.
+   - **Configuración**: ajustes de aplicación que apuntan a Key Vault y cadenas de conexión.
+   - **Dependencias**: relaciones entre recursos principales y secundarios y con recursos obligatorios.
 
-### Step 3: Diagram construction
+### Paso 3: Construcción del diagrama
 
-Create a detailed Mermaid diagram using `graph TB` (top-to-bottom) or `graph LR` (left-to-right):
+Crea un diagrama Mermaid detallado con `graph TB` (de arriba abajo) o `graph LR` (de izquierda a derecha):
 
 ```mermaid
 graph TB
-    subgraph "Resource Group: name"
-        subgraph "Network Layer"
-            VNET[Virtual Network<br/>10.0.0.0/16]
-            SUBNET1[Subnet: web<br/>10.0.1.0/24]
-            NSG[Network Security Group]
+    subgraph "Grupo de recursos: name"
+        subgraph "Capa de red"
+            VNET[Red virtual<br/>10.0.0.0/16]
+            SUBNET1[Subred: web<br/>10.0.1.0/24]
+            NSG[Grupo de seguridad de red]
         end
-        subgraph "Compute Layer"
+        subgraph "Capa de proceso"
             APP[App Service<br/>Plan: P1v2]
-            FUNC[Function App<br/>Runtime: .NET 8]
+            FUNC[Function App<br/>Entorno de ejecución: .NET 8]
         end
-        subgraph "Data Layer"
+        subgraph "Capa de datos"
             SQL[Azure SQL Database<br/>DTU: S1]
-            STORAGE[Storage Account<br/>Standard LRS]
+            STORAGE[Cuenta de almacenamiento<br/>Standard LRS]
         end
-        subgraph "Security and Identity"
+        subgraph "Seguridad e identidad"
             KV[Key Vault]
-            MI[Managed Identity]
+            MI[Identidad administrada]
         end
     end
-    APP -->|"HTTPS requests"| FUNC
-    FUNC -->|"SQL connection"| SQL
-    FUNC -->|"Blob/Queue access"| STORAGE
-    APP -->|"Uses identity"| MI
-    MI -->|"Access secrets"| KV
+    APP -->|"Solicitudes HTTPS"| FUNC
+    FUNC -->|"Conexión SQL"| SQL
+    FUNC -->|"Acceso a Blob/Queue"| STORAGE
+    APP -->|"Usa identidad"| MI
+    MI -->|"Accede a secretos"| KV
     VNET --> SUBNET1
     SUBNET1 --> APP
-    NSG -->|"Rules applied to"| SUBNET1
+    NSG -->|"Reglas aplicadas a"| SUBNET1
 ```
 
-Diagram requirements:
+Requisitos del diagrama:
 
-- **Group by layer or purpose**: Network, Compute, Data, Security, Monitoring.
-- **Include details**: SKUs, tiers, and important settings in node labels (use `<br/>` for line breaks).
-- **Label all connections**: describe what flows between resources (data, identity, network).
-- **Use meaningful node IDs**: abbreviations that make sense (`APP`, `FUNC`, `SQL`, `KV`).
-- **Connection types**: `-->` for data flow or dependencies, `-.->` for optional/conditional, `==>` for critical/primary paths.
+- **Agrupa por capa o finalidad**: red, proceso, datos, seguridad y supervisión.
+- **Incluye detalles**: SKU, niveles y ajustes importantes en las etiquetas de nodos (usa `<br/>` para saltos de línea).
+- **Etiqueta todas las conexiones**: describe qué fluye entre recursos (datos, identidad, red).
+- **Usa ID de nodos significativos**: abreviaturas que tengan sentido (`APP`, `FUNC`, `SQL`, `KV`).
+- **Tipos de conexión**: `-->` para flujo de datos o dependencias, `-.->` para conexiones opcionales o condicionales, `==>` para rutas críticas o principales.
 
-Include the configuration detail that matters per resource type:
+Incluye los detalles de configuración pertinentes para cada tipo de recurso:
 
-| Resource type | Include in the label |
+| Tipo de recurso | Incluir en la etiqueta |
 |---|---|
-| App Service | Plan tier (B1, S1, P1v2) |
-| Functions | Runtime (.NET, Python, Node) |
-| Databases | Tier (Basic, Standard, Premium) |
-| Storage | Redundancy (LRS, GRS, ZRS) |
-| VNets | Address space |
-| Subnets | Address range |
+| App Service | Nivel del plan (B1, S1, P1v2) |
+| Functions | Entorno de ejecución (.NET, Python, Node) |
+| Bases de datos | Nivel (Basic, Standard, Premium) |
+| Storage | Redundancia (LRS, GRS, ZRS) |
+| VNet | Espacio de direcciones |
+| Subredes | Rango de direcciones |
 
-### Step 4: File creation
+### Paso 4: Creación del archivo
 
-Use [assets/template-architecture.md](./assets/template-architecture.md) as the template and create `<resource-group-name>-architecture.md` with: a header (resource group, subscription, region), a 2-3 paragraph summary, a resource inventory table, the Mermaid diagram, relationship details, and notes. Create it in the workspace root or a `docs/` folder if one exists.
+Usa [assets/template-architecture.md](./assets/template-architecture.md) como plantilla y crea `<resource-group-name>-architecture.md` con: un encabezado (grupo de recursos, suscripción, región), un resumen de 2-3 párrafos, una tabla de inventario de recursos, el diagrama Mermaid, detalles de las relaciones y notas. Créalo en la raíz del espacio de trabajo o en una carpeta `docs/` si existe.
 
-## Operating guidelines
+## Directrices de operación
 
-| Standard | Requirement |
+| Estándar | Requisito |
 |---|---|
-| Accuracy | Verify every resource detail before including it |
-| Completeness | Include every resource in the group; omit nothing |
-| Clarity | Use clear labels and logical grouping |
-| Detail | Include configuration details that affect architecture |
-| Relationships | Show all significant connections, not just the obvious ones |
+| Precisión | Verificar cada detalle de los recursos antes de incluirlo |
+| Integridad | Incluir todos los recursos del grupo, sin omitir ninguno |
+| Claridad | Usar etiquetas claras y agrupaciones lógicas |
+| Detalle | Incluir detalles de configuración que afecten a la arquitectura |
+| Relaciones | Mostrar todas las conexiones significativas, no solo las evidentes |
 
-| Always | Never |
+| Siempre | Nunca |
 |---|---|
-| List resource groups if none is specified | Skip resources because they seem unimportant |
-| Wait for the user's selection before proceeding | Assume relationships without verification |
-| Analyze every resource in the group | Produce incomplete or placeholder diagrams |
-| Include configuration details in node labels | Omit details that affect the architecture |
-| Group resources logically with subgraphs | Generate invalid Mermaid syntax |
-| Keep the analysis read-only | Modify or delete Azure resources |
+| Enumerar los grupos de recursos si no se especifica ninguno | Omitir recursos porque parezcan poco importantes |
+| Esperar la selección de la persona antes de continuar | Suponer relaciones sin verificarlas |
+| Analizar cada recurso del grupo | Generar diagramas incompletos o con marcadores de posición |
+| Incluir detalles de configuración en las etiquetas de nodos | Omitir detalles que afecten a la arquitectura |
+| Agrupar recursos de forma lógica con subgrafos | Generar sintaxis Mermaid inválida |
+| Mantener el análisis en modo de solo lectura | Modificar o eliminar recursos de Azure |
 
-Edge cases:
+Casos límite:
 
-- **No resources found**: inform the user and verify the resource group name.
-- **Permission issues**: explain what is missing and suggest checking RBAC.
-- **Complex architectures (50+ resources)**: consider multiple diagrams by layer.
-- **Cross-resource-group dependencies**: note external dependencies in the diagram notes.
+- **No se encuentran recursos**: informa a la persona y verifica el nombre del grupo de recursos.
+- **Problemas de permisos**: explica qué falta y sugiere comprobar RBAC.
+- **Arquitecturas complejas (50 recursos o más)**: considera varios diagramas por capa.
+- **Dependencias entre grupos de recursos**: anota las dependencias externas en las notas del diagrama.
 
-## Output template
+## Plantilla de salida
 
-The skill produces `<resource-group-name>-architecture.md`. Below its H1 title (`Azure Architecture: <resource group>`) it contains a header block, an inventory table, the diagram, and relationship notes:
+La skill produce `<resource-group-name>-architecture.md`. Bajo su título H1 (`Arquitectura de Azure: <grupo de recursos>`), contiene un bloque de encabezado, una tabla de inventario, el diagrama y notas de relaciones:
 
 ````markdown
-**Subscription**: sub-sifap-prod
-**Region**: eastus
-**Resource Count**: 4
+**Suscripción**: sub-sifap-prod
+**Región**: eastus
+**Número de recursos**: 4
 
-## Resource Inventory
+## Inventario de recursos
 
-| Resource | Type | Tier/SKU | Location | Notes |
+| Recurso | Tipo | Nivel/SKU | Ubicación | Notas |
 |---|---|---|---|---|
-| app-prod-001 | App Service | P1v2 | eastus | Production web app |
-| sql-prod-001 | Azure SQL | S1 | eastus | Primary database |
-| kv-prod-001 | Key Vault | standard | eastus | Application secrets |
+| app-prod-001 | App Service | P1v2 | eastus | Aplicación web de producción |
+| sql-prod-001 | Azure SQL | S1 | eastus | Base de datos principal |
+| kv-prod-001 | Key Vault | standard | eastus | Secretos de aplicación |
 
-## Architecture Diagram
+## Diagrama de arquitectura
 
 ```mermaid
 graph TB
@@ -156,27 +156,27 @@ graph TB
         APP[App Service<br/>P1v2]
         SQL[Azure SQL<br/>S1]
         KV[Key Vault]
-        MI[Managed Identity]
+        MI[Identidad administrada]
     end
-    APP -->|"Uses identity"| MI
-    MI -->|"Reads secrets"| KV
-    APP -->|"SQL connection"| SQL
+    APP -->|"Usa identidad"| MI
+    MI -->|"Lee secretos"| KV
+    APP -->|"Conexión SQL"| SQL
 ```
 
-## Relationship Details
+## Detalles de las relaciones
 
-- App Service authenticates to Key Vault and SQL through a managed identity.
+- App Service se autentica en Key Vault y SQL mediante una identidad administrada.
 ````
 
-## Quality gate
+## Puerta de calidad
 
-- [ ] A valid resource group was identified and confirmed before analysis.
-- [ ] Every resource in the group was discovered and analyzed.
-- [ ] All significant relationships (network, data, identity, configuration) are mapped.
-- [ ] The Mermaid diagram uses logical subgraphs and renders with valid syntax.
-- [ ] A complete `<resource-group-name>-architecture.md` file was created from the template.
-- [ ] The analysis remained read-only; no Azure resource was modified.
+- [ ] Se identificó y confirmó un grupo de recursos válido antes del análisis.
+- [ ] Se descubrió y analizó cada recurso del grupo.
+- [ ] Se mapearon todas las relaciones significativas (red, datos, identidad y configuración).
+- [ ] El diagrama Mermaid usa subgrafos lógicos y se representa con sintaxis válida.
+- [ ] Se creó un archivo completo `<resource-group-name>-architecture.md` a partir de la plantilla.
+- [ ] El análisis se mantuvo en modo de solo lectura; no se modificó ningún recurso de Azure.
 
-## License
+## Licencia
 
-Bundled material in this skill is provided under the [MIT License](LICENSE.txt).
+El material incluido en esta skill se proporciona bajo la [licencia MIT](LICENSE.txt).

@@ -1,40 +1,40 @@
-# Pipeline Variables, Variable Groups & Agents
+# Variables de canalizaciones, grupos de variables y agentes
 
-## Table of Contents
+## Índice
 
-- [Pipeline Variables](#pipeline-variables)
-- [Variable Groups](#variable-groups)
-- [Pipeline Folders](#pipeline-folders)
-- [Agent Pools](#agent-pools)
-- [Agent Queues](#agent-queues)
-- [Agents](#agents)
+- [Variables de canalizaciones](#variables-de-canalizaciones)
+- [Grupos de variables](#grupos-de-variables)
+- [Carpetas de canalizaciones](#carpetas-de-canalizaciones)
+- [Grupos de agentes](#grupos-de-agentes)
+- [Colas de agentes](#colas-de-agentes)
+- [Agentes](#agentes)
 
 ---
 
-## Pipeline Variables
+## Variables de canalizaciones
 
-### List Variables
+### Enumerar variables
 
 ```bash
 az pipelines variable list --pipeline-id {pipeline-id}
 ```
 
-### Create Variable
+### Crear una variable
 
 ```bash
-# Non-secret variable
+# Variable no secreta
 az pipelines variable create \
   --name {var-name} \
   --value {var-value} \
   --pipeline-id {pipeline-id}
 
-# Secret variable
+# Variable secreta
 az pipelines variable create \
   --name {var-name} \
   --secret true \
   --pipeline-id {pipeline-id}
 
-# Secret with prompt
+# Secreto solicitado de forma interactiva
 az pipelines variable create \
   --name {var-name} \
   --secret true \
@@ -42,7 +42,7 @@ az pipelines variable create \
   --pipeline-id {pipeline-id}
 ```
 
-### Update Variable
+### Actualizar una variable
 
 ```bash
 az pipelines variable update \
@@ -50,7 +50,7 @@ az pipelines variable update \
   --value {new-value} \
   --pipeline-id {pipeline-id}
 
-# Update secret variable
+# Actualizar una variable secreta
 az pipelines variable update \
   --name {var-name} \
   --secret true \
@@ -58,28 +58,28 @@ az pipelines variable update \
   --pipeline-id {pipeline-id}
 ```
 
-### Delete Variable
+### Eliminar una variable
 
 ```bash
 az pipelines variable delete --name {var-name} --pipeline-id {pipeline-id} --yes
 ```
 
-## Variable Groups
+## Grupos de variables
 
-### List Variable Groups
+### Enumerar grupos de variables
 
 ```bash
 az pipelines variable-group list
 az pipelines variable-group list --output table
 ```
 
-### Show Variable Group
+### Mostrar un grupo de variables
 
 ```bash
 az pipelines variable-group show --id {group-id}
 ```
 
-### Create Variable Group
+### Crear un grupo de variables
 
 ```bash
 az pipelines variable-group create \
@@ -88,7 +88,7 @@ az pipelines variable-group create \
   --authorize true
 ```
 
-### Update Variable Group
+### Actualizar un grupo de variables
 
 ```bash
 az pipelines variable-group update \
@@ -97,79 +97,79 @@ az pipelines variable-group update \
   --description "Updated description"
 ```
 
-### Delete Variable Group
+### Eliminar un grupo de variables
 
 ```bash
 az pipelines variable-group delete --id {group-id} --yes
 ```
 
-### Variable Group Variables
+### Variables de un grupo de variables
 
 ```bash
-# List variables
+# Enumerar variables
 az pipelines variable-group variable list --group-id {group-id}
 
-# Create non-secret variable
+# Crear una variable no secreta
 az pipelines variable-group variable create \
   --group-id {group-id} \
   --name {var-name} \
   --value {var-value}
 
-# Create secret variable (will prompt for value if not provided)
+# Crear una variable secreta (se solicitará el valor si no se proporciona)
 az pipelines variable-group variable create \
   --group-id {group-id} \
   --name {var-name} \
   --secret true
 
-# Create secret with environment variable
+# Crear un secreto mediante una variable de entorno
 export AZURE_DEVOPS_EXT_PIPELINE_VAR_MySecret=secretvalue
 az pipelines variable-group variable create \
   --group-id {group-id} \
   --name MySecret \
   --secret true
 
-# Update variable
+# Actualizar una variable
 az pipelines variable-group variable update \
   --group-id {group-id} \
   --name {var-name} \
   --value {new-value} \
   --secret false
 
-# Delete variable
+# Eliminar una variable
 az pipelines variable-group variable delete \
   --group-id {group-id} \
   --name {var-name}
 ```
 
-## Pipeline Folders
+## Carpetas de canalizaciones
 
-### List Folders
+### Enumerar carpetas
 
 ```bash
 az pipelines folder list
 ```
 
-### Create Folder
+### Crear una carpeta
 
 ```bash
 az pipelines folder create --path 'folder/subfolder' --description "My folder"
 ```
 
-### Delete Folder
+### Eliminar una carpeta
 
 ```bash
 az pipelines folder delete --path 'folder/subfolder'
 ```
 
-### Update Folder
+### Actualizar una carpeta
 
 ```bash
 az pipelines folder update --path 'old-folder' --new-path 'new-folder'
 ```
 
-## Agent Pools
+## Grupos de agentes
 
-### List Agent Pools
+### Enumerar grupos de agentes
 
 ```bash
 az pipelines pool list
@@ -177,36 +177,36 @@ az pipelines pool list --pool-type automation
 az pipelines pool list --pool-type deployment
 ```
 
-### Show Agent Pool
+### Mostrar un grupo de agentes
 
 ```bash
 az pipelines pool show --pool-id {pool-id}
 ```
 
-## Agent Queues
+## Colas de agentes
 
-### List Agent Queues
+### Enumerar colas de agentes
 
 ```bash
 az pipelines queue list
 az pipelines queue list --pool-name {pool-name}
 ```
 
-### Show Agent Queue
+### Mostrar una cola de agentes
 
 ```bash
 az pipelines queue show --id {queue-id}
 ```
 
-## Agents
+## Agentes
 
-### List Agents in Pool
+### Enumerar los agentes de un grupo
 
 ```bash
 az pipelines agent list --pool-id {pool-id}
 ```
 
-### Show Agent Details
+### Mostrar los detalles de un agente
 
 ```bash
 az pipelines agent show --agent-id {agent-id} --pool-id {pool-id}

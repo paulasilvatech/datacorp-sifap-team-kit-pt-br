@@ -1,54 +1,54 @@
 ---
 name: "pipeline"
-description: "Create a hardened GitHub Actions CI/CD pipeline for SIFAP 2.0 with build, test, security, and environment-promotion gates."
+description: "Crea una canalización de CI/CD reforzada de GitHub Actions para SIFAP 2.0 con puertas de compilación, pruebas, seguridad y promoción entre entornos."
 argument-hint: "target=backend|frontend|infra component=<name>"
 agent: "devops-engineer"
 tools: ["read", "search", "edit"]
 ---
 # /pipeline
 
-## Objective
+## Objetivo
 
-Create or refactor a **GitHub Actions** workflow for SIFAP 2.0 that builds, tests, scans, and promotes artifacts through `develop` → `main` (production) with explicit gates. The workflow matches the house style already in `.github/workflows/ci.yml`: actions pinned by full commit SHA with a trailing `# vN` comment, a least-privilege `permissions:` block, a `concurrency` group, and `timeout-minutes` on every job. The deliverable lives in `.github/workflows/`.
+Crea o refactoriza un flujo de trabajo de **GitHub Actions** para SIFAP 2.0 que compile, pruebe, analice y promueva artefactos mediante `develop` → `main` (producción) con puertas explícitas. El flujo sigue el estilo del proyecto ya presente en `.github/workflows/ci.yml`: acciones fijadas por SHA completo de commit con un comentario final `# vN`, un bloque `permissions:` de privilegio mínimo, un grupo `concurrency` y `timeout-minutes` en cada trabajo. El entregable se encuentra en `.github/workflows/`.
 
-## When to Invoke
+## Cuándo invocar
 
-When a bounded context reaches Stage 3/4 and needs automated build, test, and deployment, or when an existing workflow must be hardened (OIDC, SHA pinning, signing).
+Cuando un contexto delimitado llega a las etapas 3/4 y necesita compilación, pruebas y despliegue automatizados, o cuando debe reforzarse un flujo de trabajo existente (OIDC, fijación por SHA, firma).
 
-## Preconditions
+## Precondiciones
 
-- The target component exists (`backend/`, `frontend/`, or `infra/`) or is being created in this PR
-- GitHub environments (`dev`, `prod`) are configured with required reviewers
-- Azure federated credentials (OIDC) and the container registry are available to the repository
+- El componente de destino existe (`backend/`, `frontend/` o `infra/`) o se está creando en esta PR
+- Los entornos de GitHub (`dev`, `prod`) están configurados con revisores obligatorios
+- Las credenciales federadas de Azure (OIDC) y el registro de contenedores están disponibles para el repositorio
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- The pipeline target: Java backend service, Next.js frontend app, IaC module, or end-to-end orchestration
-- The branch model (feature branches cut from `develop`, promoting `develop` → `main`; see `00-GIT-WORKFLOW.md`)
-- The GitHub environments and their required reviewers
-- The container registry (for example Azure Container Registry) and any compliance needs (SBOM, signed images)
+- El destino de la canalización: servicio de backend Java, aplicación de frontend Next.js, módulo de IaC u orquestación de extremo a extremo
+- El modelo de ramas (ramas de funcionalidad creadas a partir de `develop`, con promoción `develop` → `main`; consulta `00-GIT-WORKFLOW.md`)
+- Los entornos de GitHub y sus revisores obligatorios
+- El registro de contenedores (por ejemplo, Azure Container Registry) y las necesidades de cumplimiento normativo (SBOM, imágenes firmadas)
 
-Ask the user for anything that is missing.
+Solicita a la persona usuaria cualquier información que falte.
 
-## What I Will Do
+## Lo que haré
 
-- Read [`../skills/pipeline-hardening/SKILL.md`](../skills/pipeline-hardening/SKILL.md) and apply its Tier 1–3 controls
-- Choose the trigger surface and organize jobs by stage (build, quality, security, package, deploy)
-- Authenticate to Azure with OIDC — no long-lived service-principal secret
-- Pin every action by SHA with a `# vN` comment and set a least-privilege `permissions:` block, `concurrency` group, and `timeout-minutes`, mirroring `.github/workflows/ci.yml`
-- Emit deployment traceability (merge SHA and related `REQ-ID`s)
+- Leer [`../skills/pipeline-hardening/SKILL.md`](../skills/pipeline-hardening/SKILL.md) y aplicar sus controles de niveles 1–3
+- Elegir los eventos de activación y organizar los trabajos por etapa (compilación, calidad, seguridad, empaquetado, despliegue)
+- Autenticar en Azure con OIDC, sin secretos de entidad de servicio de larga duración
+- Fijar cada acción por SHA con un comentario `# vN` y establecer un bloque `permissions:` de privilegio mínimo, un grupo `concurrency` y `timeout-minutes`, siguiendo `.github/workflows/ci.yml`
+- Emitir trazabilidad del despliegue (SHA de integración y `REQ-ID` relacionados)
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Invent action SHAs, secret names, or registry hosts — unknown SHAs are resolved from the action's release and secrets are referenced by name, never inlined
-- Write application code (`@builder`), author Terraform modules (`/iac-module`), or change requirements (`@requirements-engineer`)
-- Store an Azure secret in GitHub when OIDC works, or grant `permissions: write-all`
-- Pin an action to a floating tag (`@v3`, `@main`) instead of a SHA
-- Deploy to production without an approval gate, or hardcode a secret anywhere in YAML
+- Inventar SHA de acciones, nombres de secretos ni hosts de registros: los SHA desconocidos se obtienen de la versión publicada de la acción y los secretos se referencian por nombre, nunca se insertan directamente
+- Escribir código de aplicación (`@builder`), crear módulos Terraform (`/iac-module`) ni cambiar requisitos (`@requirements-engineer`)
+- Almacenar un secreto de Azure en GitHub cuando funcione OIDC ni conceder `permissions: write-all`
+- Fijar una acción a una etiqueta mutable (`@v3`, `@main`) en lugar de un SHA
+- Desplegar a producción sin una puerta de aprobación ni incorporar directamente un secreto en ningún lugar del YAML
 
-## Output Format
+## Formato de salida
 
-The primary artifact is the workflow YAML. Example (backend service):
+El artefacto principal es el YAML del flujo de trabajo. Ejemplo (servicio de backend):
 
 ```yaml
 name: backend-ci
@@ -68,7 +68,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build, test, scan
+    name: Compilar, probar, analizar
     runs-on: ubuntu-latest
     timeout-minutes: 20
     defaults:
@@ -82,9 +82,9 @@ jobs:
           distribution: temurin
           java-version: "21"
           cache: maven
-      - name: Build and test
+      - name: Compilar y probar
         run: ./mvnw -B verify
-      - name: Scan filesystem (fail on Critical/High)
+      - name: Analizar el sistema de archivos (fallar ante gravedad crítica/alta)
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           scan-type: fs
@@ -92,63 +92,63 @@ jobs:
           exit-code: "1"
 
   deploy-prod:
-    name: Deploy to production
+    name: Desplegar a producción
     needs: build
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    environment: prod # required reviewers enforce two approvals
+    environment: prod # Los revisores obligatorios exigen dos aprobaciones
     permissions:
       contents: read
-      id-token: write # OIDC federated login; no stored Azure secret
+      id-token: write # Inicio de sesión federado OIDC; sin secreto de Azure almacenado
     steps:
-      - name: Azure login (OIDC)
+      - name: Iniciar sesión en Azure (OIDC)
         uses: azure/login@7184910d9eb2b1c5e48f7073824a90609bb9b6d6 # v2
         with:
           client-id: ${{ vars.AZURE_CLIENT_ID }}
           tenant-id: ${{ vars.AZURE_TENANT_ID }}
           subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-      - name: Install cosign and sign the image by digest
+      - name: Instalar cosign y firmar la imagen por digest
         uses: sigstore/cosign-installer@398d4b0eeef1380460a10c8013a76f728fb906ac # v3
 ```
 
-Accompany the YAML with: required secrets/variables (by name and purpose), branch-protection settings (required checks `build`, `quality`, `security`), and a one-line promotion flow (`PR → build+scan → develop → deploy-dev → main → 2 approvals → deploy-prod`).
+Acompaña el YAML con: secretos y variables necesarios (por nombre y propósito), configuración de protección de ramas (comprobaciones obligatorias `build`, `quality`, `security`) y un flujo de promoción de una línea (`PR → build+scan → develop → deploy-dev → main → 2 aprobaciones → deploy-prod`).
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] OIDC authentication; no Azure secret is stored in GitHub
-- [ ] Every action is pinned to a commit SHA with a `# vN` comment
-- [ ] `build`, `quality`, and `security` are required PR checks
-- [ ] The top-level `permissions:` is `contents: read`, elevated only where a job needs it
-- [ ] A `concurrency` group prevents two deployments to the same environment at once
-- [ ] `timeout-minutes` is defined on every job
-- [ ] Production deployments require approvals and carry the merge SHA and related `REQ-ID`s
+- [ ] Autenticación OIDC; no se almacena ningún secreto de Azure en GitHub
+- [ ] Cada acción está fijada a un SHA de commit con un comentario `# vN`
+- [ ] `build`, `quality` y `security` son comprobaciones obligatorias de PR
+- [ ] El `permissions:` de nivel superior es `contents: read` y se amplía solo donde un trabajo lo necesita
+- [ ] Un grupo `concurrency` impide dos despliegues simultáneos al mismo entorno
+- [ ] `timeout-minutes` está definido en cada trabajo
+- [ ] Los despliegues de producción requieren aprobaciones e incluyen el SHA de integración y los `REQ-ID` relacionados
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@devops-engineer`. The team needs a workflow that matches the repo's existing CI conventions exactly.
+Eres el `@devops-engineer`. El equipo necesita un flujo de trabajo que coincida exactamente con las convenciones de CI existentes del repositorio.
 
-**Step 1 — Load the hardening controls.**
-Read [`../skills/pipeline-hardening/SKILL.md`](../skills/pipeline-hardening/SKILL.md) and open `.github/workflows/ci.yml` to copy the house style (SHA pins with `# vN`, `permissions:`, `concurrency`, `timeout-minutes`).
+**Paso 1 — Carga los controles de refuerzo.**
+Lee [`../skills/pipeline-hardening/SKILL.md`](../skills/pipeline-hardening/SKILL.md) y abre `.github/workflows/ci.yml` para copiar el estilo del proyecto (fijación por SHA con `# vN`, `permissions:`, `concurrency`, `timeout-minutes`).
 
-**Step 2 — Choose the trigger surface.**
-`pull_request` for build and test, `push` to protected branches for deployment, and `workflow_dispatch` for manual rollback. Avoid `pull_request_target` unless forks genuinely need secrets.
+**Paso 2 — Elige los eventos de activación.**
+`pull_request` para compilación y pruebas, `push` a ramas protegidas para despliegue y `workflow_dispatch` para reversión manual. Evita `pull_request_target` salvo que los repositorios derivados necesiten realmente secretos.
 
-**Step 3 — Organize jobs by stage.**
-`build` (compile and unit-test: `./mvnw -B verify` or `pnpm install --frozen-lockfile && pnpm build && pnpm test`), `quality` (lint, type-check, coverage upload), `security` (Trivy, dependency scan, secret scan on the diff), `package` (build image, push by digest, generate an SBOM with syft, sign with cosign), `deploy-dev` (automatic on `develop`), and `deploy-prod` (on `main`, requires approvals).
+**Paso 3 — Organiza los trabajos por etapa.**
+`build` (compilar y ejecutar pruebas unitarias: `./mvnw -B verify` o `pnpm install --frozen-lockfile && pnpm build && pnpm test`), `quality` (lint, comprobación de tipos, carga de cobertura), `security` (Trivy, análisis de dependencias, búsqueda de secretos en las diferencias), `package` (compilar imagen, enviarla por digest, generar un SBOM con syft, firmar con cosign), `deploy-dev` (automático en `develop`) y `deploy-prod` (en `main`, requiere aprobaciones).
 
-**Step 4 — Authenticate with OIDC.**
-Use `azure/login` with federated credentials and `id-token: write` scoped to the deploy job only. Never store a service-principal secret.
+**Paso 4 — Autentica con OIDC.**
+Utiliza `azure/login` con credenciales federadas e `id-token: write` limitado únicamente al trabajo de despliegue. Nunca almacenes un secreto de entidad de servicio.
 
-**Step 5 — Pin, cache, and bound every job.**
-Pin every action by SHA with a `# vN` comment. Cache Maven by `pom.xml` hash and use the pnpm store cache. Set `timeout-minutes` per job and a workflow-level `concurrency` group.
+**Paso 5 — Fija, almacena en caché y limita cada trabajo.**
+Fija cada acción por SHA con un comentario `# vN`. Utiliza caché de Maven según el hash de `pom.xml` y la caché del almacén de pnpm. Establece `timeout-minutes` por trabajo y un grupo `concurrency` a nivel de flujo de trabajo.
 
-**Step 6 — Enforce gates and traceability.**
-Make `build`, `quality`, and `security` required checks via branch protection. Tag the deployed image with the merge commit SHA and the related `REQ-ID`s from the PR description, and expose them in the deployment description.
+**Paso 6 — Exige puertas y trazabilidad.**
+Convierte `build`, `quality` y `security` en comprobaciones obligatorias mediante protección de ramas. Etiqueta la imagen desplegada con el SHA del commit de integración y los `REQ-ID` relacionados de la descripción de la PR, y muéstralos en la descripción del despliegue.
 
-The top-level `permissions:` defaults to `contents: read` and is elevated only where needed. OIDC only — no long-lived Azure secret and no hardcoded secret in YAML. Every action is SHA-pinned with a `# vN` comment, and production deploys behind an approval gate.
+El `permissions:` de nivel superior utiliza `contents: read` de forma predeterminada y se amplía solo donde sea necesario. Solo OIDC: sin secretos de Azure de larga duración ni secretos incorporados directamente en YAML. Cada acción está fijada por SHA con un comentario `# vN`, y los despliegues de producción pasan por una puerta de aprobación.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
 /pipeline target=backend component=<service>

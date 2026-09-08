@@ -1,57 +1,59 @@
 ---
-description: "Use when creating or reviewing GitHub Actions, CI/CD workflows, YAML pipeline gates, build checks, and deployment automation."
+description: "Utiliza al crear o revisar GitHub Actions, flujos de trabajo de CI/CD, puertas de canalizaciones YAML, comprobaciones de compilación y automatización de despliegues."
 applyTo: ".github/workflows/**,.github/actions/**,**/action.yml,**/action.yaml"
 ---
 
-# CI/CD Conventions — GitHub Actions Gates
+# Convenciones de CI/CD — Puertas de GitHub Actions
 
-This file activates when you edit workflows under `.github/workflows/`, composite actions under `.github/actions/`, or any `action.yml`/`action.yaml`. It teaches how to structure the pipeline, pin actions, scope permissions, and keep the gates honest. The two live workflows — [`ci.yml`](../workflows/ci.yml) and [`spec-quality.yml`](../workflows/spec-quality.yml) — are the reference; read them before changing a gate.
+Este archivo se activa al editar flujos de trabajo en `.github/workflows/`, acciones compuestas en `.github/actions/` o cualquier `action.yml`/`action.yaml`. Enseña a estructurar la canalización, fijar acciones, delimitar permisos y mantener las puertas fieles a lo que comprueban. Los dos flujos de trabajo activos, [`ci.yml`](../workflows/ci.yml) y [`spec-quality.yml`](../workflows/spec-quality.yml), son la referencia; léelos antes de cambiar una puerta.
 
-## The Live Gates
+## Las puertas activas
 
-| Workflow · Job | What it enforces | Blocking? |
+| Flujo de trabajo · Trabajo | Qué exige | ¿Bloqueante? |
 |---|---|---|
-| `ci.yml` · `detect-changes` | `dorny/paths-filter` sets `backend`/`frontend`/`infra` outputs so downstream jobs run only on relevant changes | n/a |
-| `ci.yml` · `natural-format` | Fails when Natural source uses comma decimal format declarations such as `(P9,2)` instead of the Natural CE period form `(P9.2)` | Yes |
-| `ci.yml` · `backend` | JDK 21 (temurin) + `./mvnw -B verify`; uploads the Jacoco report | Yes |
-| `ci.yml` · `frontend` | pnpm 9 + Node 20; `pnpm lint`, `pnpm typecheck`, `pnpm test --run --coverage` | Yes |
-| `ci.yml` · `infra` | `terraform fmt -check -recursive`, then `init -backend=false` + `validate` per module | Yes |
-| `spec-quality.yml` · `markdown-lint` | `markdownlint-cli2` over `**/*.md` | Yes |
-| `spec-quality.yml` · `spec-traceability` | Reports REQ-IDs in `specs/` not yet referenced by a test (emits `::warning::`) | No |
-| `spec-quality.yml` · `legacy-traceability` | Every REQ-ID in `specs/` must carry a valid `source_legacy:` line | Yes |
+| `ci.yml` · `detect-changes` | `dorny/paths-filter` establece las salidas `backend`/`frontend`/`infra` para que los trabajos posteriores solo se ejecuten ante cambios relevantes | No corresponde |
+| `ci.yml` · `natural-format` | Falla cuando el código fuente Natural utiliza declaraciones de formato decimal con coma como `(P9,2)` en lugar de la forma con punto de Natural CE `(P9.2)` | Sí |
+| `ci.yml` · `backend` | JDK 21 (temurin) + `./mvnw -B verify`; carga el informe de Jacoco | Sí |
+| `ci.yml` · `frontend` | pnpm 9 + Node 20; `pnpm lint`, `pnpm typecheck`, `pnpm test --run --coverage` | Sí |
+| `ci.yml` · `infra` | `terraform fmt -check -recursive`, después `init -backend=false` + `validate` por módulo | Sí |
+| `spec-quality.yml` · `markdown-lint` | `markdownlint-cli2` sobre `**/*.md` | Sí |
+| `spec-quality.yml` · `spec-traceability` | Informa de los REQ-ID en `specs/` que aún no referencia una prueba (emite `::warning::`) | No |
+| `spec-quality.yml` · `legacy-traceability` | Cada REQ-ID en `specs/` debe incluir una línea `source_legacy:` válida | Sí |
+| `pages.yml` · `build` | Resuelve los tres snapshots de idioma, ejecuta pruebas unitarias y de navegador, y rechaza archivos, enlaces, anclas o descargas originales incompletos | Sí |
+| `pages.yml` · `deploy` | Verifica de nuevo la visibilidad de Pages; un repositorio privado no puede publicar con acceso público o desconocido | Sí |
 
 > [!IMPORTANT]
-> `legacy-traceability` fails the build; `spec-traceability` only warns. See [`requirements.instructions.md`](requirements.instructions.md) for the exact `source_legacy:` format the gate accepts.
+> `legacy-traceability` hace fallar la compilación; `spec-traceability` solo advierte. Consulta en [`requirements.instructions.md`](requirements.instructions.md) el formato exacto de `source_legacy:` que acepta la puerta.
 
-## Pin Every Action by Commit SHA
+## Fija cada acción mediante el SHA del commit
 
-Reference actions by full 40-character commit SHA, with the human-readable tag in a trailing comment. Tags are mutable; SHAs are not.
+Referencia las acciones mediante el SHA completo de 40 caracteres del commit, con la etiqueta legible en un comentario al final. Las etiquetas son mutables; los SHA no.
 
 ```yaml
-# Correct — immutable reference
+# Correcto: referencia inmutable
 - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
-# Wrong — a tag can be moved to malicious code
+# Incorrecto: una etiqueta puede trasladarse a código malicioso
 - uses: actions/checkout@v6
 ```
 
-## Least-Privilege Permissions
+## Permisos de privilegio mínimo
 
-Declare `permissions` at the top of every workflow with the narrowest scope, then widen per job only where needed.
+Declara `permissions` al principio de cada flujo de trabajo con el alcance más reducido y amplíalo por trabajo solo donde sea necesario.
 
 ```yaml
 permissions:
-  contents: read # default for the whole workflow
+  contents: read # Valor predeterminado para todo el flujo de trabajo
 
 jobs:
   detect-changes:
     permissions:
       contents: read
-      pull-requests: read # only this job needs it
+      pull-requests: read # Solo este trabajo lo necesita
 ```
 
-## Path-Filtered, Conditional Jobs
+## Trabajos condicionales filtrados por ruta
 
-Gate heavy jobs behind `detect-changes` so a docs-only PR does not run Maven or Terraform.
+Condiciona los trabajos pesados a `detect-changes` para que una PR que solo cambia documentación no ejecute Maven ni Terraform.
 
 ```yaml
 backend:
@@ -59,9 +61,9 @@ backend:
   if: needs.detect-changes.outputs.backend == 'true'
 ```
 
-## Concurrency and Timeouts
+## Concurrencia y tiempos de espera
 
-Every workflow cancels superseded runs, and every job sets a `timeout-minutes` so a hung step cannot burn the runner.
+Cada flujo de trabajo cancela las ejecuciones reemplazadas y cada trabajo establece `timeout-minutes` para que un paso bloqueado no agote los recursos del ejecutor.
 
 ```yaml
 concurrency:
@@ -69,48 +71,48 @@ concurrency:
   cancel-in-progress: true
 ```
 
-## Deployment with OIDC (Forward-Looking)
+## Despliegue con OIDC (previsión futura)
 
-No deploy job exists yet. When you add one, authenticate to Azure with OIDC federation — never a stored client secret — and request `id-token: write` only on that job.
+Todavía no existe ningún trabajo de despliegue. Cuando añadas uno, autentícate en Azure mediante federación OIDC, nunca con un secreto de cliente almacenado, y solicita `id-token: write` solo en ese trabajo.
 
 ```yaml
 permissions:
-  id-token: write # request the short-lived OIDC token
+  id-token: write # Solicita el token OIDC de corta duración
   contents: read
 steps:
-  - uses: azure/login@<full-sha> # pin it
+  - uses: azure/login@<full-sha> # Fija la referencia
     with:
       client-id: ${{ vars.AZURE_CLIENT_ID }}
       tenant-id: ${{ vars.AZURE_TENANT_ID }}
       subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
 ```
 
-Deployed workloads authenticate service-to-service with Managed Identity (see [`infrastructure.instructions.md`](infrastructure.instructions.md)); hardening checklists live in the [`pipeline-hardening`](../skills/pipeline-hardening/SKILL.md) skill.
+Las cargas de trabajo desplegadas se autentican entre servicios mediante identidades administradas (Managed Identity; consulta [`infrastructure.instructions.md`](infrastructure.instructions.md)); las listas de verificación de refuerzo se encuentran en la habilidad [`pipeline-hardening`](../skills/pipeline-hardening/SKILL.md).
 
-## Conventions
+## Convenciones
 
-| Rule | Rationale |
+| Regla | Justificación |
 |---|---|
-| Pin actions by full commit SHA | Prevents supply-chain tag hijacking |
-| `permissions:` block on every workflow, `contents: read` default | Least privilege by construction |
-| `concurrency` + `cancel-in-progress` | No wasted or racing runs on the same ref |
-| `timeout-minutes` on every job | A stuck step fails fast |
-| OIDC federation, never a stored cloud secret | No long-lived credentials in the repo |
+| Fijar las acciones mediante el SHA completo del commit | Evita el secuestro de etiquetas en la cadena de suministro |
+| Bloque `permissions:` en cada flujo de trabajo, con `contents: read` como valor predeterminado | Privilegio mínimo desde el diseño |
+| `concurrency` + `cancel-in-progress` | Evita ejecuciones desperdiciadas o en competencia sobre la misma referencia |
+| `timeout-minutes` en cada trabajo | Un paso bloqueado falla rápidamente |
+| Federación OIDC, nunca un secreto de nube almacenado | Sin credenciales de larga duración en el repositorio |
 
-## Do / Do Not
+## Qué hacer / Qué no hacer
 
-| Do | Do not |
+| Qué hacer | Qué no hacer |
 |---|---|
-| Reference `@<sha> # vN` | Reference `@v4`, `@main`, or a branch |
-| Grant `id-token: write` per deploy job | Grant `write-all` at workflow level |
-| Read the workflow before editing a gate | Guess what a gate checks |
-| Let `detect-changes` skip irrelevant jobs | Run every job on every PR |
+| Referenciar `@<sha> # vN` | Referenciar `@v4`, `@main` o una rama |
+| Conceder `id-token: write` por trabajo de despliegue | Conceder `write-all` a nivel de flujo de trabajo |
+| Leer el flujo de trabajo antes de editar una puerta | Adivinar qué comprueba una puerta |
+| Dejar que `detect-changes` omita los trabajos irrelevantes | Ejecutar todos los trabajos en cada PR |
 
-## Checklist Before Opening a PR
+## Lista de verificación antes de abrir una PR
 
-- [ ] Every `uses:` is pinned to a full commit SHA with a version comment
-- [ ] The workflow declares a top-level `permissions:` block scoped to least privilege
-- [ ] Each job sets `timeout-minutes`, and the workflow sets `concurrency`
-- [ ] New gates are described accurately in the relevant instruction file
-- [ ] Any cloud step uses OIDC, not a stored secret, and requests `id-token: write` narrowly
-- [ ] `markdownlint-cli2` and the existing CI jobs pass locally where reproducible
+- [ ] Cada `uses:` está fijado a un SHA completo de commit con un comentario de versión
+- [ ] El flujo de trabajo declara un bloque `permissions:` de nivel superior con alcance de privilegio mínimo
+- [ ] Cada trabajo establece `timeout-minutes` y el flujo de trabajo establece `concurrency`
+- [ ] Las nuevas puertas se describen con precisión en el archivo de instrucciones correspondiente
+- [ ] Cada paso de nube utiliza OIDC, no un secreto almacenado, y solicita `id-token: write` con un alcance reducido
+- [ ] `markdownlint-cli2` y los trabajos de CI existentes se superan localmente cuando es posible reproducirlos

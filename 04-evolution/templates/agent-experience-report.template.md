@@ -1,71 +1,71 @@
 ---
 
-title: "Template: Agent Experience Report"
-description: "Retrospective skeleton with 5 questions for /final-experience-report"
-author: "Paula Silva, AI-Native Software Engineer, Americas Global Black Belt at Microsoft"
+title: "Plantilla: informe de experiencia con agentes"
+description: "Estructura de retrospectiva con 5 preguntas para /final-experience-report"
+author: "Paula Silva, ingeniera de software nativo de IA, Global Black Belt para las Américas en Microsoft"
 date: "2026-04-29"
 version: "1.0.0"
 status: "approved"
 tags: ["template", "retrospective", "evolution", "stage-4"]
 ---
 
-<!-- How to use: run /final-experience-report. The team answers; the agent formats. -->
+<!-- Uso: ejecuta /final-experience-report. El equipo responde; el agente da formato. -->
 
-# Agent Experience Report — <!-- placeholder: Team Name -->
+# Informe de experiencia con agentes — <!-- placeholder: Nombre del equipo -->
 
-![Agent-experience-report template](https://img.shields.io/badge/Template-agent--experience--report-737373?style=flat-square) ![Copy — do not edit the original](https://img.shields.io/badge/Copy-do%20not%20edit%20the%20original-A3A3A3?style=flat-square)
+![Plantilla de informe de experiencia con agentes](https://img.shields.io/badge/Template-agent--experience--report-737373?style=flat-square) ![Copia: no edites el original](https://img.shields.io/badge/Copy-do%20not%20edit%20the%20original-A3A3A3?style=flat-square)
 
-> **Path:** [Team Kit](../../README.md) › [Stage 4](../README.md) › Templates › **agent-experience-report**
+> **Ruta:** [Kit del equipo](../../README.md) › [Etapa 4](../README.md) › Plantillas › **agent-experience-report**
 
 > [!NOTE]
-> This file is a TEMPLATE. Copy it to your team's repository and fill it with actual data. Do not edit the original.
+> Este archivo es una PLANTILLA. Cópiala al repositorio de tu equipo y complétala con datos reales. No edites el original.
 
 ---
 
-## Metadata
+## Metadatos
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Team** | `<!-- placeholder -->` |
-| **Date** | `<!-- placeholder -->` |
-| **Completed stages** | `<!-- placeholder -->` |
-| **Agents used** | `<!-- placeholder -->` |
+| **Equipo** | `<!-- placeholder -->` |
+| **Fecha** | `<!-- placeholder -->` |
+| **Etapas completadas** | `<!-- placeholder -->` |
+| **Agentes utilizados** | `<!-- placeholder -->` |
 
 ---
 
-## Reflections
+## Reflexiones
 
-### 1. Most useful agent
+### 1. Agente más útil
 
-`<!-- placeholder: team response -->`
+`<!-- placeholder: respuesta del equipo -->`
 
-### 2. Most surprising failure mode
+### 2. Modo de fallo más sorprendente
 
-`<!-- placeholder: team response -->`
+`<!-- placeholder: respuesta del equipo -->`
 
-### 3. What you would change
+### 3. Qué cambiarían
 
-`<!-- placeholder: team response -->`
+`<!-- placeholder: respuesta del equipo -->`
 
-### 4. Production confidence level
+### 4. Nivel de confianza para producción
 
-`<!-- placeholder: team response — score from 1 to 10 and explanation -->`
+`<!-- placeholder: respuesta del equipo; puntuación de 1 a 10 y explicación -->`
 
-### 5. One thing to take back
+### 5. Algo que se llevarían de esta experiencia
 
-`<!-- placeholder: team response -->`
+`<!-- placeholder: respuesta del equipo -->`
 
 ---
 
 > [!IMPORTANT]
-> Definition of Done: all 5 questions answered in the team's own words; metadata complete.
+> Definición de terminado: las 5 preguntas respondidas con las propias palabras del equipo; metadatos completos.
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Stage 4 GUIDE](../GUIDE.md)<br/><sub>Step-by-step instructions.</sub> | [Team report](../agent-experience-report.md)<br/><sub>Where you fill it in.</sub> |
+| [GUÍA de la Etapa 4](../GUIDE.md)<br/><sub>Instrucciones paso a paso.</sub> | [Informe del equipo](../agent-experience-report.md)<br/><sub>Donde debes completarlo.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Volver al índice del kit](../../README.md)</sub>

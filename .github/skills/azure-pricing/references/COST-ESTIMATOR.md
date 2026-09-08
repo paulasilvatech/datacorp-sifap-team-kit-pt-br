@@ -1,148 +1,148 @@
-# Cost Estimator Reference
+# Referencia para estimar costos
 
-Formulas and patterns for converting Azure unit prices into monthly and annual cost estimates.
+Fórmulas y patrones para convertir precios unitarios de Azure en estimaciones de costos mensuales y anuales.
 
-## Standard Time-Based Calculations
+## Cálculos estándar basados en el tiempo
 
-### Hours per Month
+### Horas por mes
 
-Azure uses **730 hours/month** as the standard billing period (365 days × 24 hours / 12 months).
+Azure usa **730 horas/mes** como período de facturación estándar (365 días × 24 horas / 12 meses).
 
 ```
-Monthly Cost = Unit Price per Hour × 730
-Annual Cost  = Monthly Cost × 12
+Costo mensual = Precio unitario por hora × 730
+Costo anual   = Costo mensual × 12
 ```
 
-### Common Multipliers
+### Multiplicadores habituales
 
-| Period | Hours | Calculation |
+| Período | Horas | Cálculo |
 |--------|-------|-------------|
-| 1 Hour | 1 | Unit price |
-| 1 Day | 24 | Unit price × 24 |
-| 1 Week | 168 | Unit price × 168 |
-| 1 Month | 730 | Unit price × 730 |
-| 1 Year | 8,760 | Unit price × 8,760 |
+| 1 hora | 1 | Precio unitario |
+| 1 día | 24 | Precio unitario × 24 |
+| 1 semana | 168 | Precio unitario × 168 |
+| 1 mes | 730 | Precio unitario × 730 |
+| 1 año | 8,760 | Precio unitario × 8,760 |
 
-## Service-Specific Formulas
+## Fórmulas específicas por servicio
 
-### Virtual Machines (Compute)
-
-```
-Monthly Cost = hourly price × 730
-```
-
-For VMs that run only business hours (8h/day, 22 days/month):
+### Máquinas virtuales (proceso)
 
 ```
-Monthly Cost = hourly price × 176
+Costo mensual = precio por hora × 730
+```
+
+Para máquinas virtuales que solo funcionan en horario laboral (8h/día, 22 días/mes):
+
+```
+Costo mensual = precio por hora × 176
 ```
 
 ### Azure Functions
 
 ```
-Execution Cost = price per execution × number of executions
-Compute Cost   = price per GB-s × (memory in GB × execution time in seconds × number of executions)
-Total Monthly  = Execution Cost + Compute Cost
+Costo de ejecución = precio por ejecución × número de ejecuciones
+Costo de proceso   = precio por GB-s × (memoria en GB × tiempo de ejecución en segundos × número de ejecuciones)
+Total mensual     = Costo de ejecución + Costo de proceso
 ```
 
-Free grant: 1M executions and 400,000 GB-s per month.
+Asignación gratuita: 1M de ejecuciones y 400,000 GB-s al mes.
 
 ### Azure Blob Storage
 
 ```
-Storage Cost   = price per GB × storage in GB
-Transaction Cost = price per 10,000 ops × (operations / 10,000)
-Egress Cost    = price per GB × egress in GB
-Total Monthly  = Storage Cost + Transaction Cost + Egress Cost
+Costo de almacenamiento = precio por GB × almacenamiento en GB
+Costo de transacciones = precio por 10,000 operaciones × (operaciones / 10,000)
+Costo de salida de datos = precio por GB × salida de datos en GB
+Total mensual = Costo de almacenamiento + Costo de transacciones + Costo de salida de datos
 ```
 
 ### Azure Cosmos DB
 
-#### Provisioned Throughput
+#### Rendimiento aprovisionado
 
 ```
-Monthly Cost = (RU/s / 100) × price per 100 RU/s × 730
+Costo mensual = (RU/s / 100) × precio por 100 RU/s × 730
 ```
 
-#### Serverless
+#### Sin servidor
 
 ```
-Monthly Cost = (total RUs consumed / 1,000,000) × price per 1M RUs
+Costo mensual = (total de RU consumidas / 1,000,000) × precio por 1M de RU
 ```
 
 ### Azure SQL Database
 
-#### DTU Model
+#### Modelo DTU
 
 ```
-Monthly Cost = price per DTU × DTUs × 730
+Costo mensual = precio por DTU × DTU × 730
 ```
 
-#### vCore Model
+#### Modelo vCore
 
 ```
-Monthly Cost = vCore price × vCores × 730  +  storage price per GB × storage GB
+Costo mensual = precio de vCore × vCores × 730  +  precio de almacenamiento por GB × GB de almacenamiento
 ```
 
 ### Azure Kubernetes Service (AKS)
 
 ```
-Monthly Cost = node VM price × 730 × number of nodes
+Costo mensual = precio de la máquina virtual del nodo × 730 × número de nodos
 ```
 
-Control plane is free for standard tier.
+El plano de control es gratuito en el nivel estándar.
 
 ### Azure App Service
 
 ```
-Monthly Cost = plan price × 730 (for hourly-priced plans)
+Costo mensual = precio del plan × 730 (para planes con precio por hora)
 ```
 
-Or flat monthly price for fixed-tier plans.
+O un precio mensual fijo para planes de nivel fijo.
 
 ### Azure OpenAI
 
 ```
-Monthly Cost = (input tokens / 1000) × input price per 1K tokens
-             + (output tokens / 1000) × output price per 1K tokens
+Costo mensual = (tokens de entrada / 1000) × precio de entrada por 1K de tokens
+              + (tokens de salida / 1000) × precio de salida por 1K de tokens
 ```
 
-## Reservation vs. Pay-As-You-Go Comparison
+## Comparación de reservas frente a pago por uso
 
-When presenting pricing options, always show the comparison:
+Al presentar opciones de precios, muestra siempre la comparación:
 
 ```
-| Pricing Model | Monthly Cost | Annual Cost | Savings vs. PAYG |
+| Modelo de precios | Costo mensual | Costo anual | Ahorro frente a PAYG |
 |---------------|-------------|-------------|------------------|
-| Pay-As-You-Go | $X | $Y | — |
-| 1-Year Reserved | $A | $B | Z% |
-| 3-Year Reserved | $C | $D | W% |
-| Savings Plan (1yr) | $E | $F | V% |
-| Savings Plan (3yr) | $G | $H | U% |
-| Spot (if available) | $I | N/A | T% |
+| Pago por uso | $X | $Y | — |
+| Reserva de 1 año | $A | $B | Z% |
+| Reserva de 3 años | $C | $D | W% |
+| Plan de ahorro (1 año) | $E | $F | V% |
+| Plan de ahorro (3 años) | $G | $H | U% |
+| Spot (si está disponible) | $I | N/A | T% |
 ```
 
-Savings percentage formula:
+Fórmula del porcentaje de ahorro:
 
 ```
-Savings % = ((PAYG Price - Reserved Price) / PAYG Price) × 100
+Ahorro % = ((Precio PAYG - Precio reservado) / Precio PAYG) × 100
 ```
 
-## Cost Summary Table Template
+## Plantilla de tabla de resumen de costos
 
-Always present results in this format:
+Presenta siempre los resultados con este formato:
 
 ```markdown
-| Service | SKU | Region | Unit Price | Unit | Monthly Est. | Annual Est. |
+| Servicio | SKU | Región | Precio unitario | Unidad | Est. mensual | Est. anual |
 |---------|-----|--------|-----------|------|-------------|-------------|
-| Virtual Machines | Standard_D4s_v5 | East US | $0.192/hr | 1 Hour | $140.16 | $1,681.92 |
+| Virtual Machines | Standard_D4s_v5 | East US | $0.192/hr | 1 hora | $140.16 | $1,681.92 |
 ```
 
-## Tips
+## Consejos
 
-- Always clarify the **usage pattern** before estimating (24/7 vs. business hours vs. sporadic).
-- For **storage**, ask about expected data volume and access patterns.
-- For **databases**, ask about throughput requirements (RU/s, DTUs, or vCores).
-- For **serverless** services, ask about expected invocation count and duration.
-- Round to 2 decimal places for display.
-- Note that prices are in **USD** unless otherwise specified.
+- Aclara siempre el **patrón de uso** antes de estimar (24/7, horario laboral o uso esporádico).
+- Para **almacenamiento**, pregunta por el volumen de datos esperado y los patrones de acceso.
+- Para **bases de datos**, pregunta por los requisitos de rendimiento (RU/s, DTU o vCores).
+- Para servicios **sin servidor**, pregunta por el número y la duración esperados de las invocaciones.
+- Redondea a 2 decimales para la presentación.
+- Indica que los precios están en **USD**, salvo que se especifique otra moneda.

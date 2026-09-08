@@ -1,75 +1,75 @@
-# Developer — Copilot Kit
+# Desarrollador — Kit de Copilot
 
-> **Track:** [Team Kit](../../README.md) › [Personas](../OVERVIEW.md) › **Developer**
+> **Ruta:** [Kit del equipo](../../README.md) › [Personas](../OVERVIEW.md) › **Desarrollador**
 
-**Reference kit for the Developer persona in the SIFAP modernization workshop.**
+**Kit de referencia para la persona Desarrollador en la inmersión de modernización de SIFAP.**
 
-![Persona](https://img.shields.io/badge/Persona-Developer-171717?style=flat-square) ![Pair 3](https://img.shields.io/badge/Par-3%20%C2%B7%20Implementa%C3%A7%C3%A3o-404040?style=flat-square) ![Stage 3](https://img.shields.io/badge/Est%C3%A1gio-3%20%C2%B7%20Implementa%C3%A7%C3%A3o-737373?style=flat-square)
+![Persona](https://img.shields.io/badge/Persona-Developer-171717?style=flat-square) ![Pareja 3](https://img.shields.io/badge/Par-3%20%C2%B7%20Implementa%C3%A7%C3%A3o-404040?style=flat-square) ![Etapa 3](https://img.shields.io/badge/Est%C3%A1gio-3%20%C2%B7%20Implementa%C3%A7%C3%A3o-737373?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Person taking the Developer persona in the workshop |
-| **Focus** | Java 21 + Next.js 15 implementation, TDD, bug fixing |
-| **SDLC phase** | Stage 3 — Implementation; Stage 4 — Evolution |
-| **Expected outcome** | Backend + frontend for the prioritized slice with passing tests |
+| **Público objetivo** | Quien asume la persona Desarrollador en la inmersión |
+| **Enfoque** | Implementación Java 21 + Next.js 15, TDD y corrección de errores |
+| **Fase del SDLC** | Etapa 3 — Implementación; Etapa 4 — Evolución |
+| **Resultado esperado** | Backend + frontend de la porción priorizada, con pruebas aprobadas |
 
-Read first: [PERSONA.md](PERSONA.md).
+Lee primero: [PERSONA.md](PERSONA.md).
 
 ---
 
-## Concept
+## Concepto
 
-The Developer transforms EARS specifications into executable code. In the SIFAP (Payment Inspection and Administration System) modernization, this persona translates Natural programs and DDM/Adabas models into Java 21 with Spring Boot 3.3, JPA/Hibernate, and PostgreSQL 16, while also implementing the frontend in Next.js 15 with TypeScript.
+El Desarrollador transforma las especificaciones EARS en código ejecutable. En la modernización de SIFAP (Sistema de Fiscalización y Administración de Pagos), esta persona traduce programas Natural y modelos DDM/Adabas a Java 21 con Spring Boot 3.3, JPA/Hibernate y PostgreSQL 16, e implementa también el frontend en Next.js 15 con TypeScript.
 
-Why it matters: without the Developer, requirements remain text. This persona turns the proof of concept into tested, mergeable software.
+Por qué importa: sin el Desarrollador, los requisitos siguen siendo texto. Esta persona convierte la prueba de concepto en software probado y listo para integrarse.
 
-## Persona kit
+## Kit de la persona
 
-All active artifacts live in the repository root `.github/` directory. This folder is a reference; edit the files under `.github/` when maintenance is needed.
+Todos los artefactos activos residen en el directorio `.github/` de la raíz del repositorio. Esta carpeta es una referencia; edita los archivos de `.github/` cuando necesiten mantenimiento.
 
-| File | Type | Purpose |
+| Archivo | Tipo | Propósito |
 |---|---|---|
-| `PERSONA.md` | Profile | Developer responsibilities, stages, prompts, and rubrics |
-| `.github/agents/implementer.agent.md` | Agent | Implementation, TDD, and bug fixing |
+| `PERSONA.md` | Perfil | Responsabilidades, etapas, prompts y rúbricas del Desarrollador |
+| `.github/agents/implementer.agent.md` | Agente | Implementación, TDD y corrección de errores |
 | `.github/prompts/persona-developer-implement.prompt.md` | Prompt | `/implement` |
 | `.github/prompts/persona-developer-fix-bug.prompt.md` | Prompt | `/fix-bug` |
 | `.github/prompts/persona-developer-tdd.prompt.md` | Prompt | `/tdd` |
 | `.github/prompts/persona-developer-refactor.prompt.md` | Prompt | `/refactor` |
 
 > [!TIP]
-> If the facilitator requests a local MCP configuration and this kit has `mcp.json`, copy only that file to `.vscode/mcp.json`.
+> Si la persona facilitadora solicita una configuración MCP local y este kit tiene `mcp.json`, copia solo ese archivo a `.vscode/mcp.json`.
 
-## Where active artifacts live
+## Dónde residen los artefactos activos
 
-- Agents: `.github/agents/`
+- Agentes: `.github/agents/`
 - Prompts: `.github/prompts/persona-*.prompt.md`
 - Skills: `.github/skills/`
-- Instructions: `.github/instructions/`
+- Instrucciones: `.github/instructions/`
 
-## Best practices
+## Prácticas recomendadas
 
-- [ ] **Write tests before or alongside the code.** When the design is clear, write the test first. Every commit includes tests.
-- [ ] **Keep PRs small.** One topic per PR, reviewable in about 20 minutes.
-- [ ] **Separate refactoring from behavior changes.** Use distinct commits for each intent.
-- [ ] **Comment why, not what.** The code describes what it does; the comment explains the reason.
+- [ ] **Escribe las pruebas antes del código o junto con él.** Cuando el diseño esté claro, escribe primero la prueba. Cada commit incluye pruebas.
+- [ ] **Mantén pequeñas las PR.** Un tema por PR, revisable en unos 20 minutos.
+- [ ] **Separa la refactorización de los cambios de comportamiento.** Usa commits distintos para cada intención.
+- [ ] **Comenta el porqué, no el qué.** El código describe lo que hace; el comentario explica la razón.
 
-## SIFAP example
+## Ejemplo de SIFAP
 
-In Stage 3, the Developer receives REQ-IDs from the Requirements Engineer and the package structure from the Software Architect. The concrete task is, for example, to implement the `POST /api/v1/beneficios` endpoint according to the rules extracted from the Natural program `SIFAP-BEN.NSN`, with Testcontainers integration tests targeting the schema generated by the DBA's Flyway migrations.
+En la Etapa 3, el Desarrollador recibe los REQ-ID del Especialista en Requisitos y la estructura de paquetes del Arquitecto de Software. La tarea concreta es, por ejemplo, implementar el endpoint `POST /api/v1/beneficios` según las reglas extraídas del programa Natural `SIFAP-BEN.NSN`, con pruebas de integración de Testcontainers sobre el esquema generado por las migraciones Flyway del DBA.
 
-## References
+## Referencias
 
 - [Clean Code — Robert C. Martin](https://www.oreilly.com/library/view/clean-code-a/9780136083238/)
 - [Refactoring — Martin Fowler](https://refactoring.com/)
 - [Test-Driven Development — Kent Beck](https://www.oreilly.com/library/view/test-driven-development/0321146530/)
-- [GitHub Copilot Best Practices](https://docs.github.com/en/copilot)
+- [Prácticas recomendadas de GitHub Copilot](https://docs.github.com/en/copilot)
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Persona overview](../OVERVIEW.md)<br/><sub>Table of the 10 personas and their pairs.</sub> | [PERSONA.md](PERSONA.md)<br/><sub>Complete Developer persona profile.</sub> |
+| [Descripción general de las personas](../OVERVIEW.md)<br/><sub>Tabla de las 10 personas y sus parejas.</sub> | [PERSONA.md](PERSONA.md)<br/><sub>Perfil completo de la persona Desarrollador.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Volver al índice del kit](../../README.md)</sub>

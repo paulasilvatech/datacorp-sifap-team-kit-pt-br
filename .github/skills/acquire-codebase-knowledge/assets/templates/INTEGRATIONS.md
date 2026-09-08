@@ -1,48 +1,48 @@
-# External Integrations
+# Integraciones externas
 
-## Core Sections (Required)
+## Secciones básicas (obligatorias)
 
-### 1) Integration Inventory
+### 1) Inventario de integraciones
 
-| System | Type (API/DB/Queue/etc) | Purpose | Auth model | Criticality | Evidence |
+| Sistema | Tipo (API/BD/cola/etc.) | Finalidad | Modelo de autenticación | Criticidad | Evidencia |
 |--------|---------------------------|---------|------------|-------------|----------|
-| [name] | [type] | [purpose] | [auth] | [high/med/low] | [file] |
+| [nombre] | [tipo] | [finalidad] | [autenticación] | [alta/media/baja] | [archivo] |
 
-### 2) Data Stores
+### 2) Almacenes de datos
 
-| Store | Role | Access layer | Key risk | Evidence |
+| Almacén | Función | Capa de acceso | Riesgo principal | Evidencia |
 |-------|------|--------------|----------|----------|
-| [db/cache/etc] | [role] | [module] | [risk] | [file] |
+| [BD/caché/etc.] | [función] | [módulo] | [riesgo] | [archivo] |
 
-### 3) Secrets and Credentials Handling
+### 3) Gestión de secretos y credenciales
 
-- Credential sources: [env/secrets manager/config]
-- Hardcoding checks: [result]
-- Rotation or lifecycle notes: [known/unknown]
+- Fuentes de credenciales: [entorno/gestor de secretos/configuración]
+- Comprobaciones de valores incrustados en el código: [resultado]
+- Notas sobre rotación o ciclo de vida: [conocido/desconocido]
 
-### 4) Reliability and Failure Behavior
+### 4) Fiabilidad y comportamiento ante fallos
 
-- Retry/backoff behavior: [implemented/none/partial]
-- Timeout policy: [where configured]
-- Circuit-breaker or fallback behavior: [if any]
+- Comportamiento de reintentos y espera progresiva: [implementado/ninguno/parcial]
+- Política de tiempos de espera: [dónde se configura]
+- Comportamiento del disyuntor (circuit breaker) o del mecanismo alternativo: [si existe]
 
-### 5) Observability for Integrations
+### 5) Observabilidad de las integraciones
 
-- Logging around external calls: [yes/no + where]
-- Metrics/tracing coverage: [yes/no + where]
-- Missing visibility gaps: [list]
+- Registros de las llamadas externas: [sí/no + dónde]
+- Cobertura de métricas y trazas: [sí/no + dónde]
+- Carencias de visibilidad: [lista]
 
-### 6) Evidence
+### 6) Evidencia
 
 - [path/to/integration-wrapper]
 - [path/to/config-or-env-template]
 - [path/to/monitoring-or-logging-config]
 
-## Extended Sections (Optional)
+## Secciones ampliadas (opcionales)
 
-Add only when needed:
+Añade estas secciones solo cuando sean necesarias:
 
-- Endpoint-by-endpoint catalog
-- Auth flow sequence diagrams
-- SLA/SLO per integration
-- Region/failover topology notes
+- Catálogo detallado de puntos de conexión
+- Diagramas de secuencia de los flujos de autenticación
+- SLA/SLO por integración
+- Notas sobre la topología de regiones y conmutación por error

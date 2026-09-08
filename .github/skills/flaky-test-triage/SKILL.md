@@ -1,69 +1,69 @@
 ---
 name: "flaky-test-triage"
-description: "Use when a test is intermittent, CI is unstable, or you need to quarantine a flaky test. Triggers include \"flaky test\", \"quarantine\", \"intermittent failure\", \"CI instability\", and \"flaky dashboard\"."
+description: "Úsala cuando una prueba falle de forma intermitente, la CI sea inestable o necesites poner una prueba inestable en cuarentena. Los desencadenantes incluyen \"prueba inestable\", \"cuarentena\", \"fallo intermitente\", \"inestabilidad de CI\" y \"panel de pruebas inestables\"."
 ---
-# Flaky test triage
+# Diagnóstico y clasificación de pruebas inestables
 
-## When to invoke
+## Cuándo invocar
 
-- CI fails and the rerun passes.
-- "This test is flaky - help me fix it."
-- "Build a flaky-test quarantine process."
+- La CI falla y la siguiente ejecución pasa.
+- "Esta prueba es inestable; ayúdame a corregirla."
+- "Crea un proceso de cuarentena para pruebas inestables."
 
-## Diagnostic workflow
+## Flujo de diagnóstico
 
-1. **Reproduce**: run the test in isolation 50× with `--repeat-each 50` (Playwright) or `pytest --count=50`. If it fails <1×, it probably depends on execution order.
-2. **Categorize** the root cause of the flake:
+1. **Reproduce el fallo**: ejecuta la prueba de forma aislada 50× con `--repeat-each 50` (Playwright) o `pytest --count=50`. Si falla <1×, probablemente dependa del orden de ejecución.
+2. **Clasifica** la causa raíz de la inestabilidad:
 
-- **Async/timing** - missing await, race condition, hard-coded sleep
-- **Order dependency** - shared state, database not cleaned, global singleton
-- **External dependency** - network, clock, filesystem
-- **Non-determinism** - iteration over an unordered map, random seed
-- **Resource contention** - port, file lock, parallel worker collision
+- **Asincronía/temporización**: falta de await, condición de carrera, espera fija incrustada en el código
+- **Dependencia del orden**: estado compartido, base de datos sin limpiar, singleton global
+- **Dependencia externa**: red, reloj, sistema de archivos
+- **No determinismo**: iteración sobre un mapa sin ordenar, semilla aleatoria
+- **Contención de recursos**: puerto, bloqueo de archivo, colisión entre procesos paralelos
 
-3. **Fix the root cause**: replace sleeps with explicit waits, isolate state, set random seeds, and use test-scoped ports.
-4. **Quarantine if it cannot be fixed in <1 day**: move it to a `flaky/` tag, open a tracking issue, and set a 30-day SLA to fix or delete it.
+3. **Corrige la causa raíz**: sustituye las pausas fijas por esperas explícitas, aísla el estado, fija las semillas aleatorias y usa puertos limitados al ámbito de cada prueba.
+4. **Ponla en cuarentena si no puede corregirse en <1 día**: asígnale una etiqueta `flaky/`, abre una incidencia de seguimiento y establece un SLA de 30 días para corregirla o eliminarla.
 
-## Quarantine policy
+## Política de cuarentena
 
-- Quarantined tests run, but do not fail the build.
-- Delete anything quarantined for >30 days. A test that cannot be fixed is worse than no test.
-- Dashboard: track the flake rate per test across 100 runs. Automatically quarantine anything above 5%.
+- Las pruebas en cuarentena se ejecutan, pero no hacen fallar la compilación.
+- Elimina todo lo que lleve >30 días en cuarentena. Una prueba que no puede corregirse es peor que no tenerla.
+- Panel: supervisa la tasa de fallos intermitentes de cada prueba durante 100 ejecuciones. Pon automáticamente en cuarentena cualquiera que supere el 5%.
 
-## Anti-patterns
+## Antipatrones
 
-- `sleep(1000)` - always wrong.
-- Repeating the assertion in a loop - hides timing bugs.
-- `@Retry(3)` - masks flakes and rewards poor tests.
+- `sleep(1000)`: siempre es incorrecto.
+- Repetir la aserción en un bucle: oculta errores de temporización.
+- `@Retry(3)`: enmascara los fallos intermitentes y premia las pruebas deficientes.
 
-## Output template
+## Plantilla de salida
 
-Record each investigated flake and its disposition:
+Registra cada fallo intermitente investigado y la decisión tomada:
 
 ```markdown
-## Flaky triage - <test id>
+## Diagnóstico de inestabilidad - <id de prueba>
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| Test | <suite::test name> |
-| Flake rate | <N>% over <M> runs |
-| Root cause | Async-timing / Order dependency / External dependency / Non-determinism / Resource contention |
-| Fix or quarantine | <PR link, or `flaky/` tag + tracking issue> |
-| SLA | <30-day fix-or-delete date> |
+| Prueba | <suite::nombre de prueba> |
+| Tasa de fallos intermitentes | <N>% en <M> ejecuciones |
+| Causa raíz | Asincronía-temporización / Dependencia del orden / Dependencia externa / No determinismo / Contención de recursos |
+| Corrección o cuarentena | <enlace a la PR, o etiqueta `flaky/` + incidencia de seguimiento> |
+| SLA | <fecha límite de 30 días para corregir o eliminar> |
 
-### Evidence
-- <command used to reproduce, e.g. pytest --count=50 path::test>
-- <observed failure output or race condition>
+### Evidencia
+- <comando usado para reproducir el fallo, por ejemplo, pytest --count=50 path::test>
+- <salida del fallo observado o condición de carrera>
 ```
 
-## Quality gate
+## Puerta de calidad
 
-- [ ] The flake was reproduced in isolation (50+ runs) and its category identified.
-- [ ] The fix addresses the root cause - no added `sleep`, retry, or assertion loop.
-- [ ] Anything not fixed within one day is quarantined with a tracking issue and a 30-day SLA.
-- [ ] Quarantined tests still run but do not fail the build.
+- [ ] El fallo intermitente se reprodujo de forma aislada (50 o más ejecuciones) y se identificó su categoría.
+- [ ] La corrección aborda la causa raíz; no se añadieron `sleep`, reintentos ni bucles de aserciones.
+- [ ] Todo lo que no se corrija en un día se pone en cuarentena con una incidencia de seguimiento y un SLA de 30 días.
+- [ ] Las pruebas en cuarentena siguen ejecutándose, pero no hacen fallar la compilación.
 
-## References
+## Referencias
 
-- [Google - Flaky Tests at Google](https://testing.googleblog.com/2016/05/flaky-tests-at-google-and-how-we.html)
-- [Microsoft Research - Empirical Study of Flaky Tests](https://www.microsoft.com/en-us/research/publication/an-empirical-analysis-of-flaky-tests/)
+- [Google - Pruebas inestables en Google](https://testing.googleblog.com/2016/05/flaky-tests-at-google-and-how-we.html)
+- [Microsoft Research - Estudio empírico de pruebas inestables](https://www.microsoft.com/en-us/research/publication/an-empirical-analysis-of-flaky-tests/)

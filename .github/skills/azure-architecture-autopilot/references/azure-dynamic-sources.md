@@ -1,34 +1,34 @@
-# Azure Dynamic Sources Registry
+# Registro de fuentes dinámicas de Azure
 
-This file manages **only the sources (URLs) for frequently changing information**.
-Actual values (API version, SKU, region, etc.) are not recorded here.
-Always fetch the URLs below to verify the latest information before generating Bicep.
+Este archivo gestiona **únicamente las fuentes (URL) de información que cambia con frecuencia**.
+Los valores concretos (versión de API, SKU, región, etc.) no se registran aquí.
+Consulta siempre las URL siguientes para verificar la información más reciente antes de generar Bicep.
 
 ---
 
-## 1. Bicep API Version (Always Must Fetch)
+## 1. Versión de API de Bicep (consulta siempre obligatoria)
 
-Per-service MS Docs Bicep reference. Verify the latest stable apiVersion from these URLs before use.
+Referencia de Bicep de MS Docs por servicio. Verifica la apiVersion estable más reciente en estas URL antes de usarla.
 
-| Service | MS Docs URL |
+| Servicio | URL de MS Docs |
 |---------|-------------|
 | CognitiveServices (Foundry/OpenAI) | https://learn.microsoft.com/en-us/azure/templates/microsoft.cognitiveservices/accounts |
 | AI Search | https://learn.microsoft.com/en-us/azure/templates/microsoft.search/searchservices |
-| Storage Account | https://learn.microsoft.com/en-us/azure/templates/microsoft.storage/storageaccounts |
+| Cuenta de almacenamiento | https://learn.microsoft.com/en-us/azure/templates/microsoft.storage/storageaccounts |
 | Key Vault | https://learn.microsoft.com/en-us/azure/templates/microsoft.keyvault/vaults |
-| Virtual Network | https://learn.microsoft.com/en-us/azure/templates/microsoft.network/virtualnetworks |
-| Private Endpoints | https://learn.microsoft.com/en-us/azure/templates/microsoft.network/privateendpoints |
-| Private DNS Zones | https://learn.microsoft.com/en-us/azure/templates/microsoft.network/privatednszones |
+| Red virtual | https://learn.microsoft.com/en-us/azure/templates/microsoft.network/virtualnetworks |
+| Puntos de conexión privados | https://learn.microsoft.com/en-us/azure/templates/microsoft.network/privateendpoints |
+| Zonas DNS privadas | https://learn.microsoft.com/en-us/azure/templates/microsoft.network/privatednszones |
 | Fabric | https://learn.microsoft.com/en-us/azure/templates/microsoft.fabric/capacities |
 | Data Factory | https://learn.microsoft.com/en-us/azure/templates/microsoft.datafactory/factories |
 | Application Insights | https://learn.microsoft.com/en-us/azure/templates/microsoft.insights/components |
-| ML Workspace (Hub) | https://learn.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces |
+| Área de trabajo de ML (Hub) | https://learn.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces |
 
-> **Always verify child resources as well**: Child resources such as `accounts/projects`, `accounts/deployments`, `privateDnsZones/virtualNetworkLinks` may have different API versions from their parent. Follow child resource links from the parent page to verify.
+> **Verifica siempre también los recursos secundarios**: recursos como `accounts/projects`, `accounts/deployments` y `privateDnsZones/virtualNetworkLinks` pueden tener versiones de API distintas de las de su recurso principal. Sigue los enlaces a los recursos secundarios desde la página del principal para comprobarlo.
 
-### Services Not in the Table Above
+### Servicios no incluidos en la tabla anterior
 
-The table above includes only v1 scope services. For other services, construct the URL in this format and fetch:
+La tabla anterior incluye únicamente los servicios del alcance de v1. Para otros servicios, construye la URL con este formato y consúltala:
 
 ```
 https://learn.microsoft.com/en-us/azure/templates/microsoft.{provider}/{resourceType}
@@ -36,59 +36,59 @@ https://learn.microsoft.com/en-us/azure/templates/microsoft.{provider}/{resource
 
 ---
 
-## 2. Model Availability (Required When Using Foundry/OpenAI Models)
+## 2. Disponibilidad de modelos (obligatoria al usar modelos de Foundry/OpenAI)
 
-Verify whether the model name is deployable in the target region. Do not rely on static knowledge.
+Verifica si el modelo indicado puede desplegarse en la región de destino. No te bases en conocimiento estático.
 
-| Verification Method | URL / Command |
+| Método de verificación | URL / Comando |
 |--------------------|---------------|
-| MS Docs model availability | https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models |
-| Azure CLI (existing resources) | `az cognitiveservices account list-models --name "<NAME>" --resource-group "<RG>" -o table` |
+| Disponibilidad de modelos en MS Docs | https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models |
+| Azure CLI (recursos existentes) | `az cognitiveservices account list-models --name "<NAME>" --resource-group "<RG>" -o table` |
 
-> If the model is unavailable in the target region → Notify the user and suggest available regions/alternative models. Do not substitute without user approval.
+> Si el modelo no está disponible en la región de destino, informa a la persona y sugiere regiones disponibles o modelos alternativos. No lo sustituyas sin su aprobación.
 
 ---
 
-## 3. Private Endpoint Mapping (When Adding New Services)
+## 3. Mapeo de puntos de conexión privados (al añadir servicios nuevos)
 
-PE groupId and DNS Zone mappings can be changed by Azure. When adding new services or verification is needed:
+Azure puede cambiar las correspondencias entre groupId de los puntos de conexión privados (PE) y zonas DNS. Al añadir servicios nuevos o cuando sea necesario verificar:
 
-| Verification Method | URL |
+| Método de verificación | URL |
 |--------------------|-----|
-| PE DNS integration official docs | https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns |
+| Documentación oficial de integración DNS de PE | https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns |
 
-> Key service mappings in `service-gotchas.md` are stable, but always re-verify from the URL above when adding new services.
+> Las correspondencias de los servicios principales en `service-gotchas.md` son estables, pero vuelve a verificarlas siempre en la URL anterior al añadir servicios nuevos.
 
 ---
 
-## 4. Service Region Availability
+## 4. Disponibilidad de servicios por región
 
-Verify whether a specific service is available in a specific region:
+Verifica si un servicio concreto está disponible en una región determinada:
 
-| Verification Method | URL |
+| Método de verificación | URL |
 |--------------------|-----|
-| Azure service-by-region availability | https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/ |
+| Disponibilidad de servicios de Azure por región | https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/ |
 
 ---
 
-## 5. Azure Updates (Secondary Awareness)
+## 5. Azure Updates (información complementaria)
 
-The sources below are for **reference only**. The primary source is always MS Docs official documentation.
+Las fuentes siguientes son **solo de referencia**. La fuente principal es siempre la documentación oficial de MS Docs.
 
-| Source | URL | Purpose |
+| Fuente | URL | Finalidad |
 |--------|-----|---------|
-| Azure Updates | https://azure.microsoft.com/en-us/updates/ | Service change awareness |
-| What's New in Azure | Per-service What's New pages in Docs | Feature change verification |
+| Azure Updates | https://azure.microsoft.com/en-us/updates/ | Conocer los cambios de los servicios |
+| Novedades de Azure | Páginas de novedades de cada servicio en Docs | Verificar cambios de funcionalidades |
 
 ---
 
-## Decision Rule: When to Fetch?
+## Regla de decisión: ¿cuándo consultar las fuentes?
 
-| Information Type | Must Fetch? | Rationale |
+| Tipo de información | ¿Consulta obligatoria? | Justificación |
 |-----------------|-------------|-----------|
-| API version | **Always fetch** | Changes frequently; incorrect values cause deployment failure |
-| Model availability (name, region) | **Always fetch** | Varies by region and changes frequently |
-| SKU list | **Always fetch** | Can change per service |
-| Region availability | **Always fetch** | Per-service region support changes frequently. Always verify that the user-specified region is available for the service |
-| PE groupId & DNS Zone | Can reference `service-gotchas.md` for v1 key services; **must fetch for new services or complex configurations (Monitor, etc.)** | Key service mappings are stable, but new/complex services are risky |
-| Required property patterns | Reference files first | Near-immutable (isHnsEnabled, etc.) |
+| Versión de API | **Consultar siempre** | Cambia con frecuencia; los valores incorrectos hacen fallar el despliegue |
+| Disponibilidad de modelos (nombre, región) | **Consultar siempre** | Varía por región y cambia con frecuencia |
+| Lista de SKU | **Consultar siempre** | Puede cambiar según el servicio |
+| Disponibilidad regional | **Consultar siempre** | Las regiones admitidas por cada servicio cambian con frecuencia. Verifica siempre que la región indicada por la persona esté disponible para el servicio |
+| groupId de PE y zona DNS | Se puede consultar `service-gotchas.md` para los servicios principales de v1; **la consulta externa es obligatoria para servicios nuevos o configuraciones complejas (Monitor, etc.)** | Las correspondencias de los servicios principales son estables, pero los servicios nuevos o complejos presentan riesgos |
+| Patrones de propiedades obligatorias | Primero los archivos de referencia | Prácticamente inmutables (isHnsEnabled, etc.) |

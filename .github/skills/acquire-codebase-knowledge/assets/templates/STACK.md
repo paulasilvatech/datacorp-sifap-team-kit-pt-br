@@ -1,56 +1,56 @@
-# Technology Stack
+# Stack tecnológico
 
-## Core Sections (Required)
+## Secciones básicas (obligatorias)
 
-### 1) Runtime Summary
+### 1) Resumen del entorno de ejecución
 
-| Area | Value | Evidence |
+| Área | Valor | Evidencia |
 |------|-------|----------|
-| Primary language | [VALUE] | [FILE_PATH] |
-| Runtime + version | [VALUE] | [FILE_PATH] |
-| Package manager | [VALUE] | [FILE_PATH] |
-| Module/build system | [VALUE] | [FILE_PATH] |
+| Lenguaje principal | [VALUE] | [FILE_PATH] |
+| Entorno de ejecución + versión | [VALUE] | [FILE_PATH] |
+| Gestor de paquetes | [VALUE] | [FILE_PATH] |
+| Sistema de módulos/compilación | [VALUE] | [FILE_PATH] |
 
-### 2) Production Frameworks and Dependencies
+### 2) Frameworks y dependencias de producción
 
-List only high-impact production dependencies (frameworks, data, transport, auth).
+Enumera únicamente las dependencias de producción de alto impacto (frameworks, datos, transporte y autenticación).
 
-| Dependency | Version | Role in system | Evidence |
+| Dependencia | Versión | Función en el sistema | Evidencia |
 |------------|---------|----------------|----------|
 | [NAME] | [VERSION] | [ROLE] | [FILE_PATH] |
 
-### 3) Development Toolchain
+### 3) Cadena de herramientas de desarrollo
 
-| Tool | Purpose | Evidence |
+| Herramienta | Finalidad | Evidencia |
 |------|---------|----------|
 | [TOOL] | [LINT/FORMAT/TEST/BUILD] | [FILE_PATH] |
 
-### 4) Key Commands
+### 4) Comandos principales
 
 ```bash
-[install command]
-[build command]
-[test command]
-[lint command]
+[comando de instalación]
+[comando de compilación]
+[comando de pruebas]
+[comando de lint]
 ```
 
-### 5) Environment and Config
+### 5) Entorno y configuración
 
-- Config sources: [LIST FILES]
-- Required env vars: [VAR_1], [VAR_2], [TODO]
-- Deployment/runtime constraints: [SHORT NOTE]
+- Fuentes de configuración: [lista de archivos]
+- Variables de entorno obligatorias: [VAR_1], [VAR_2], [TODO]
+- Restricciones de despliegue y ejecución: [nota breve]
 
-### 6) Evidence
+### 6) Evidencia
 
 - [path/to/manifest]
 - [path/to/runtime-config]
 - [path/to/build-or-ci-config]
 
-## Extended Sections (Optional)
+## Secciones ampliadas (opcionales)
 
-Add only when needed for complex repos:
+Añade estas secciones solo cuando sean necesarias en repositorios complejos:
 
-- Full dependency taxonomy by category
-- Detailed compiler/runtime flags
-- Environment matrix (dev/stage/prod)
-- Process manager and container runtime details
+- Taxonomía completa de dependencias por categoría
+- Opciones detalladas del compilador y del entorno de ejecución
+- Matriz de entornos (dev/stage/prod)
+- Detalles del gestor de procesos y del entorno de ejecución de contenedores

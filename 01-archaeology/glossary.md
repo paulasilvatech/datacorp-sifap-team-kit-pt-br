@@ -1,77 +1,77 @@
-# Legacy SIFAP Glossary
+# Glosario del SIFAP heredado
 
-> **Track:** [Team Kit](../README.md) › [Stage 1](README.md) › **Glossary**
+> **Ruta:** [Kit del equipo](../README.md) › [Etapa 1](README.md) › **Glosario**
 
-**Artifact completed by the team during Stage 1.** A table of all terms, abbreviations, and acronyms found in the Natural/Adabas code—the foundation of the ubiquitous language for Stage 2.
+**Artefacto que completa el equipo durante la Etapa 1.** Tabla de todos los términos, abreviaturas y siglas encontrados en el código Natural/Adabas: la base del lenguaje ubicuo para la Etapa 2.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | All pairs—each pair contributes terms from its programs |
-| **Prerequisites** | Open the assigned `.NSN` and `.ddm` files |
-| **Stage** | Stage 1 — Archaeology |
-| **Expected outcome** | 30 or more terms with a source program and CONFIRMED/HYPOTHESIS status |
+| **Público objetivo** | Todas las parejas: cada una aporta términos de sus programas |
+| **Prerrequisitos** | Abrir los archivos `.NSN` y `.ddm` asignados |
+| **Etapa** | Etapa 1 — Arqueología |
+| **Resultado esperado** | 30 o más términos con un programa de origen y estado CONFIRMED/HYPOTHESIS |
 
 > [!NOTE]
-> Step-by-step guide: [`GUIDE.md`](GUIDE.md).
+> Guía paso a paso: [`GUIDE.md`](GUIDE.md).
 
 ---
 
-## Why the glossary matters
+## Por qué importa el glosario
 
-Legacy systems have their own vocabulary, which is rarely documented in an accessible place—it lives in variable names, field abbreviations, and code comments. If the Stage 2 team does not know what `DSCT`, `BENF`, `PE`, or `CTC` mean, it will write a specification based on assumptions about those terms.
+Los sistemas heredados tienen su propio vocabulario, que rara vez está documentado en un lugar accesible: vive en los nombres de variables, las abreviaturas de campos y los comentarios del código. Si el equipo de la Etapa 2 no sabe qué significan `DSCT`, `BENF`, `PE` o `CTC`, escribirá una especificación basada en suposiciones sobre esos términos.
 
-The glossary turns 3-to-6-character abbreviations into a ubiquitous language shared by the entire team—and provides the basis for entity and attribute names in the Stage 3 domain model.
+El glosario convierte las abreviaturas de 3 a 6 caracteres en un lenguaje ubicuo compartido por todo el equipo y proporciona la base para los nombres de entidades y atributos del modelo de dominio de la Etapa 3.
 
-**Common mistake:** marking a term as CONFIRMED without literal evidence in the code or historical documentation. If you inferred the meaning from context, mark it as HYPOTHESIS and identify who is responsible for validation.
+**Error común:** marcar un término como CONFIRMED sin evidencia literal en el código o en la documentación histórica. Si inferiste el significado a partir del contexto, márcalo como HYPOTHESIS e identifica a la persona responsable de la validación.
 
 ---
 
-## How to complete it
+## Cómo completarlo
 
-| Column | What to record |
+| Columna | Qué registrar |
 |---|---|
-| **Term** | The abbreviation or acronym exactly as it appears in the code. |
-| **Expansion** | The term's full meaning. |
-| **Program** | The `.NSN` or `.ddm` file where the term was found. |
-| **Context** | Brief explanation of how and where the term is used. |
-| **Status** | `CONFIRMED`—literal evidence in code or documentation. `HYPOTHESIS`—inferred from context and awaiting validation. |
+| **Término** | La abreviatura o sigla exactamente como aparece en el código. |
+| **Significado completo** | El significado completo del término. |
+| **Programa** | El archivo `.NSN` o `.ddm` donde se encontró el término. |
+| **Contexto** | Breve explicación de cómo y dónde se usa el término. |
+| **Estado** | `CONFIRMED`: evidencia literal en el código o la documentación. `HYPOTHESIS`: inferido a partir del contexto y pendiente de validación. |
 
-### Extraction tip with Copilot Chat
+### Consejo para la extracción con Copilot Chat
 
-Before using the prompt below, paste the contents of 2 to 3 `.NSN` files into the chat:
+Antes de usar el siguiente prompt, pega el contenido de 2 a 3 archivos `.NSN` en el chat:
 
-> "List every abbreviation and acronym used in this Natural code. For each one, suggest the expansion and mark it as 'CONFIRMED' or 'HYPOTHESIS'."
+> "Enumera todas las abreviaturas y siglas usadas en este código Natural. Para cada una, sugiere el significado completo y márcala como 'CONFIRMED' o 'HYPOTHESIS'."
 
-Compare Copilot's suggestion with what you observed directly in the code. If they match, record it as CONFIRMED; otherwise, record it as HYPOTHESIS.
+Compara la sugerencia de Copilot con lo que observaste directamente en el código. Si coinciden, regístralo como CONFIRMED; de lo contrario, regístralo como HYPOTHESIS.
 
 ---
 
-## Terms found
+## Términos encontrados
 
-| # | Term | Expansion | Program | Context | Status |
+| # | Término | Significado completo | Programa | Contexto | Estado |
 |---|---|---|---|---|---|
-| 1 | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
-| 2 | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
-| 3 | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
+| 1 | <!-- completar --> | <!-- completar --> | <!-- completar --> | <!-- completar --> | <!-- completar --> |
+| 2 | <!-- completar --> | <!-- completar --> | <!-- completar --> | <!-- completar --> | <!-- completar --> |
+| 3 | <!-- completar --> | <!-- completar --> | <!-- completar --> | <!-- completar --> | <!-- completar --> |
 
 > [!NOTE]
-> Organize by domain (registration, calculation, batch, validation) if it helps navigation. Add as many rows as needed—the target is 30 or more terms.
+> Organiza por dominio (registro, cálculo, batch, validación) si facilita la navegación. Añade tantas filas como sea necesario: el objetivo es llegar a 30 o más términos.
 
 ---
 
-## Definition of done
+## Definición de terminado
 
-- [ ] 30 or more terms recorded.
-- [ ] Every term has a source program.
-- [ ] Every term has CONFIRMED or HYPOTHESIS status.
-- [ ] Hypotheses marked for validation with a facilitator.
+- [ ] 30 o más términos registrados.
+- [ ] Cada término tiene un programa de origen.
+- [ ] Cada término tiene el estado CONFIRMED o HYPOTHESIS.
+- [ ] Hipótesis señaladas para validarlas con una persona facilitadora.
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Stage 1 GUIDE](GUIDE.md)<br/><sub>Step-by-step schedule.</sub> | [Discovery Report](discovery-report.md)<br/><sub>Final consolidation for the stage.</sub> |
+| [GUÍA de la Etapa 1](GUIDE.md)<br/><sub>Cronograma paso a paso.</sub> | [Informe de descubrimiento](discovery-report.md)<br/><sub>Consolidación final de la etapa.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

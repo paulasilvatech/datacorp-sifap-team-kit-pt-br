@@ -1,85 +1,85 @@
 ---
 name: "pipeline-hardening"
-description: "Use when hardening a CI/CD pipeline, migrating to OIDC, signing artifacts, or meeting SLSA requirements. Triggers include \"SLSA\", \"supply chain\", \"OIDC\", \"sigstore\", \"cosign\", \"pipeline security\", and \"GHA hardening\"."
+description: "Úsala para reforzar una canalización de CI/CD, migrar a OIDC, firmar artefactos o cumplir los requisitos SLSA. Los desencadenantes incluyen \"SLSA\", \"cadena de suministro\", \"OIDC\", \"sigstore\", \"cosign\", \"seguridad de la canalización\" y \"fortalecimiento de GHA\"."
 ---
-# Pipeline hardening
+# Fortalecimiento de canalizaciones
 
-## When to invoke
+## Cuándo invocar
 
-- "Harden our GitHub Actions / Azure DevOps / GitLab pipeline."
-- "Migrate from long-lived secrets to OIDC."
-- "Achieve SLSA Level 2/3."
-- "Sign our container images."
+- "Refuerza nuestra canalización de GitHub Actions / Azure DevOps / GitLab."
+- "Migra de secretos de larga duración a OIDC."
+- "Alcanza el nivel 2/3 de SLSA."
+- "Firma nuestras imágenes de contenedor."
 
-## Threat model (short list)
+## Modelo de amenazas (lista breve)
 
-1. **Stolen secrets** from pipeline logs or a compromised runner.
-2. **Malicious dependency** published upstream or through typosquatting.
-3. **Compromised third-party GitHub Action or shared step**.
-4. **Tampered artifact** between build and deployment.
-5. **Privilege escalation** caused by overly broad pipeline permissions.
+1. **Robo de secretos** a través de los registros de la canalización o de un ejecutor comprometido.
+2. **Dependencia maliciosa** publicada en el origen o mediante suplantación por nombres similares (typosquatting).
+3. **Acción de GitHub de terceros o paso compartido comprometido**.
+4. **Artefacto manipulado** entre la compilación y el despliegue.
+5. **Escalada de privilegios** causada por permisos demasiado amplios en la canalización.
 
-## Controls (ordered by ROI)
+## Controles (ordenados por retorno de la inversión)
 
-### Tier 1 — do first
+### Nivel 1: hacer primero
 
-- [ ] **OIDC for the cloud**: do not store long-lived cloud credentials as secrets. Use federated identity with short-lived tokens.
-- [ ] **Pin third-party actions by SHA**, not by tag (`actions/checkout@<sha>` with a comment showing the version).
-- [ ] A **`permissions:` block** in every workflow, defaulting to `contents: read` and elevated only where needed.
-- [ ] **Branch protection**: required reviews, required status checks, no force pushes, and signed commits on main.
-- [ ] **Secret scanning + push protection** enabled across the organization.
-- [ ] **Dependabot / Renovate** for dependencies and actions.
+- [ ] **OIDC para la nube**: no almacenes credenciales de nube de larga duración como secretos. Usa una identidad federada con tokens de corta duración.
+- [ ] **Fija las acciones de terceros por SHA**, no por etiqueta (`actions/checkout@<sha>` con un comentario que indique la versión).
+- [ ] Un **bloque `permissions:`** en cada flujo de trabajo, con `contents: read` de forma predeterminada y elevación solo donde sea necesaria.
+- [ ] **Protección de ramas**: revisiones obligatorias, comprobaciones de estado obligatorias, prohibición de pushes forzados y commits firmados en main.
+- [ ] **Análisis de secretos + protección de push** habilitados en toda la organización.
+- [ ] **Dependabot / Renovate** para dependencias y acciones.
 
-### Tier 2 — supply chain integrity
+### Nivel 2: integridad de la cadena de suministro
 
-- [ ] **SBOM** generated for every build (Syft / CycloneDX).
-- [ ] **Artifact signing** with Cosign (keyless via OIDC preferred).
-- [ ] **Provenance** (SLSA v1.0 attestation) published with the artifact.
-- [ ] **Verify signatures during deployment**: the deployment job rejects unsigned artifacts.
-- [ ] **Vulnerability scanning** (Trivy / Grype) on the image; fail on Critical/High findings unless exceptions are justified.
+- [ ] **SBOM** generada en cada compilación (Syft / CycloneDX).
+- [ ] **Firma de artefactos** con Cosign (preferiblemente sin claves mediante OIDC).
+- [ ] **Procedencia** (atestación SLSA v1.0) publicada junto al artefacto.
+- [ ] **Verificar las firmas durante el despliegue**: el job de despliegue rechaza los artefactos sin firma.
+- [ ] **Análisis de vulnerabilidades** (Trivy / Grype) en la imagen; fallar ante hallazgos críticos o altos, salvo excepciones justificadas.
 
-### Tier 3 — mature
+### Nivel 3: madurez
 
-- [ ] **Hermetic / reproducible builds** where feasible.
-- [ ] **Two-person review** for release pipelines.
-- [ ] **Runner hardening**: ephemeral, restricted network egress, and no shared mutable state.
+- [ ] **Compilaciones herméticas o reproducibles** cuando sea viable.
+- [ ] **Revisión por dos personas** para las canalizaciones de lanzamiento.
+- [ ] **Fortalecimiento de los ejecutores**: efímeros, con salida de red restringida y sin estado mutable compartido.
 
-## Anti-patterns
+## Antipatrones
 
-- Storing `AWS_ACCESS_KEY_ID` / `AZURE_CLIENT_SECRET` as repository secrets when OIDC is available.
+- Almacenar `AWS_ACCESS_KEY_ID` / `AZURE_CLIENT_SECRET` como secretos del repositorio cuando OIDC está disponible.
 - `permissions: write-all`.
-- Floating `@main` or `@v3` tags in third-party actions.
-- Deploying an artifact built in another pipeline without verifying its signature.
-- Secrets printed in logs through unquoted shell expansion.
+- Etiquetas móviles `@main` o `@v3` en acciones de terceros.
+- Desplegar un artefacto compilado en otra canalización sin verificar su firma.
+- Secretos impresos en los registros mediante expansión de shell sin comillas.
 
-## Output template
+## Plantilla de salida
 
 ```markdown
-## Pipeline hardening report - <workflow or repo>
+## Informe de fortalecimiento de la canalización - <flujo de trabajo o repositorio>
 
-| Control | Status | Evidence / gap |
+| Control | Estado | Evidencia / carencia |
 |---|---|---|
-| OIDC for cloud auth | done / missing | <link or note> |
-| Actions pinned by SHA | done / missing | <count of floating tags> |
-| Least-privilege permissions | done / missing | <workflows missing the block> |
-| SBOM + artifact signing | done / missing | <tool> |
-| Provenance (SLSA) | Level 0/1/2/3 | <attestation link> |
+| OIDC para autenticación en la nube | Completado / pendiente | <enlace o nota> |
+| Acciones fijadas por SHA | Completado / pendiente | <cantidad de etiquetas móviles> |
+| Permisos de privilegio mínimo | Completado / pendiente | <flujos de trabajo sin el bloque> |
+| SBOM + firma de artefactos | Completado / pendiente | <herramienta> |
+| Procedencia (SLSA) | Nivel 0/1/2/3 | <enlace a la atestación> |
 
-**Target SLSA level**: <N>
-**Blocking gaps**: <count>
+**Nivel SLSA objetivo**: <N>
+**Carencias bloqueantes**: <cantidad>
 ```
 
-## Quality gate
+## Puerta de calidad
 
-- [ ] No long-lived cloud secrets remain; cloud auth uses OIDC federation.
-- [ ] Every third-party action is pinned by commit SHA, not a floating tag.
-- [ ] Every workflow declares a least-privilege `permissions:` block (default `contents: read`).
-- [ ] Release artifacts are signed and their signatures are verified at deploy time.
-- [ ] Secret scanning, push protection, and dependency updates are enabled.
+- [ ] No quedan secretos de nube de larga duración; la autenticación en la nube utiliza federación OIDC.
+- [ ] Cada acción de terceros está fijada por SHA de commit, no por una etiqueta móvil.
+- [ ] Cada flujo de trabajo declara un bloque `permissions:` de privilegio mínimo (`contents: read` de forma predeterminada).
+- [ ] Los artefactos de lanzamiento están firmados y sus firmas se verifican durante el despliegue.
+- [ ] El análisis de secretos, la protección de push y las actualizaciones de dependencias están habilitados.
 
-## References
+## Referencias
 
 - [SLSA v1.0](https://slsa.dev/spec/v1.0/)
-- [GitHub - Security hardening for GHA](https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions)
+- [GitHub - Fortalecimiento de la seguridad de GHA](https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions)
 - [Sigstore / Cosign](https://docs.sigstore.dev/)
 - [OpenSSF Scorecard](https://scorecard.dev/)

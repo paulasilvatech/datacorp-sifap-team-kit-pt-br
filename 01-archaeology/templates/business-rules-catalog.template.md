@@ -1,63 +1,63 @@
 ---
 
-title: "Template: Business Rules Catalog"
-description: "Table skeleton for business rules extracted through /extract-business-rules"
-author: "Paula Silva, AI-Native Software Engineer, Americas Global Black Belt at Microsoft"
+title: "Plantilla: catálogo de reglas de negocio"
+description: "Estructura de tabla para las reglas de negocio extraídas mediante /extract-business-rules"
+author: "Paula Silva, ingeniera de software nativo de IA, Global Black Belt para las Américas en Microsoft"
 date: "2026-04-29"
 version: "1.0.0"
 status: "approved"
 tags: ["template", "business-rules", "archaeology", "stage-1"]
 ---
 
-# Template: Business Rules Catalog
+# Plantilla: catálogo de reglas de negocio
 
-> **Track:** [Team Kit](../../README.md) › [Stage 1](../README.md) › **Templates** › **business-rules-catalog**
+> **Ruta:** [Kit del equipo](../../README.md) › [Etapa 1](../README.md) › **Plantillas** › **business-rules-catalog**
 
-**Table template for recording business rules extracted during Stage 1.**
+**Plantilla de tabla para registrar las reglas de negocio extraídas durante la Etapa 1.**
 
 > [!NOTE]
-> **This file is a template.** Copy it to your team repository and complete it with real data. Do not edit the original.
+> **Este archivo es una plantilla.** Cópiala al repositorio de tu equipo y complétala con datos reales. No edites el original.
 
 > [!TIP]
-> To complete it: open the `.NSN` program assigned to your pair, search for `IF` with Ctrl+F, record the condition and line, and classify it as Confirmed, Inferred, or Mystery.
+> Para completarla: abre el programa `.NSN` asignado a tu pareja, busca `IF` con Ctrl+F, registra la condición y la línea, y clasifícala como Confirmada, Inferida o Misterio.
 
-**Team:** <!-- placeholder -->
+**Equipo:** <!-- placeholder -->
 
 ---
 
-## Rules from `<!-- placeholder: file-name.NSN -->`
+## Reglas de `<!-- placeholder: file-name.NSN -->`
 
-| # | Rule Statement | EARS Candidate | Source | Classification | Notes |
+| # | Enunciado de la regla | Candidata EARS | Fuente | Clasificación | Notas |
 |---|---|---|---|---|---|
-| 1 | <!-- placeholder --> | <!-- placeholder: EARS pattern --> | <!-- placeholder: file:line --> | <!-- placeholder: Confirmed/Inferred/Mystery --> | <!-- placeholder --> |
+| 1 | <!-- placeholder --> | <!-- placeholder: patrón EARS --> | <!-- placeholder: file:line --> | <!-- placeholder: Confirmada/Inferida/Misterio --> | <!-- placeholder --> |
 
 > [!NOTE]
-> Duplicate this section for each `.NSN` program read by your pair.
+> Duplica esta sección para cada programa `.NSN` que lea tu pareja.
 
 ---
 
-## Summary
+## Resumen
 
-| Classification | Count |
+| Clasificación | Cantidad |
 |---|---|
-| Confirmed | <!-- placeholder --> |
-| Inferred | <!-- placeholder --> |
-| Mystery | <!-- placeholder --> |
+| Confirmada | <!-- placeholder --> |
+| Inferida | <!-- placeholder --> |
+| Misterio | <!-- placeholder --> |
 
 ---
 
-## Definition of done
+## Definición de terminado
 
-- [ ] Every conditional block in the assigned programs was examined.
-- [ ] Every rule cites `file:line`.
-- [ ] Open questions are recorded as Mystery in `mysteries-found.md`.
+- [ ] Se examinó cada bloque condicional de los programas asignados.
+- [ ] Cada regla cita `file:line`.
+- [ ] Las preguntas abiertas se registran como Misterio en `mysteries-found.md`.
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Stage 1 GUIDE](../GUIDE.md)<br/><sub>Step-by-step schedule.</sub> | [Team file](../business-rules-catalog.md)<br/><sub>Where you complete it.</sub> |
+| [GUÍA de la Etapa 1](../GUIDE.md)<br/><sub>Cronograma paso a paso.</sub> | [Archivo del equipo](../business-rules-catalog.md)<br/><sub>Donde debes completarlo.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Volver al índice del kit](../../README.md)</sub>

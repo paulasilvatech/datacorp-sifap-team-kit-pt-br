@@ -1,80 +1,80 @@
-# Product Owner — Copilot Kit
+# Responsable de Producto — Kit de Copilot
 
-> **Trail:** [Team Kit](../../README.md) › [Personas](../OVERVIEW.md) › **Product Owner**
+> **Ruta:** [Kit del equipo](../../README.md) › [Personas](../OVERVIEW.md) › **Responsable de Producto**
 
-**Inventory of the Copilot kit for the Product Owner persona.** Lists the active artifacts, where they live under `.github/`, and best practices specific to this role.
+**Inventario del kit de Copilot para la persona Responsable de Producto.** Enumera los artefactos activos, su ubicación dentro de `.github/` y las prácticas recomendadas específicas de este rol.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Person acting as Product Owner in the workshop |
-| **Pair** | 1 · Vision (with the Requirements Engineer) |
-| **SDLC phase** | Discovery → Specification → Acceptance |
-| **Prerequisites** | [PERSONA.md](PERSONA.md) read |
-| **Expected outcome** | Kit validated, prompts accessible in Copilot Chat |
+| **Público objetivo** | Quien desempeña el rol de Responsable de Producto en la inmersión |
+| **Pareja** | 1 · Visión (con el Especialista en Requisitos) |
+| **Fase del SDLC** | Descubrimiento → Especificación → Aceptación |
+| **Prerrequisitos** | Haber leído [PERSONA.md](PERSONA.md) |
+| **Resultado esperado** | Kit validado y prompts accesibles en Copilot Chat |
 
 > [!IMPORTANT]
-> Read [PERSONA.md](PERSONA.md) before continuing. The profile explains the mission, handoff, and evaluation rubrics.
+> Lee [PERSONA.md](PERSONA.md) antes de continuar. El perfil explica la misión, la transición y las rúbricas de evaluación.
 
 ---
 
-## Concept
+## Concepto
 
-The Product Owner is responsible for translating business needs into executable scope. In a legacy modernization process such as SIFAP (Payment Inspection and Administration System), this function is critical: legacy systems accumulate implicit rules that only make sense when someone knows "why" they exist. The PO connects every technical decision to business evidence.
+El Responsable de Producto se encarga de traducir las necesidades de negocio en un alcance ejecutable. En un proceso de modernización de legado como SIFAP (Sistema de Fiscalización y Administración de Pagos), esta función es fundamental: los sistemas heredados acumulan reglas implícitas que solo tienen sentido cuando alguien conoce el "porqué" de su existencia. El PO conecta cada decisión técnica con evidencia de negocio.
 
 ---
 
-## Persona kit
+## Kit de la persona
 
-| **Artifact** | Type | Purpose |
+| **Artefacto** | Tipo | Propósito |
 |---|---|---|
-| `PERSONA.md` | Profile | Responsibilities, handoff, prompts, and rubric |
-| `.github/agents/product-owner.agent.md` | Agent | Product Owner assistant for specification, backlog, and acceptance |
-| `.github/prompts/persona-product-owner-spec.prompt.md` | Prompt | `/spec` — writes a section of `specs/<NNN>-<feature>/spec.md` from user stories in EARS |
-| `.github/prompts/persona-product-owner-update-spec.prompt.md` | Prompt | `/update-spec` — updates the specification when a feature changes |
-| `.github/prompts/persona-product-owner-acceptance-check.prompt.md` | Prompt | `/acceptance-check` — checks whether the code meets the acceptance criteria |
-| `mcp.json` | MCP | GitHub servers + Azure DevOps work items manifest |
+| `PERSONA.md` | Perfil | Responsabilidades, transición, prompts y rúbrica |
+| `.github/agents/product-owner.agent.md` | Agente | Asistente del Responsable de Producto para especificación, backlog y aceptación |
+| `.github/prompts/persona-product-owner-spec.prompt.md` | Prompt | `/spec` — escribe una sección de `specs/<NNN>-<feature>/spec.md` a partir de historias de usuario en EARS |
+| `.github/prompts/persona-product-owner-update-spec.prompt.md` | Prompt | `/update-spec` — actualiza la especificación cuando cambia una funcionalidad |
+| `.github/prompts/persona-product-owner-acceptance-check.prompt.md` | Prompt | `/acceptance-check` — comprueba si el código cumple los criterios de aceptación |
+| `mcp.json` | MCP | Manifiesto de servidores GitHub + elementos de trabajo de Azure DevOps |
 
 ---
 
-## Where the artifacts live
+## Dónde residen los artefactos
 
-The active artifacts are consolidated under the root `.github/` directory:
+Los artefactos activos están consolidados en el directorio `.github/` de la raíz:
 
-| **Type** | Path |
+| **Tipo** | Ruta |
 |---|---|
-| Agents | `.github/agents/` |
+| Agentes | `.github/agents/` |
 | Prompts | `.github/prompts/persona-*.prompt.md` |
 | Skills | `.github/skills/` |
-| Instructions | `.github/instructions/` |
+| Instrucciones | `.github/instructions/` |
 
-Use this directory as the reference. Active files live only under the root `.github/` directory — edit them there when maintenance is needed.
+Usa este directorio como referencia. Los archivos activos residen solo en el directorio `.github/` de la raíz; edítalos allí cuando necesiten mantenimiento.
 
-If the kit includes `mcp.json` and the facilitator requests local MCP, copy only that file to `.vscode/mcp.json`.
-
----
-
-## Best practices
-
-- Write requirements in EARS so that every sentence is testable.
-- Keep every user story tied to a measurable outcome.
-- Mark assumptions explicitly — a hidden assumption becomes a production bug.
-- Treat `.specify/memory/constitution.md` as the source of truth for non-negotiable items.
+Si el kit incluye `mcp.json` y la persona facilitadora solicita MCP local, copia solo ese archivo a `.vscode/mcp.json`.
 
 ---
 
-## References
+## Prácticas recomendadas
 
-- [EARS Notation — Alistair Mavin](https://alistairmavin.com/ears/)
-- [Spec-Driven Development (Spec-Kit)](https://github.com/github/spec-kit)
-- [User Story Mapping — Jeff Patton](https://www.jpattonassociates.com/user-story-mapping/)
-- [GitHub Copilot for PMs](https://docs.github.com/en/copilot)
+- Escribe los requisitos en EARS para que cada frase pueda probarse.
+- Mantén cada historia de usuario vinculada a un resultado medible.
+- Marca las suposiciones explícitamente: una suposición oculta se convierte en un error en producción.
+- Trata `.specify/memory/constitution.md` como la fuente de verdad para los aspectos no negociables.
 
 ---
 
-### Continue reading
+## Referencias
 
-| Previous | Next |
+- [Notación EARS — Alistair Mavin](https://alistairmavin.com/ears/)
+- [Desarrollo guiado por especificaciones (Spec-Kit)](https://github.com/github/spec-kit)
+- [Mapeo de historias de usuario — Jeff Patton](https://www.jpattonassociates.com/user-story-mapping/)
+- [GitHub Copilot para PM](https://docs.github.com/en/copilot)
+
+---
+
+### Sigue leyendo
+
+| Anterior | Siguiente |
 |---|---|
-| [OVERVIEW](../OVERVIEW.md)<br/><sub>Table of the 10 personas.</sub> | [PERSONA.md](PERSONA.md)<br/><sub>Profile for this persona.</sub> |
+| [DESCRIPCIÓN GENERAL](../OVERVIEW.md)<br/><sub>Tabla de las 10 personas.</sub> | [PERSONA.md](PERSONA.md)<br/><sub>Perfil de esta persona.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

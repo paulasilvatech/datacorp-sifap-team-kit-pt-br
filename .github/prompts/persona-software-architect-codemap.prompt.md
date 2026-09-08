@@ -1,151 +1,151 @@
 ---
 name: "codemap"
-description: "Produce a navigable, service-level code map for a SIFAP 2.0 module: components, direct dependencies, REQ-ID coverage, legacy lineage, and integration points."
-argument-hint: "service=<name> path=<root created by the team> spec=specs/<NNN>-<feature>/spec.md"
+description: "Produce un mapa de código navegable a nivel de servicio para un módulo de SIFAP 2.0: componentes, dependencias directas, cobertura REQ-ID, linaje heredado y puntos de integración."
+argument-hint: "service=<name> path=<raíz creada por el equipo> spec=specs/<NNN>-<feature>/spec.md"
 agent: "software-architect"
 tools: ["read", "search", "edit"]
 ---
 # /codemap
 
-## Objective
+## Objetivo
 
-Produce a **service-level code map** that complements `plan.md`: while `plan.md`
-answers "why," the code map answers "where" and "what touches what." Quality bar:
-a newcomer can locate any component, its direct dependencies, its REQ-ID coverage,
-and its legacy lineage in under ten minutes, without reading the source tree.
+Produce un **mapa de código a nivel de servicio** que complemente `plan.md`: mientras `plan.md`
+responde «por qué», el mapa de código responde «dónde» y «qué afecta a qué». Exigencia de calidad:
+una persona recién incorporada puede localizar cualquier componente, sus dependencias directas, su cobertura REQ-ID
+y su linaje heredado en menos de diez minutos, sin leer el árbol de código fuente.
 
-## When to Invoke
+## Cuándo invocar
 
-After the team has created a service under `backend/`, `frontend/`, or `infra/`
-in Stage 3 and there is enough structure to map. Re-run it after any addition,
-rename, or deletion in the service.
+Después de que el equipo haya creado un servicio en `backend/`, `frontend/` o `infra/`
+en la etapa 3 y haya suficiente estructura que mapear. Vuelve a ejecutarlo después de cualquier adición,
+cambio de nombre o eliminación en el servicio.
 
-## Preconditions
+## Precondiciones
 
-- The service folder exists (the team created it — there is no inherited prototype)
-- `specs/<NNN>-<feature>/spec.md` exists and its REQ-IDs are known
-- The layering rules in [`../instructions/modular-monolith.instructions.md`](../instructions/modular-monolith.instructions.md) are the reference for direction-of-dependency smells
+- La carpeta del servicio existe (la creó el equipo; no hay un prototipo heredado)
+- Existe `specs/<NNN>-<feature>/spec.md` y se conocen sus REQ-ID
+- Las reglas de capas de [`../instructions/modular-monolith.instructions.md`](../instructions/modular-monolith.instructions.md) son la referencia para detectar indicios de direcciones de dependencia incorrectas
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- The service to map
-- The root path the team created (for example, `backend/src/main/java/<pkg>/<service>/`)
-- The linked specification folder (`specs/<NNN>-<feature>/spec.md`)
-- Whether to include or exclude `test/` paths
-- A previous code map for this service, if one exists
+- El servicio que se mapeará
+- La ruta raíz que creó el equipo (por ejemplo, `backend/src/main/java/<pkg>/<service>/`)
+- La carpeta de especificación vinculada (`specs/<NNN>-<feature>/spec.md`)
+- Si se incluyen o excluyen las rutas `test/`
+- Un mapa de código anterior de este servicio, si existe
 
-Ask the user for anything that is missing.
+Solicita a la persona usuaria cualquier información que falte.
 
-## What I Will Do
+## Lo que haré
 
-- List the main packages and types, grouping Java by `controller`, `service`, `domain`, `repository`, `infrastructure`, and `config`, and TypeScript by `app/`, `components/`, `lib/`, and `server/`
-- Capture each component's role in one line, using only the responsibility confirmed in the code
-- Map direct inbound and outbound dependencies (transitive analysis stays in `plan.md`), marking shared types and ports that are stable contracts
-- Cross-reference `@implements REQ-NNN` annotations (flagging any component with no REQ-ID) and note which Natural program the team confirmed a component replaces (legacy lineage)
-- Expose architecture smells against the modular-monolith layering rules
-- Render both a Mermaid diagram and a grep-friendly table
-- Delegate business-capability grouping to [`../skills/capability-map/SKILL.md`](../skills/capability-map/SKILL.md) when bounded-context boundaries are unclear
+- Enumerar los paquetes y tipos principales, agrupando Java por `controller`, `service`, `domain`, `repository`, `infrastructure` y `config`, y TypeScript por `app/`, `components/`, `lib/` y `server/`
+- Recoger la función de cada componente en una línea, utilizando solo la responsabilidad confirmada en el código
+- Mapear las dependencias directas entrantes y salientes (el análisis transitivo permanece en `plan.md`), marcando tipos compartidos y puertos que sean contratos estables
+- Cruzar las anotaciones `@implements REQ-NNN` (señalando cualquier componente sin REQ-ID) y anotar qué programa Natural confirmó el equipo que sustituye un componente (linaje heredado)
+- Exponer indicios de problemas arquitectónicos frente a las reglas de capas del monolito modular
+- Representar tanto un diagrama Mermaid como una tabla fácil de consultar con grep
+- Delegar la agrupación de capacidades de negocio a [`../skills/capability-map/SKILL.md`](../skills/capability-map/SKILL.md) cuando no estén claros los límites de los contextos delimitados
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Auto-generate the map from imports — imports misrepresent intent, so the map stays curated
-- Assert what any Natural program or DDM field contains — legacy lineage records only what the team confirmed with evidence
-- List transitive dependencies or every class — I map components, not lines
-- Invent REQ-IDs, endpoints, or responsibilities that are not present in the code
-- Decide bounded contexts or record architecture decisions — that is redirected to `/impl-plan` and the [`../skills/adr-draft/SKILL.md`](../skills/adr-draft/SKILL.md) skill
+- Generar automáticamente el mapa a partir de importaciones: las importaciones no reflejan fielmente la intención, por lo que el mapa se mantiene con criterio
+- Afirmar qué contiene un programa Natural o campo DDM: el linaje heredado registra solo lo que confirmó el equipo con evidencia
+- Enumerar dependencias transitivas ni cada clase: mapeo componentes, no líneas
+- Inventar REQ-ID, puntos de conexión ni responsabilidades que no estén presentes en el código
+- Decidir contextos delimitados ni registrar decisiones de arquitectura: eso se redirige a `/impl-plan` y a la habilidad [`../skills/adr-draft/SKILL.md`](../skills/adr-draft/SKILL.md)
 
-## Output Format
+## Formato de salida
 
-A Markdown document at `docs/codemap-<service>.md`. Example (illustrative — the
-team fills it from its own code):
+Un documento Markdown en `docs/codemap-<service>.md`. Ejemplo (ilustrativo: el
+equipo lo completa a partir de su propio código):
 
 ````markdown
-# Code map — registration
+# Mapa de código — registration
 
-> Last reviewed: 2026-05-04 — owner: @sam — service-level map.
+> Última revisión: 2026-05-04 — responsable: @sam — mapa a nivel de servicio.
 
-## 1. Component diagram
+## 1. Diagrama de componentes
 
 ```mermaid
 flowchart LR
     Controller["RegistrationController"] --> Service["RegistrationService"]
     Service --> Domain["Registration"]
-    Service --> Repository[("registration table")]
+    Service --> Repository[("tabla registration")]
     Service --> Gateway[["NotificationGateway"]]
 ```
 
-## 2. Components
+## 2. Componentes
 
-| Type | FQN | Role | REQ-IDs | Inbound | Outbound |
+| Tipo | FQN | Función | REQ-IDs | Entrantes | Salientes |
 |------|-----|------|---------|---------|----------|
-| Controller | app.registration.RegistrationController | Accepts registration requests | REQ-014 | (HTTP) | RegistrationService |
-| Service | app.registration.RegistrationService | Applies registration rules | REQ-014, REQ-015 | RegistrationController | RegistrationRepository, NotificationGateway |
+| Controlador | app.registration.RegistrationController | Acepta solicitudes de registro | REQ-014 | (HTTP) | RegistrationService |
+| Servicio | app.registration.RegistrationService | Aplica reglas de registro | REQ-014, REQ-015 | RegistrationController | RegistrationRepository, NotificationGateway |
 
-## 3. API, state, and legacy lineage
+## 3. API, estado y linaje heredado
 
-- **API**: `POST /api/v1/registrations` — tested by `RegistrationControllerTest`
-- **State**: table `registration` (`V3__registration.sql`), linked to REQ-015
-- **Lineage**: `RegistrationService` replaces `<program>.NSP` — evidence: `business-rules-catalog.md` Rule #7 (team-confirmed)
+- **API**: `POST /api/v1/registrations` — probada por `RegistrationControllerTest`
+- **Estado**: tabla `registration` (`V3__registration.sql`), vinculada a REQ-015
+- **Linaje**: `RegistrationService` sustituye `<program>.NSP` — evidencia: regla #7 de `business-rules-catalog.md` (confirmada por el equipo)
 
-## 4. Observed smells
+## 4. Indicios de mal diseño observados
 
-- `RegistrationService` has 4 outbound dependencies (watch for growth toward a god class)
+- `RegistrationService` tiene 4 dependencias salientes (vigilar si evoluciona hacia una clase que concentra demasiadas responsabilidades)
 ````
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] The Mermaid diagram renders and reflects the real components
-- [ ] The component table covers every component in the service folder
-- [ ] The REQ-ID column is populated; components with no REQ-ID are explicitly noted
-- [ ] Inbound and outbound dependencies are direct only
-- [ ] Persistent state lists tables and queues linked to REQ-IDs
-- [ ] Legacy lineage names only Natural programs the team confirmed with evidence
-- [ ] Observed smells include near-god classes and missing REQ-ID annotations
-- [ ] The document is linked from the team's `docs/CODEMAP.md`
+- [ ] El diagrama Mermaid se representa correctamente y refleja los componentes reales
+- [ ] La tabla de componentes cubre cada componente de la carpeta del servicio
+- [ ] La columna REQ-ID está completa; se anotan explícitamente los componentes sin REQ-ID
+- [ ] Las dependencias entrantes y salientes son solo directas
+- [ ] El estado persistente enumera tablas y colas vinculadas a REQ-ID
+- [ ] El linaje heredado identifica solo programas Natural que el equipo confirmó con evidencia
+- [ ] Los indicios observados incluyen clases que concentran demasiadas responsabilidades y anotaciones REQ-ID ausentes
+- [ ] El documento está enlazado desde `docs/CODEMAP.md` del equipo
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@software-architect`. The team asked for a service-level code map a
-newcomer can read in ten minutes.
+Eres el `@software-architect`. El equipo pidió un mapa de código a nivel de servicio que
+una persona recién incorporada pueda leer en diez minutos.
 
-**Step 1 — Scope the service.**
-Confirm the service name, its root path, and whether `test/` is in scope. If any
-is missing, ask before proceeding. Read a previous code map if one exists so the
-update stays incremental.
+**Paso 1 — Delimita el servicio.**
+Confirma el nombre del servicio, su ruta raíz y si `test/` está dentro del alcance. Si falta
+algún dato, pregunta antes de continuar. Lee el mapa de código anterior, si existe, para que
+la actualización sea incremental.
 
-**Step 2 — List components by layer.**
-Group Java by `controller`, `service`, `domain`, `repository`, `infrastructure`,
-and `config`; group TypeScript by `app/`, `components/`, `lib/`, and `server/`.
-Record each component's one-line role using only what the code confirms.
+**Paso 2 — Enumera componentes por capa.**
+Agrupa Java por `controller`, `service`, `domain`, `repository`, `infrastructure`
+y `config`; agrupa TypeScript por `app/`, `components/`, `lib/` y `server/`.
+Registra en una línea la función de cada componente utilizando solo lo que confirma el código.
 
-**Step 3 — Map direct dependencies.**
-For each component, record who calls it (inbound) and what it calls (outbound).
-Stop at direct edges. Identify shared interfaces in `domain/`, ports in
-`application/`, and gateways in `infrastructure/`, marking stable contracts.
+**Paso 3 — Mapea dependencias directas.**
+Para cada componente, registra quién lo llama (entrantes) y a qué llama (salientes).
+Detente en las aristas directas. Identifica interfaces compartidas en `domain/`, puertos en
+`application/` y pasarelas en `infrastructure/`, marcando los contratos estables.
 
-**Step 4 — Cross-reference REQ-IDs.**
-For each public method or component, find its `@implements REQ-NNN` annotation.
-List any component with no requirement as "no REQ-ID found" for team review. Do
-not invent a REQ-ID to close the gap.
+**Paso 4 — Cruza referencias de REQ-ID.**
+Para cada método público o componente, encuentra su anotación `@implements REQ-NNN`.
+Enumera los componentes sin requisito como «no se encontró REQ-ID» para revisión del equipo.
+No inventes un REQ-ID para cerrar la laguna.
 
-**Step 5 — Record legacy lineage.**
-Name only the Natural program under `01-archaeology/legacy-sifap/natural-programs/`
-the team confirmed a component replaces, citing the evidence (for example, a rule
-in `business-rules-catalog.md`). If unconfirmed, write "unmapped" — never guess.
+**Paso 5 — Registra el linaje heredado.**
+Identifica solo el programa Natural de `01-archaeology/legacy-sifap/natural-programs/`
+que el equipo confirmó que sustituye un componente, citando la evidencia (por ejemplo, una regla
+de `business-rules-catalog.md`). Si no está confirmado, escribe «sin mapear»; nunca adivines.
 
-**Step 6 — Expose smells.**
-Against the modular-monolith layering rules, flag wrong-direction dependencies
-(service calling controller, domain depending on infrastructure), god classes
-(more than five outbound dependencies), and possible dead code (no inbound edges).
+**Paso 6 — Expón indicios de mal diseño.**
+Frente a las reglas de capas del monolito modular, señala dependencias en dirección incorrecta
+(servicio que llama a un controlador, dominio que depende de infraestructura), clases con demasiadas responsabilidades
+(más de cinco dependencias salientes) y posible código muerto (sin aristas entrantes).
 
-**Step 7 — Render and link.**
-Write the Mermaid diagram and the tables to `docs/codemap-<service>.md`, then link
-it from the team's `docs/CODEMAP.md`.
+**Paso 7 — Representa y enlaza.**
+Escribe el diagrama Mermaid y las tablas en `docs/codemap-<service>.md` y después
+enlázalo desde `docs/CODEMAP.md` del equipo.
 
-Keep the map curated, not generated. If a component's purpose is unclear from the
-code, record the open question rather than inventing a responsibility.
+Mantén el mapa revisado con criterio, no generado automáticamente. Si el propósito de un componente no está claro en el
+código, registra la pregunta pendiente en lugar de inventar una responsabilidad.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
 /codemap service=registration path=backend/src/main/java/app/registration spec=specs/014-registration/spec.md

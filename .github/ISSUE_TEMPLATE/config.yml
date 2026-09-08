@@ -1,8 +1,8 @@
 blank_issues_enabled: true
 contact_links:
-  - name: 📖 Team Flow Reference
-    url: https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/main/00-TEAM-FLOW.md
-    about: How 5 people cover 10 personas — read before opening any issue.
-  - name: 🤝 Need a facilitator
-    url: https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/main/docs/FAQ.md
-    about: Stuck for 20 minutes? Raise your hand for the blue-cord team.
+  - name: 📖 Referencia del flujo del equipo
+    url: https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/espanol/00-TEAM-FLOW.md
+    about: Cómo 5 personas cubren 10 roles — lee antes de abrir una issue.
+  - name: 🤝 ¿Necesitas un facilitador?
+    url: https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/espanol/docs/FAQ.md
+    about: ¿Llevas 20 minutos sin avanzar? Levanta la mano para llamar al equipo de cordón azul.

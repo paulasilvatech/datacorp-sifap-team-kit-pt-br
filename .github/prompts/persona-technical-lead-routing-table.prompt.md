@@ -1,107 +1,107 @@
 ---
 name: "routing-table"
-description: "Map a feature's tasks to the right Copilot mode and model tier with rationale and a cost tier, grounded in the kit's routing cards."
+description: "Vincula las tareas de una funcionalidad con el modo de Copilot y el nivel de modelo adecuados, con justificación y nivel de costo, según las fichas de enrutamiento del kit."
 argument-hint: "tasks=specs/<NNN>-<feature>/tasks.md"
 agent: "tech-lead"
 tools: ["read", "search"]
 ---
 # /routing-table
 
-## Objective
+## Objetivo
 
-Produce a routing table that maps each task in a feature to the Copilot mode and
-model tier that fit it, with a one-line rationale and a cost tier. It follows the
-kit's own routing guidance so the team spends the smallest sufficient model and
-mode on each task — never model prestige.
+Produce una tabla de enrutamiento que vincule cada tarea de una funcionalidad con el modo de Copilot y
+el nivel de modelo adecuados, con una justificación de una línea y un nivel de costo. Sigue las
+orientaciones de enrutamiento del propio kit para que el equipo utilice el modelo y el modo
+mínimos suficientes en cada tarea, nunca por prestigio del modelo.
 
-## When to Invoke
+## Cuándo invocar
 
-At the start of a feature, once `tasks.md` (or a backlog) exists, so the team can
-budget effort and pick the right mode and model before executing.
+Al inicio de una funcionalidad, cuando exista `tasks.md` (o una lista de trabajo pendiente), para que el equipo pueda
+presupuestar el esfuerzo y elegir el modo y modelo adecuados antes de ejecutar.
 
-## Preconditions
+## Precondiciones
 
-- `specs/<NNN>-<feature>/tasks.md` or a task backlog exists
-- The routing cards are the source of truth: [`../../09-cheat-sheets/model-routing.md`](../../09-cheat-sheets/model-routing.md) and [`../../09-cheat-sheets/copilot-3-modes.md`](../../09-cheat-sheets/copilot-3-modes.md)
+- Existe `specs/<NNN>-<feature>/tasks.md` o una lista de tareas pendientes
+- Las fichas de enrutamiento son la fuente de verdad: [`../../09-cheat-sheets/model-routing.md`](../../09-cheat-sheets/model-routing.md) y [`../../09-cheat-sheets/copilot-3-modes.md`](../../09-cheat-sheets/copilot-3-modes.md)
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- The task list path (or the backlog to route)
+- La ruta de la lista de tareas (o la lista de trabajo pendiente que se distribuirá)
 
-Ask the user for anything that is missing.
+Solicita a la persona usuaria cualquier información que falte.
 
-## What I Will Do
+## Lo que haré
 
-- Categorize each task as Discovery, Design, Implementation, Refactor, Review, or Mechanical
-- Recommend a Copilot mode per the three-modes card: Ask (explore, discuss), Plan (multi-file design), or Agent (delegated Issue to PR)
-- Recommend a model tier per the model-routing card: Haiku 4.5 (mechanical), Sonnet 4.6 (everyday default), or Opus 4.6 (architecture decision)
-- Give a one-line, task-specific rationale and an approximate cost tier
-- Flag tasks where a cheaper tier is sufficient without compromising quality
+- Categorizar cada tarea como descubrimiento, diseño, implementación, refactorización, revisión o mecánica
+- Recomendar un modo de Copilot según la ficha de tres modos: Ask (explorar, debatir), Plan (diseño de varios archivos) o Agent (incidencia delegada hasta PR)
+- Recomendar un nivel de modelo según la ficha de enrutamiento: Haiku 4.5 (mecánico), Sonnet 4.6 (predeterminado cotidiano) u Opus 4.6 (decisión de arquitectura)
+- Dar una justificación de una línea específica para la tarea y un nivel de costo aproximado
+- Señalar tareas para las que baste un nivel más económico sin comprometer la calidad
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Pin a model into any primitive's frontmatter — this table guides the human's manual model-picker choice, nothing more (see the [prompts index](README.md))
-- Invent a routing model — I only apply the two cited cards
-- Default every task to Opus — I justify moving up from Sonnet
-- Give generic rationales — each references the task's actual content
-- Decide the task scope itself — task definition is redirected to `/impl-plan`
+- Fijar un modelo en el frontmatter de ninguna primitiva: esta tabla orienta la elección manual de la persona en el selector de modelos, nada más (consulta el [índice de prompts](README.md))
+- Inventar un modelo de enrutamiento: solo aplico las dos fichas citadas
+- Asignar Opus de forma predeterminada a todas las tareas: justifico subir de nivel desde Sonnet
+- Dar justificaciones genéricas: cada una referencia el contenido real de la tarea
+- Decidir el propio alcance de la tarea: su definición se redirige a `/impl-plan`
 
-## Output Format
+## Formato de salida
 
-A Markdown table presented for review. Example (illustrative):
+Una tabla Markdown presentada para revisión. Ejemplo (ilustrativo):
 
 ```markdown
-## Routing table — 014-registration
+## Tabla de enrutamiento — 014-registration
 
-| Task ID | Category | Copilot Mode | Model Tier | Rationale | Cost Tier |
+| ID de tarea | Categoría | Modo de Copilot | Nivel de modelo | Justificación | Nivel de costo |
 |---------|----------|--------------|------------|-----------|-----------|
-| T-01 | Mechanical | Ask | Haiku 4.5 | Generate migration DDL from a fixed schema | Low |
-| T-02 | Implementation | Plan | Sonnet 4.6 | Multi-file module scaffold with tests | Medium |
-| T-05 | Design | Ask | Opus 4.6 | Choose the aggregate boundary — hard to reverse | High |
+| T-01 | Mecánica | Ask | Haiku 4.5 | Generar DDL de migración a partir de un esquema fijo | Bajo |
+| T-02 | Implementación | Plan | Sonnet 4.6 | Estructura inicial de módulo en varios archivos con pruebas | Medio |
+| T-05 | Diseño | Ask | Opus 4.6 | Elegir el límite del agregado: difícil de revertir | Alto |
 
-Cheaper-tier candidates: T-01 (Haiku is sufficient).
+Candidatos a un nivel más económico: T-01 (Haiku es suficiente).
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] Every task has a Copilot mode, a model tier, and a rationale
-- [ ] At least one cheaper-tier candidate is identified (or noted "none applicable")
-- [ ] Cost tiers are consistent — the same category rarely uses different tiers
-- [ ] Each rationale references the task content, not generic language
-- [ ] Recommendations match the two routing cards, with no invented tiers
+- [ ] Cada tarea tiene un modo de Copilot, un nivel de modelo y una justificación
+- [ ] Se identifica al menos un candidato a un nivel más económico (o se anota «ninguno aplicable»)
+- [ ] Los niveles de costo son coherentes: la misma categoría rara vez utiliza niveles distintos
+- [ ] Cada justificación referencia el contenido de la tarea, no lenguaje genérico
+- [ ] Las recomendaciones coinciden con las dos fichas de enrutamiento, sin niveles inventados
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@tech-lead`. The team wants to route its work to the right mode and
-model before spending time on it.
+Eres el `@tech-lead`. El equipo quiere asignar su trabajo al modo y
+modelo adecuados antes de dedicarle tiempo.
 
-**Step 1 — Read the tasks.**
-Open `tasks.md` (or the backlog). For each task, note what it touches and how
-ambiguous or risky it is.
+**Paso 1 — Lee las tareas.**
+Abre `tasks.md` (o la lista de trabajo pendiente). Para cada tarea, anota a qué afecta y lo
+ambigua o arriesgada que es.
 
-**Step 2 — Categorize.**
-Label each task Discovery, Design, Implementation, Refactor, Review, or Mechanical
-based on its content.
+**Paso 2 — Categoriza.**
+Etiqueta cada tarea como descubrimiento, diseño, implementación, refactorización, revisión o mecánica
+según su contenido.
 
-**Step 3 — Assign a Copilot mode.**
-Using the three-modes card, pick Ask for exploration and discussion, Plan for
-multi-file changes that need a reviewed scope, and Agent for a well-described Issue
-that can run to a PR unattended.
+**Paso 3 — Asigna un modo de Copilot.**
+Utilizando la ficha de tres modos, elige Ask para exploración y debate, Plan para
+cambios de varios archivos que necesitan un alcance revisado y Agent para una incidencia bien descrita
+que pueda llegar a una PR sin supervisión.
 
-**Step 4 — Assign a model tier.**
-Using the model-routing card, pick Haiku 4.5 for mechanical generation, Sonnet 4.6
-as the everyday default for code and review, and Opus 4.6 only for an architecture
-decision, trade-off, or impact analysis. Moving up from Sonnet needs a reason.
+**Paso 4 — Asigna un nivel de modelo.**
+Utilizando la ficha de enrutamiento de modelos, elige Haiku 4.5 para generación mecánica, Sonnet 4.6
+como predeterminado cotidiano para código y revisión, y Opus 4.6 solo para una decisión
+arquitectónica, un compromiso técnico o un análisis de impacto. Subir de nivel desde Sonnet necesita un motivo.
 
-**Step 5 — Add rationale and cost.**
-Give each task a one-line rationale tied to its actual content and an approximate
-cost tier (Low, Medium, High). Flag any task where a cheaper tier would not reduce
-quality.
+**Paso 5 — Añade justificación y costo.**
+Da a cada tarea una justificación de una línea vinculada a su contenido real y un nivel
+de costo aproximado (bajo, medio, alto). Señala cualquier tarea para la que un nivel más económico no reduzca
+la calidad.
 
-Never pin a model into a primitive — this table only advises the human at the
-model picker. Do not invent tiers or modes beyond the two cited cards.
+Nunca fijes un modelo en una primitiva: esta tabla solo asesora a la persona en el
+selector de modelos. No inventes niveles ni modos más allá de las dos fichas citadas.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
 /routing-table tasks=specs/014-registration/tasks.md

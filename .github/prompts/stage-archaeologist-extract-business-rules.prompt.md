@@ -1,121 +1,121 @@
 ---
 name: "extract-business-rules"
-description: "Extracts business rules from a Natural program by reading IF/THEN/ELSE blocks and confirming them against documentation."
+description: "Extrae reglas de negocio de un programa Natural mediante la lectura de bloques IF/THEN/ELSE y su confirmación frente a la documentación."
 argument-hint: "file=01-archaeology/legacy-sifap/natural-programs/<PROGRAM>.NSN docs=01-archaeology/legacy-sifap/legacy-docs/"
 agent: "archaeologist"
 tools: ["read", "search", "edit"]
 ---
 # /extract-business-rules
 
-## Objective
+## Objetivo
 
-Read a selected Natural program and extract every candidate business rule by identifying conditional logic (IF/THEN/ELSE, DECIDE, AT BREAK). State each rule in clear language, trace it to its source, and classify it as confirmed or a mystery.
+Lee un programa Natural seleccionado y extrae cada regla de negocio candidata identificando la lógica condicional (IF/THEN/ELSE, DECIDE, AT BREAK). Expresa cada regla en lenguaje claro, trázala a su fuente y clasifícala como confirmada o como misterio.
 
-## When to Invoke
+## Cuándo invocar
 
-After the team completes the initial inventory (`/archaeology-kickoff`) and selects a program to read.
+Después de que el equipo complete el inventario inicial (`/archaeology-kickoff`) y seleccione un programa que leer.
 
-## Preconditions
+## Precondiciones
 
-- `01-archaeology/inventory.md` exists
-- The team selected a specific Natural program file to analyze
-- The `01-archaeology/legacy-sifap/` folder is accessible
+- Existe `01-archaeology/inventory.md`
+- El equipo seleccionó un archivo de programa Natural específico para analizarlo
+- La carpeta `01-archaeology/legacy-sifap/` está accesible
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- The full path to the Natural program to analyze (for example, `01-archaeology/legacy-sifap/natural-programs/PGXXXXXX.NSN`)
-- Any available documentation paths in `01-archaeology/legacy-sifap/legacy-docs/` (optional — used for confirmation)
+- La ruta completa del programa Natural que se analizará (por ejemplo, `01-archaeology/legacy-sifap/natural-programs/PGXXXXXX.NSN`)
+- Las rutas de documentación disponibles en `01-archaeology/legacy-sifap/legacy-docs/` (opcional: se utilizan para confirmar)
 
-## What I Will Do
+## Lo que haré
 
-- Read the specified program from top to bottom
-- Identify every conditional block: `IF...THEN...ELSE...END-IF`, `DECIDE ON`, `AT BREAK OF`, and comparison operators
-- Formulate a candidate business rule in clear language for each conditional block
-- Cross-reference documentation in `01-archaeology/legacy-sifap/legacy-docs/`, if available
-- Classify each rule as **confirmed** (matched in documentation), **inferred** (code only, without documentation support), or **mystery** (unclear logic)
-- Draft EARS notation candidates for confirmed rules
+- Leer el programa especificado de principio a fin
+- Identificar cada bloque condicional: `IF...THEN...ELSE...END-IF`, `DECIDE ON`, `AT BREAK OF` y operadores de comparación
+- Formular una regla de negocio candidata en lenguaje claro para cada bloque condicional
+- Cruzar referencias con la documentación de `01-archaeology/legacy-sifap/legacy-docs/`, si está disponible
+- Clasificar cada regla como **confirmada** (coincide con la documentación), **inferida** (solo código, sin respaldo documental) o **misterio** (lógica poco clara)
+- Redactar propuestas de notación EARS para las reglas confirmadas
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Infer rules solely from program or variable names — I read the actual logic
-- Fabricate explanations for unclear code — mysteries remain mysteries
-- Summarize the entire program in one pass — I work block by block
-- Reference knowledge about any specific legacy system — I read only what the team shows me
-- Automatically promote inferred rules to confirmed status
+- Inferir reglas solo a partir de nombres de programas o variables: leo la lógica real
+- Inventar explicaciones para código poco claro: los misterios siguen siendo misterios
+- Resumir todo el programa en una sola pasada: trabajo bloque por bloque
+- Referenciar conocimiento de un sistema heredado específico: leo solo lo que me muestra el equipo
+- Elevar automáticamente reglas inferidas al estado de confirmadas
 
-## Output Format
+## Formato de salida
 
-Append to `01-archaeology/business-rules-catalog.md`:
+Añade a `01-archaeology/business-rules-catalog.md`:
 
 ```markdown
-## Rules from [file-name]
+## Reglas de [nombre de archivo]
 
-| # | Rule Statement | EARS Candidate | Source | Classification | Notes |
+| # | Enunciado de regla | Propuesta EARS | Fuente | Clasificación | Notas |
 |---|---|---|---|---|---|
-| 1 | When X occurs, the system shall do Y | Event-driven | file.nat:L42-58 | Confirmed | Matches section 3.2 of the document |
-| 2 | If Z occurs, the system shall reject | Unwanted | file.nat:L73-81 | Mystery | <!-- mystery: it is unclear what triggers Z --> |
+| 1 | When ocurre X, el sistema shall hacer Y | Guiado por eventos | file.nat:L42-58 | Confirmada | Coincide con la sección 3.2 del documento |
+| 2 | If ocurre Z, el sistema shall rechazar | No deseado | file.nat:L73-81 | Misterio | <!-- mystery: no está claro qué activa Z --> |
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] Every IF/THEN/ELSE, DECIDE, and AT BREAK block in the program was examined
-- [ ] Every candidate rule has a file path and line range
-- [ ] Confirmed rules cite the supporting documentation section
-- [ ] Inferred rules are clearly marked and are not treated as facts
-- [ ] Mysteries have `<!-- mystery: ... -->` markers describing what is unknown
-- [ ] There is at least one EARS notation candidate for each confirmed rule
+- [ ] Se examinó cada bloque IF/THEN/ELSE, DECIDE y AT BREAK del programa
+- [ ] Cada regla candidata tiene una ruta de archivo y un intervalo de líneas
+- [ ] Las reglas confirmadas citan la sección de documentación que las respalda
+- [ ] Las reglas inferidas están claramente marcadas y no se tratan como hechos
+- [ ] Los misterios tienen marcadores `<!-- mystery: ... -->` que describen lo desconocido
+- [ ] Existe al menos una propuesta de notación EARS para cada regla confirmada
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@archaeologist`. The team selected a Natural program to analyze for business rules. You will read it systematically and extract every conditional business rule.
+Eres el `@archaeologist`. El equipo seleccionó un programa Natural para analizar sus reglas de negocio. Lo leerás sistemáticamente y extraerás cada regla de negocio condicional.
 
-**Step 1 — Read DEFINE DATA.**
-Open the specified file. Read the `DEFINE DATA` section first. List every variable with its type, size, and any comment. This establishes the vocabulary for understanding conditions later.
+**Paso 1 — Lee DEFINE DATA.**
+Abre el archivo especificado. Lee primero la sección `DEFINE DATA`. Enumera cada variable con su tipo, tamaño y comentarios. Esto establece el vocabulario para comprender después las condiciones.
 
-**Step 2 — Identify conditional blocks.**
-Scan the program for every instance of:
+**Paso 2 — Identifica los bloques condicionales.**
+Examina el programa para encontrar cada aparición de:
 
 - `IF ... THEN ... [ELSE ...] END-IF`
 - `DECIDE ON FIRST/EVERY VALUE OF`
 - `AT BREAK OF`
-- Comparison operators used with literals (numeric values, string constants, date values)
+- Operadores de comparación utilizados con literales (valores numéricos, constantes de cadena, valores de fecha)
 
-For each block, record the start line, end line, condition expression, and action taken in each branch.
+Para cada bloque, registra la línea inicial, la línea final, la expresión de condición y la acción realizada en cada rama.
 
-**Step 3 — Formulate candidate rules.**
-For each conditional block, write a business-rule statement in clear language. Follow this pattern:
+**Paso 3 — Formula reglas candidatas.**
+Para cada bloque condicional, escribe un enunciado de regla de negocio en lenguaje claro. Sigue este patrón:
 
-- Start with the condition: "When [condition]..." or "If [condition]..."
-- State the action: "...the system shall [action]"
-- Include the else branch if present: "Otherwise, the system shall [alternative action]"
+- Comienza con la condición: «When [condición]...» o «If [condición]...»
+- Expresa la acción: «...el sistema shall [acción]»
+- Incluye la rama alternativa si existe: «En caso contrario, el sistema shall [acción alternativa]»
 
-**Step 4 — Attempt EARS classification.**
-For each rule, propose which EARS pattern it matches:
+**Paso 4 — Intenta la clasificación EARS.**
+Para cada regla, propone con qué patrón EARS coincide:
 
-- **Ubiquitous**: Always true, without a trigger → "The system shall..."
-- **Event-driven**: Triggered by an event → "When [event], the system shall..."
-- **State-driven**: Active while in a state → "While [state], the system shall..."
-- **Optional**: Conditional on a feature/configuration → "Where [condition], the system shall..."
-- **Unwanted**: Error handling or rejection → "If [unwanted condition], then the system shall..."
+- **Ubicuo**: siempre verdadero, sin activador → «El sistema shall...»
+- **Guiado por eventos**: activado por un evento → «When [evento], el sistema shall...»
+- **Guiado por estados**: activo mientras se está en un estado → «While [estado], el sistema shall...»
+- **Opcional**: condicionado a una funcionalidad/configuración → «Where [condición], el sistema shall...»
+- **No deseado**: tratamiento de errores o rechazo → «If [condición no deseada], then el sistema shall...»
 
-**Step 5 — Cross-reference documentation.**
-If the team provided documentation paths, search those files for keywords matching variable names or literal values in the conditions. For each match found, promote the rule to "confirmed" and cite the documentation section. Classify each rule without documentation support as "inferred."
+**Paso 5 — Cruza referencias con la documentación.**
+Si el equipo proporcionó rutas de documentación, busca en esos archivos palabras clave que coincidan con nombres de variables o valores literales de las condiciones. Para cada coincidencia encontrada, eleva la regla a «confirmada» y cita la sección de documentación. Clasifica como «inferida» cada regla sin respaldo documental.
 
-**Step 6 — Flag mysteries.**
-For any conditional block where:
+**Paso 6 — Señala misterios.**
+Para cualquier bloque condicional en el que:
 
-- Variable names are cryptic and the intent of the condition is unclear
-- Literal values have no obvious meaning (magic numbers)
-- The logic appears contradictory or redundant
+- Los nombres de variables sean crípticos y no esté clara la intención de la condición
+- Los valores literales no tengan un significado evidente (números mágicos)
+- La lógica parezca contradictoria o redundante
 
-Mark it as `<!-- mystery: [description of what is unclear] -->` and add it to the catalog with the "mystery" classification.
+Márcalo como `<!-- mystery: [descripción de lo que no está claro] -->` y añádelo al catálogo con la clasificación «misterio».
 
-**Step 7 — Generate results.**
-Append the results to `01-archaeology/business-rules-catalog.md`. If the file does not exist, create it with a header. Every rule entry must include the rule number, clear-language statement, EARS candidate, source file and line range, classification, and notes.
+**Paso 7 — Genera los resultados.**
+Añade los resultados a `01-archaeology/business-rules-catalog.md`. Si el archivo no existe, créalo con un encabezado. Cada entrada de regla debe incluir el número de regla, el enunciado en lenguaje claro, la propuesta EARS, el archivo de origen y el intervalo de líneas, la clasificación y las notas.
 
-Do not infer rules from program names or file organization. Read the actual code. If the purpose of a block remains genuinely unclear after careful reading, it is a mystery — not a rule.
+No infieras reglas a partir de nombres de programas ni de la organización de archivos. Lee el código real. Si el propósito de un bloque sigue siendo realmente poco claro después de una lectura cuidadosa, es un misterio, no una regla.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
 /extract-business-rules file=01-archaeology/legacy-sifap/natural-programs/PGMAIN01.NSN docs=01-archaeology/legacy-sifap/legacy-docs/

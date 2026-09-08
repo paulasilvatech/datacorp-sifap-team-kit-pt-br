@@ -1,24 +1,24 @@
 ---
 name: "azure-container-registry-cli"
-description: "Use when working with Azure Container Registry, running az acr commands, or pushing, importing, building, or purging container images in Azure. Covers registries, cloud builds, ACR Tasks, authentication, tokens, geo-replication, and networking. Triggers include \"az acr\", \"push image to ACR\", \"build image in Azure\", \"ACR authentication\", and \"container registry\"."
+description: "Úsala para trabajar con Azure Container Registry, ejecutar comandos az acr o enviar, importar, compilar o purgar imágenes de contenedor en Azure. Abarca registros, compilaciones en la nube, ACR Tasks, autenticación, tokens, replicación geográfica y redes. Los desencadenantes incluyen \"az acr\", \"enviar imagen a ACR\", \"compilar imagen en Azure\", \"autenticación de ACR\" y \"registro de contenedores\"."
 ---
-# Azure Container Registry CLI
+# CLI de Azure Container Registry
 
-Manage Azure Container Registry (ACR) resources with the `az acr` command group of the Azure CLI. `az acr` ships with the core Azure CLI — no extension is required (the `acrtransfer` extension is only needed for export/import pipelines).
+Gestiona recursos de Azure Container Registry (ACR) con el grupo de comandos `az acr` de Azure CLI. `az acr` forma parte del núcleo de Azure CLI y no requiere ninguna extensión (la extensión `acrtransfer` solo es necesaria para canalizaciones de exportación e importación).
 
 > [!NOTE]
-> This skill depends on the **`az` CLI** being installed and authenticated. For this kit, provision the registry itself as Terraform (`azurerm_container_registry`, with the required `project`, `environment`, and `owner` tags) under `infra/`; use `az acr` for operational tasks — building, importing, tagging, and diagnosing images — not as the system of record for infrastructure.
+> Esta skill requiere que la **CLI `az`** esté instalada y autenticada. En este kit, aprovisiona el propio registro con Terraform (`azurerm_container_registry`, con las etiquetas obligatorias `project`, `environment` y `owner`) bajo `infra/`. Usa `az acr` para tareas operativas, como compilar, importar, etiquetar y diagnosticar imágenes, no como fuente de verdad de la infraestructura.
 
-## When to invoke
+## Cuándo invocar
 
-- "Push our Spring Boot image to Azure Container Registry."
-- "Build a container image in Azure without a local Docker daemon."
-- "How do I let AKS pull from this registry without the admin user?"
-- "Clean up old tags to reduce ACR storage cost."
+- "Envía nuestra imagen de Spring Boot a Azure Container Registry."
+- "Compila una imagen de contenedor en Azure sin un demonio local de Docker."
+- "¿Cómo permito que AKS extraiga imágenes de este registro sin usar el usuario administrador?"
+- "Limpia las etiquetas antiguas para reducir el costo de almacenamiento de ACR."
 
-## Prerequisites
+## Prerrequisitos
 
-Install the Azure CLI, then sign in and select a subscription:
+Instala Azure CLI, inicia sesión y selecciona una suscripción:
 
 ```bash
 brew install azure-cli                                     # macOS
@@ -28,65 +28,65 @@ az login
 az account set --subscription {subscription-id}
 ```
 
-## Quick start
+## Inicio rápido
 
 ```bash
 az acr create --resource-group {rg} --name {registry} --sku Standard          # SKU: Basic | Standard | Premium
-az acr login --name {registry}                                                # authenticate Docker/Podman
-az acr build --registry {registry} --image app:v1 .                           # cloud build, no local Docker
-az acr import --name {registry} --source mcr.microsoft.com/hello-world:latest  # server-side copy
+az acr login --name {registry}                                                # autenticar Docker/Podman
+az acr build --registry {registry} --image app:v1 .                           # compilación en la nube, sin Docker local
+az acr import --name {registry} --source mcr.microsoft.com/hello-world:latest  # copia en el servidor
 az acr repository list --name {registry} --output table
 az acr repository show-tags --name {registry} --repository app --orderby time_desc
-az acr check-health --name {registry} --yes                                   # diagnose connectivity
+az acr check-health --name {registry} --yes                                   # diagnosticar la conectividad
 ```
 
-## Key principles
+## Principios clave
 
-- **Prefer `az acr build` / ACR Tasks** over local `docker build` + `docker push`: builds run in Azure, work without a local daemon, and integrate with triggers.
-- **Prefer `az acr import`** to move images between registries: it is server-side, faster, and needs no local storage.
-- **Never enable the admin user for production.** Use Microsoft Entra identities (RBAC roles `AcrPull`/`AcrPush`, or `Container Registry Repository Reader`/`Writer` on ABAC-enabled registries), repository-scoped tokens, or managed identities.
-- **Premium-only features**: geo-replication, private endpoints, retention policies, connected registries, and agent pools. Repository-scoped tokens work in all tiers; zone redundancy is automatic in supported regions.
+- **Prefiere `az acr build` / ACR Tasks** a `docker build` + `docker push` locales: las compilaciones se ejecutan en Azure, funcionan sin un demonio local y se integran con desencadenantes.
+- **Prefiere `az acr import`** para mover imágenes entre registros: se ejecuta en el servidor, es más rápido y no necesita almacenamiento local.
+- **Nunca habilites el usuario administrador en producción.** Usa identidades de Microsoft Entra (roles RBAC `AcrPull`/`AcrPush`, o `Container Registry Repository Reader`/`Writer` en registros con ABAC habilitado), tokens con ámbito de repositorio o identidades administradas.
+- **Funcionalidades exclusivas de Premium**: replicación geográfica, puntos de conexión privados, políticas de retención, registros conectados y grupos de agentes. Los tokens con ámbito de repositorio funcionan en todos los niveles; la redundancia de zona es automática en las regiones compatibles.
 
-## CLI structure
+## Estructura de la CLI
 
 ```text
 az acr
-├── create / delete / list / show / update   Registry lifecycle
-├── login                  Docker credential helper (or --expose-token)
-├── check-health / check-name / show-usage    Diagnostics and quota
-├── build                  Cloud image build (quick task)
-├── run                    Run a command or multi-step task once
-├── task                   ACR Tasks (triggers, timers, logs, runs)
-├── agentpool              Dedicated task agent pools (Premium)
-├── import                 Server-side image copy into the registry
-├── repository             List/show/delete/untag repos and tags, lock images
-├── manifest               Manifest metadata, delete, OCI referrers
-├── credential             Admin user credentials (avoid in production)
-├── token / scope-map      Repository-scoped tokens (Premium)
-├── replication            Geo-replication (Premium)
-├── network-rule           IP network rules
-├── private-endpoint-connection   Private Link approvals
+├── create / delete / list / show / update   Ciclo de vida del registro
+├── login                  Asistente de credenciales de Docker (o --expose-token)
+├── check-health / check-name / show-usage    Diagnóstico y cuota
+├── build                  Compilación de imágenes en la nube (tarea rápida)
+├── run                    Ejecutar una vez un comando o una tarea de varios pasos
+├── task                   ACR Tasks (desencadenantes, temporizadores, registros, ejecuciones)
+├── agentpool              Grupos de agentes dedicados a tareas (Premium)
+├── import                 Copia de imágenes al registro desde el servidor
+├── repository             Listar/mostrar/eliminar repositorios y etiquetas, quitar etiquetas y bloquear imágenes
+├── manifest               Metadatos de manifiestos, eliminación y artefactos de referencia OCI
+├── credential             Credenciales del usuario administrador (evitar en producción)
+├── token / scope-map      Tokens con ámbito de repositorio (Premium)
+├── replication            Replicación geográfica (Premium)
+├── network-rule           Reglas de red por IP
+├── private-endpoint-connection   Aprobaciones de Private Link
 ├── config                 content-trust, retention, soft-delete, ...
-├── cache / credential-set Artifact cache (pull-through cache) rules
-├── webhook                Push/delete event webhooks
-├── connected-registry     On-premises / IoT connected registries
-└── export-pipeline / import-pipeline / pipeline-run   acrtransfer extension
+├── cache / credential-set Reglas de caché de artefactos (caché de extracción)
+├── webhook                Webhooks de eventos de envío/eliminación
+├── connected-registry     Registros conectados locales o de IoT
+└── export-pipeline / import-pipeline / pipeline-run   Extensión acrtransfer
 ```
 
-## Reference files
+## Archivos de referencia
 
-Read the relevant reference file based on the task. Each contains complete command syntax and examples for its domain.
+Lee el archivo de referencia pertinente para la tarea. Cada uno contiene la sintaxis completa de los comandos y ejemplos de su dominio.
 
-| File | When to read | Covers |
+| Archivo | Cuándo leerlo | Contenido |
 |---|---|---|
-| [references/auth-and-security.md](references/auth-and-security.md) | Login failures, permissions, CI/CD or AKS pull access | `az acr login` (incl. `--expose-token`), Entra RBAC roles, service principals, managed identities, `--attach-acr` for AKS, repository-scoped tokens and scope maps, admin user, content trust |
-| [references/build-and-tasks.md](references/build-and-tasks.md) | Building images in Azure, automation, CI triggers | `az acr build`, `az acr run`, multi-step task YAML, `az acr task` (git/base-image/timer triggers, logs, runs), agent pools |
-| [references/images-and-artifacts.md](references/images-and-artifacts.md) | Managing repos, tags, cleanup, storage cost | `az acr import`, repository and manifest commands, untag vs delete, purge (`acr purge`), image locking, retention policy, soft delete, artifact cache, `show-usage` |
-| [references/networking-and-geo.md](references/networking-and-geo.md) | Multi-region, private access, edge scenarios | Geo-replication, zone redundancy, private endpoints, network rules, dedicated data endpoints, connected registries, registry transfer pipelines |
+| [references/auth-and-security.md](references/auth-and-security.md) | Fallos de inicio de sesión, permisos, CI/CD o acceso de extracción para AKS | `az acr login` (incluido `--expose-token`), roles RBAC de Entra, entidades de servicio, identidades administradas, `--attach-acr` para AKS, tokens y mapas de ámbito de repositorio, usuario administrador y confianza del contenido |
+| [references/build-and-tasks.md](references/build-and-tasks.md) | Compilación de imágenes en Azure, automatización y desencadenantes de CI | `az acr build`, `az acr run`, YAML de tareas de varios pasos, `az acr task` (desencadenantes de Git, imagen base y temporizador; registros y ejecuciones), grupos de agentes |
+| [references/images-and-artifacts.md](references/images-and-artifacts.md) | Gestión de repositorios, etiquetas, limpieza y costo de almacenamiento | `az acr import`, comandos de repositorios y manifiestos, quitar etiquetas frente a eliminar, purga (`acr purge`), bloqueo de imágenes, política de retención, eliminación temporal, caché de artefactos y `show-usage` |
+| [references/networking-and-geo.md](references/networking-and-geo.md) | Varias regiones, acceso privado y escenarios de perímetro | Replicación geográfica, redundancia de zona, puntos de conexión privados, reglas de red, puntos de conexión de datos dedicados, registros conectados y canalizaciones de transferencia entre registros |
 
-## Output template
+## Plantilla de salida
 
-Deliver a runnable command plan with the identity model made explicit:
+Entrega un plan de comandos ejecutables que haga explícito el modelo de identidad:
 
 ```bash
 az acr create --resource-group rg-sifap --name sifapregistry --sku Standard
@@ -98,19 +98,19 @@ az role assignment create \
   --scope $(az acr show --name sifapregistry --query id --output tsv)
 ```
 
-Summarize what was done and the security posture:
+Resume lo realizado y el estado de la seguridad:
 
 ```text
-Registry: sifapregistry (Standard) in rg-sifap
-Image: sifap-backend:<git-sha> built in Azure (no local Docker)
-Access: AcrPull granted to the AKS kubelet managed identity; admin user disabled
+Registro: sifapregistry (Standard) en rg-sifap
+Imagen: sifap-backend:<git-sha> compilada en Azure (sin Docker local)
+Acceso: AcrPull concedido a la identidad administrada del kubelet de AKS; usuario administrador deshabilitado
 ```
 
-## Quality gate
+## Puerta de calidad
 
-- [ ] The registry SKU matches the need (Premium only when geo-replication, private endpoints, or scoped tokens are required).
-- [ ] Images are built with `az acr build` / ACR Tasks rather than local `docker build` + `docker push` where feasible.
-- [ ] The admin user is disabled; access uses an Entra identity (`AcrPull`/`AcrPush`), a managed identity, or a repository-scoped token.
-- [ ] `az acr check-health --name {registry}` reports no errors.
-- [ ] Cross-registry image moves use `az acr import` (server-side), not local pull/push.
-- [ ] The registry resource is captured in Terraform under `infra/` with the required `project`, `environment`, and `owner` tags.
+- [ ] La SKU del registro se ajusta a la necesidad (Premium solo cuando se requieran replicación geográfica, puntos de conexión privados o tokens con ámbito limitado).
+- [ ] Las imágenes se compilan con `az acr build` / ACR Tasks en lugar de `docker build` + `docker push` locales cuando sea viable.
+- [ ] El usuario administrador está deshabilitado; el acceso usa una identidad de Entra (`AcrPull`/`AcrPush`), una identidad administrada o un token con ámbito de repositorio.
+- [ ] `az acr check-health --name {registry}` no informa de errores.
+- [ ] Los movimientos de imágenes entre registros usan `az acr import` (en el servidor), no extracción y envío locales.
+- [ ] El recurso del registro está definido en Terraform bajo `infra/` con las etiquetas obligatorias `project`, `environment` y `owner`.

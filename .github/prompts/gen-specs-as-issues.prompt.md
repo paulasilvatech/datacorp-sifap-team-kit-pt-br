@@ -1,87 +1,87 @@
 ---
 name: "gen-specs-as-issues"
-description: "Identify gaps between the SIFAP legacy behavior and the modern spec, prioritize them, and open EARS-backed GitHub issues with legacy traceability."
+description: "Identifica lagunas entre el comportamiento heredado de SIFAP y la especificación moderna, priorízalas y abre incidencias de GitHub respaldadas por EARS con trazabilidad al sistema heredado."
 argument-hint: "area=<focus-area> repo=<owner/name>"
 agent: "requirements-engineer"
 tools: ["read", "search", "edit", "execute"]
 ---
 # /gen-specs-as-issues
 
-## Objective
+## Objetivo
 
-Find missing or under-specified behavior for the SIFAP 2.0 modernization, prioritize it, and turn the top items into detailed GitHub issues. Each issue is an EARS specification with a unique REQ-ID and a mandatory `source_legacy:` line, so every requirement stays traceable from legacy Natural/Adabas code to the modern system.
+Encuentra comportamientos ausentes o insuficientemente especificados para la modernización de SIFAP 2.0, priorízalos y convierte los elementos principales en incidencias detalladas de GitHub. Cada incidencia es una especificación EARS con un REQ-ID único y una línea obligatoria `source_legacy:`, para que cada requisito mantenga su trazabilidad desde el código heredado Natural/Adabas hasta el sistema moderno.
 
 > [!IMPORTANT]
-> The `legacy-traceability` CI job rejects any requirement without a `source_legacy:` line. Every issue this command opens must cite a legacy artifact or be justified as `[GREENFIELD]`.
+> El trabajo de CI `legacy-traceability` rechaza cualquier requisito sin una línea `source_legacy:`. Cada incidencia que abre este comando debe citar un artefacto heredado o justificarse como `[GREENFIELD]`.
 
-## When to Invoke
+## Cuándo invocar
 
-During Stage 2 (specification) or Stage 4 (evolution), when the team needs to convert observed gaps into a prioritized, trackable backlog of specifications.
+Durante la etapa 2 (especificación) o la etapa 4 (evolución), cuando el equipo necesita convertir las lagunas observadas en una lista priorizada de especificaciones con seguimiento.
 
-## Preconditions
+## Precondiciones
 
-- The pair has read the relevant legacy programs — the HARD GATE in [`LEGACY-EXPLORATION-CHECKLIST.md`](../../01-archaeology/LEGACY-EXPLORATION-CHECKLIST.md)
-- The modern specification under `02-modern-spec/` (and any `specs/`) is available to compare against
-- The team is authenticated to the target GitHub repository
+- La pareja ha leído los programas heredados pertinentes: la PUERTA OBLIGATORIA de [`LEGACY-EXPLORATION-CHECKLIST.md`](../../01-archaeology/LEGACY-EXPLORATION-CHECKLIST.md)
+- La especificación moderna en `02-modern-spec/` (y cualquier `specs/`) está disponible para compararla
+- El equipo está autenticado en el repositorio de GitHub de destino
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- `area` — the focus area or bounded context to analyze (for example, payment inspection)
-- `repo` — the `owner/name` of the GitHub repository for the issues
-- The legacy programs relevant to the area, under `01-archaeology/legacy-sifap/`
-- Ask the user for anything that is missing.
+- `area`: el área de enfoque o contexto delimitado que se analizará (por ejemplo, fiscalización de pagos)
+- `repo`: el `owner/name` del repositorio de GitHub para las incidencias
+- Los programas heredados pertinentes para el área, en `01-archaeology/legacy-sifap/`
+- Solicita a la persona usuaria cualquier información que falte.
 
-## What I Will Do
+## Lo que haré
 
-- Compare legacy behavior in the focus area against the modern spec and list the gaps
-- Score each gap by impact and risk, and select the top items to file
-- Write each issue as an EARS requirement following [`requirements.instructions.md`](../instructions/requirements.instructions.md)
-- Assign a unique REQ-ID and a `source_legacy:` line, then open the issues via the `gh` CLI
+- Comparar el comportamiento heredado del área de enfoque con la especificación moderna y enumerar las lagunas
+- Puntuar cada laguna por impacto y riesgo y seleccionar los elementos prioritarios que se registrarán
+- Escribir cada incidencia como requisito EARS siguiendo [`requirements.instructions.md`](../instructions/requirements.instructions.md)
+- Asignar un REQ-ID único y una línea `source_legacy:` y después abrir las incidencias mediante la CLI `gh`
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Write a requirement without a `source_legacy:` line (or an explicit `[GREENFIELD]` justification)
-- Invent behavior that is absent from both the legacy system and the modern spec
-- Open issues before the team confirms the prioritized list
-- Assign a `spec/` branch to implementation work — these are Stage-2 spec issues on `spec/<NNN>-<feature>`
+- Escribir un requisito sin una línea `source_legacy:` (o una justificación explícita `[GREENFIELD]`)
+- Inventar comportamiento ausente tanto del sistema heredado como de la especificación moderna
+- Abrir incidencias antes de que el equipo confirme la lista priorizada
+- Asignar una rama `spec/` a trabajo de implementación: estas son incidencias de especificación de la etapa 2 en `spec/<NNN>-<feature>`
 
-## Output Format
+## Formato de salida
 
 ```markdown
-### Gap analysis — <area>
-Gaps found: 6 · Selected to file: 3
+### Análisis de lagunas — <area>
+Lagunas encontradas: 6 · Seleccionadas para registrar: 3
 
-### Issues to create
-- [SPEC][REQ-014] When a payment exceeds the daily limit, the system shall flag it for review
+### Incidencias que crear
+- [SPEC][REQ-014] When un pago supera el límite diario, el sistema shall marcarlo para revisión
   source_legacy: 01-archaeology/legacy-sifap/natural-programs/SIFAP-P.NSP
   branch: spec/014-daily-limit-review
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] Each selected gap is written in EARS notation with a unique REQ-ID
-- [ ] Each issue carries a `source_legacy:` line (or a `[GREENFIELD]` justification)
-- [ ] Each issue names a `spec/<NNN>-<feature>` branch
-- [ ] Issues are created via `gh` only after the team confirms the list
+- [ ] Cada laguna seleccionada está escrita en notación EARS con un REQ-ID único
+- [ ] Cada incidencia incluye una línea `source_legacy:` (o una justificación `[GREENFIELD]`)
+- [ ] Cada incidencia identifica una rama `spec/<NNN>-<feature>`
+- [ ] Las incidencias se crean mediante `gh` solo después de que el equipo confirme la lista
 
-## Prompt Body
+## Cuerpo del prompt
 
-You produce a prioritized, traceable specification backlog. The EARS notation and REQ-ID rules live in [`requirements.instructions.md`](../instructions/requirements.instructions.md); use the [`ears-validate`](../skills/ears-validate/SKILL.md) skill to check each statement before you file it.
+Produces una lista priorizada y trazable de especificaciones pendientes. Las reglas de notación EARS y REQ-ID se encuentran en [`requirements.instructions.md`](../instructions/requirements.instructions.md); utiliza la habilidad [`ears-validate`](../skills/ears-validate/SKILL.md) para comprobar cada enunciado antes de registrarlo.
 
-**Step 1 — Establish the baseline.**
-Read the legacy programs for `area` under `01-archaeology/legacy-sifap/` and the modern spec under `02-modern-spec/`. Confirm the reading gate in the [checklist](../../01-archaeology/LEGACY-EXPLORATION-CHECKLIST.md) is met.
+**Paso 1 — Establece la base de referencia.**
+Lee los programas heredados de `area` en `01-archaeology/legacy-sifap/` y la especificación moderna en `02-modern-spec/`. Confirma que se cumple la puerta de lectura de la [lista de verificación](../../01-archaeology/LEGACY-EXPLORATION-CHECKLIST.md).
 
-**Step 2 — Find and score gaps.**
-List behavior present in the legacy system but missing or vague in the modern spec. Score by impact and risk; select the top items.
+**Paso 2 — Encuentra y puntúa las lagunas.**
+Enumera el comportamiento presente en el sistema heredado, pero ausente o ambiguo en la especificación moderna. Puntúa por impacto y riesgo; selecciona los elementos prioritarios.
 
-**Step 3 — Write EARS requirements.**
-For each selected gap, write an EARS statement, assign the next REQ-ID, and add the `source_legacy:` line pointing at the legacy artifact. Validate with [`ears-validate`](../skills/ears-validate/SKILL.md).
+**Paso 3 — Escribe requisitos EARS.**
+Para cada laguna seleccionada, escribe un enunciado EARS, asigna el siguiente REQ-ID y añade la línea `source_legacy:` que apunta al artefacto heredado. Valida con [`ears-validate`](../skills/ears-validate/SKILL.md).
 
-**Step 4 — Confirm, then file.**
-Present the list with proposed `spec/<NNN>-<feature>` branches. After approval, open the issues with `gh`.
+**Paso 4 — Confirma y después registra.**
+Presenta la lista con las ramas `spec/<NNN>-<feature>` propuestas. Tras la aprobación, abre las incidencias con `gh`.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
-/gen-specs-as-issues area="payment inspection" repo=my-org/sifap-2
+/gen-specs-as-issues area="fiscalización de pagos" repo=my-org/sifap-2
 ```

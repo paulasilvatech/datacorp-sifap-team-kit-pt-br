@@ -1,37 +1,37 @@
 ---
 name: "java-mcp-server-generator"
-description: "Generate a complete Model Context Protocol (MCP) server project in Java using the official MCP Java SDK, with Maven or Gradle and optional Spring Boot integration. Use when the user wants to create, scaffold, or bootstrap a Java-based MCP server that exposes tools, resources, or prompts."
+description: "Genera un proyecto completo de servidor Model Context Protocol (MCP) en Java con el MCP Java SDK oficial, Maven o Gradle e integración opcional con Spring Boot. Úsala cuando la persona quiera crear, estructurar o iniciar un servidor MCP basado en Java que exponga herramientas, recursos o prompts."
 ---
-# Java MCP server generator
+# Generador de servidores MCP en Java
 
-Generate a complete, production-ready MCP (Model Context Protocol) server in Java on **Java 21** using the official MCP Java SDK, with Maven or Gradle. Handlers are reactive (Project Reactor `Mono`) and log through SLF4J. Generate and run everything from VS Code, the kit's approved editor.
+Genera un servidor MCP (Model Context Protocol) completo y listo para producción en **Java 21**, con el MCP Java SDK oficial y Maven o Gradle. Los manejadores son reactivos (`Mono` de Project Reactor) y registran mediante SLF4J. Genera y ejecuta todo desde VS Code, el editor aprobado del kit.
 
-## When to invoke
+## Cuándo invocar
 
-- "Create a Java MCP server that exposes these tools."
-- "Scaffold an MCP server project with Maven and the official Java SDK."
-- "Bootstrap an MCP server with tools, resources, and prompts."
-- "Generate a Gradle-based MCP server skeleton in Java."
+- "Crea un servidor MCP en Java que exponga estas herramientas."
+- "Genera la estructura de un proyecto de servidor MCP con Maven y el SDK oficial de Java."
+- "Inicia un servidor MCP con herramientas, recursos y prompts."
+- "Genera una estructura de servidor MCP en Java basada en Gradle."
 
-## What this skill generates
+## Qué genera esta skill
 
-| Concern | Files produced |
+| Área | Archivos generados |
 |---|---|
-| Build | `pom.xml` or `build.gradle.kts` |
-| Entry point | `McpServerApplication.java` |
-| Tools | `tools/ToolDefinitions.java`, `tools/ToolHandlers.java` |
-| Resources | `resources/ResourceDefinitions.java`, `resources/ResourceHandlers.java` |
+| Compilación | `pom.xml` o `build.gradle.kts` |
+| Punto de entrada | `McpServerApplication.java` |
+| Herramientas | `tools/ToolDefinitions.java`, `tools/ToolHandlers.java` |
+| Recursos | `resources/ResourceDefinitions.java`, `resources/ResourceHandlers.java` |
 | Prompts | `prompts/PromptDefinitions.java`, `prompts/PromptHandlers.java` |
-| Tests | `McpServerTest.java` |
-| Docs | `README.md` |
+| Pruebas | `McpServerTest.java` |
+| Documentación | `README.md` |
 
-## Project generation
+## Generación del proyecto
 
-When asked to create a Java MCP server, generate a complete project with this structure:
+Cuando se solicite crear un servidor MCP en Java, genera un proyecto completo con esta estructura:
 
 ```
 my-mcp-server/
-├── pom.xml (or build.gradle.kts)
+├── pom.xml (o build.gradle.kts)
 ├── src/
 │   ├── main/
 │   │   ├── java/
@@ -49,7 +49,7 @@ my-mcp-server/
 │   │   │           ├── PromptDefinitions.java
 │   │   │           └── PromptHandlers.java
 │   │   └── resources/
-│   │       └── application.properties (if using Spring)
+│   │       └── application.properties (si se usa Spring)
 │   └── test/
 │       └── java/
 │           └── com/example/mcp/
@@ -57,7 +57,7 @@ my-mcp-server/
 └── README.md
 ```
 
-## Maven pom.xml Template
+## Plantilla de pom.xml para Maven
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -73,7 +73,7 @@ my-mcp-server/
     <packaging>jar</packaging>
 
     <name>My MCP Server</name>
-    <description>Model Context Protocol server implementation</description>
+    <description>Implementación de un servidor Model Context Protocol</description>
 
     <properties>
         <java.version>21</java.version>
@@ -94,7 +94,7 @@ my-mcp-server/
             <version>${mcp.version}</version>
         </dependency>
 
-        <!-- Logging -->
+        <!-- Registros -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -106,7 +106,7 @@ my-mcp-server/
             <version>${logback.version}</version>
         </dependency>
 
-        <!-- Testing -->
+        <!-- Pruebas -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -157,7 +157,7 @@ my-mcp-server/
 </project>
 ```
 
-## Gradle build.gradle.kts Template
+## Plantilla de build.gradle.kts para Gradle
 
 ```kotlin
 plugins {
@@ -181,11 +181,11 @@ dependencies {
     // MCP Java SDK
     implementation("io.modelcontextprotocol.sdk:mcp:0.14.1")
 
-    // Logging
+    // Registros
     implementation("org.slf4j:slf4j-api:2.0.9")
     implementation("ch.qos.logback:logback-classic:1.4.11")
 
-    // Testing
+    // Pruebas
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
     testImplementation("io.projectreactor:reactor-test:3.5.0")
 }
@@ -199,7 +199,7 @@ tasks.test {
 }
 ```
 
-## McpServerApplication.java Template
+## Plantilla de McpServerApplication.java
 
 ```java
 package com.example.mcp;
@@ -225,10 +225,10 @@ public class McpServerApplication {
             McpServer server = createServer();
             StdioServerTransport transport = new StdioServerTransport();
 
-            // Start server
+            // Iniciar el servidor
             Disposable serverDisposable = server.start(transport).subscribe();
 
-            // Graceful shutdown
+            // Apagado controlado
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 log.info("Shutting down MCP server");
                 serverDisposable.dispose();
@@ -237,7 +237,7 @@ public class McpServerApplication {
 
             log.info("MCP Server started successfully");
 
-            // Keep running
+            // Mantener la ejecución
             Thread.currentThread().join();
 
         } catch (Exception e) {
@@ -255,7 +255,7 @@ public class McpServerApplication {
                 .prompts(true))
             .build();
 
-        // Register handlers
+        // Registrar los manejadores
         ToolHandlers.register(server);
         ResourceHandlers.register(server);
         PromptHandlers.register(server);
@@ -265,7 +265,7 @@ public class McpServerApplication {
 }
 ```
 
-## ToolDefinitions.java Template
+## Plantilla de ToolDefinitions.java
 
 ```java
 package com.example.mcp.tools;
@@ -287,10 +287,10 @@ public class ToolDefinitions {
     private static Tool createGreetTool() {
         return Tool.builder()
             .name("greet")
-            .description("Generate a greeting message")
+            .description("Genera un mensaje de saludo")
             .inputSchema(JsonSchema.object()
                 .property("name", JsonSchema.string()
-                    .description("Name to greet")
+                    .description("Nombre de la persona a quien saludar")
                     .required(true)))
             .build();
     }
@@ -298,24 +298,24 @@ public class ToolDefinitions {
     private static Tool createCalculateTool() {
         return Tool.builder()
             .name("calculate")
-            .description("Perform mathematical calculations")
+            .description("Realiza cálculos matemáticos")
             .inputSchema(JsonSchema.object()
                 .property("operation", JsonSchema.string()
-                    .description("Operation to perform")
+                    .description("Operación que se realizará")
                     .enumValues(List.of("add", "subtract", "multiply", "divide"))
                     .required(true))
                 .property("a", JsonSchema.number()
-                    .description("First operand")
+                    .description("Primer operando")
                     .required(true))
                 .property("b", JsonSchema.number()
-                    .description("Second operand")
+                    .description("Segundo operando")
                     .required(true)))
             .build();
     }
 }
 ```
 
-## ToolHandlers.java Template
+## Plantilla de ToolHandlers.java
 
 ```java
 package com.example.mcp.tools;
@@ -332,16 +332,16 @@ public class ToolHandlers {
     private static final Logger log = LoggerFactory.getLogger(ToolHandlers.class);
 
     public static void register(McpServer server) {
-        // Register tool list handler
+        // Registrar el manejador de listado de herramientas
         server.addToolListHandler(() -> {
             log.debug("Listing available tools");
             return Mono.just(ToolDefinitions.getTools());
         });
 
-        // Register greet handler
+        // Registrar el manejador de greet
         server.addToolHandler("greet", ToolHandlers::handleGreet);
 
-        // Register calculate handler
+        // Registrar el manejador de calculate
         server.addToolHandler("calculate", ToolHandlers::handleCalculate);
     }
 
@@ -411,7 +411,7 @@ public class ToolHandlers {
 }
 ```
 
-## ResourceDefinitions.java Template
+## Plantilla de ResourceDefinitions.java
 
 ```java
 package com.example.mcp.resources;
@@ -427,13 +427,13 @@ public class ResourceDefinitions {
             Resource.builder()
                 .name("Example Data")
                 .uri("resource://data/example")
-                .description("Example resource data")
+                .description("Datos de recurso de ejemplo")
                 .mimeType("application/json")
                 .build(),
             Resource.builder()
                 .name("Configuration")
                 .uri("resource://config")
-                .description("Server configuration")
+                .description("Configuración del servidor")
                 .mimeType("application/json")
                 .build()
         );
@@ -441,7 +441,7 @@ public class ResourceDefinitions {
 }
 ```
 
-## ResourceHandlers.java Template
+## Plantilla de ResourceHandlers.java
 
 ```java
 package com.example.mcp.resources;
@@ -462,19 +462,19 @@ public class ResourceHandlers {
     private static final Map<String, Boolean> subscriptions = new ConcurrentHashMap<>();
 
     public static void register(McpServer server) {
-        // Register resource list handler
+        // Registrar el manejador de listado de recursos
         server.addResourceListHandler(() -> {
             log.debug("Listing available resources");
             return Mono.just(ResourceDefinitions.getResources());
         });
 
-        // Register resource read handler
+        // Registrar el manejador de lectura de recursos
         server.addResourceReadHandler(ResourceHandlers::handleRead);
 
-        // Register resource subscribe handler
+        // Registrar el manejador de suscripción a recursos
         server.addResourceSubscribeHandler(ResourceHandlers::handleSubscribe);
 
-        // Register resource unsubscribe handler
+        // Registrar el manejador de cancelación de suscripción a recursos
         server.addResourceUnsubscribeHandler(ResourceHandlers::handleUnsubscribe);
     }
 
@@ -513,7 +513,7 @@ public class ResourceHandlers {
 }
 ```
 
-## PromptDefinitions.java Template
+## Plantilla de PromptDefinitions.java
 
 ```java
 package com.example.mcp.prompts;
@@ -529,15 +529,15 @@ public class PromptDefinitions {
         return List.of(
             Prompt.builder()
                 .name("code-review")
-                .description("Generate a code review prompt")
+                .description("Genera un prompt de revisión de código")
                 .argument(PromptArgument.builder()
                     .name("language")
-                    .description("Programming language")
+                    .description("Lenguaje de programación")
                     .required(true)
                     .build())
                 .argument(PromptArgument.builder()
                     .name("focus")
-                    .description("Review focus area")
+                    .description("Área de enfoque de la revisión")
                     .required(false)
                     .build())
                 .build()
@@ -546,7 +546,7 @@ public class PromptDefinitions {
 }
 ```
 
-## PromptHandlers.java Template
+## Plantilla de PromptHandlers.java
 
 ```java
 package com.example.mcp.prompts;
@@ -566,13 +566,13 @@ public class PromptHandlers {
     private static final Logger log = LoggerFactory.getLogger(PromptHandlers.class);
 
     public static void register(McpServer server) {
-        // Register prompt list handler
+        // Registrar el manejador de listado de prompts
         server.addPromptListHandler(() -> {
             log.debug("Listing available prompts");
             return Mono.just(PromptDefinitions.getPrompts());
         });
 
-        // Register prompt get handler
+        // Registrar el manejador de obtención de prompts
         server.addPromptGetHandler(PromptHandlers::handleCodeReview);
     }
 
@@ -584,14 +584,14 @@ public class PromptHandlers {
         }
 
         String language = arguments.getOrDefault("language", "Java");
-        String focus = arguments.getOrDefault("focus", "general quality");
+        String focus = arguments.getOrDefault("focus", "calidad general");
 
-        String description = "Code review for " + language + " with focus on " + focus;
+        String description = "Revisión de código en " + language + " con enfoque en " + focus;
 
         List<PromptMessage> messages = List.of(
-            PromptMessage.user("Please review this " + language + " code with focus on " + focus + "."),
-            PromptMessage.assistant("I'll review the code focusing on " + focus + ". Please share the code."),
-            PromptMessage.user("Here's the code to review: [paste code here]")
+            PromptMessage.user("Revisa este código en " + language + " con enfoque en " + focus + "."),
+            PromptMessage.assistant("Revisaré el código centrándome en " + focus + ". Comparte el código."),
+            PromptMessage.user("Este es el código que debe revisarse: [pega el código aquí]")
         );
 
         log.debug("Generated code review prompt for {} ({})", language, focus);
@@ -604,7 +604,7 @@ public class PromptHandlers {
 }
 ```
 
-## McpServerTest.java Template
+## Plantilla de McpServerTest.java
 
 ```java
 package com.example.mcp;
@@ -632,13 +632,13 @@ class McpServerTest {
     }
 
     private McpServer createTestServer() {
-        // Same setup as main application
+        // La misma configuración que la aplicación principal
         McpServer server = McpServerBuilder.builder()
             .serverInfo("test-server", "1.0.0")
             .capabilities(cap -> cap.tools(true))
             .build();
 
-        // Register handlers
+        // Registrar los manejadores
         ToolHandlers.register(server);
 
         return server;
@@ -683,29 +683,29 @@ class McpServerTest {
 }
 ```
 
-## README.md Template
+## Plantilla de README.md
 
 ````markdown
 My MCP Server
 =============
 
-A Model Context Protocol server built with Java and the official MCP Java SDK.
+Un servidor Model Context Protocol construido con Java y el MCP Java SDK oficial.
 
-## Features
+## Funcionalidades
 
-- Tools: greet, calculate
-- Resources: example data, configuration
+- Herramientas: greet, calculate
+- Recursos: datos de ejemplo, configuración
 - Prompts: code-review
-- Reactive Streams with Project Reactor
-- Structured logging with SLF4J
-- Full test coverage
+- Reactive Streams con Project Reactor
+- Registros estructurados con SLF4J
+- Cobertura completa de pruebas
 
-## Requirements
+## Requisitos
 
-- Java 21 or later
-- Maven 3.6+ or Gradle 7+
+- Java 21 o posterior
+- Maven 3.6+ o Gradle 7+
 
-## Build
+## Compilación
 
 ### Maven
 ```bash
@@ -717,7 +717,7 @@ mvn clean package
 ./gradlew build
 ```
 
-## Run
+## Ejecución
 
 ### Maven
 ```bash
@@ -729,7 +729,7 @@ java -jar target/my-mcp-server-1.0.0.jar
 ./gradlew run
 ```
 
-## Testing
+## Pruebas
 
 ### Maven
 ```bash
@@ -741,9 +741,9 @@ mvn test
 ./gradlew test
 ```
 
-## Integration with VS Code
+## Integración con VS Code
 
-Add the server to VS Code's `.vscode/mcp.json`:
+Añade el servidor a `.vscode/mcp.json` de VS Code:
 
 ```json
 {
@@ -756,28 +756,28 @@ Add the server to VS Code's `.vscode/mcp.json`:
 }
 ```
 
-## License
+## Licencia
 
 MIT
 ````
 
-## Generation Instructions
+## Instrucciones de generación
 
-1. **Ask for project name and package**
-2. **Choose build tool** (Maven or Gradle)
-3. **Generate all files** with proper package structure
-4. **Use Reactive Streams** for async handlers
-5. **Include comprehensive logging** with SLF4J
-6. **Add tests** for all handlers
-7. **Follow Java conventions** (camelCase, PascalCase)
-8. **Include error handling** with proper responses
-9. **Document public APIs** with Javadoc
-10. **Provide both sync and async** examples
+1. **Pregunta por el nombre del proyecto y el paquete**
+2. **Elige la herramienta de compilación** (Maven o Gradle)
+3. **Genera todos los archivos** con una estructura de paquetes adecuada
+4. **Usa Reactive Streams** para los manejadores asíncronos
+5. **Incluye registros completos** con SLF4J
+6. **Añade pruebas** para todos los manejadores
+7. **Sigue las convenciones de Java** (camelCase, PascalCase)
+8. **Incluye gestión de errores** con respuestas adecuadas
+9. **Documenta las API públicas** con Javadoc
+10. **Proporciona ejemplos síncronos y asíncronos**
 
-## Output template
+## Plantilla de salida
 
 ```text
-my-mcp-server/  (Java 21, Maven or Gradle)
+my-mcp-server/  (Java 21, Maven o Gradle)
 ├── pom.xml | build.gradle.kts
 ├── src/main/java/com/example/mcp/
 │   ├── McpServerApplication.java
@@ -788,15 +788,15 @@ my-mcp-server/  (Java 21, Maven or Gradle)
 └── README.md
 
 capabilities: tools=greet,calculate | resources=example,config | prompts=code-review
-build: mvn clean package   (or ./gradlew build)
+build: mvn clean package   (o ./gradlew build)
 run:   java -jar target/my-mcp-server-1.0.0.jar
 ```
 
-## Quality gate
+## Puerta de calidad
 
-- [ ] The project builds on Java 21 with Maven (`mvn clean package`) or Gradle (`./gradlew build`).
-- [ ] Every tool, resource, and prompt has both a definition and a registered handler.
-- [ ] Handlers validate arguments and return an error response instead of throwing on bad input.
-- [ ] Async handlers use Project Reactor (`Mono`); logging uses SLF4J (no `System.out`).
-- [ ] `McpServerTest` covers each tool, including an error path such as division by zero.
-- [ ] The README documents build, run, and MCP client integration via VS Code `.vscode/mcp.json`.
+- [ ] El proyecto compila sobre Java 21 con Maven (`mvn clean package`) o Gradle (`./gradlew build`).
+- [ ] Cada herramienta, recurso y prompt tiene una definición y un manejador registrado.
+- [ ] Los manejadores validan los argumentos y devuelven una respuesta de error en lugar de lanzar una excepción ante entradas incorrectas.
+- [ ] Los manejadores asíncronos usan Project Reactor (`Mono`); los registros usan SLF4J (no `System.out`).
+- [ ] `McpServerTest` cubre cada herramienta, incluida una ruta de error como la división por cero.
+- [ ] El README documenta la compilación, la ejecución y la integración del cliente MCP mediante `.vscode/mcp.json` de VS Code.

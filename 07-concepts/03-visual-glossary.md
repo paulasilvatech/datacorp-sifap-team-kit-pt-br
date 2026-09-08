@@ -1,227 +1,227 @@
-# Glossary — Workshop Jargon Decoded
+# Glosario — La terminología de la inmersión explicada
 
-> **Path:** [Team Kit](../README.md) › [Concepts](00-README.md) › **Visual Glossary**
+> **Ruta:** [Kit del equipo](../README.md) › [Conceptos](00-README.md) › **Glosario visual**
 
-**A reference for 30+ technical terms used in the SIFAP workshop, organized by area, with a one-sentence definition, a domain example, and a link for further reading.**
+**Referencia de más de 30 términos técnicos usados en la inmersión SIFAP, organizados por área, con una definición en una frase, un ejemplo del dominio y un enlace para ampliar la lectura.**
 
-![Glossary](https://img.shields.io/badge/Glossary-30%2B%20terms-171717?style=flat-square) ![Consult at Any Time](https://img.shields.io/badge/Consult-At%20any%20time-737373?style=flat-square)
+![Glosario](https://img.shields.io/badge/Glossary-30%2B%20terms-171717?style=flat-square) ![Consultar en cualquier momento](https://img.shields.io/badge/Consult-At%20any%20time-737373?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Anyone on the team, especially Product Owners, Tech Writers, and analysts |
-| **How to use it** | Keep this tab open during the workshop. You do not need to memorize it—refer to it whenever you encounter an unfamiliar term. |
+| **Público objetivo** | Cualquier integrante del equipo, especialmente Responsables de Producto, Redactores Técnicos y analistas |
+| **Cómo usarlo** | Mantén esta pestaña abierta durante la inmersión. No necesitas memorizarlo: consúltalo cada vez que encuentres un término desconocido. |
 
 ---
 
-## Map by stage
+## Mapa por etapa
 
-| Stage | Frequently used terms |
+| Etapa | Términos de uso frecuente |
 |---|---|
-| Stage 1 — Archaeology | Natural, NSN, DDM, Adabas, MU, PE, BR-NNN |
-| Stage 2 — Specification | EARS, REQ-ID, source_legacy, ADR, C4, bounded context, greenfield, Spec-Kit |
-| Stage 3 — Implementation | JPA, Flyway, migration, Testcontainers, controller, service, repository, Bean Validation, Server Component, Swagger |
-| Stage 4 — Evolution | Agent, Issue, PR, Terraform, IaC, CI/CD, Actions |
+| Etapa 1 — Arqueología | Natural, NSN, DDM, Adabas, MU, PE, BR-NNN |
+| Etapa 2 — Especificación | EARS, REQ-ID, source_legacy, ADR, C4, contexto delimitado, greenfield, Spec-Kit |
+| Etapa 3 — Implementación | JPA, Flyway, migración, Testcontainers, controller, service, repository, Bean Validation, Server Component, Swagger |
+| Etapa 4 — Evolución | Agent, Issue, PR, Terraform, IaC, CI/CD, Actions |
 
 ---
 
-## Terminology reference
+## Referencia terminológica
 
-| Term | Plain-English meaning | Usage context |
+| Término | Significado en lenguaje claro | Contexto de uso |
 |---|---|---|
-| handoff | transfer of responsibility | Transition between stages |
-| stakeholder | interested or affected party | Product Owner and Requirements Engineer personas |
-| backlog | pending work list | Task management in GitHub Projects |
-| commit | recorded version | Git version control |
-| push | send changes to the remote repository | Git—sharing changes with the team |
-| pull request (PR) | proposed change | Code review before merge |
-| merge | integrate a branch | Incorporating changes into the main branch |
-| code review | peer evaluation of code changes | PR review before merge |
-| CI green | successful CI pipeline | All tests passed |
-| CI red | failed CI pipeline | At least one test or check failed |
-| breaking change | incompatible change | A change that breaks existing API contracts |
-| rollback | restore a previous version | Undoing a problematic deployment |
-| feature flag | feature on/off switch | Enabling a feature without redeployment |
-| deployment | release publication | Making a version available in an environment |
-| production | live environment | Environment used by end users |
-| staging | preproduction environment | Validation before production |
-| sandbox | isolated experimental environment | Testing without risk to the live system |
-| bug | software defect | Identified incorrect behavior |
-| hotfix | urgent fix | A correction applied directly to production |
-| refactor | restructure without changing behavior | Improving code while preserving functionality |
-| technical debt | deferred engineering work | Shortcuts that will need to be corrected |
-| smoke test | minimal sanity test | Quick check that the system works |
-| spike | short technical investigation | Exploring a solution before committing to it |
+| handoff | transferencia de responsabilidad | Transición entre etapas |
+| stakeholder | parte interesada o afectada | Personas Responsable de Producto y Especialista en Requisitos |
+| backlog | lista de trabajo pendiente | Gestión de tareas en GitHub Projects |
+| commit | versión registrada | Control de versiones con Git |
+| push | enviar cambios al repositorio remoto | Git: compartir cambios con el equipo |
+| pull request (PR) | propuesta de cambio | Revisión de código antes de la integración |
+| merge | integrar una rama | Incorporación de cambios en la rama principal |
+| code review | evaluación por pares de cambios de código | Revisión de PR antes de integrar |
+| CI green | pipeline de CI exitoso | Todas las pruebas se aprobaron |
+| CI red | pipeline de CI fallido | Al menos una prueba o verificación falló |
+| breaking change | cambio incompatible | Cambio que rompe contratos de API existentes |
+| rollback | restaurar una versión anterior | Revertir un despliegue problemático |
+| feature flag | interruptor para activar o desactivar una funcionalidad | Habilitar una funcionalidad sin volver a desplegar |
+| deployment | publicación de una versión | Poner una versión a disposición en un entorno |
+| production | entorno en vivo | Entorno usado por los usuarios finales |
+| staging | entorno de preproducción | Validación antes de producción |
+| sandbox | entorno experimental aislado | Pruebas sin riesgo para el sistema en vivo |
+| bug | defecto de software | Comportamiento incorrecto identificado |
+| hotfix | corrección urgente | Corrección aplicada directamente a producción |
+| refactor | reestructurar sin cambiar el comportamiento | Mejorar el código preservando la funcionalidad |
+| technical debt | trabajo de ingeniería pospuesto | Atajos que deberán corregirse |
+| smoke test | prueba mínima de funcionamiento | Comprobación rápida de que el sistema funciona |
+| spike | investigación técnica breve | Explorar una solución antes de comprometerse con ella |
 
 ---
 
-## Area: Legacy
+## Área: legado
 
 ### Adabas
 
-The mainframe database where SIFAP (Payment Inspection and Administration System) has stored data for 29 years. Unlike conventional relational databases, it supports multiple-value fields (MU) and periodic groups (PE). DDMs contain its file definitions. It appears in Stage 1 when inspecting `01-archaeology/legacy-sifap/adabas-ddms/`.
+La base de datos mainframe donde SIFAP (Sistema de Fiscalización y Administración de Pagos) ha almacenado datos durante 29 años. A diferencia de las bases de datos relacionales convencionales, admite campos multivalor (MU) y grupos periódicos (PE). Los DDM contienen las definiciones de sus archivos. Aparece en la Etapa 1 al inspeccionar `01-archaeology/legacy-sifap/adabas-ddms/`.
 
-### DDM — Data Definition Module
+### DDM — Módulo de definición de datos
 
-An Adabas `.ddm` file that describes the structure of a "file" (equivalent to a table): fields, types, sizes, and occurrences. SIFAP example: `BENEFIC.ddm` defines the fields in the Beneficiary file. Location: `01-archaeology/legacy-sifap/adabas-ddms/`.
+Un archivo `.ddm` de Adabas que describe la estructura de un "archivo" (equivalente a una tabla): campos, tipos, tamaños y ocurrencias. Ejemplo de SIFAP: `BENEFIC.ddm` define los campos del archivo de beneficiarios. Ubicación: `01-archaeology/legacy-sifap/adabas-ddms/`.
 
-### MU — Multiple-Value field
+### MU — Campo multivalor
 
-An Adabas field that stores multiple values in a single record—for example, a `TELEFONES` field containing up to five phone numbers. The SQL equivalent would be a child table with a foreign key. The team must document in an ADR how to preserve this multiplicity in the modern model.
+Un campo Adabas que almacena varios valores en un solo registro; por ejemplo, un campo `TELEFONES` que contiene hasta cinco números de teléfono. El equivalente en SQL sería una tabla hija con una clave foránea. El equipo debe documentar en un ADR cómo preservar esta multiplicidad en el modelo moderno.
 
-### Natural (programming language)
+### Natural (lenguaje de programación)
 
-A programming language from the 1980s used with Adabas. SIFAP programs are stored in `.NSN` files. It has imperative syntax with `IF`/`END-IF` and `FOR`/`END-FOR`, without object orientation. Reading guide: [`01-archaeology/legacy-sifap/HOW-TO-READ-NATURAL.md`](../01-archaeology/legacy-sifap/HOW-TO-READ-NATURAL.md).
+Un lenguaje de programación de la década de 1980 que se usa con Adabas. Los programas SIFAP se almacenan en archivos `.NSN`. Tiene sintaxis imperativa con `IF`/`END-IF` y `FOR`/`END-FOR`, sin orientación a objetos. Guía de lectura: [`01-archaeology/legacy-sifap/HOW-TO-READ-NATURAL.md`](../01-archaeology/legacy-sifap/HOW-TO-READ-NATURAL.md).
 
-### NSN (`.NSN` file)
+### NSN (archivo `.NSN`)
 
-The extension for Natural programs. It is equivalent to `.java` or `.py`, but for Natural. SIFAP has 15 `.NSN` programs in `01-archaeology/legacy-sifap/natural-programs/`.
+La extensión de los programas Natural. Equivale a `.java` o `.py`, pero para Natural. SIFAP tiene 15 programas `.NSN` en `01-archaeology/legacy-sifap/natural-programs/`.
 
-### PE — Periodic Group
+### PE — Grupo periódico
 
-An Adabas group of fields that repeats multiple times within the same record—for example, up to 12 monthly payment history entries. It is more complex than MU because each occurrence contains several correlated fields. Mapping it to the modern relational model requires a decision documented in an ADR.
+Un grupo de campos Adabas que se repite varias veces dentro del mismo registro; por ejemplo, hasta 12 entradas de historial de pagos mensuales. Es más complejo que MU porque cada ocurrencia contiene varios campos relacionados. Su mapeo al modelo relacional moderno requiere una decisión documentada en un ADR.
 
-### BR-NNN — Business Rule
+### BR-NNN — Regla de negocio
 
-The identifier for a business rule extracted from the legacy system during Stage 1 (for example, `BR-042`). It is used in `business-rules-catalog.md`. Without this identifier, the rule cannot be traced to the requirement that implements it.
+El identificador de una regla de negocio extraída del sistema heredado durante la Etapa 1 (por ejemplo, `BR-042`). Se usa en `business-rules-catalog.md`. Sin este identificador, no se puede trazar la regla hasta el requisito que la implementa.
 
 ---
 
-## Area: Requirements
+## Área: requisitos
 
 ### EARS — Easy Approach to Requirements Syntax
 
-A standardized notation for writing unambiguous requirements. It provides six syntax patterns (ubiquitous, event-driven, state-driven, optional, unwanted, and complex) that replace vague statements with fixed-format sentences and objective tests. See [05 — EARS Notation](05-ears-notation.md) for details.
+Una notación estandarizada para escribir requisitos sin ambigüedades. Proporciona seis patrones sintácticos (ubicuo, guiado por eventos, guiado por estados, opcional, no deseado y complejo) que reemplazan las declaraciones vagas por frases de formato fijo y pruebas objetivas. Consulta [05 — Notación EARS](05-ears-notation.md) para más detalles.
 
 ### REQ-ID
 
-A unique requirement identifier (for example, `REQ-042`). Every Stage 3 commit that implements a requirement must include `Implements REQ-042` in the message. Without a REQ-ID, there is no traceability.
+Un identificador único de requisito (por ejemplo, `REQ-042`). Cada commit de la Etapa 3 que implemente un requisito debe incluir `Implements REQ-042` en el mensaje. Sin un REQ-ID, no hay trazabilidad.
 
 ### `source_legacy:`
 
-A mandatory field in every REQ-ID that points to the source section in the legacy system. Format: `01-archaeology/legacy-sifap/natural-programs/CALCDSCT.NSP#L120-L198`. For new functionality, use `[GREENFIELD] <justification>`. If it is missing, CI rejects the change.
+Un campo obligatorio en cada REQ-ID que apunta a la sección de origen del sistema heredado. Formato: `01-archaeology/legacy-sifap/natural-programs/CALCDSCT.NSP#L120-L198`. Para una funcionalidad nueva, usa `[GREENFIELD] <justificación>`. Si falta, la CI rechaza el cambio.
 
 ### Greenfield
 
-A requirement with no equivalent in the legacy system—a genuinely new feature. It must be documented as `source_legacy: "[GREENFIELD] <reason>"` and justified with the Product Owner.
+Un requisito sin equivalente en el sistema heredado: una funcionalidad verdaderamente nueva. Debe documentarse como `source_legacy: "[GREENFIELD] <motivo>"` y justificarse con el Responsable de Producto.
 
 ### Spec-Kit
 
-GitHub's official tool for Spec-Driven Development. It provides the `/speckit.specify`, `/speckit.clarify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.analyze`, and `/speckit.implement` commands in Copilot Chat. See [01 — Spec-Driven Development](01-spec-driven-development.md) for details.
+La herramienta oficial de GitHub para el desarrollo guiado por especificaciones. Proporciona los comandos `/speckit.specify`, `/speckit.clarify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.analyze` y `/speckit.implement` en Copilot Chat. Consulta [01 — Desarrollo guiado por especificaciones](01-spec-driven-development.md) para más detalles.
 
 ---
 
-## Area: Architecture
+## Área: arquitectura
 
-### ADR — Architecture Decision Record
+### ADR — Registro de decisión de arquitectura
 
-A short Markdown file that records an architecture decision: its context, the decision made, alternatives considered, and consequences. It ensures that future team members understand decisions made today. Template: `02-modern-spec/ADR-TEMPLATE.md`. See [06 — Architecture Decision Records](06-architecture-decision-records.md) for details.
+Un archivo Markdown breve que registra una decisión de arquitectura: su contexto, la decisión tomada, las alternativas consideradas y las consecuencias. Garantiza que los futuros integrantes del equipo comprendan las decisiones tomadas hoy. Plantilla: `02-modern-spec/ADR-TEMPLATE.md`. Consulta [06 — Registros de decisiones de arquitectura](06-architecture-decision-records.md) para más detalles.
 
-### Bounded Context
+### Contexto delimitado
 
-A clearly delimited system segment with its own vocabulary and rules. In SIFAP, "beneficiary" means different things in the Registration, Calculation, and Inspection contexts. The boundaries are hypotheses that the team validates and documents in an ADR. This concept appears in Stages 2 and 3.
+Un segmento del sistema claramente delimitado, con su propio vocabulario y reglas. En SIFAP, "beneficiario" significa cosas distintas en los contextos de Registro, Cálculo y Fiscalización. Los límites son hipótesis que el equipo valida y documenta en un ADR. Este concepto aparece en las Etapas 2 y 3.
 
-### C4 (C4 model)
+### C4 (modelo C4)
 
-An approach to documenting architecture at four zoom levels: System Context (L1), Containers (L2), Components (L3), and Code (L4). The workshop uses only L1 and L2. It appears in Stage 2 as an Enterprise Architect deliverable.
+Un enfoque para documentar arquitectura con cuatro niveles de detalle: Contexto del sistema (L1), Contenedores (L2), Componentes (L3) y Código (L4). La inmersión usa solo L1 y L2. Aparece en la Etapa 2 como entregable del Arquitecto Empresarial.
 
-### Modular Monolith
+### Monolito Modular
 
-The architecture pattern adopted in this workshop: a single deployable process divided into internal modules with well-defined boundaries. It was selected instead of microservices because it is better suited to the workshop timeframe. Documented in ADR-001.
+El patrón de arquitectura adoptado en esta inmersión: un único proceso desplegable dividido en módulos internos con límites bien definidos. Se seleccionó en lugar de microservicios porque se adapta mejor al tiempo disponible de la inmersión. Documentado en ADR-001.
 
 ### Strangler Fig
 
-An incremental migration pattern in which the new system gradually "wraps around" the legacy system, replacing one feature at a time without a big-bang migration. It applies when the workshop produces only part of SIFAP 2.0.
+Un patrón de migración incremental en el que el nuevo sistema "rodea" gradualmente al heredado, reemplazando una funcionalidad a la vez sin una migración de golpe. Se aplica cuando la inmersión produce solo una parte de SIFAP 2.0.
 
 ---
 
-## Area: Implementation
+## Área: implementación
 
 ### Bean Validation
 
-Java annotations (`@NotNull`, `@Email`, `@Size`, `@Pattern`) that automatically validate input data at the controller layer. They prevent invalid data from reaching business logic.
+Anotaciones Java (`@NotNull`, `@Email`, `@Size`, `@Pattern`) que validan automáticamente los datos de entrada en la capa de controladores. Evitan que los datos no válidos lleguen a la lógica de negocio.
 
 ### Controller
 
-A Java class that receives HTTP requests and returns responses. Its responsibilities are to receive and validate input with `@Valid`, delegate to the service, and return the correct HTTP status. Code location: `infrastructure/`.
+Una clase Java que recibe solicitudes HTTP y devuelve respuestas. Sus responsabilidades son recibir y validar la entrada con `@Valid`, delegar al servicio y devolver el estado HTTP correcto. Ubicación del código: `infrastructure/`.
 
-### DTO — Data Transfer Object
+### DTO — Objeto de transferencia de datos
 
-A Java structure with fields used to carry data through the API, without business logic. In SIFAP, a `BeneficiarioDTO` carries the data needed to create or update a beneficiary without exposing the JPA entity directly.
+Una estructura Java con campos usados para transportar datos a través de la API, sin lógica de negocio. En SIFAP, un `BeneficiarioDTO` transporta los datos necesarios para crear o actualizar un beneficiario sin exponer directamente la entidad JPA.
 
 ### Flyway
 
-A database migration tool. It applies versioned SQL scripts in the correct order (`V1__init.sql`, `V2__add_coluna.sql`). Once run, a script is never changed—subsequent changes require a new script. Location: `src/main/resources/db/migration/`.
+Una herramienta de migración de bases de datos. Aplica scripts SQL versionados en el orden correcto (`V1__init.sql`, `V2__add_coluna.sql`). Una vez ejecutado, un script nunca se modifica: los cambios posteriores requieren uno nuevo. Ubicación: `src/main/resources/db/migration/`.
 
 ### JPA — Java Persistence API
 
-The Java standard for mapping classes to database tables. A class annotated with `@Entity` maps to a table; fields annotated with `@Column` map to columns. Hibernate is the implementation used in this workshop.
+El estándar de Java para mapear clases a tablas de base de datos. Una clase anotada con `@Entity` se mapea a una tabla; los campos anotados con `@Column` se mapean a columnas. Hibernate es la implementación usada en esta inmersión.
 
 ### JWT — JSON Web Token
 
-An encrypted token issued by the backend after successful authentication. The client sends the JWT with every subsequent request in the `Authorization` header. It authenticates API calls without maintaining server-side sessions.
+Un token cifrado emitido por el backend tras una autenticación exitosa. El cliente envía el JWT con cada solicitud posterior en el encabezado `Authorization`. Autentica las llamadas a la API sin mantener sesiones del lado del servidor.
 
 ### Repository (Spring Data)
 
-A Java interface that provides ready-made database read and write methods (`findById`, `save`, `deleteAll`, `findByStatus`). Spring Data JPA implements it automatically. Location: `infrastructure/`.
+Una interfaz Java que proporciona métodos listos de lectura y escritura en base de datos (`findById`, `save`, `deleteAll`, `findByStatus`). Spring Data JPA la implementa automáticamente. Ubicación: `infrastructure/`.
 
 ### Server Component (Next.js)
 
-A React component that runs on the server without sending JavaScript to the user's browser. It is ideal for fetching data and rendering static HTML. Components that need user interaction must be Client Components explicitly marked with `"use client"`.
+Un componente React que se ejecuta en el servidor sin enviar JavaScript al navegador del usuario. Es ideal para obtener datos y renderizar HTML estático. Los componentes que necesitan interacción del usuario deben ser Client Components marcados explícitamente con `"use client"`.
 
 ### Service
 
-A Java class that contains business logic. It sits between the Controller (which receives the request) and the Repository (which accesses the database). Every database transaction must be managed in the service layer with `@Transactional`. Location: `application/`.
+Una clase Java que contiene lógica de negocio. Se sitúa entre el Controller (que recibe la solicitud) y el Repository (que accede a la base de datos). Cada transacción de base de datos debe gestionarse en la capa de servicios con `@Transactional`. Ubicación: `application/`.
 
 ### Swagger UI
 
-A web interface generated automatically by SpringDoc that documents and lets users test API endpoints. It is available at `http://localhost:8080/swagger-ui.html` during local development.
+Una interfaz web generada automáticamente por SpringDoc que documenta los endpoints de API y permite a los usuarios probarlos. Está disponible en `http://localhost:8080/swagger-ui.html` durante el desarrollo local.
 
 ### Testcontainers
 
-A Java library that starts a Docker container running a real PostgreSQL instance during tests. It eliminates database mocks and ensures that integration tests reflect real system behavior. Docker must be running.
+Una biblioteca Java que inicia un contenedor Docker con una instancia real de PostgreSQL durante las pruebas. Elimina los mocks de base de datos y garantiza que las pruebas de integración reflejen el comportamiento real del sistema. Docker debe estar en ejecución.
 
 ---
 
-## Area: Operations
+## Área: operaciones
 
-### CI/CD — Continuous Integration and Continuous Delivery
+### CI/CD — Integración continua y entrega continua
 
-CI (Continuous Integration): automatically runs tests on every commit. CD (Continuous Delivery): automatically deploys after CI succeeds. In the workshop, it is configured in `.github/workflows/`. A successful CI pipeline is required before merging into `main`.
+CI (integración continua): ejecuta automáticamente las pruebas en cada commit. CD (entrega continua): despliega automáticamente después de que la CI se apruebe. En la inmersión, se configura en `.github/workflows/`. Se requiere un pipeline de CI exitoso antes de integrar en `main`.
 
-### DoD — Definition of Done
+### DoD — Definición de terminado
 
-A list of verifiable criteria proving that a deliverable is complete. Each stage's `GUIDE.md` ends with that stage's DoD. Finishing the code is not enough—the entire DoD must be checked.
+Una lista de criterios verificables que demuestran que un entregable está completo. El `GUIDE.md` de cada etapa termina con la DoD de esa etapa. Terminar el código no basta: hay que verificar toda la DoD.
 
-### IaC — Infrastructure as Code
+### IaC — Infraestructura como código
 
-The practice of describing servers, databases, and networks in code files (Terraform) instead of configuring them manually in the Azure portal. It makes infrastructure reproducible and auditable. In the workshop, `.tf` files are created under `infra/` when the team reaches Stage 4.
+La práctica de describir servidores, bases de datos y redes en archivos de código (Terraform) en lugar de configurarlos manualmente en el portal de Azure. Hace que la infraestructura sea reproducible y auditable. En la inmersión, los archivos `.tf` se crean en `infra/` cuando el equipo llega a la Etapa 4.
 
 ### Issue (GitHub Issue)
 
-A GitHub ticket describing a task, feature, or defect. In Stage 4, well-written Issues—with context, acceptance criteria, and traceability—are delegated to Copilot Agent mode for automatic PR generation.
+Un ticket de GitHub que describe una tarea, funcionalidad o defecto. En la Etapa 4, las Issues bien escritas —con contexto, criterios de aceptación y trazabilidad— se delegan al modo Agent de Copilot para generar PR automáticamente.
 
 ### PR — Pull Request
 
-A request to incorporate changes from one branch into the main branch. Every PR requires at least one peer review before merging into `main`. CI must be green before the merge.
+Una solicitud para incorporar cambios de una rama a la rama principal. Cada PR requiere al menos una revisión por pares antes de integrarse en `main`. La CI debe estar en verde antes de la integración.
 
 ### Terraform
 
-An IaC tool that describes Azure infrastructure in `.tf` files. The `terraform plan` command shows what would be created without making changes; `terraform apply` creates the resources. During workshop demonstrations, run only `terraform plan`—never run a real `apply` without approval.
+Una herramienta de IaC que describe infraestructura de Azure en archivos `.tf`. El comando `terraform plan` muestra lo que se crearía sin realizar cambios; `terraform apply` crea los recursos. Durante las demostraciones de la inmersión, ejecuta solo `terraform plan`: nunca ejecutes un `apply` real sin aprobación.
 
 ---
 
-## Traceability chain
+## Cadena de trazabilidad
 
-![Traceability chain: legacy .NSN/.ddm becomes BR-NNN, then an EARS REQ-ID, then Java code, a Testcontainers test, and a GitHub PR](../assets/traceability-chain.svg)
+![Cadena de trazabilidad: el .NSN/.ddm heredado se convierte en BR-NNN, después en un REQ-ID EARS, luego en código Java, una prueba Testcontainers y una PR de GitHub](../assets/traceability-chain.svg)
 
-This chain is what CI verifies in every PR. Whenever you are unsure about what you are doing, return to the previous link in the chain.
+Esta cadena es lo que verifica la CI en cada PR. Siempre que tengas dudas sobre lo que estás haciendo, vuelve al eslabón anterior de la cadena.
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Agents and Personas](02-agents-and-personas.md)<br/><sub>The two context layers in Copilot Chat.</sub> | [Copilot's 3 Modes](04-3-copilot-modes.md)<br/><sub>Ask, Plan, and Agent—objective selection criteria.</sub> |
+| [Agentes y personas](02-agents-and-personas.md)<br/><sub>Las dos capas de contexto de Copilot Chat.</sub> | [Los 3 modos de Copilot](04-3-copilot-modes.md)<br/><sub>Ask, Plan y Agent: criterios objetivos de selección.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

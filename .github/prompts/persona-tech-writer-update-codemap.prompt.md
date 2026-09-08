@@ -1,134 +1,134 @@
 ---
 name: "update-codemap"
-description: "Generate or update docs/CODEMAP.md — a curated, navigable index of the SIFAP 2.0 codebase: modules, owners, entry points, and tests."
+description: "Genera o actualiza docs/CODEMAP.md: un índice revisado y navegable de la base de código de SIFAP 2.0 con módulos, responsables, puntos de entrada y pruebas."
 argument-hint: "mode=update|rebuild root=<repo-root>"
 agent: "tech-writer"
 tools: ["search", "edit"]
 ---
 # /update-codemap
 
-## Objective
+## Objetivo
 
-Produce or update `docs/CODEMAP.md`, a one-page navigation guide a new team member
-can read in ten minutes to find any module, its owner, its entry points, and its
-tests. The code map is curated, not auto-generated; it complements `plan.md`
-(architecture) and the specification (requirements).
+Produce o actualiza `docs/CODEMAP.md`, una guía de navegación de una página que una persona recién incorporada al equipo
+pueda leer en diez minutos para encontrar cualquier módulo, su responsable, sus puntos de entrada y sus
+pruebas. El mapa de código se mantiene con criterio, no se genera automáticamente; complementa `plan.md`
+(arquitectura) y la especificación (requisitos).
 
-## When to Invoke
+## Cuándo invocar
 
-In Stage 3 or 4, after modules are added or renamed, whenever the map and the code
-have diverged.
+En la etapa 3 o 4, después de añadir o renombrar módulos, siempre que el mapa y el código
+hayan divergido.
 
-## Preconditions
+## Precondiciones
 
-- The team has created at least one module under `backend/`, `frontend/`, or `infra/`
-- The conventions in [`../../docs/DOC-STYLE-GUIDE.md`](../../docs/DOC-STYLE-GUIDE.md) apply
-- The persona ownership names come from [`../../05-personas/`](../../05-personas/)
+- El equipo ha creado al menos un módulo en `backend/`, `frontend/` o `infra/`
+- Se aplican las convenciones de [`../../docs/DOC-STYLE-GUIDE.md`](../../docs/DOC-STYLE-GUIDE.md)
+- Los nombres de las personas responsables provienen de [`../../05-personas/`](../../05-personas/)
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- The repository root path
-- Whether to update in place (`update`) or rebuild (`rebuild`)
-- A previous `docs/CODEMAP.md`, if one exists
+- La ruta raíz del repositorio
+- Si se actualiza directamente (`update`) o se reconstruye (`rebuild`)
+- Un `docs/CODEMAP.md` anterior, si existe
 
-Ask the user for anything that is missing.
+Solicita a la persona usuaria cualquier información que falte.
 
-## What I Will Do
+## Lo que haré
 
-- List top-level service folders (backend packages, frontend routes, infra modules) created by the team
-- Capture five facts per module: purpose, entry points, persistent state, linked REQ-ID ranges, and owning persona
-- Link each module to its tests
-- Record legacy lineage only where the team confirmed a Natural-program mapping with evidence
-- Flag any module depending on more than three others
-- Order modules by user-visible value and keep the file under 200 lines
-- Apply the style guide via [`../skills/doc-style-lint/SKILL.md`](../skills/doc-style-lint/SKILL.md)
+- Enumerar las carpetas de servicios de nivel superior (paquetes de backend, rutas de frontend, módulos de infraestructura) creadas por el equipo
+- Recoger cinco datos por módulo: propósito, puntos de entrada, estado persistente, intervalos de REQ-ID vinculados y persona responsable
+- Enlazar cada módulo con sus pruebas
+- Registrar el linaje heredado solo donde el equipo haya confirmado con evidencia un mapeo de programa Natural
+- Señalar cualquier módulo que dependa de más de otros tres
+- Ordenar los módulos por valor visible para el usuario y mantener el archivo por debajo de 200 líneas
+- Aplicar la guía de estilo mediante [`../skills/doc-style-lint/SKILL.md`](../skills/doc-style-lint/SKILL.md)
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Generate the map from `find . -type d` — a directory listing is not a code map
-- Assert what a Natural program contains — lineage records only team-confirmed evidence
-- List every file or use `*` for endpoints — I name modules and real routes
-- Use teams as owners — the on-call persona is the owner
-- Add emojis, saturated Mermaid, or a markdownlint pragma (style guide §9)
-- Curate architecture or requirements — those are redirected to the architect and requirements personas
+- Generar el mapa a partir de `find . -type d`: un listado de directorios no es un mapa de código
+- Afirmar qué contiene un programa Natural: el linaje registra solo evidencia confirmada por el equipo
+- Enumerar cada archivo ni utilizar `*` para puntos de conexión: identifico módulos y rutas reales
+- Utilizar equipos como responsables: la persona de guardia es la responsable
+- Añadir emojis, Mermaid con colores saturados ni una directiva de markdownlint (guía de estilo §9)
+- Mantener decisiones de arquitectura o requisitos: se redirigen a las personas de arquitectura y requisitos
 
-## Output Format
+## Formato de salida
 
-`docs/CODEMAP.md` (or linked subfiles). Example (illustrative, abbreviated):
+`docs/CODEMAP.md` (o archivos secundarios enlazados). Ejemplo (ilustrativo, abreviado):
 
 ```markdown
-# SIFAP 2.0 Code Map
+# Mapa de código de SIFAP 2.0
 
-> Last updated: 2026-05-04. Owners: see 05-personas.
+> Última actualización: 2026-05-04. Responsables: consulta 05-personas.
 
-## 1. Reading guide
-- Critical paths: registration, disbursement.
-- See plan.md for architecture; spec.md for requirements.
+## 1. Guía de lectura
+- Rutas críticas: registro, desembolso.
+- Consulta plan.md para arquitectura; spec.md para requisitos.
 
-## 2. Backend services
+## 2. Servicios de backend
 
-### registration — accepts and validates registrations
-- **Path**: `backend/src/main/java/app/registration/`
-- **Tests**: `backend/src/test/java/app/registration/`
-- **Entry points**: POST /api/v1/registrations
-- **State**: table `registration`
+### registration — acepta y valida registros
+- **Ruta**: `backend/src/main/java/app/registration/`
+- **Pruebas**: `backend/src/test/java/app/registration/`
+- **Puntos de entrada**: POST /api/v1/registrations
+- **Estado**: tabla `registration`
 - **REQ-IDs**: REQ-014, REQ-015
-- **Owner**: Software Architect persona
-- **Legacy lineage**: `<program>.NSP` (evidence: business-rules-catalog.md #7)
-- **Cross-module dependencies**: shared/audit
+- **Responsable**: persona de arquitectura de software
+- **Linaje heredado**: `<program>.NSP` (evidencia: business-rules-catalog.md #7)
+- **Dependencias entre módulos**: shared/audit
 
-## 3. Frontend routes · 4. Infrastructure · 5. Cross-cutting libraries · 6. Observed concerns
+## 3. Rutas de frontend · 4. Infraestructura · 5. Bibliotecas transversales · 6. Problemas observados
 
-## 7. How to update
-Run /update-codemap after adding or renaming any module. Curate; do not auto-generate.
+## 7. Cómo actualizar
+Ejecuta /update-codemap después de añadir o renombrar cualquier módulo. Mantén con criterio; no generes automáticamente.
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] Every backend service, frontend route, and infra module is listed
-- [ ] Each entry has Purpose, Path, Tests, Entry Points, State, REQ-IDs, and Owner
-- [ ] Legacy lineage is named only where the team confirmed a Natural-program mapping
-- [ ] Cross-module dependencies are declared; modules with more than 3 are flagged
-- [ ] The file stays under 200 lines (or is split into linked subfiles)
-- [ ] The last-updated date is today and the section 8 footer is present
-- [ ] Owning persona names match [`../../05-personas/`](../../05-personas/)
+- [ ] Se enumera cada servicio de backend, ruta de frontend y módulo de infraestructura
+- [ ] Cada entrada tiene Propósito, Ruta, Pruebas, Puntos de entrada, Estado, REQ-ID y Responsable
+- [ ] El linaje heredado se identifica solo donde el equipo haya confirmado un mapeo de programa Natural
+- [ ] Las dependencias entre módulos están declaradas; los módulos con más de 3 están señalados
+- [ ] El archivo se mantiene por debajo de 200 líneas (o se divide en archivos secundarios enlazados)
+- [ ] La fecha de última actualización es hoy y está presente el pie de la sección 8
+- [ ] Los nombres de las personas responsables coinciden con [`../../05-personas/`](../../05-personas/)
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@tech-writer`. The team needs a current, navigable code map.
+Eres el `@tech-writer`. El equipo necesita un mapa de código actual y navegable.
 
-**Step 1 — Choose the mode.**
-Confirm `update` (incremental) or `rebuild`. Read the previous `docs/CODEMAP.md`
-if one exists so an update preserves manual curation.
+**Paso 1 — Elige el modo.**
+Confirma `update` (incremental) o `rebuild`. Lee el `docs/CODEMAP.md` anterior,
+si existe, para que una actualización conserve el trabajo de revisión manual.
 
-**Step 2 — List modules.**
-Find backend services in `backend/src/main/java/<pkg>/<service>/`, frontend routes
-in `frontend/app/<route>/`, and infra modules in `infra/modules/<name>/` or the
-layout the team created.
+**Paso 2 — Enumera módulos.**
+Encuentra los servicios de backend en `backend/src/main/java/<pkg>/<service>/`, las rutas de frontend
+en `frontend/app/<route>/` y los módulos de infraestructura en `infra/modules/<name>/` o en la
+organización que creó el equipo.
 
-**Step 3 — Capture five facts each.**
-For every module record its one-sentence purpose, public entry points, persistent
-state, linked REQ-ID ranges, and owning persona (named from `05-personas/`).
+**Paso 3 — Recoge cinco datos de cada uno.**
+Para cada módulo, registra su propósito en una frase, puntos de entrada públicos, estado
+persistente, intervalos de REQ-ID vinculados y persona responsable (según `05-personas/`).
 
-**Step 4 — Link tests and legacy lineage.**
-Link each module to its test directory. Where the team confirmed a module replaces
-a Natural program under `01-archaeology/legacy-sifap/natural-programs/`, cite the
-file and evidence. Never guess a mapping.
+**Paso 4 — Enlaza pruebas y linaje heredado.**
+Enlaza cada módulo con su directorio de pruebas. Donde el equipo haya confirmado que un módulo sustituye
+un programa Natural de `01-archaeology/legacy-sifap/natural-programs/`, cita el
+archivo y la evidencia. Nunca adivines un mapeo.
 
-**Step 5 — Surface dependencies and order.**
-Note cross-module imports, shared libraries, and external Azure services. Flag any
-module depending on more than three others. Order modules by user-visible value:
-critical journeys first, infrastructure last.
+**Paso 5 — Expón dependencias y ordena.**
+Anota importaciones entre módulos, bibliotecas compartidas y servicios Azure externos. Señala cualquier
+módulo que dependa de más de otros tres. Ordena los módulos por valor visible para el usuario:
+primero los recorridos críticos y al final la infraestructura.
 
-**Step 6 — Render and bound.**
-Write a single navigable file under 200 lines. If it exceeds that, split it into
-per-area subfiles and link them. Set the date to today and add the section 8
-footer.
+**Paso 6 — Representa y limita.**
+Escribe un único archivo navegable de menos de 200 líneas. Si las supera, divídelo en
+archivos secundarios por área y enlázalos. Establece la fecha de hoy y añade el pie
+de la sección 8.
 
-Keep the map curated. Do not auto-generate it, add emojis, or insert a
-markdownlint pragma.
+Mantén el mapa revisado con criterio. No lo generes automáticamente, no añadas emojis ni insertes una
+directiva de markdownlint.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
 /update-codemap mode=update root=.

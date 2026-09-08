@@ -1,106 +1,106 @@
 ---
 name: "doc-style-lint"
-description: "Use when reviewing documentation for style, clarity, inclusive language, or compliance with Microsoft or Google style guides. Triggers include \"doc review\", \"style guide\", \"plain language\", \"inclusive language\", and \"readability\"."
+description: "Úsala para revisar el estilo, la claridad, el lenguaje inclusivo o el cumplimiento de las guías de estilo de Microsoft o Google en la documentación. Los desencadenantes incluyen \"revisión de documentación\", \"guía de estilo\", \"lenguaje claro\", \"lenguaje inclusivo\" y \"legibilidad\"."
 ---
-# Documentation style lint
+# Revisión de estilo de la documentación
 
-## When to invoke
+## Cuándo invocar
 
-- "Lint this README against our style guide."
-- "Rewrite this API documentation in plain language."
-- "Check for exclusionary terms and jargon."
+- "Comprueba este README con nuestra guía de estilo."
+- "Reescribe esta documentación de API en lenguaje claro."
+- "Busca términos excluyentes y jerga."
 
-## Rules
+## Reglas
 
-### Voice and tone
+### Voz y tono
 
-- **Active voice**. "The system stores the file," not "The file is stored by the system."
-- **Present tense**. "Returns a JSON response," not "Will return a JSON response."
-- **Second person** ("you") for practical guides; **third person** for reference documentation.
-- **Sentence case headings**, not Title Case.
+- **Voz activa**. "El sistema almacena el archivo", no "El archivo es almacenado por el sistema".
+- **Tiempo presente**. "Devuelve una respuesta JSON", no "Devolverá una respuesta JSON".
+- **Segunda persona** ("tú") para guías prácticas; **tercera persona** para documentación de referencia.
+- **Títulos con mayúscula inicial solo en la primera palabra**, no en todas las palabras principales.
 
-### Clarity
+### Claridad
 
-- One idea per sentence.
-- Use 25 words per sentence as a practical maximum.
-- Use no more than five sentences per paragraph.
-- Avoid minimizing words ("just", "simply", "easily"). They mislead readers.
-- Do not use em dashes. Use commas, parentheses, or colons.
+- Una idea por frase.
+- Usa 25 palabras por frase como máximo práctico.
+- No uses más de cinco frases por párrafo.
+- Evita palabras que minimicen la dificultad ("solo", "simplemente", "fácilmente"). Inducen a error.
+- No uses rayas. Usa comas, paréntesis o dos puntos.
 
-### Inclusive language
+### Lenguaje inclusivo
 
-Replace:
+Sustituye:
 
-- "master/slave" -> "primary/replica" or "leader/follower"
-- "whitelist/blacklist" -> "allowlist/blocklist"
-- "guys" -> "folks", "everyone", "team"
-- "crazy/insane" (as intensifiers) -> "significant", "unusual"
-- "dummy" (in variable names) -> "example", "sample"
-- "sanity check" -> "quick check", "verification"
+- "master/slave" ("maestro/esclavo") -> "primario/réplica" o "líder/seguidor"
+- "whitelist/blacklist" ("lista blanca/lista negra") -> "lista de permitidos/lista de bloqueados"
+- "guys" ("chicos") -> "personas", "todo el mundo", "equipo"
+- "crazy/insane" ("loco/demente", como intensificadores) -> "significativo", "inusual"
+- "dummy" (en nombres de variables) -> "example", "sample"
+- "sanity check" -> "comprobación rápida", "verificación"
 
-### Structure
+### Estructura
 
-- **Start with the outcome**, not the context. Readers should know why to continue.
-- **State what readers will learn** at the top.
-- **Summarize at the end** of long documents.
-- **Use descriptive headings** to support scanning.
+- **Empieza por el resultado**, no por el contexto. Quien lee debe saber por qué continuar.
+- **Indica al principio qué se aprenderá**.
+- **Resume al final** de los documentos largos.
+- **Usa títulos descriptivos** para facilitar la lectura rápida.
 
-### Links
+### Enlaces
 
-- Link text describes the destination. Never use "click here" or "this link."
-- Use absolute URLs for external sources and relative URLs for internal content.
-- Check links in CI.
+- El texto del enlace describe el destino. Nunca uses "haz clic aquí" ni "este enlace".
+- Usa URL absolutas para fuentes externas y relativas para contenido interno.
+- Comprueba los enlaces en CI.
 
-### Code examples
+### Ejemplos de código
 
-- Test every executable snippet.
-- Use realistic examples, not `foo/bar/baz`.
-- Clearly identify placeholders: `<YOUR-API-KEY>`.
+- Prueba todos los fragmentos ejecutables.
+- Usa ejemplos realistas, no `foo/bar/baz`.
+- Identifica claramente los marcadores de posición: `<YOUR-API-KEY>`.
 
-### Numbers and units
+### Números y unidades
 
-- Use numerals for 10 and above and words for zero through nine (Microsoft style).
-- Use metric units and include conversions for mixed audiences.
-- Always specify the unit: "100 MB," not "100."
+- Usa cifras para 10 o más y palabras para los números de cero a nueve (estilo Microsoft).
+- Usa unidades métricas e incluye conversiones para públicos diversos.
+- Especifica siempre la unidad: "100 MB", no "100".
 
-## Review steps
+## Pasos de la revisión
 
-1. **Read once as the intended audience**. Is the length appropriate? Is the level of detail appropriate?
-2. **Run the automated checks configured in the repository**, such as Vale, Alex.js, or markdownlint. Report missing tools without installing them.
-3. **Apply the style rules** section by section.
-4. **Test every code example**.
-5. **Ask**: would a new hire understand this on day 1?
+1. **Lee una vez como el público destinatario**. ¿La extensión es adecuada? ¿Lo es el nivel de detalle?
+2. **Ejecuta las comprobaciones automatizadas configuradas en el repositorio**, como Vale, Alex.js o markdownlint. Informa de las herramientas que falten sin instalarlas.
+3. **Aplica las reglas de estilo** sección por sección.
+4. **Prueba todos los ejemplos de código**.
+5. **Pregúntate**: ¿una persona recién incorporada entendería esto el día 1?
 
-## Antipatterns
+## Antipatrones
 
-- Reviewing without running automated linters first.
-- Prioritizing style over substance.
-- Rewriting the author's voice instead of refining it.
-- Ignoring accessibility (alternative text, heading levels, link text).
+- Revisar sin ejecutar primero los linters automatizados.
+- Priorizar el estilo sobre el contenido.
+- Reescribir la voz de quien redactó el texto en lugar de perfeccionarla.
+- Ignorar la accesibilidad (texto alternativo, niveles de títulos, texto de enlaces).
 
-## Output template
+## Plantilla de salida
 
 ```markdown
-## Style review - <Doc>
+## Revisión de estilo - <Documento>
 
-### Summary
-- Readability (Flesch-Kincaid grade): 11 (target: <=12)
-- Passive voice: 8% (target: <10%)
-- Inclusive language issues: 2
-- Broken links: 0
-- Untested code examples: 3
+### Resumen
+- Legibilidad (nivel Flesch-Kincaid): 11 (objetivo: <=12)
+- Voz pasiva: 8% (objetivo: <10%)
+- Problemas de lenguaje inclusivo: 2
+- Enlaces rotos: 0
+- Ejemplos de código sin probar: 3
 
-### Recommendations (top 10)
-| ID | Location | Issue | Fix |
+### Recomendaciones (10 principales)
+| ID | Ubicación | Problema | Corrección |
 |----|----------|-------|-----|
-| 01 | Installation section | Passive voice | Rewrite in active voice |
-| 02 | Troubleshooting | "guys" | Replace with "team" |
-| 03 | API reference | "simply call" | Remove "simply" |
+| 01 | Sección de instalación | Voz pasiva | Reescribir en voz activa |
+| 02 | Solución de problemas | "chicos" | Sustituir por "equipo" |
+| 03 | Referencia de la API | "simplemente llama" | Eliminar "simplemente" |
 ```
 
-## Quality gate
+## Puerta de calidad
 
-- [ ] The document passes the repository's configured linters (for example Vale, Alex.js, markdownlint) before human review.
-- [ ] Voice is active and present tense, with sentence-case headings.
-- [ ] No exclusionary terms remain; flagged terms are replaced with inclusive alternatives.
-- [ ] Every code example is tested and every link resolves.
+- [ ] El documento supera los linters configurados en el repositorio (por ejemplo, Vale, Alex.js, markdownlint) antes de la revisión humana.
+- [ ] El texto usa voz activa y tiempo presente, con mayúscula inicial solo en la primera palabra de los títulos.
+- [ ] No quedan términos excluyentes; los términos señalados se sustituyen por alternativas inclusivas.
+- [ ] Todos los ejemplos de código están probados y todos los enlaces se resuelven.

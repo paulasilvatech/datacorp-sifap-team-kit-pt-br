@@ -1,76 +1,76 @@
 ---
 name: "azure-pricing"
-description: "Use when the user asks about the cost of an Azure service, wants to compare SKU or region prices, needs pricing data for an estimate, or asks about Copilot Studio pricing and agent credit consumption. Fetches real-time retail pricing from the public Azure Retail Prices API (no auth) and estimates Copilot Studio credits. Triggers include \"Azure pricing\", \"how much does\", \"compare SKU price\", \"cost estimate\", and \"Copilot Studio credits\". For turning an existing workload into cost-optimization issues, use az-cost-optimize."
+description: "Úsala cuando la persona pregunte por el costo de un servicio de Azure, quiera comparar precios de SKU o regiones, necesite datos de precios para una estimación o consulte los precios de Copilot Studio y el consumo de créditos de los agentes. Obtiene precios minoristas en tiempo real de la API pública Azure Retail Prices (sin autenticación) y estima créditos de Copilot Studio. Los desencadenantes incluyen \"precios de Azure\", \"cuánto cuesta\", \"comparar precio de SKU\", \"estimación de costo\" y \"créditos de Copilot Studio\". Para convertir una carga existente en incidencias de optimización de costos, usa az-cost-optimize."
 ---
-# Azure pricing
+# Precios de Azure
 
-Retrieve real-time Azure retail pricing from the public Azure Retail Prices API. No authentication is required; only outbound HTTPS access to `prices.azure.com`.
+Obtén precios minoristas de Azure en tiempo real desde la API pública Azure Retail Prices. No se requiere autenticación, solo acceso HTTPS saliente a `prices.azure.com`.
 
 > [!NOTE]
-> This skill depends on outbound web access (the built-in `web_fetch` tool or equivalent) to reach `prices.azure.com`. If web access is unavailable, say so and fall back to the cached rates in the reference files.
+> Esta skill depende del acceso web saliente (la herramienta integrada `web_fetch` o equivalente) para acceder a `prices.azure.com`. Si no hay acceso web, indícalo y recurre a las tarifas almacenadas en los archivos de referencia.
 
-## When to invoke
+## Cuándo invocar
 
-- "How much does a Standard_D4s_v5 VM cost in East US?"
-- "Compare Blob Storage prices across regions."
-- "Give me a monthly estimate for this architecture."
-- "How many Copilot Credits will our agent consume per month?"
+- "¿Cuánto cuesta una VM Standard_D4s_v5 en East US?"
+- "Compara los precios de Blob Storage entre regiones."
+- "Dame una estimación mensual para esta arquitectura."
+- "¿Cuántos créditos de Copilot consumirá nuestro agente al mes?"
 
-## API endpoint
+## Punto de conexión de la API
 
 ```text
 GET https://prices.azure.com/api/retail/prices?api-version=2023-01-01-preview
 ```
 
-Append `$filter` as a query parameter using OData filter syntax. Always use `api-version=2023-01-01-preview` so savings-plan data is included.
+Añade `$filter` como parámetro de consulta con la sintaxis de filtros OData. Usa siempre `api-version=2023-01-01-preview` para incluir los datos de planes de ahorro.
 
-## Step-by-step
+## Paso a paso
 
-If anything about the request is unclear, ask clarifying questions to identify the correct filter fields and values before calling the API.
+Si algún aspecto de la solicitud no está claro, haz preguntas aclaratorias para identificar los campos y valores de filtro correctos antes de llamar a la API.
 
-1. **Identify filter fields** from the request (service name, region, SKU, price type).
-2. **Resolve the region** to an `armRegionName` — lowercase, no spaces (`East US` becomes `eastus`, `West Europe` becomes `westeurope`). See [references/REGIONS.md](references/REGIONS.md) for the full list.
-3. **Build the filter string** from the fields below and fetch the URL.
-4. **Parse the `Items` array** from the JSON response; each item carries price and metadata.
-5. **Follow pagination** via `NextPageLink` only if you need more than the first 1000 results (rarely necessary).
-6. **Calculate estimates** with the formulas in [references/COST-ESTIMATOR.md](references/COST-ESTIMATOR.md) to produce monthly and annual figures.
-7. **Present results** in a summary table with service, SKU, region, unit price, and monthly/annual estimates.
+1. **Identifica los campos de filtro** de la solicitud (nombre del servicio, región, SKU y tipo de precio).
+2. **Resuelve la región** a un `armRegionName`, en minúsculas y sin espacios (`East US` pasa a `eastus`, `West Europe` a `westeurope`). Consulta la lista completa en [references/REGIONS.md](references/REGIONS.md).
+3. **Construye la cadena de filtro** con los campos siguientes y consulta la URL.
+4. **Analiza la matriz `Items`** de la respuesta JSON; cada elemento contiene precio y metadatos.
+5. **Sigue la paginación** mediante `NextPageLink` solo si necesitas más de los primeros 1000 resultados (rara vez es necesario).
+6. **Calcula las estimaciones** con las fórmulas de [references/COST-ESTIMATOR.md](references/COST-ESTIMATOR.md) para obtener importes mensuales y anuales.
+7. **Presenta los resultados** en una tabla de resumen con servicio, SKU, región, precio unitario y estimaciones mensuales y anuales.
 
-## Filterable fields
+## Campos que admiten filtros
 
-| Field | Type | Example |
+| Campo | Tipo | Ejemplo |
 |---|---|---|
-| `serviceName` | string (exact, case-sensitive) | `'Functions'`, `'Virtual Machines'`, `'Storage'` |
-| `serviceFamily` | string (exact, case-sensitive) | `'Compute'`, `'Storage'`, `'Databases'`, `'AI + Machine Learning'` |
-| `armRegionName` | string (exact, lowercase) | `'eastus'`, `'westeurope'`, `'southeastasia'` |
-| `armSkuName` | string (exact) | `'Standard_D4s_v5'`, `'Standard_LRS'` |
-| `skuName` | string (contains supported) | `'D4s v5'` |
+| `serviceName` | string (exacto, distingue mayúsculas y minúsculas) | `'Functions'`, `'Virtual Machines'`, `'Storage'` |
+| `serviceFamily` | string (exacto, distingue mayúsculas y minúsculas) | `'Compute'`, `'Storage'`, `'Databases'`, `'AI + Machine Learning'` |
+| `armRegionName` | string (exacto, en minúsculas) | `'eastus'`, `'westeurope'`, `'southeastasia'` |
+| `armSkuName` | string (exacto) | `'Standard_D4s_v5'`, `'Standard_LRS'` |
+| `skuName` | string (admite contains) | `'D4s v5'` |
 | `priceType` | string | `'Consumption'`, `'Reservation'`, `'DevTestConsumption'` |
-| `meterName` | string (contains supported) | `'Spot'` |
+| `meterName` | string (admite contains) | `'Spot'` |
 
-Use `eq` for equality, `and` to combine conditions, and `contains(field, 'value')` for partial matches.
+Usa `eq` para igualdad, `and` para combinar condiciones y `contains(field, 'value')` para coincidencias parciales.
 
-## Example filter strings
+## Ejemplos de cadenas de filtro
 
-| Purpose | `$filter` value |
+| Finalidad | Valor de `$filter` |
 |---|---|
-| Consumption prices for Functions in East US | `serviceName eq 'Functions' and armRegionName eq 'eastus' and priceType eq 'Consumption'` |
-| D4s v5 VMs in West Europe (consumption) | `armSkuName eq 'Standard_D4s_v5' and armRegionName eq 'westeurope' and priceType eq 'Consumption'` |
-| All Storage prices in a region | `serviceName eq 'Storage' and armRegionName eq 'eastus'` |
-| Spot pricing for a specific SKU | `armSkuName eq 'Standard_D4s_v5' and contains(meterName, 'Spot') and armRegionName eq 'eastus'` |
-| One-year reservation pricing | `serviceName eq 'Virtual Machines' and priceType eq 'Reservation' and armRegionName eq 'eastus'` |
+| Precios de consumo de Functions en East US | `serviceName eq 'Functions' and armRegionName eq 'eastus' and priceType eq 'Consumption'` |
+| VM D4s v5 en West Europe (consumo) | `armSkuName eq 'Standard_D4s_v5' and armRegionName eq 'westeurope' and priceType eq 'Consumption'` |
+| Todos los precios de Storage en una región | `serviceName eq 'Storage' and armRegionName eq 'eastus'` |
+| Precios Spot de una SKU concreta | `armSkuName eq 'Standard_D4s_v5' and contains(meterName, 'Spot') and armRegionName eq 'eastus'` |
+| Precios de reserva de un año | `serviceName eq 'Virtual Machines' and priceType eq 'Reservation' and armRegionName eq 'eastus'` |
 | Azure AI / OpenAI (Foundry Models) | `serviceName eq 'Foundry Models' and armRegionName eq 'eastus' and priceType eq 'Consumption'` |
 | Azure Cosmos DB | `serviceName eq 'Azure Cosmos DB' and armRegionName eq 'eastus' and priceType eq 'Consumption'` |
 
-## Full example fetch URL
+## Ejemplo de URL completa de consulta
 
 ```text
 https://prices.azure.com/api/retail/prices?api-version=2023-01-01-preview&$filter=serviceName eq 'Functions' and armRegionName eq 'eastus' and priceType eq 'Consumption'
 ```
 
-URL-encode spaces as `%20` and quotes as `%27` when constructing the URL.
+Al construir la URL, codifica los espacios como `%20` y las comillas como `%27`.
 
-## Key response fields
+## Campos principales de respuesta
 
 ```json
 {
@@ -98,84 +98,84 @@ URL-encode spaces as `%20` and quotes as `%27` when constructing the URL.
 }
 ```
 
-Only use items where `isPrimaryMeterRegion` is `true` unless the user specifically asks for non-primary meters.
+Usa solo elementos donde `isPrimaryMeterRegion` sea `true`, salvo que la persona solicite específicamente medidores no primarios.
 
-## Supported serviceFamily values
+## Valores admitidos de serviceFamily
 
 `Analytics`, `Compute`, `Containers`, `Data`, `Databases`, `Developer Tools`, `Integration`, `Internet of Things`, `Management and Governance`, `Networking`, `Security`, `Storage`, `Web`, `AI + Machine Learning`.
 
-## Tips
+## Consejos
 
-- `serviceName` values are case-sensitive. When unsure, filter by `serviceFamily` first to discover valid `serviceName` values.
-- If results are empty, broaden the filter (remove `priceType` or region constraints first).
-- Prices are in USD unless `currencyCode` is set in the request.
-- For savings-plan prices, look for the `savingsPlan` array on each item (only present with `2023-01-01-preview`).
-- See [references/SERVICE-NAMES.md](references/SERVICE-NAMES.md) for common service names and correct casing.
+- Los valores de `serviceName` distinguen mayúsculas y minúsculas. Si tienes dudas, filtra primero por `serviceFamily` para descubrir valores válidos de `serviceName`.
+- Si no hay resultados, amplía el filtro (elimina primero las restricciones de `priceType` o región).
+- Los precios están en USD salvo que se establezca `currencyCode` en la solicitud.
+- Para precios de planes de ahorro, busca la matriz `savingsPlan` de cada elemento (solo está presente con `2023-01-01-preview`).
+- Consulta los nombres habituales de servicios y su uso correcto de mayúsculas en [references/SERVICE-NAMES.md](references/SERVICE-NAMES.md).
 
-## Troubleshooting
+## Solución de problemas
 
-| Issue | Solution |
+| Problema | Solución |
 |---|---|
-| Empty results | Broaden the filter — remove `priceType` or `armRegionName` first |
-| Wrong service name | Use the `serviceFamily` filter to discover valid `serviceName` values |
-| Missing savings-plan data | Ensure `api-version=2023-01-01-preview` is in the URL |
-| URL errors | Check encoding — spaces as `%20`, quotes as `%27` |
-| Too many results | Add more filter fields (region, SKU, priceType) to narrow the query |
+| Resultados vacíos | Amplía el filtro; elimina primero `priceType` o `armRegionName` |
+| Nombre de servicio incorrecto | Usa el filtro `serviceFamily` para descubrir valores válidos de `serviceName` |
+| Faltan datos de planes de ahorro | Asegúrate de que la URL incluya `api-version=2023-01-01-preview` |
+| Errores de URL | Comprueba la codificación: espacios como `%20`, comillas como `%27` |
+| Demasiados resultados | Añade campos de filtro (región, SKU, priceType) para acotar la consulta |
 
-## Copilot Studio agent usage estimation
+## Estimación del uso de agentes de Copilot Studio
 
-Use this section when the user asks about Copilot Studio pricing, Copilot Credits, or agent usage costs.
+Usa esta sección cuando la persona pregunte por los precios de Copilot Studio, los créditos de Copilot o los costos de uso de agentes.
 
-### Key facts
+### Datos clave
 
-- **1 Copilot Credit = 0.01 USD.**
-- Credits are pooled across the entire tenant.
-- Employee-facing agents with M365 Copilot licensed users get classic answers, generative answers, and tenant graph grounding at zero cost.
-- Overage enforcement triggers at 125% of prepaid capacity.
+- **1 crédito de Copilot = 0.01 USD.**
+- Los créditos se comparten en todo el inquilino.
+- Los agentes para empleados cuyos usuarios tienen licencia de M365 Copilot reciben respuestas clásicas, generativas y fundamentación con el grafo del inquilino sin costo.
+- Las medidas por exceso de consumo se activan al alcanzar el 125% de la capacidad de prepago.
 
-### Estimation steps
+### Pasos de estimación
 
-1. **Gather inputs**: agent type (employee/customer), number of users, interactions per month, knowledge percentage, tenant-graph percentage, and tool usage per session.
-2. **Fetch live billing rates** with the web fetch tool so the estimate uses current Microsoft pricing.
-3. **Parse the fetched content** to extract the current billing-rate table (credits per feature type).
-4. **Calculate the estimate**:
+1. **Recopila las entradas**: tipo de agente (empleados/clientes), número de usuarios, interacciones al mes, porcentaje de conocimiento, porcentaje de grafo del inquilino y uso de herramientas por sesión.
+2. **Consulta las tarifas de facturación vigentes** con la herramienta de consulta web para que la estimación use los precios actuales de Microsoft.
+3. **Analiza el contenido consultado** para extraer la tabla actual de tarifas (créditos por tipo de funcionalidad).
+4. **Calcula la estimación**:
    - `total_sessions = users * interactions_per_month`
-   - Knowledge credits: apply tenant-graph grounding, generative-answer, and classic-answer rates.
-   - Agent-tool credits: apply the agent-action rate per tool call.
-   - Agent-flow credits: apply the flow rate per 100 actions.
-   - Prompt-modifier credits: apply basic/standard/premium rates per 10 responses.
-5. **Present results** in a table broken down by category, with total credits and estimated USD cost.
+   - Créditos de conocimiento: aplica las tarifas de fundamentación con el grafo del inquilino, respuestas generativas y respuestas clásicas.
+   - Créditos de herramientas de agente: aplica la tarifa de acción de agente por llamada a herramienta.
+   - Créditos de flujos de agente: aplica la tarifa de flujo por 100 acciones.
+   - Créditos del modificador de prompts: aplica las tarifas básicas, estándar o premium por 10 respuestas.
+5. **Presenta los resultados** en una tabla desglosada por categoría, con los créditos totales y el costo estimado en USD.
 
-### Source URLs to fetch
+### URL de origen que consultar
 
-| URL | Content |
+| URL | Contenido |
 |---|---|
-| `https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management` | Billing-rate table, billing examples, overage rules |
-| `https://learn.microsoft.com/en-us/microsoft-copilot-studio/billing-licensing` | Licensing options, M365 Copilot inclusions, prepaid vs pay-as-you-go |
+| `https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management` | Tabla de tarifas, ejemplos de facturación y reglas de exceso de consumo |
+| `https://learn.microsoft.com/en-us/microsoft-copilot-studio/billing-licensing` | Opciones de licencia, prestaciones incluidas en M365 Copilot y prepago frente a pago por uso |
 
-Fetch at least the first URL (billing rates) before calculating. See [references/COPILOT-STUDIO-RATES.md](references/COPILOT-STUDIO-RATES.md) for a cached snapshot of rates, formulas, and examples (fallback when web fetch is unavailable).
+Consulta al menos la primera URL (tarifas de facturación) antes de calcular. En [references/COPILOT-STUDIO-RATES.md](references/COPILOT-STUDIO-RATES.md) hay una instantánea almacenada de tarifas, fórmulas y ejemplos (alternativa cuando no sea posible consultar la web).
 
-## Output template
+## Plantilla de salida
 
-Present retail pricing as a table with the source and assumptions stated:
+Presenta los precios minoristas en una tabla e indica la fuente y las suposiciones:
 
 ```markdown
-## Azure pricing — Standard_D4s_v5, eastus
+## Precios de Azure: Standard_D4s_v5, eastus
 
-| Service | SKU | Region | Unit price | Unit | Monthly est. |
+| Servicio | SKU | Región | Precio unitario | Unidad | Est. mensual |
 |---|---|---|---|---|---|
-| Virtual Machines | Standard_D4s_v5 | eastus | $0.192 | 1 Hour | ~$140 (730 h) |
-| Virtual Machines | Standard_D4s_v5 (1yr savings plan) | eastus | $0.113 | 1 Hour | ~$82 (730 h) |
+| Virtual Machines | Standard_D4s_v5 | eastus | $0.192 | 1 hora | ~$140 (730 h) |
+| Virtual Machines | Standard_D4s_v5 (plan de ahorro de 1 año) | eastus | $0.113 | 1 hora | ~$82 (730 h) |
 
-Source: Azure Retail Prices API, api-version 2023-01-01-preview, retrieved 2026-08-17. Prices in USD; assumes 730 h/month, isPrimaryMeterRegion only.
+Fuente: API Azure Retail Prices, api-version 2023-01-01-preview, consultada el 2026-08-17. Precios en USD; se asumen 730 h/mes y solo isPrimaryMeterRegion.
 ```
 
-## Quality gate
+## Puerta de calidad
 
-- [ ] The region is resolved to a valid lowercase `armRegionName`.
-- [ ] The filter uses the exact, case-sensitive `serviceName`/`serviceFamily`.
-- [ ] Only `isPrimaryMeterRegion == true` items are used unless non-primary meters were requested.
-- [ ] `api-version=2023-01-01-preview` is used so savings-plan data is available when relevant.
-- [ ] Monthly/annual estimates state their assumptions (hours, quantity) and cite the API and retrieval date.
-- [ ] The currency is stated (USD unless the request specifies otherwise).
-- [ ] Copilot Studio estimates use freshly fetched rates, or explicitly note the cached fallback.
+- [ ] La región se resuelve a un `armRegionName` válido en minúsculas.
+- [ ] El filtro usa `serviceName`/`serviceFamily` exactos, respetando mayúsculas y minúsculas.
+- [ ] Solo se usan elementos `isPrimaryMeterRegion == true`, salvo que se hayan solicitado medidores no primarios.
+- [ ] Se usa `api-version=2023-01-01-preview` para disponer de datos de planes de ahorro cuando corresponda.
+- [ ] Las estimaciones mensuales y anuales indican sus suposiciones (horas, cantidad) y citan la API y la fecha de consulta.
+- [ ] Se indica la moneda (USD, salvo que la solicitud especifique otra).
+- [ ] Las estimaciones de Copilot Studio usan tarifas recién consultadas o indican explícitamente la alternativa almacenada en caché.

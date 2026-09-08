@@ -1,316 +1,316 @@
 ---
-title: "SIFAP Business Rules - Partial Survey"
-author: "Ana Cristina Barros - SENARC Business Analyst"
+title: "Reglas de negocio de SIFAP - Levantamiento parcial"
+author: "Ana Cristina Barros - Analista de Negocio de SENARC"
 date: "2012-08-14"
 version: "1.0.0-DRAFT"
 classification: "RESTRICTED"
-status: "INCOMPLETE - Survey discontinued"
+status: "INCOMPLETE - Levantamiento interrumpido"
 distribution: "SENARC/CGPB, SUPDE/DESIF, CGTI/MDAS"
 revision_history:
 
 - version: "0.1.0"
  date: "2012-06-04"
  author: "Ana Cristina Barros"
- description: "Start of survey - registration module"
+ description: "Inicio del levantamiento - módulo de registro"
 - version: "0.5.0"
  date: "2012-07-10"
  author: "Ana Cristina Barros"
- description: "Partial inclusion of calculation and discount modules"
+ description: "Inclusión parcial de los módulos de cálculo y descuentos"
 - version: "1.0.0-DRAFT"
  date: "2012-08-14"
  author: "Ana Cristina Barros"
- description: "Latest version - survey discontinued"
+ description: "Última versión - levantamiento interrumpido"
 
 ---
 
 > [!NOTE]
-> This is a reconstructed historical document for the SIFAP 2.0 workshop archaeology exercise. It simulates the partial business-rule survey conducted in 2012 by the SENARC/CGPB team. Period language, personal names, uncertainties, and documented gaps have been intentionally preserved. **This document must not be used as the system's current specification.** Rules marked `[PENDING]`, comments about inconsistencies, and unverified items are part of the exercise—they represent the real knowledge-extraction challenge the team must address during archaeology.
+> Este es un documento histórico reconstruido para el ejercicio de arqueología de la inmersión SIFAP 2.0. Simula el levantamiento parcial de reglas de negocio realizado en 2012 por el equipo SENARC/CGPB. Se han conservado intencionalmente el lenguaje de la época, los nombres de las personas, las incertidumbres y las lagunas documentadas. **Este documento no debe utilizarse como especificación actual del sistema.** Las reglas marcadas como `[PENDING]`, los comentarios sobre incoherencias y los elementos no verificados forman parte del ejercicio: representan el verdadero desafío de extracción de conocimiento que el equipo debe abordar durante la arqueología.
 
 <!-- ====================================================================== -->
-<!-- SIFAP BUSINESS RULES - PARTIAL SURVEY -->
-<!-- Payment Inspection and Administration System -->
-<!-- SENARC - National Secretariat for Citizenship Income -->
-<!-- In collaboration with SUPDE/DESIF (the organization) -->
+<!-- REGLAS DE NEGOCIO DE SIFAP - LEVANTAMIENTO PARCIAL -->
+<!-- Sistema de Fiscalización y Administración de Pagos -->
+<!-- SENARC - Secretaría Nacional de Renta de Ciudadanía -->
+<!-- En colaboración con SUPDE/DESIF (la organización) -->
 <!-- ====================================================================== -->
 
-# SIFAP BUSINESS RULES - PARTIAL SURVEY
+# REGLAS DE NEGOCIO DE SIFAP - LEVANTAMIENTO PARCIAL
 
-**PAYMENT INSPECTION AND ADMINISTRATION SYSTEM**
+**SISTEMA DE FISCALIZACIÓN Y ADMINISTRACIÓN DE PAGOS**
 
 ---
 
 |                        |                              |
 | ---------------------- | ---------------------------- |
-| **Document:** | RN-SIFAP-2012-partial |
-| **Classification:** | RESTRICTED |
-| **Issue date:** | 14/08/2012 |
-| **Status:** | DRAFT - INCOMPLETE |
-| **Responsible:** | Ana Cristina Barros - SENARC |
-| **Technical validation:** | Pending |
+| **Documento:** | RN-SIFAP-2012-partial |
+| **Clasificación:** | RESTRINGIDO |
+| **Fecha de emisión:** | 14/08/2012 |
+| **Estado:** | BORRADOR - INCOMPLETO |
+| **Responsable:** | Ana Cristina Barros - SENARC |
+| **Validación técnica:** | Pendiente |
 
 ---
 
-> **DOCUMENT IN PROGRESS**
+> **DOCUMENTO EN ELABORACIÓN**
 >
-> Survey started in June/2012, interrupted in August/2012 due to lack of availability of the technical team. The retirement of Mr. Roberto Carlos Meirelles (senior analyst, retired since 2010) and the transfer of Ms. Fernanda Oliveira (business analyst, retired in 2012) significantly compromised the continuity of this work.
+> Levantamiento iniciado en junio/2012 e interrumpido en agosto/2012 por falta de disponibilidad del equipo técnico. La jubilación del Sr. Roberto Carlos Meirelles (analista sénior, jubilado desde 2010) y el traslado de la Sra. Fernanda Oliveira (analista de negocio, jubilada en 2012) comprometieron significativamente la continuidad de este trabajo.
 >
-> The rules documented below represent a **partial survey**, based on:
+> Las reglas documentadas a continuación representan un **levantamiento parcial**, basado en:
 >
-> - Interviews with Marcos Antônio Ferreira (senior Natural programmer);
-> - Partial analysis of the source code of the programs CADBENEF, CALCBENF and VALELEG;
-> - Existing documentation (Technical Manual SIFAP v2.3.1, 2008);
-> - Institutional knowledge of the SENARC/CGPB team.
+> - Entrevistas con Marcos Antônio Ferreira (programador sénior de Natural);
+> - Análisis parcial del código fuente de los programas CADBENEF, CALCBENF y VALELEG;
+> - Documentación existente (Manual Técnico SIFAP v2.3.1, 2008);
+> - Conocimiento institucional del equipo SENARC/CGPB.
 >
-> **This document has NOT been validated by the organization's technical team and may contain inaccuracies.**
+> **Este documento NO ha sido validado por el equipo técnico de la organización y puede contener imprecisiones.**
 
 ---
 
-## 1. Beneficiary Registration
+## 1. Registro de beneficiarios
 
-### 1.1. Inclusion Rules
+### 1.1. Reglas de alta
 
-**RN-001** - Every beneficiary must have a valid CPF (validation by check digit - subprogram VALCPF) and active NIS/NIT (validation via subprogram VALNISN).
+**RN-001** - Todo beneficiario debe tener un CPF válido (validación mediante dígito de control - subprograma VALCPF) y un NIS/NIT activo (validación mediante el subprograma VALNISN).
 
-**RN-002** - It is not permitted to include a beneficiary with CPF already in the registry in active status (BN-CD-SIT = 'A'). Logically excluded beneficiaries (BN-CD-SIT = 'E') can be re-included upon new registration.
+**RN-002** - No se permite dar de alta a un beneficiario cuyo CPF ya exista en el registro en estado activo (BN-CD-SIT = 'A'). Los beneficiarios dados de baja lógicamente (BN-CD-SIT = 'E') pueden volver a darse de alta mediante un nuevo registro.
 
-**RN-003** - The beneficiary must be linked to at least one active social program (field BN-CD-PROG referencing valid registration in DDM SOCPROG with PS-IN-ATIVO = 'S').
+**RN-003** - El beneficiario debe estar vinculado al menos a un programa social activo (campo BN-CD-PROG que referencia un registro válido en el DDM SOCPROG con PS-IN-ATIVO = 'S').
 
-**RN-004** - The maximum number of dependents per beneficiary is **3** (field BN-QT-DEPEND, values ​​from 0 to 3). For programs that require a higher number, request authorization from the CGPB via form FR-SIFAP-012.
+**RN-004** - El número máximo de dependientes por beneficiario es **3** (campo BN-QT-DEPEND, valores de 0 a 3). Para los programas que requieren un número mayor, se debe solicitar autorización a CGPB mediante el formulario FR-SIFAP-012.
 
-<!-- NOTE: Check with Marcos Antônio—there is evidence in the code that the
- limit was changed to 5 during a recent maintenance update, but we could
- not confirm it. The Technical Manual v2.3 (2008) also records 3. -->
+<!-- NOTA: Verificar con Marcos Antônio: hay evidencia en el código de que
+ el límite se cambió a 5 durante una actualización de mantenimiento reciente,
+ pero no pudimos confirmarlo. El Manual Técnico v2.3 (2008) también registra 3. -->
 
-**RN-005** - The region field (BN-CD-REGIAO) must correspond to a valid region according to the SIFAP internal table (values ​​01 to 27, corresponding to the Brazilian states and Federal District). The value 99 is reserved for internal use.
+**RN-005** - El campo de región (BN-CD-REGIAO) debe corresponder a una región válida según la tabla interna de SIFAP (valores 01 a 27, correspondientes a los estados brasileños y al Distrito Federal). El valor 99 está reservado para uso interno.
 
-<!-- NOTE: The value 99 in the BN-CD-REGIAO field appears in several records
- in the production base, but we were unable to identify its purpose.
- Marcos Antônio said that "it is Roberto's bypass" but could not provide
- details. Review the CADBENEF code. -->
+<!-- NOTA: El valor 99 en el campo BN-CD-REGIAO aparece en varios registros
+ de la base de producción, pero no pudimos identificar su propósito.
+ Marcos Antônio dijo que "es el bypass de Roberto", pero no pudo proporcionar
+ detalles. Revisar el código de CADBENEF. -->
 
-**RN-006** - Date of birth (BN-DT-NASC) is a mandatory field. Beneficiaries under the age of 16 on the date of inclusion are not accepted, except as dependents.
+**RN-006** - La fecha de nacimiento (BN-DT-NASC) es un campo obligatorio. No se aceptan beneficiarios menores de 16 años en la fecha del alta, salvo como dependientes.
 
-**RN-007** - Banking details (bank, branch, account) are mandatory for active beneficiaries. SIFAP validates the bank code against an internal table (last update: 2011).
+**RN-007** - Los datos bancarios (banco, sucursal, cuenta) son obligatorios para los beneficiarios activos. SIFAP valida el código del banco contra una tabla interna (última actualización: 2011).
 
-### 1.2. Change Rules
+### 1.2. Reglas de modificación
 
-**RN-008** - [PENDING] - Rules for changing bank details. It was not possible to access the responsible code during the survey period. Check with Mr. Roberto Carlos (retired since 2010).
+**RN-008** - [PENDING] - Reglas para modificar los datos bancarios. No fue posible acceder al código responsable durante el período del levantamiento. Verificar con el Sr. Roberto Carlos (jubilado desde 2010).
 
-**RN-009** - Changing a beneficiary's CPF requires level 2 authorization (SUPERVISOR profile in session GDA). The old CPF is maintained in the BN-NR-CPF-ANT field for audit purposes.
+**RN-009** - La modificación del CPF de un beneficiario requiere autorización de nivel 2 (perfil SUPERVISOR en el GDA de sesión). El CPF anterior se conserva en el campo BN-NR-CPF-ANT para fines de auditoría.
 
-**RN-010** - Every registration change generates automatic audit records via subprogram LOGAUDIT (fields: user, date/time, changed field, previous value, new value).
+**RN-010** - Cada modificación del registro genera registros automáticos de auditoría mediante el subprograma LOGAUDIT (campos: usuario, fecha/hora, campo modificado, valor anterior y valor nuevo).
 
-### 1.3. Exclusion Rules
+### 1.3. Reglas de baja
 
-**RN-011** - Beneficiary exclusion is always logical (BN-CD-SIT changed from 'A' to 'E'). There is no physical deletion of records in DDM BENEFIC, the Beneficiary file.
+**RN-011** - La baja de un beneficiario siempre es lógica (BN-CD-SIT cambia de 'A' a 'E'). No hay eliminación física de registros en el DDM BENEFIC, el archivo de beneficiarios.
 
-**RN-012** - Deletion of beneficiaries with pending payments (PG-CD-STATUS = 'P') is blocked by the system. The operator must wait for settlement or cancel payments before deletion.
+**RN-012** - El sistema bloquea la baja de beneficiarios con pagos pendientes (PG-CD-STATUS = 'P'). El operador debe esperar la liquidación o cancelar los pagos antes de la baja.
 
 ---
 
-## 2. Calculation of Benefits
+## 2. Cálculo de beneficios
 
-### 2.1. Basic Calculation Formula
+### 2.1. Fórmula de cálculo básica
 
-**RN-013** - The monthly benefit amount is calculated using the following formula:
+**RN-013** - El importe mensual del beneficio se calcula mediante la siguiente fórmula:
 
 ```
 VALOR-BENEFICIO = VALOR-BASE(program, bracket) + (ACRESCIMO-DEPEND * QT-DEPEND)
 ```
 
-Where:
+Donde:
 
-- `VALOR-BASE` is obtained from DDM SOCPROG according to the beneficiary's declared income range;
-- `ACRESCIMO-DEPEND` is the additional amount per dependent, defined by program;
-- `QT-DEPEND` is the number of active dependents linked to the primary beneficiary.
+- `VALOR-BASE` se obtiene del DDM SOCPROG según el tramo de ingresos declarado por el beneficiario;
+- `ACRESCIMO-DEPEND` es el importe adicional por dependiente, definido por programa;
+- `QT-DEPEND` es el número de dependientes activos vinculados al beneficiario titular.
 
-**RN-014** - The benefit amount is always rounded down to cents (truncation, not mathematical rounding). Example: R$ 125,567 → R$ 125,56.
+**RN-014** - El importe del beneficio siempre se redondea hacia abajo a centavos (truncamiento, no redondeo matemático). Ejemplo: R$ 125,567 → R$ 125,56.
 
-<!-- NOTE: The above formula is the BASIC formula. Marcos Antônio mentioned that
- there are "at least 3 more variations" in the CALCBENF code, including
- a special calculation for December (13th benefit / year-end bonus)
- and a multiplier called "FACTOR-K" that he could not explain. It was
- not possible to validate this with the team.
+<!-- NOTA: La fórmula anterior es la fórmula BÁSICA. Marcos Antônio mencionó que
+ hay "al menos 3 variaciones más" en el código de CALCBENF, incluido
+ un cálculo especial para diciembre (13.er beneficio / bonificación de fin de año)
+ y un multiplicador llamado "FACTOR-K" que no pudo explicar. No fue
+ posible validarlo con el equipo.
 
- The proportional calculation rule for benefits starting mid-month
- (pro rata) is also undocumented. -->
+ La regla de cálculo proporcional para beneficios que empiezan a mitad de mes
+ (pro rata) tampoco está documentada. -->
 
-### 2.2. Value Ranges
+### 2.2. Tramos de valores
 
-**RN-017** - The value ranges are parameterized in DDM SOCPROG, using PE (periodic group) fields indexed by fiscal year. Each social program can have up to 10 defined value ranges.
+**RN-017** - Los tramos de valores están parametrizados en el DDM SOCPROG mediante campos PE (grupo periódico) indexados por ejercicio fiscal. Cada programa social puede tener hasta 10 tramos de valores definidos.
 
-**RN-018** - The range applicable to the beneficiary is determined by the declared per capita family income (field BN-VL-RENDA-PC). The band assignment follows ascending order of income, with the first band whose upper limit is greater than or equal to the declared income being applied.
+**RN-018** - El tramo aplicable al beneficiario se determina por los ingresos familiares per cápita declarados (campo BN-VL-RENDA-PC). La asignación de tramo sigue el orden ascendente de ingresos y se aplica el primer tramo cuyo límite superior sea mayor o igual que los ingresos declarados.
 
-### 2.3. Readjustments and Corrections
+### 2.3. Reajustes y correcciones
 
-**RN-019** - The annual benefit adjustment is applied in January of each year, based on an index defined by presidential decree. The index is registered in the internal table of subprogram CALCIDX.
+**RN-019** - El reajuste anual del beneficio se aplica en enero de cada año, según un índice definido por decreto presidencial. El índice se registra en la tabla interna del subprograma CALCIDX.
 
-**RN-020** - The adjustment is applied to VALOR-BASE, not to the total benefit amount (including the dependent increment). Review the code—this could not be validated with the team.
+**RN-020** - El reajuste se aplica a VALOR-BASE, no al importe total del beneficio (incluido el incremento por dependiente). Revisar el código: no fue posible validarlo con el equipo.
 
 ---
 
-## 3. Discounts and Deductions
+## 3. Descuentos y deducciones
 
-> **Note:** This module was implemented in 2015 (program CALCDSCT) and was not included in system version 2.3.1 covered by the 2008 Technical Manual. The rules below were gathered from an interview with Marcos Antônio Ferreira, who implemented the module.
+> **Nota:** Este módulo se implementó en 2015 (programa CALCDSCT) y no estaba incluido en la versión 2.3.1 del sistema cubierta por el Manual Técnico de 2008. Las reglas siguientes se recopilaron en una entrevista con Marcos Antônio Ferreira, quien implementó el módulo.
 
-**RN-021** - The total discounts applicable to a benefit cannot exceed **30% of the gross value**. Discounts that exceed this limit are rejected, and the benefit is processed without discounts, generating an audit.
+**RN-021** - El total de descuentos aplicables a un beneficio no puede superar el **30% del importe bruto**. Los descuentos que superan este límite se rechazan y el beneficio se procesa sin descuentos, generando un registro de auditoría.
 
-<!-- NOTE: Marcos Antônio mentioned that there is an exception for withholdings
- ordered by a court (garnishment or freezing orders), which may
- exceed the 30% limit. This could not be confirmed in the code
- because access to the CALCDSCT program is restricted and the analysis was not
- completed during the survey. -->
+<!-- NOTA: Marcos Antônio mencionó que existe una excepción para las retenciones
+ ordenadas por un tribunal (órdenes de embargo o bloqueo), que pueden
+ superar el límite del 30%. No se pudo confirmar en el código
+ porque el acceso al programa CALCDSCT está restringido y el análisis no
+ se completó durante el levantamiento. -->
 
-**RN-022** - The types of discount provided are:
+**RN-022** - Los tipos de descuento previstos son:
 
-| Code | Discount Type | Note |
+| Código | Tipo de descuento | Nota |
 | ------ | -------------------------------- | -------------------------------------------- |
-| 01 | Voluntary Consignment | Authorized payroll loan |
-| 02 | Income tax withheld at source | According to the current Federal Revenue table |
-| 03 | Social security contribution | When applicable |
-| 04 | Reimbursement to the treasury | Improper payment identified in audit |
-| 05 | [TO BE COMPLETED] | Marcos Antônio mentioned "2 or 3 more types" |
+| 01 | Descuento voluntario en nómina | Préstamo autorizado con descuento en nómina |
+| 02 | Impuesto sobre la renta retenido en origen | Según la tabla vigente de la Receita Federal |
+| 03 | Contribución a la seguridad social | Cuando corresponda |
+| 04 | Reintegro al tesoro | Pago indebido identificado en una auditoría |
+| 05 | [TO BE COMPLETED] | Marcos Antônio mencionó "2 o 3 tipos más" |
 
-**RN-023** - The order in which discounts are applied follows the numerical priority of the code (01 first, then 02, etc.). When the 30% limit is reached, lower priority discounts are discarded.
-
----
-
-## 4. Eligibility
-
-### 4.1. Basic Eligibility Rules
-
-**RN-015** - [PENDING] - Detailed eligibility rules by program. The SENARC/CGPB team reported that rules vary significantly between programs and that complete documentation would require interviews with each program's managers. Survey not carried out due to lack of agenda.
-
-**RN-016** - [PENDING] - Crossing rules with CadÚnico. Integration with CadÚnico was implemented on an emergency basis in 2006 and the responsible program is not included in the official SIFAP inventory. The source code could not be located during the search.
-
-### 4.2. Documented Rules (partial)
-
-The following eligibility rules have been identified in program code VALELEG:
-
-- Beneficiary must have active registration status (BN-CD-SIT = 'A');
-- Beneficiary must have valid and complete bank details;
-- The declared per capita family income must be within the ranges defined for the program;
-- The beneficiary cannot be enrolled in more than 2 social programs simultaneously (field BN-QT-PROG, maximum = 2);
-- The date of the last registration update cannot be more than 24 months ago (field BN-DT-ULT-ATUAL);
-- The beneficiary cannot have an unresolved audit occurrence of type 'B' (blocking) in DDM AUDIT.
-
-> **Note:** The rules above were extracted by reading the VALELEG source code and may not represent all of the checks performed. The program has approximately 1,200 lines of code with complex conditional logic.
-
-<!-- NOTE: The region 99 bypass rule is not documented.
- During the analysis of VALELEG, a code snippet was identified
- which bypasses all eligibility validation when BN-CD-REGIAO = 99.
- Marcos Antônio was unable to explain the origin of this rule. It is suspected
- that is an implemented testing mechanism or administrative bypass
- by Mr. Roberto Carlos. Needs investigation. -->
+**RN-023** - El orden de aplicación de los descuentos sigue la prioridad numérica del código (primero 01, después 02, etc.). Cuando se alcanza el límite del 30%, se descartan los descuentos de menor prioridad.
 
 ---
 
-## 5. Payment Batch
+## 4. Elegibilidad
 
-### 5.1. Monthly Processing
+### 4.1. Reglas básicas de elegibilidad
 
-Monthly batch processing (program BATCHPGT) follows the following rules:
+**RN-015** - [PENDING] - Reglas detalladas de elegibilidad por programa. El equipo SENARC/CGPB informó que las reglas varían significativamente entre programas y que una documentación completa requeriría entrevistas con los gestores de cada programa. El levantamiento no se realizó por falta de disponibilidad en la agenda.
 
-- Processing starts on the 1st business day of each month, at 10:00 pm;
-- All active beneficiaries (BN-CD-SIT = 'A') are processed;
-- Processing occurs in **standard ordering** (according to file descriptor Adabas);
-- For each beneficiary, the benefit value is recalculated by invoking CALCBENF;
-- After calculation, discounts are applied by invoking CALCDSCT (from version 4.0);
-- The payment record is recorded in the DDM PAYMENT with status 'P' (pending);
-- At the end of processing, the delivery file CNAB 240 is generated.
+**RN-016** - [PENDING] - Reglas de cruce con CadÚnico. La integración con CadÚnico se implementó de emergencia en 2006 y el programa responsable no figura en el inventario oficial de SIFAP. No se pudo localizar el código fuente durante la búsqueda.
 
-<!-- NOTE: The "default ordering" mentioned above is, in practice, the
- alphabetically by the name of the beneficiary (field BN-NM-BENEF), which is the
- main descriptor of the file Adabas FNR 150. This ordering is a
- artifact of the original 1997 modeling and has no functional significance.
- However, changing the processing order could cause discrepancies
- in the control totalizers, as the program uses accumulators
- partial alphabetical range. -->
+### 4.2. Reglas documentadas (parciales)
 
-### 5.2. Error Handling
+Se identificaron las siguientes reglas de elegibilidad en el código del programa VALELEG:
 
-- Calculation errors for an individual beneficiary do not interrupt processing;
-- Beneficiaries with errors are marked with status 'E' (error) in DDM PAYMENT;
-- An error report is generated at the end of processing;
-- If the number of errors exceeds the parameter MAX-ERROS (default: 100), processing is stopped with ABEND U4038;
-- [TO BE COMPLETED] - Document procedure for reprocessing beneficiaries with errors.
+- El beneficiario debe tener el registro en estado activo (BN-CD-SIT = 'A');
+- El beneficiario debe tener datos bancarios válidos y completos;
+- Los ingresos familiares per cápita declarados deben estar dentro de los tramos definidos para el programa;
+- El beneficiario no puede estar inscrito en más de 2 programas sociales simultáneamente (campo BN-QT-PROG, máximo = 2);
+- La fecha de la última actualización del registro no puede ser anterior a 24 meses (campo BN-DT-ULT-ATUAL);
+- El beneficiario no puede tener una incidencia de auditoría sin resolver de tipo 'B' (bloqueo) en el DDM AUDIT.
+
+> **Nota:** Las reglas anteriores se extrajeron mediante la lectura del código fuente de VALELEG y pueden no representar todas las verificaciones realizadas. El programa tiene aproximadamente 1,200 líneas de código con lógica condicional compleja.
+
+<!-- NOTA: La regla de bypass de la región 99 no está documentada.
+ Durante el análisis de VALELEG, se identificó un fragmento de código
+ que omite toda la validación de elegibilidad cuando BN-CD-REGIAO = 99.
+ Marcos Antônio no pudo explicar el origen de esta regla. Se sospecha
+ que es un mecanismo de pruebas o un bypass administrativo implementado
+ por el Sr. Roberto Carlos. Requiere investigación. -->
 
 ---
 
-## 6. Rules Pending Survey
+## 5. Procesamiento batch de pagos
 
-The following areas of business rules were **not documented** in this survey:
+### 5.1. Procesamiento mensual
 
-| Area | Reason | Estimated Priority |
+El procesamiento batch mensual (programa BATCHPGT) sigue estas reglas:
+
+- El procesamiento comienza el 1.er día hábil de cada mes, a las 10:00 p. m.;
+- Se procesan todos los beneficiarios activos (BN-CD-SIT = 'A');
+- El procesamiento se realiza en **orden estándar** (según el descriptor del archivo Adabas);
+- Para cada beneficiario, se recalcula el importe del beneficio invocando CALCBENF;
+- Después del cálculo, se aplican los descuentos invocando CALCDSCT (desde la versión 4.0);
+- El registro de pago se guarda en el DDM PAYMENT con estado 'P' (pendiente);
+- Al finalizar el procesamiento, se genera el archivo de remesa CNAB 240.
+
+<!-- NOTA: El "orden predeterminado" mencionado anteriormente es, en la práctica,
+ el orden alfabético por nombre del beneficiario (campo BN-NM-BENEF), que es el
+ descriptor principal del archivo Adabas FNR 150. Este orden es un
+ resultado del modelado original de 1997 y no tiene significado funcional.
+ Sin embargo, cambiar el orden de procesamiento podría causar discrepancias
+ en los totalizadores de control, ya que el programa utiliza acumuladores
+ parciales por rango alfabético. -->
+
+### 5.2. Manejo de errores
+
+- Los errores de cálculo de un beneficiario individual no interrumpen el procesamiento;
+- Los beneficiarios con errores se marcan con estado 'E' (error) en el DDM PAYMENT;
+- Se genera un informe de errores al finalizar el procesamiento;
+- Si el número de errores supera el parámetro MAX-ERROS (predeterminado: 100), el procesamiento se detiene con ABEND U4038;
+- [TO BE COMPLETED] - Documentar el procedimiento de reprocesamiento de beneficiarios con errores.
+
+---
+
+## 6. Reglas pendientes de levantamiento
+
+Las siguientes áreas de reglas de negocio **no se documentaron** en este levantamiento:
+
+| Área | Motivo | Prioridad estimada |
 | ------------------------------------------- | ------------------------------------------------------------ | ------------------- |
-| Calculation of the 13th benefit (Christmas bonus) | Unable to access specific routine on CALCBENF | High |
-| K factor (calculation multiplier) | Marcos Antônio was unable to explain; need code analysis | High |
-| Financial Reconciliation Rules (BATCHCON) | Patrícia Helena Moura (responsible) transferred to DEGED | Average |
-| Integration with CadÚnico | Program not cataloged; source code not found | Average |
-| Audit Rules (RELAUDIT) | Module not covered by the initial scope of this survey | Average |
-| Proportional calculation (pro rata) | Mentioned by Marcos Antônio, not detailed | High |
-| Judicial exception to the discount limit | Mentioned by Marcos Antônio, not confirmed in the code | High |
-| Region Eligibility Bypass 99 | Identified in the code, with no known explanation | High |
-| Dependent separation rules | Undocumented | Low |
-| Rollback and reprocessing procedures | Referred to Manual ITSM-SIFAP vol. 3 (never completed) | High |
+| Cálculo del 13.er beneficio (bonificación navideña) | No fue posible acceder a la rutina específica de CALCBENF | Alta |
+| Factor K (multiplicador de cálculo) | Marcos Antônio no pudo explicarlo; se necesita analizar el código | Alta |
+| Reglas de conciliación financiera (BATCHCON) | Patrícia Helena Moura (responsable) fue trasladada a DEGED | Media |
+| Integración con CadÚnico | Programa no catalogado; código fuente no encontrado | Media |
+| Reglas de auditoría (RELAUDIT) | Módulo fuera del alcance inicial de este levantamiento | Media |
+| Cálculo proporcional (pro rata) | Mencionado por Marcos Antônio, sin detallar | Alta |
+| Excepción judicial al límite de descuentos | Mencionada por Marcos Antônio, no confirmada en el código | Alta |
+| Bypass de elegibilidad de la región 99 | Identificado en el código, sin explicación conocida | Alta |
+| Reglas de desvinculación de dependientes | Sin documentar | Baja |
+| Procedimientos de rollback y reprocesamiento | Remitidos al Manual ITSM-SIFAP vol. 3 (nunca completado) | Alta |
 
 ---
 
-## 7. Rules Matrix - Summary
+## 7. Matriz de reglas - Resumen
 
-| ID | Module | Rule (summary) | Status | Note |
+| ID | Módulo | Regla (resumen) | Estado | Nota |
 | ------ | ------------- | ------------------------------------------- | ------------ | ---------------------------------------------- |
-| RN-001 | Registration | CPF and NIS mandatory and valid | Documented | - |
-| RN-002 | Registration | CPF single for active beneficiary | Documented | - |
-| RN-003 | Registration | Mandatory link with social program | Documented | - |
-| RN-004 | Registration | Maximum 3 dependents | Documented | **Possible outdated - check code** |
-| RN-005 | Registration | Valid region (01-27) + 99 reserved | Documented | Meaning of 99 unknown |
-| RN-006 | Registration | Minimum age 16 years | Documented | - |
-| RN-007 | Registration | Mandatory bank details | Documented | Outdated bank table (2011) |
-| RN-008 | Registration | Changing bank details | **PENDING** | Not raised |
-| RN-009 | Registration | Change of CPF - SUPERVISOR level | Documented | - |
-| RN-010 | Registration | Automatic auditing of changes | Documented | - |
-| RN-011 | Registration | Always logical exclusion | Documented | - |
-| RN-012 | Registration | Deletion block pending payment | Documented | - |
-| RN-013 | Calculation | Basic benefit formula | Documented | **Partial formula - variations missing** |
-| RN-014 | Calculation | Rounding by truncation | Documented | - |
-| RN-015 | Eligibility | Detailed rules per program | **PENDING** | Lack of SENARC agenda |
-| RN-016 | Eligibility | Crossing with CadÚnico | **PENDING** | Program not found |
-| RN-017 | Calculation | Parameterized value ranges | Documented | - |
-| RN-018 | Calculation | Band assignment by income | Documented | - |
-| RN-019 | Calculation | Annual adjustment in January | Documented | - |
-| RN-020 | Calculation | Adjustment on base value | Documented | **Not validated with technical team** |
-| RN-021 | Discounts | Limit of 30% of the gross value | Documented | **Undocumented judicial exception** |
-| RN-022 | Discounts | Types of discount | Documented | Incomplete list |
-| RN-023 | Discounts | Discount priority order | Documented | - |
+| RN-001 | Registro | CPF y NIS obligatorios y válidos | Documentada | - |
+| RN-002 | Registro | CPF único para beneficiario activo | Documentada | - |
+| RN-003 | Registro | Vínculo obligatorio con un programa social | Documentada | - |
+| RN-004 | Registro | Máximo de 3 dependientes | Documentada | **Posiblemente desactualizada - verificar el código** |
+| RN-005 | Registro | Región válida (01-27) + 99 reservado | Documentada | Significado de 99 desconocido |
+| RN-006 | Registro | Edad mínima de 16 años | Documentada | - |
+| RN-007 | Registro | Datos bancarios obligatorios | Documentada | Tabla de bancos desactualizada (2011) |
+| RN-008 | Registro | Modificación de datos bancarios | **PENDING** | No investigada |
+| RN-009 | Registro | Modificación del CPF - nivel SUPERVISOR | Documentada | - |
+| RN-010 | Registro | Auditoría automática de modificaciones | Documentada | - |
+| RN-011 | Registro | Baja siempre lógica | Documentada | - |
+| RN-012 | Registro | Bloqueo de baja con pago pendiente | Documentada | - |
+| RN-013 | Cálculo | Fórmula básica del beneficio | Documentada | **Fórmula parcial - faltan variaciones** |
+| RN-014 | Cálculo | Redondeo por truncamiento | Documentada | - |
+| RN-015 | Elegibilidad | Reglas detalladas por programa | **PENDING** | Falta de disponibilidad en la agenda de SENARC |
+| RN-016 | Elegibilidad | Cruce con CadÚnico | **PENDING** | Programa no encontrado |
+| RN-017 | Cálculo | Tramos de valores parametrizados | Documentada | - |
+| RN-018 | Cálculo | Asignación de tramo por ingresos | Documentada | - |
+| RN-019 | Cálculo | Reajuste anual en enero | Documentada | - |
+| RN-020 | Cálculo | Reajuste sobre el valor base | Documentada | **Sin validar con el equipo técnico** |
+| RN-021 | Descuentos | Límite del 30% del importe bruto | Documentada | **Excepción judicial sin documentar** |
+| RN-022 | Descuentos | Tipos de descuento | Documentada | Lista incompleta |
+| RN-023 | Descuentos | Orden de prioridad de los descuentos | Documentada | - |
 
 ---
 
-## 8. Final Considerations
+## 8. Consideraciones finales
 
-This survey was stopped prematurely and represents, at best, **about 25% of the SIFAP business rules**. The most critical and complex rules - calculation of the 13th benefit, K factor, judicial exceptions, eligibility bypass - remain **undocumented** and exist only in the Natural source code.
+Este levantamiento se interrumpió prematuramente y representa, en el mejor de los casos, **aproximadamente el 25% de las reglas de negocio de SIFAP**. Las reglas más críticas y complejas —cálculo del 13.er beneficio, factor K, excepciones judiciales y bypass de elegibilidad— siguen **sin documentar** y existen solo en el código fuente Natural.
 
-The continuity of this work depends on:
+La continuidad de este trabajo depende de:
 
-1. Availability of Marcos Antônio Ferreira (last analyst with full knowledge of the system) for knowledge transfer sessions;
-2. Access to the source code of the CALCBENF, CALCDSCT and VALELEG programs in an approval environment;
-3. Support from CGPB to validate the rules with social program managers;
-4. Formal prioritization by CGTI/MDAS, as this survey is not included in the current work plan.
+1. Disponibilidad de Marcos Antônio Ferreira (último analista con conocimiento completo del sistema) para sesiones de transferencia de conocimiento;
+2. Acceso al código fuente de los programas CALCBENF, CALCDSCT y VALELEG en un entorno de homologación;
+3. Apoyo de CGPB para validar las reglas con los gestores de los programas sociales;
+4. Priorización formal por parte de CGTI/MDAS, ya que este levantamiento no está incluido en el plan de trabajo actual.
 
-**Recommendation:** If this survey is not resumed in the short term, it is suggested that at least the rules marked as "High priority" in section 6 be investigated directly in the source code, before Mr. Marcos Antônio Ferreira is transferred or retires.
+**Recomendación:** Si este levantamiento no se retoma a corto plazo, se sugiere que al menos las reglas marcadas con "Prioridad alta" en la sección 6 se investiguen directamente en el código fuente, antes de que el Sr. Marcos Antônio Ferreira sea trasladado o se jubile.
 
-<!-- This recommendation was not met. Marcos Antônio was transferred
- for SUPDE/DESIN in 2017. -->
+<!-- Esta recomendación no se atendió. Marcos Antônio fue trasladado
+ a SUPDE/DESIN en 2017. -->
 
 ---
 
-**Elaboration:** Ana Cristina Barros - Business Analyst - SENARC/CGPB
+**Elaboración:** Ana Cristina Barros - Analista de Negocio - SENARC/CGPB
 
-**Technical collaboration:** Marcos Antônio Ferreira - Senior Natural Programmer - SUPDE/DESIF
+**Colaboración técnica:** Marcos Antônio Ferreira - Programador Sénior de Natural - SUPDE/DESIF
 
-**Validation:** Pending
+**Validación:** Pendiente
 
-**Approval:** Pending
+**Aprobación:** Pendiente
 
 ---
 
@@ -318,4 +318,4 @@ The continuity of this work depends on:
 
 ---
 
-[Back to legacy scenario](../README.md)
+[Volver al escenario heredado](../README.md)

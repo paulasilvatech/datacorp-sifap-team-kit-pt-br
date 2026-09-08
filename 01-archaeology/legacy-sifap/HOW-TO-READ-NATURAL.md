@@ -1,47 +1,47 @@
-# How to Read a Natural Program Without Knowing Natural
+# Cómo leer un programa Natural sin saber Natural
 
-> **Path:** [Team Kit](../../README.md) › [Stage 1](../README.md) › [SIFAP Legacy](README.md) › **How to read Natural**
+> **Ruta:** [Kit del equipo](../../README.md) › [Etapa 1](../README.md) › [SIFAP heredado](README.md) › **Cómo leer Natural**
 
-**A business-rule-oriented reading tutorial.** Learn to extract relevant behavior from a `.NSN` file in 45 minutes, even if you do not know the Natural language.
+**Tutorial de lectura orientado a reglas de negocio.** Aprende a extraer comportamientos relevantes de un archivo `.NSN` en 45 minutos, aunque no conozcas el lenguaje Natural.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Audience** | PO, Tech Writer, business analyst, junior developer—anyone opening a `.NSN` during Stage 1 |
-| **Prerequisites** | VS Code installed; access to the `legacy-sifap/natural-programs/` folder |
-| **Estimated time** | 10 min for this guide + 45 min per program |
-| **Stage** | Stage 1 — Archaeology |
-| **Expected outcome** | At least one rule cataloged with `file.NSN#L<start>-L<end>` evidence |
+| **Público** | PO, Redactor Técnico, analista de negocio, desarrollador júnior: cualquiera que abra un `.NSN` durante la Etapa 1 |
+| **Prerrequisitos** | VS Code instalado; acceso a la carpeta `legacy-sifap/natural-programs/` |
+| **Tiempo estimado** | 10 min para esta guía + 45 min por programa |
+| **Etapa** | Etapa 1 — Arqueología |
+| **Resultado esperado** | Al menos una regla catalogada con evidencia `file.NSN#L<start>-L<end>` |
 
 > [!TIP]
-> You only need to read five constructs: comments with `*` at the start of the line, `IF/END-IF`, `MOVE`, `COMPUTE`, and the `FIND`/`END-FIND` block. The rest of the syntax is technical structure that can be ignored when reading rules.
+> Solo necesitas leer cinco construcciones: comentarios con `*` al principio de la línea, `IF/END-IF`, `MOVE`, `COMPUTE` y el bloque `FIND`/`END-FIND`. El resto de la sintaxis es estructura técnica que puede ignorarse al leer reglas.
 
 ---
 
-## 1. Visual anatomy of a Natural program
+## 1. Anatomía visual de un programa Natural
 
 ```text
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *    <- HEADER (comments)
-* PROGRAM: CALCDSCT                                                   Every line with * is a comment.
-* SYSTEM:  SIFAP - PAYMENT INSPECTION AND ADMINISTRATION SYSTEM       Read the program history here:
-* AUTHOR:  ROBERTO MENDES JUNIOR                                      who changed it and when.
-* DATE:    25/08/1999                                                 Valuable clues.
-* CHANGED: 12/04/2007 - MARCIA HELENA - ADD JUDICIAL DEDUCTION
-* PURPOSE: CALCULATE BENEFIT DEDUCTIONS
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *    <- CABECERA (comentarios)
+* PROGRAM: CALCDSCT                                                   Cada línea con * es un comentario.
+* SYSTEM:  SIFAP - SISTEMA DE FISCALIZACION Y ADMINISTRACION DE PAGOS  Lee aquí la historia del programa:
+* AUTHOR:  ROBERTO MENDES JUNIOR                                      quién lo cambió y cuándo.
+* DATE:    25/08/1999                                                 Pistas valiosas.
+* CHANGED: 12/04/2007 - MARCIA HELENA - ANADIR DEDUCCION JUDICIAL
+* PURPOSE: CALCULAR DEDUCCIONES DEL BENEFICIO
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-DEFINE DATA                                                          <- DATA DECLARATION
-LOCAL USING LDASIFAP                                                   External areas first
-LOCAL                                                                  (LDA/PDA), then local fields.
-  1 PAYMENT-V VIEW OF PAYMENT                                      You can skip this—just note
-    2 NUM-PAYMENT      (N15)                                         fields that come from a table
+DEFINE DATA                                                          <- DECLARACIÓN DE DATOS
+LOCAL USING LDASIFAP                                                   Primero las áreas externas
+LOCAL                                                                  (LDA/PDA), luego los campos locales.
+  1 PAYMENT-V VIEW OF PAYMENT                                      Puedes omitirlo: solo anota
+    2 NUM-PAYMENT      (N15)                                         los campos que provienen de una tabla
     2 AMT-GROSS          (P9.2)                                        (VIEW OF = DDM).
     2 AMT-DISC-TOTAL (P7.2)
   1 #AMT-MAX-DISC        (P9.2)
 END-DEFINE
 *
-MOVE *DATN TO #DT-TODAY                                                <- PROGRAM BODY
-*                                                                       The logic lives here.
-* CHECK DEDUCTION CAP                                                   FOCUS HERE.
+MOVE *DATN TO #DT-TODAY                                                <- CUERPO DEL PROGRAMA
+*                                                                       Aquí está la lógica.
+* COMPROBAR TOPE DE DEDUCCIONES                                        CÉNTRATE AQUÍ.
 IF #TYPE-DISC NE 'J'
   IF #AMT-TOTAL-DISC > (#AMT-GROSS * 0.30)
     COMPUTE #AMT-TOTAL-DISC = #AMT-GROSS * 0.30
@@ -51,86 +51,86 @@ END-IF
 END
 ```
 
-**Three zones:**
+**Tres zonas:**
 
-1. **Header** (lines with `*`): tells the program's history. Note authors and dates—they indicate when rules were added.
-2. **`DEFINE DATA` … `END-DEFINE`**: declares the data. It starts with external areas (`USING`) and ends with local fields. You can skip it or scan it to identify which DDM fields the program uses.
-3. **Body** (after `END-DEFINE`): **this is where the business logic lives**. This is what you want to extract.
+1. **Cabecera** (líneas con `*`): cuenta la historia del programa. Anota los autores y las fechas: indican cuándo se añadieron reglas.
+2. **`DEFINE DATA` … `END-DEFINE`**: declara los datos. Empieza con áreas externas (`USING`) y termina con campos locales. Puedes omitirla o recorrerla para identificar qué campos DDM usa el programa.
+3. **Cuerpo** (después de `END-DEFINE`): **aquí está la lógica de negocio**. Esto es lo que quieres extraer.
 
 > [!NOTE]
-> In the source files (`.NSP`, `.NSN`, `.NSA`, `.NSL`, `.NSC`, `.NSD`), comments are in Portuguese **uppercase without accents**. This is intentional: the mainframe's 3270 terminal uses EBCDIC and does not represent accented characters reliably. This English Markdown documentation uses normal punctuation and capitalization.
+> En los archivos fuente (`.NSP`, `.NSN`, `.NSA`, `.NSL`, `.NSC`, `.NSD`), los comentarios están en portugués **en mayúsculas y sin acentos**. Es intencional: el terminal 3270 del mainframe usa EBCDIC y no representa los caracteres acentuados de forma fiable. Esta documentación Markdown en español usa puntuación y mayúsculas normales.
 
 ---
 
-## 2. Natural library members
+## 2. Miembros de una biblioteca Natural
 
-A Natural program is almost never isolated. SIFAP, the Payment Inspection and Administration System, has programs as well as **data areas, copycodes, and subprograms**. You can identify each type by its file extension.
+Un programa Natural casi nunca está aislado. SIFAP, el Sistema de Fiscalización y Administración de Pagos, tiene programas y también **áreas de datos, copycodes y subprogramas**. Puedes identificar cada tipo por su extensión de archivo.
 
-| Extension | Member type | Purpose | How it enters the program |
+| Extensión | Tipo de miembro | Propósito | Cómo entra en el programa |
 |---|---|---|---|
-| `.NSP` | Program | Executable entry point—batch or online | run directly (`EXEC PGM=NATBATCH`, or entered at the terminal) |
-| `.NSN` | Subprogram | Reusable logic with a parameter contract | `CALLNAT '<name>'` |
-| `.NSS` | External subroutine | Shared routine called by name | `PERFORM <subroutine>` |
-| `.NSA` | PDA—*Parameter Data Area* | Parameter contract between caller and callee | `PARAMETER USING <pda>` in the callee; `LOCAL USING <pda>` in the caller |
-| `.NSL` | LDA—*Local Data Area* | Fields and tables shared by several modules | `LOCAL USING <lda>` |
-| `.NSC` | Copycode | Code fragment inserted at compile time | `INCLUDE <copycode>` |
-| `.NSM` | MAP | 3270 screen layout | `INPUT USING MAP '<map>'` |
-| `.NSD` | DDM—*Data Definition Module* | How Natural sees an Adabas file | `VIEW OF <ddm>` in `DEFINE DATA` |
-| `.jcl` | JCL z/OS | How the batch runs in production: jobs, files, scheduling | outside Natural—`EXEC PGM=NATBATCH` |
+| `.NSP` | Programa | Punto de entrada ejecutable: batch o en línea | Se ejecuta directamente (`EXEC PGM=NATBATCH` o introducido en el terminal) |
+| `.NSN` | Subprograma | Lógica reutilizable con un contrato de parámetros | `CALLNAT '<name>'` |
+| `.NSS` | Subrutina externa | Rutina compartida llamada por nombre | `PERFORM <subroutine>` |
+| `.NSA` | PDA — *área de datos de parámetros* | Contrato de parámetros entre quien llama y quien recibe la llamada | `PARAMETER USING <pda>` en quien recibe; `LOCAL USING <pda>` en quien llama |
+| `.NSL` | LDA — *área de datos local* | Campos y tablas compartidos por varios módulos | `LOCAL USING <lda>` |
+| `.NSC` | Copycode | Fragmento de código insertado durante la compilación | `INCLUDE <copycode>` |
+| `.NSM` | MAP | Diseño de pantalla 3270 | `INPUT USING MAP '<map>'` |
+| `.NSD` | DDM — *módulo de definición de datos* | Cómo ve Natural un archivo Adabas | `VIEW OF <ddm>` en `DEFINE DATA` |
+| `.jcl` | JCL z/OS | Cómo se ejecuta el batch en producción: trabajos, archivos y planificación | Fuera de Natural: `EXEC PGM=NATBATCH` |
 
 > [!IMPORTANT]
-> **The extension identifies the member type, and the type determines how the module is invoked.** Confusing `.NSP` with `.NSN` is the most common mistake for Natural newcomers: a program cannot be a `CALLNAT` target, and a subprogram cannot be run directly. SIFAP has **12 programs** (`.NSP`) and **5 subprograms** (`.NSN`).
+> **La extensión identifica el tipo de miembro y el tipo determina cómo se invoca el módulo.** Confundir `.NSP` con `.NSN` es el error más común entre quienes empiezan con Natural: un programa no puede ser destino de `CALLNAT` y un subprograma no puede ejecutarse directamente. SIFAP tiene **12 programas** (`.NSP`) y **5 subprogramas** (`.NSN`).
 
-### 2.1. The four lines that create dependencies
+### 2.1. Las cuatro líneas que crean dependencias
 
 ```natural
 DEFINE DATA
-PARAMETER USING PDAVALID    /* RECEIVES PARAMETERS FROM CALLER   (.NSA)
-LOCAL USING LDASIFAP        /* USES THE SHARED LOCAL DATA AREA   (.NSL)
+PARAMETER USING PDAVALID    /* RECIBE PARAMETROS DE QUIEN LLAMA  (.NSA)
+LOCAL USING LDASIFAP        /* USA EL AREA DE DATOS LOCAL COMPARTIDA (.NSL)
 LOCAL
   1 #MSG               (A60)
 END-DEFINE
 *
 CALLNAT 'SUBVALCP' #PV-TYPE-DOC #PV-CPF #PV-NIS
                    #PV-COD-RETURN #PV-MSG
-                   #PV-IND-SPECIAL       /* CALLS ANOTHER MODULE (.NSN)
+                   #PV-IND-SPECIAL       /* LLAMA A OTRO MODULO (.NSN)
 *
-INCLUDE CCAUDIT             /* INSERTS A CODE BLOCK HERE         (.NSC)
+INCLUDE CCAUDIT             /* INSERTA AQUI UN BLOQUE DE CODIGO  (.NSC)
 END
 ```
 
-| Line | Meaning | Member location |
+| Línea | Significado | Ubicación del miembro |
 |---|---|---|
-| `CALLNAT 'X'` | calls subprogram `X` and passes parameters | `X.NSN` |
-| `... USING Y` | uses data area `Y` | `Y.NSA` (PDA) or `Y.NSL` (LDA) |
-| `INCLUDE Z` | inserts copycode `Z` at this point | `Z.NSC` |
-| `PERFORM W` | runs a subroutine | internal (`DEFINE SUBROUTINE W` in the same file) or external `W.NSS` |
+| `CALLNAT 'X'` | Llama al subprograma `X` y pasa parámetros | `X.NSN` |
+| `... USING Y` | Usa el área de datos `Y` | `Y.NSA` (PDA) o `Y.NSL` (LDA) |
+| `INCLUDE Z` | Inserta el copycode `Z` en este punto | `Z.NSC` |
+| `PERFORM W` | Ejecuta una subrutina | Interna (`DEFINE SUBROUTINE W` en el mismo archivo) o externa `W.NSS` |
 
-`PERFORM` normally stays within the module. **`CALLNAT` crosses the file boundary**—that is what matters to the dependency map.
+`PERFORM` normalmente permanece dentro del módulo. **`CALLNAT` cruza el límite del archivo**: eso es lo que importa para el mapa de dependencias.
 
 > [!IMPORTANT]
-> **A Natural library is flat.** All members live in the same library (`SIFAPPRD`) and are resolved **by name**, never by path. `CALLNAT`, `INCLUDE`, and `USING` do not take a folder—this is why the kit keeps everything in the single `natural-programs/` directory. Member names are limited to eight characters, which explains abbreviations such as `CALCBENF` and `LDASIFAP`.
+> **Una biblioteca Natural es plana.** Todos los miembros residen en la misma biblioteca (`SIFAPPRD`) y se resuelven **por nombre**, nunca por ruta. `CALLNAT`, `INCLUDE` y `USING` no reciben una carpeta: por eso el kit mantiene todo en un único directorio `natural-programs/`. Los nombres de miembros se limitan a ocho caracteres, lo que explica abreviaturas como `CALCBENF` y `LDASIFAP`.
 
 ---
 
-## 3. Constructs that matter
+## 3. Construcciones importantes
 
-### 3.1. Comment—`*` at the start of the line
+### 3.1. Comentario — `*` al principio de la línea
 
-Everything beginning with `*` is free text. Always read comments—they often explain the "why" behind a rule.
+Todo lo que empieza por `*` es texto libre. Lee siempre los comentarios: suelen explicar el "porqué" de una regla.
 
 ```natural
-* CHECK DEDUCTION CAP
+* COMPROBAR TOPE DE DEDUCCIONES
 ```
 
-Meaning: "The program checks the deduction cap here."
+Significado: "Aquí el programa comprueba el tope de deducciones".
 
 > [!TIP]
-> Comments often contain dates and initials (`* 2007 MH - INC JUDICIAL`). Each one is evidence that a rule was added at a particular point in history—and may still be valid.
+> Los comentarios suelen contener fechas e iniciales (`* 2007 MH - INC JUDICIAL`). Cada una es evidencia de que se añadió una regla en un momento concreto de la historia y de que puede seguir vigente.
 
-### 3.2. Decision—`IF` … `END-IF`
+### 3.2. Decisión — `IF` … `END-IF`
 
-This is the most important construct. **Every business rule is inside an `IF`.**
+Esta es la construcción más importante. **Toda regla de negocio está dentro de un `IF`.**
 
 ```natural
 IF #TYPE-DISC NE 'J'
@@ -140,41 +140,41 @@ IF #TYPE-DISC NE 'J'
 END-IF
 ```
 
-Read aloud: "If the deduction type is not 'J' (judicial), and the total deductions exceed 30% of the gross amount, reduce the total to the 30% limit."
+Lee en voz alta: "Si el tipo de deducción no es 'J' (judicial) y el total de deducciones supera el 30% del importe bruto, reduce el total al límite del 30%".
 
-**Common operators:**
+**Operadores comunes:**
 
-| Natural | Meaning |
+| Natural | Significado |
 |---|---|
-| `EQ` or `=` | equal |
-| `NE` or `<>` | not equal |
-| `GT` or `>` | greater than |
-| `LT` or `<` | less than |
-| `GE` or `>=` | greater than or equal |
-| `LE` or `<=` | less than or equal |
-| `AND` | and |
-| `OR` | or |
+| `EQ` o `=` | Igual |
+| `NE` o `<>` | Distinto |
+| `GT` o `>` | Mayor que |
+| `LT` o `<` | Menor que |
+| `GE` o `>=` | Mayor o igual que |
+| `LE` o `<=` | Menor o igual que |
+| `AND` | Y |
+| `OR` | O |
 
-Rule extracted from the example: *"Non-judicial deductions (type other than J) are capped at 30% of the gross amount."*
+Regla extraída del ejemplo: *"Las deducciones no judiciales (tipo distinto de J) tienen un tope del 30% del importe bruto".*
 
-### 3.3. Assignment—`MOVE` and `COMPUTE`
+### 3.3. Asignación — `MOVE` y `COMPUTE`
 
-`MOVE` copies a value to a variable. `COMPUTE` performs a calculation.
+`MOVE` copia un valor a una variable. `COMPUTE` realiza un cálculo.
 
 ```natural
-MOVE *DATN TO #DT-TODAY               /* ASSIGNS TODAY'S DATE TO #DT-TODAY
-MOVE 500.00 TO #BAND-CONTRIB(1)     /* ASSIGNS 500 TO THE FIRST RANGE
-COMPUTE #VLR-MAX = #AMT-GROSS * 0.30 /* CALCULATES 30% OF THE GROSS AMOUNT
+MOVE *DATN TO #DT-TODAY               /* ASIGNA LA FECHA DE HOY A #DT-TODAY
+MOVE 500.00 TO #BAND-CONTRIB(1)     /* ASIGNA 500 AL PRIMER TRAMO
+COMPUTE #VLR-MAX = #AMT-GROSS * 0.30 /* CALCULA EL 30% DEL IMPORTE BRUTO
 ```
 
-Everything after `/*` on the same line is also a comment—the second way to write comments in Natural, often used to annotate fields in `DEFINE DATA`.
+Todo lo que sigue a `/*` en la misma línea también es un comentario: la segunda forma de escribir comentarios en Natural, usada a menudo para anotar campos en `DEFINE DATA`.
 
 > [!IMPORTANT]
-> Numeric literals (`500.00`, `0.30`, `0.075`) almost always represent rules: ranges, rates, or percentages. Record every one you find.
+> Los literales numéricos (`500.00`, `0.30`, `0.075`) casi siempre representan reglas: tramos, tasas o porcentajes. Registra cada uno que encuentres.
 
-### 3.4. Calling another module—`CALLNAT '<subprograma>'`
+### 3.4. Llamada a otro módulo — `CALLNAT '<subprograma>'`
 
-`CALLNAT` invokes a subprogram, equivalent to a function call. Parameters follow the order defined by the PDA and may span several lines.
+`CALLNAT` invoca un subprograma y equivale a una llamada de función. Los parámetros siguen el orden definido por el PDA y pueden ocupar varias líneas.
 
 ```natural
 CALLNAT 'SUBVALCP' #PV-TYPE-DOC #PV-CPF #PV-NIS
@@ -182,11 +182,11 @@ CALLNAT 'SUBVALCP' #PV-TYPE-DOC #PV-CPF #PV-NIS
                    #PV-IND-SPECIAL
 ```
 
-Meaning: "This module delegates CPF validation to the `SUBVALCP.NSN` subprogram and receives the result in `#PV-COD-RETURN` and `#PV-MSG`."
+Significado: "Este módulo delega la validación de CPF al subprograma `SUBVALCP.NSN` y recibe el resultado en `#PV-COD-RETURN` y `#PV-MSG`".
 
-Record every `CALLNAT`, `INCLUDE`, and `USING` in [`dependency-map.md`](../dependency-map.md).
+Registra cada `CALLNAT`, `INCLUDE` y `USING` en [`dependency-map.md`](../dependency-map.md).
 
-### 3.5. Data access—`FIND` … `END-FIND`
+### 3.5. Acceso a datos — `FIND` … `END-FIND`
 
 ```natural
 FIND BENEFICIARY-V WITH NUM-CPF = #CPF-STR
@@ -199,149 +199,149 @@ FIND BENEFICIARY-V WITH NUM-CPF = #CPF-STR
 END-FIND
 ```
 
-Read aloud: "Find the beneficiary with this CPF; if none is found, record the error; if found, copy status and income to working variables."
+Lee en voz alta: "Busca el beneficiario con este CPF; si no se encuentra ninguno, registra el error; si se encuentra, copia el estado y los ingresos a variables de trabajo".
 
-Three key points:
+Tres puntos clave:
 
-- **`IF NO RECORDS FOUND` … `END-NOREC` is the idiomatic way to handle "not found."** The block runs once when the search returns no records.
-- **View fields (`BENEFICIARY-V.xxx`) are valid only within the `FIND` block.** This is why the usual pattern copies them to `#variables` before `END-FIND`.
-- Older modules use variations with the same intent: `IF *NUMBER(BENEFICIARY-V) = 0`, or a logical flag (`1 #FOUND-B (L)`) set inside the `FIND` and tested afterward. Style differences often indicate different maintenance periods—note the header date.
+- **`IF NO RECORDS FOUND` … `END-NOREC` es la forma idiomática de manejar "no encontrado".** El bloque se ejecuta una vez cuando la búsqueda no devuelve registros.
+- **Los campos de la vista (`BENEFICIARY-V.xxx`) solo son válidos dentro del bloque `FIND`.** Por eso el patrón habitual los copia a `#variables` antes de `END-FIND`.
+- Los módulos más antiguos usan variaciones con la misma intención: `IF *NUMBER(BENEFICIARY-V) = 0` o una bandera lógica (`1 #FOUND-B (L)`) establecida dentro del `FIND` y comprobada después. Las diferencias de estilo suelen indicar distintos períodos de mantenimiento: anota la fecha de la cabecera.
 
 ---
 
-## 4. What you can safely ignore
+## 4. Qué puedes ignorar sin riesgo
 
-| Construct | What it is | Why to skip it |
+| Construcción | Qué es | Por qué omitirla |
 |---|---|---|
-| `READ … BY …` / `END-READ` | Loop over Adabas records | The rule is in the `IF` inside the loop |
-| `WRITE` / `DISPLAY` / `PRINT` | Screen or report output | Presentation, not a decision |
-| `FORMAT`, `WRITE TITLE`, `AT TOP OF PAGE`, `DEFINE PRINTER` | Report formatting | Cosmetic |
-| `INPUT` | Reads from a 3270 terminal | It will become a web form |
-| `RESET INITIAL` | Initializes a variable | Technical detail |
-| `STORE` / `UPDATE` / `DELETE` | Adabas persistence | The rule is the preceding `IF`; `STORE` only means "save" |
-| `END TRANSACTION` / `BACKOUT TRANSACTION` | Commit control | Database infrastructure |
-| `ON ERROR` / `END-ERROR` | Technical error handling | Not a business rule |
-| `END-WORK` / `AT END OF DATA` | End of processing | Structure, not a rule |
+| `READ … BY …` / `END-READ` | Bucle sobre registros Adabas | La regla está en el `IF` dentro del bucle |
+| `WRITE` / `DISPLAY` / `PRINT` | Salida a pantalla o informe | Presentación, no una decisión |
+| `FORMAT`, `WRITE TITLE`, `AT TOP OF PAGE`, `DEFINE PRINTER` | Formato de informes | Aspecto visual |
+| `INPUT` | Lee desde un terminal 3270 | Se convertirá en un formulario web |
+| `RESET INITIAL` | Inicializa una variable | Detalle técnico |
+| `STORE` / `UPDATE` / `DELETE` | Persistencia Adabas | La regla es el `IF` anterior; `STORE` solo significa "guardar" |
+| `END TRANSACTION` / `BACKOUT TRANSACTION` | Control de commits | Infraestructura de base de datos |
+| `ON ERROR` / `END-ERROR` | Manejo de errores técnicos | No es una regla de negocio |
+| `END-WORK` / `AT END OF DATA` | Fin del procesamiento | Estructura, no una regla |
 
 > [!WARNING]
-> `CALLNAT`, `INCLUDE`, and `USING` are **not** on this list. They are dependencies and belong in the map.
+> `CALLNAT`, `INCLUDE` y `USING` **no** están en esta lista. Son dependencias y pertenecen al mapa.
 
 ---
 
-## 5. Extracting a rule in five steps
+## 5. Extraer una regla en cinco pasos
 
-Use `CALCDSCT.NSP` as the example.
+Usa `CALCDSCT.NSP` como ejemplo.
 
-### Step 1—Read the header (1 min)
+### Paso 1 — Lee la cabecera (1 min)
 
 ```natural
 * PROGRAM: CALCDSCT
-* PURPOSE: CALCULATE BENEFIT DEDUCTIONS
-* CHANGED: 12/04/2007 - MARCIA HELENA - ADD JUDICIAL DEDUCTION
+* PURPOSE: CALCULAR DEDUCCIONES DEL BENEFICIO
+* CHANGED: 12/04/2007 - MARCIA HELENA - ANADIR DEDUCCION JUDICIAL
 ```
 
-Record in `business-rules-catalog.md`: "CALCDSCT calculates deductions. Changed in 2007 to add judicial deductions—possible special rule."
+Registra en `business-rules-catalog.md`: "CALCDSCT calcula deducciones. Modificado en 2007 para añadir deducciones judiciales: posible regla especial".
 
-### Step 2—Scan `DEFINE DATA` (30 sec)
+### Paso 2 — Recorre `DEFINE DATA` (30 s)
 
-Note two things: the `USING` and `VIEW OF` lines (where the data comes from), and variable names that suggest values (`AMT-GROSS`, `TIPO-DSCT`).
+Anota dos cosas: las líneas `USING` y `VIEW OF` (de dónde vienen los datos) y los nombres de variables que sugieren importes (`AMT-GROSS`, `TIPO-DSCT`).
 
-### Step 3—Find the `IF` statements (3–5 min)
+### Paso 3 — Encuentra los `IF` (3–5 min)
 
-Use Ctrl+F in VS Code and enter `IF`. Each `IF` is a candidate rule.
+Usa Ctrl+F en VS Code e introduce `IF`. Cada `IF` es una regla candidata.
 
-| Line | Condition | Possible rule |
+| Línea | Condición | Posible regla |
 |---|---|---|
-| L142 | `IF #TYPE-DISC NE 'J'` | Special handling for judicial deductions |
-| L143 | `IF #AMT-TOTAL-DISC > (#AMT-GROSS * 0.30)` | 30% deduction cap |
+| L142 | `IF #TYPE-DISC NE 'J'` | Tratamiento especial de las deducciones judiciales |
+| L143 | `IF #AMT-TOTAL-DISC > (#AMT-GROSS * 0.30)` | Tope de deducciones del 30% |
 
-### Step 4—Find numeric constants (2 min)
+### Paso 4 — Encuentra las constantes numéricas (2 min)
 
-Use Ctrl+F with `0.` to locate `0.30`, `0.075`, and similar values. Each unexplained constant is probably a rule rate or percentage. Also search for `INIT <`: parameter tables load entire ranges and factors at once.
+Usa Ctrl+F con `0.` para localizar `0.30`, `0.075` y valores similares. Cada constante sin explicar probablemente sea una tasa o porcentaje de una regla. Busca también `INIT <`: las tablas de parámetros cargan tramos y factores completos de una vez.
 
-### Step 5—Confirm with Copilot Chat (2 min)
+### Paso 5 — Confirma con Copilot Chat (2 min)
 
-Select a code block in VS Code, open Copilot Chat (Ask mode), and send:
+Selecciona un bloque de código en VS Code, abre Copilot Chat (modo Ask) y envía:
 
-> "Explain this Natural code in English. Focus on the business rule. Ignore input and output."
+> "Explica este código Natural en español. Céntrate en la regla de negocio. Ignora la entrada y la salida."
 
-Compare Copilot's explanation with your interpretation. If they match, record it in the catalog.
+Compara la explicación de Copilot con tu interpretación. Si coinciden, regístrala en el catálogo.
 
-### From `.NSN` to a catalog entry
+### De `.NSN` a una entrada del catálogo
 
-For each conditional, describe only the behavior confirmed by the team. Record the evidence without inventing intent that is not explicit in the code:
+Para cada condicional, describe solo el comportamiento confirmado por el equipo. Registra la evidencia sin inventar una intención que no esté explícita en el código:
 
-| ID | Rule | Source Program | Risk |
+| ID | Regla | Programa de origen | Riesgo |
 |---|---|---|---|
-| BR-XXX | Confirmed behavior | `file.NSN#L<start>-L<end>` | Assess |
+| BR-XXX | Comportamiento confirmado | `file.NSN#L<start>-L<end>` | Evaluar |
 
-An ambiguous condition should be recorded as an open question in [`mysteries-found.md`](../mysteries-found.md), not converted into a rule.
+Una condición ambigua debe registrarse como pregunta abierta en [`mysteries-found.md`](../mysteries-found.md), no convertirse en una regla.
 
 ---
 
-## 6. Field types and formats (DDMs and variables)
+## 6. Tipos y formatos de campos (DDM y variables)
 
 > [!IMPORTANT]
-> **In this lab, the decimal separator in a Natural source format specification is a period.** Natural Community Edition 9.3.3 compiles `(N9.2)` and `(P9.2)`. It rejects comma forms such as `(N9,2)` and `(P9,2)` with `NAT0165`.
+> **En este laboratorio, el separador decimal de una especificación de formato en código fuente Natural es un punto.** Natural Community Edition 9.3.3 compila `(N9.2)` y `(P9.2)`. Rechaza las formas con coma, como `(N9,2)` y `(P9,2)`, con `NAT0165`.
 >
-> Natural installations can vary by decimal-character setting, and older mainframe installations commonly used a comma. This workshop follows the Natural CE 9.3.3 image. `DC=,` is not a workaround here because it collides with the `ID` delimiter and gives `NAT0385`.
+> Las instalaciones de Natural pueden variar según la configuración del carácter decimal, y las instalaciones antiguas de mainframe solían usar una coma. Esta inmersión sigue la imagen Natural CE 9.3.3. `DC=,` no es una solución aquí porque entra en conflicto con el delimitador `ID` y produce `NAT0385`.
 >
-> This rule applies **only to source declarations**. In literal values within code, the separator remains a period: `MOVE 1.3500 TO #FACTOR-ADJUST` and `COMPUTE #VLR = #BRUTO * 0.30`. DDM listings still print decimal lengths with a comma, for example `P  9,2`.
+> Esta regla se aplica **solo a las declaraciones del código fuente**. En los valores literales del código, el separador sigue siendo un punto: `MOVE 1.3500 TO #FACTOR-ADJUST` y `COMPUTE #VLR = #BRUTO * 0.30`. Los listados DDM siguen mostrando las longitudes decimales con coma, por ejemplo, `P  9,2`.
 
-### 6.1. Formats you will encounter
+### 6.1. Formatos que encontrarás
 
-| Notation | Meaning | In PostgreSQL |
+| Notación | Significado | En PostgreSQL |
 |---|---|---|
-| `(A60)` | Alphanumeric, 60 characters | `VARCHAR(60)` |
-| `(A11)` | Alphanumeric, 11 characters—how CPF and NIS are stored (preserves leading zeros) | `CHAR(11)` |
-| `(N11)` | *Unpacked* numeric, 11 digits, no decimal places | `NUMERIC(11)` |
-| `(N8)` | Date in `AAAAMMDD` format—Natural has no date type here | `DATE` |
-| `(N6)` | Reference period in `AAAAMM` format, or time in `HHMMSS` format | `INTEGER` (convert) |
-| `(N9.2)` | *Unpacked* numeric, 9 digits, 2 decimal places | `NUMERIC(9,2)` |
-| `(P9.2)` | *Packed decimal*, 9 digits, 2 decimal places | `NUMERIC(9,2)` |
-| `(P13.2)` | *Packed decimal*, 13 digits, 2 decimal places—batch accumulator | `NUMERIC(13,2)` |
-| `(N3.4)` | 3 digits, 4 decimal places—typical for a factor or index | `NUMERIC(3,4)` |
-| `(L)` | Logical (`TRUE` / `FALSE`) | `BOOLEAN` |
+| `(A60)` | Alfanumérico, 60 caracteres | `VARCHAR(60)` |
+| `(A11)` | Alfanumérico, 11 caracteres: así se almacenan CPF y NIS (conserva los ceros iniciales) | `CHAR(11)` |
+| `(N11)` | Numérico *no empaquetado*, 11 dígitos, sin decimales | `NUMERIC(11)` |
+| `(N8)` | Fecha en formato `AAAAMMDD`: Natural no tiene aquí un tipo de fecha | `DATE` |
+| `(N6)` | Período de referencia en formato `AAAAMM` u hora en formato `HHMMSS` | `INTEGER` (convertir) |
+| `(N9.2)` | Numérico *no empaquetado*, 9 dígitos, 2 decimales | `NUMERIC(9,2)` |
+| `(P9.2)` | *Decimal empaquetado*, 9 dígitos, 2 decimales | `NUMERIC(9,2)` |
+| `(P13.2)` | *Decimal empaquetado*, 13 dígitos, 2 decimales: acumulador batch | `NUMERIC(13,2)` |
+| `(N3.4)` | 3 dígitos, 4 decimales: típico de un factor o índice | `NUMERIC(3,4)` |
+| `(L)` | Lógico (`TRUE` / `FALSE`) | `BOOLEAN` |
 
-### 6.2. `P` (packed) × `N` (unpacked)—money is always `P`
+### 6.2. `P` (empaquetado) × `N` (no empaquetado): el dinero siempre es `P`
 
-| | `N` — *unpacked* | `P` — *packed decimal* |
+| | `N` — *no empaquetado* | `P` — *decimal empaquetado* |
 |---|---|---|
-| Storage | 1 digit per byte | 2 digits per byte; the last *nibble* stores the sign |
-| Cost | more space | less space, faster arithmetic |
-| Typical SIFAP use | counters, codes, `AAAAMMDD` dates, loop indexes | **monetary values and calculation factors** |
+| Almacenamiento | 1 dígito por byte | 2 dígitos por byte; el último *nibble* almacena el signo |
+| Costo | Más espacio | Menos espacio, aritmética más rápida |
+| Uso típico en SIFAP | Contadores, códigos, fechas `AAAAMMDD` e índices de bucles | **Valores monetarios y factores de cálculo** |
 
-On the mainframe, money is *packed*. That is what the DDM says—`CH AMT-FAMILY-INCOME P 9,2`—and what the programs declare. When you find `(P9.2)`, `(P7.2)`, or `(P13.2)` in Natural source, you are looking at a value field.
+En el mainframe, el dinero está *empaquetado*. Eso es lo que indica el DDM —`CH AMT-FAMILY-INCOME P 9,2`— y lo que declaran los programas. Cuando encuentres `(P9.2)`, `(P7.2)` o `(P13.2)` en código Natural, estás viendo un campo de importe.
 
 > [!TIP]
-> During modernization, decimal `P` and `N` values become `BigDecimal` in Java and `NUMERIC(p,s)` in PostgreSQL. **Never** use `double` or `float`: the legacy system calculates exact decimals, and differences appear at the cent level.
+> Durante la modernización, los valores decimales `P` y `N` se convierten en `BigDecimal` en Java y `NUMERIC(p,s)` en PostgreSQL. **Nunca** uses `double` ni `float`: el sistema heredado calcula decimales exactos y las diferencias aparecen a nivel de centavos.
 
-### 6.3. Arrays—the index range is explicit
+### 6.3. Arrays: el rango de índices es explícito
 
-| Notation | Meaning |
+| Notación | Significado |
 |---|---|
-| `(A60/1:10)` | 10 occurrences of 60 characters |
-| `(N3.4/1:27)` | 27 occurrences of 3 digits with 4 decimal places |
-| `(P9.2/1:5)` | 5 monetary occurrences |
-| `(N3.6/1:10,1:12)` | two-dimensional array, 10 × 12 |
+| `(A60/1:10)` | 10 ocurrencias de 60 caracteres |
+| `(N3.4/1:27)` | 27 ocurrencias de 3 dígitos con 4 decimales |
+| `(P9.2/1:5)` | 5 ocurrencias monetarias |
+| `(N3.6/1:10,1:12)` | Array bidimensional, 10 × 12 |
 
-The bounds are part of the notation: write `1:27`, not just `27`. Arrays often appear with `INIT <...>`—**every number in that list is a candidate rule**. Dimensions tell a story: 27 positions usually index UF, while 12 index months.
+Los límites forman parte de la notación: escribe `1:27`, no solo `27`. Los arrays suelen aparecer con `INIT <...>`: **cada número de esa lista es una regla candidata**. Las dimensiones cuentan una historia: 27 posiciones suelen indexar UF, mientras que 12 indexan meses.
 
-### 6.4. Adabas structures that do not fit in one column
+### 6.4. Estructuras Adabas que no caben en una columna
 
-| In the DDM | Meaning | Consequence |
+| En el DDM | Significado | Consecuencia |
 |---|---|---|
-| Column `T` = `M` (`MU`) | Multiple-value field: several values in one record | **Becomes a child table** |
-| Column `T` = `P` (`PE`) | Periodic group: repeated subrecords | **Becomes a child table** |
+| Columna `T` = `M` (`MU`) | Campo multivalor: varios valores en un registro | **Se convierte en una tabla hija** |
+| Columna `T` = `P` (`PE`) | Grupo periódico: subregistros repetidos | **Se convierte en una tabla hija** |
 
 > [!WARNING]
-> `MU` (multiple value) and `PE` (periodic group) are the only Adabas constructs that do not map directly to PostgreSQL. Whenever you find one, mark it in the dependency map—they become separate tables in Stage 3.
+> `MU` (valor múltiple) y `PE` (grupo periódico) son las únicas construcciones Adabas que no se mapean directamente a PostgreSQL. Cada vez que encuentres una, márcala en el mapa de dependencias: se convierten en tablas separadas en la Etapa 3.
 
 ---
 
-## 7. Reading a DDM listing
+## 7. Lectura de un listado DDM
 
-The `.ddm` files are listings from the `LISTDDM` utility—machine output, not editable source. The main table always has the same columns:
+Los archivos `.ddm` son listados de la utilidad `LISTDDM`: salida de máquina, no código fuente editable. La tabla principal siempre tiene las mismas columnas:
 
 ```text
  T L DB Name                     F Leng  S D Remark
@@ -354,101 +354,101 @@ The `.ddm` files are listings from the `LISTDDM` utility—machine output, not e
         /* BG(1-2), CE(1-1)
 ```
 
-| Column | Read as |
+| Columna | Interpretación |
 |---|---|
-| `T` | Type: *(blank)* elementary · `G` group · `M` multiple-value (`MU`) · `P` periodic group (`PE`) · `S` derived descriptor |
-| `L` | Level: `1` root field · `2` field within a group or PE |
-| `DB` | 2-byte *short name*—the physical name known by Adabas |
-| `Name` | Long name—the one that appears in program `VIEW OF` declarations |
-| `F` | Format: `A` alphanumeric · `N` *unpacked* numeric · `P` *packed decimal* |
-| `Leng` | Length in bytes; decimals use `digits,decimals` (`9,2`) |
-| `S` | Storage: `N` *null suppression* · `F` *fixed storage* |
-| `D` | Index: `D` descriptor · `U` unique · `S` super · `H` hyper · `P` phonetic · *(blank)* not indexed |
+| `T` | Tipo: *(vacío)* elemental · `G` grupo · `M` multivalor (`MU`) · `P` grupo periódico (`PE`) · `S` descriptor derivado |
+| `L` | Nivel: `1` campo raíz · `2` campo dentro de un grupo o PE |
+| `DB` | *Nombre corto* de 2 bytes: el nombre físico que conoce Adabas |
+| `Name` | Nombre largo: el que aparece en las declaraciones `VIEW OF` de los programas |
+| `F` | Formato: `A` alfanumérico · `N` numérico *no empaquetado* · `P` *decimal empaquetado* |
+| `Leng` | Longitud en bytes; los decimales usan `digits,decimals` (`9,2`) |
+| `S` | Almacenamiento: `N` *supresión de nulos* · `F` *almacenamiento fijo* |
+| `D` | Índice: `D` descriptor · `U` único · `S` super · `H` hiper · `P` fonético · *(vacío)* no indexado |
 
-The line beginning with `/*` immediately below a derived descriptor lists **the fields that compose it**. In the example, `SUPER-UF-STAT` concatenates the first two bytes of `BG` (UF) with the first byte of `CE` (status)—equivalent to a composite index.
+La línea que empieza por `/*` inmediatamente debajo de un descriptor derivado enumera **los campos que lo componen**. En el ejemplo, `SUPER-UF-STAT` concatena los dos primeros bytes de `BG` (UF) con el primer byte de `CE` (estado): equivale a un índice compuesto.
 
-### 7.1. `FIND ... WITH` is legal only on a descriptor
+### 7.1. `FIND ... WITH` solo es válido sobre un descriptor
 
-`FIND` searches through an Adabas index. Therefore, `FIND <view> WITH <field>` **works only if the field has a value in column `D`** (`D`, `U`, `S`, `H`, or `P`). A field without an index cannot be searched.
+`FIND` busca a través de un índice Adabas. Por tanto, `FIND <view> WITH <field>` **solo funciona si el campo tiene un valor en la columna `D`** (`D`, `U`, `S`, `H` o `P`). No se puede buscar un campo sin índice.
 
-| Field in `BENEFIC.ddm` | Column `D` | Is `FIND ... WITH` legal? |
+| Campo de `BENEFIC.ddm` | Columna `D` | ¿Es válido `FIND ... WITH`? |
 |---|---|---|
-| `AB NUM-CPF` | `U` | yes |
-| `CE STAT-BENEFICIARY` | `D` | yes |
-| `CH AMT-FAMILY-INCOME` | *(blank)* | **no** |
-| `AD MOTHER-NAME` | *(blank)* | **no** |
+| `AB NUM-CPF` | `U` | Sí |
+| `CE STAT-BENEFICIARY` | `D` | Sí |
+| `CH AMT-FAMILY-INCOME` | *(vacía)* | **No** |
+| `AD MOTHER-NAME` | *(vacía)* | **No** |
 
-Without a descriptor, the program needs another path—typically `READ <view> BY <descriptor>` with an `IF` filtering inside the loop.
+Sin un descriptor, el programa necesita otra vía: normalmente `READ <view> BY <descriptor>` con un `IF` que filtre dentro del bucle.
 
-**How to check in 15 seconds:** open the `.ddm`, use Ctrl+F on the field name, and inspect the column immediately before `Remark`.
+**Cómo comprobarlo en 15 segundos:** abre el `.ddm`, usa Ctrl+F con el nombre del campo e inspecciona la columna inmediatamente anterior a `Remark`.
 
-The complete column legend is in the footer of each `.ddm` and in the [DDM README](adabas-ddms/README.md).
+La leyenda completa de columnas está en el pie de cada `.ddm` y en el [README de los DDM](adabas-ddms/README.md).
 
 ---
 
-## 8. Time-saving VS Code shortcuts
+## 8. Atajos de VS Code para ahorrar tiempo
 
 <details>
-<summary><strong>Shortcut table and Copilot Chat usage tips</strong></summary>
+<summary><strong>Tabla de atajos y consejos de uso de Copilot Chat</strong></summary>
 
-| Shortcut | What it does |
+| Atajo | Qué hace |
 |---|---|
-| Ctrl+F | Search within the file |
-| Ctrl+Shift+F | Search across all files |
-| Ctrl+G + number | Go to line N |
-| Select + Copilot Chat | Send a snippet directly for analysis |
+| Ctrl+F | Buscar dentro del archivo |
+| Ctrl+Shift+F | Buscar en todos los archivos |
+| Ctrl+G + número | Ir a la línea N |
+| Seleccionar + Copilot Chat | Enviar un fragmento directamente para analizarlo |
 
 > [!TIP]
-> Select the entire Natural program, open Copilot Chat, and send: "List all business rules in this Natural program. For each one, provide the line range, the condition in English, and the risk level (CRITICAL/HIGH/MEDIUM/LOW)." In 30 seconds, 80% of the work is done. Always confirm by inspecting the original `IF`.
+> Selecciona todo el programa Natural, abre Copilot Chat y envía: "Enumera todas las reglas de negocio de este programa Natural. Para cada una, proporciona el rango de líneas, la condición en español y el nivel de riesgo (CRITICAL/HIGH/MEDIUM/LOW)." En 30 segundos, el 80% del trabajo está hecho. Confírmalo siempre inspeccionando el `IF` original.
 
 </details>
 
 ---
 
-## 9. Map of the 15 programs—reading guide
+## 9. Mapa de los 15 programas: guía de lectura
 
-| Category | Programs | What to expect |
+| Categoría | Programas | Qué esperar |
 |---|---|---|
-| Registration | `CADBENEF`, `CADDEPEN`, `CADPROG` | Input screens. CPF, name, and date validations. |
-| Calculation | `CALCBENF`, `CALCCORR`, `CALCDSCT` | Formulas and constants. Most financial rules live here. |
-| Validation | `VALBENEF`, `VALDOCS`, `VALELEG` | Sequences of `IF` statements. Each becomes a test. |
-| Batch | `BATCHPGT`, `BATCHREL`, `BATCHCON` | Many `CALLNAT` statements. Reveals the business flow. |
-| Query and reporting | `CONSBENF`, `RELPGT`, `RELAUDIT` | Many `READ`/`WRITE` statements. Few rules—quick reading. |
+| Registro | `CADBENEF`, `CADDEPEN`, `CADPROG` | Pantallas de entrada. Validaciones de CPF, nombre y fecha. |
+| Cálculo | `CALCBENF`, `CALCCORR`, `CALCDSCT` | Fórmulas y constantes. Aquí reside la mayoría de las reglas financieras. |
+| Validación | `VALBENEF`, `VALDOCS`, `VALELEG` | Secuencias de instrucciones `IF`. Cada una se convierte en una prueba. |
+| Batch | `BATCHPGT`, `BATCHREL`, `BATCHCON` | Muchas instrucciones `CALLNAT`. Revela el flujo de negocio. |
+| Consultas e informes | `CONSBENF`, `RELPGT`, `RELAUDIT` | Muchas instrucciones `READ`/`WRITE`. Pocas reglas: lectura rápida. |
 
 > [!NOTE]
-> The `natural-programs/` folder also contains **supporting members** (PDA, LDA, copycode, subprogram, and JCL). They are shared infrastructure: consult them when one of your three programs uses `USING`, `INCLUDE`, or `CALLNAT`, but they are **not assigned reading**. The complete inventory is in the [Natural programs README](natural-programs/README.md).
+> La carpeta `natural-programs/` también contiene **miembros de apoyo** (PDA, LDA, copycode, subprograma y JCL). Son infraestructura compartida: consúltalos cuando uno de tus tres programas use `USING`, `INCLUDE` o `CALLNAT`, pero **no son lectura asignada**. El inventario completo está en el [README de los programas Natural](natural-programs/README.md).
 
 ---
 
-## 10. Common reading mistakes
+## 10. Errores de lectura comunes
 
-| Mistake | Correction |
+| Error | Corrección |
 |---|---|
-| Trying to understand every line | Focus only on `IF`, `COMPUTE` with constants, and comments. |
-| Reading in file order | Go directly to the `IF` statements using Ctrl+F. |
-| Confusing a variable (`#VLR`) with a DDM field (`AMT-GROSS`) | Leading `#` = local variable. No `#` = database field. |
-| Assuming every `MOVE` is a rule | `MOVE` is assignment. The rule is the `IF` that selected the `MOVE`. |
-| Copying a DDM-listing comma form (`P 9,2`) into Natural source documentation | Source declarations use a period in this lab: `(N9.2)`, `(P13.2)`. |
-| Treating `(P9.2)` as something other than money | `P` is *packed decimal*: the mainframe monetary format. |
-| Recording a view field read outside the `FIND` block | Check whether the value was copied to a `#variable` before `END-FIND`. |
-| Recording a rule without a line citation | Always record `file.NSN#L<start>-L<end>`. CI rejects entries without it. |
+| Intentar entender cada línea | Céntrate solo en `IF`, `COMPUTE` con constantes y comentarios. |
+| Leer en el orden del archivo | Ve directamente a los `IF` usando Ctrl+F. |
+| Confundir una variable (`#VLR`) con un campo DDM (`AMT-GROSS`) | `#` inicial = variable local. Sin `#` = campo de base de datos. |
+| Suponer que cada `MOVE` es una regla | `MOVE` es una asignación. La regla es el `IF` que seleccionó el `MOVE`. |
+| Copiar una forma con coma de un listado DDM (`P 9,2`) a la documentación del código fuente Natural | Las declaraciones de código fuente usan punto en este laboratorio: `(N9.2)`, `(P13.2)`. |
+| Tratar `(P9.2)` como algo distinto de dinero | `P` es *decimal empaquetado*: el formato monetario del mainframe. |
+| Registrar la lectura de un campo de vista fuera del bloque `FIND` | Comprueba si el valor se copió a una `#variable` antes de `END-FIND`. |
+| Registrar una regla sin una cita de línea | Registra siempre `file.NSN#L<start>-L<end>`. La CI rechaza las entradas que no la incluyen. |
 
 ---
 
-## 11. When to ask for help
+## 11. Cuándo pedir ayuda
 
-If you cannot extract at least one rule from a program within 45 minutes:
+Si no puedes extraer al menos una regla de un programa en 45 minutos:
 
-1. Notify the facilitator.
-2. Show the program you are reading.
-3. Ask: "Which `IF` here is a business rule, and which is only technical?"
+1. Avisa a la persona facilitadora.
+2. Muestra el programa que estás leyendo.
+3. Pregunta: "¿Qué `IF` de aquí es una regla de negocio y cuál es solo técnico?"
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [SIFAP Legacy—overview](README.md)<br/><sub>System context and complete inventory.</sub> | [Stage 1 GUIDE](../GUIDE.md)<br/><sub>Timed 90-minute walkthrough.</sub> |
+| [SIFAP heredado — descripción general](README.md)<br/><sub>Contexto del sistema e inventario completo.</sub> | [GUÍA de la Etapa 1](../GUIDE.md)<br/><sub>Recorrido de 90 minutos con horarios.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

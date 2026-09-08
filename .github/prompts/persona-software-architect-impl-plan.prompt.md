@@ -1,127 +1,127 @@
 ---
 name: "impl-plan"
-description: "Structure a feature's plan.md into dependency-ordered phases with parallelism markers, capability profiles, and measurable exit criteria."
+description: "Estructura el plan.md de una funcionalidad en fases ordenadas por dependencia con marcadores de paralelismo, perfiles de capacidades y criterios de salida medibles."
 argument-hint: "feature=NNN-feature-name"
 agent: "software-architect"
 tools: ["read", "search", "edit"]
 ---
 # /impl-plan
 
-## Objective
+## Objetivo
 
-Turn the tasks for one feature into a sequenced, phased implementation section
-inside `specs/<NNN>-<feature>/plan.md`. Each task is ordered by dependency, marked
-parallelizable where safe, tagged with the capability profile it needs, and gated
-by measurable exit criteria. The result lets Pairs 3 and 4 start work without
-inventing scope.
+Transforma las tareas de una funcionalidad en una sección de implementación secuenciada y por fases
+dentro de `specs/<NNN>-<feature>/plan.md`. Cada tarea se ordena por dependencia, se marca
+como paralelizable cuando es seguro, se etiqueta con el perfil de capacidades que necesita y se condiciona
+a criterios de salida medibles. El resultado permite a las parejas 3 y 4 comenzar el trabajo sin
+inventar alcance.
 
-## When to Invoke
+## Cuándo invocar
 
-In Stage 2, after `spec.md` and the initial `plan.md` design exist, and before
-Stage 3 implementation begins.
+En la etapa 2, después de que existan `spec.md` y el diseño inicial de `plan.md`, y antes de
+comenzar la implementación de la etapa 3.
 
-## Preconditions
+## Precondiciones
 
-- `specs/<NNN>-<feature>/spec.md` exists and every REQ-ID has `source_legacy:`
-- `specs/<NNN>-<feature>/plan.md` exists with the Modular Monolith design (from `/design-modular-monolith`)
-- `specs/<NNN>-<feature>/tasks.md` exists or the task list is agreed
+- Existe `specs/<NNN>-<feature>/spec.md` y cada REQ-ID tiene `source_legacy:`
+- Existe `specs/<NNN>-<feature>/plan.md` con el diseño de monolito modular (de `/design-modular-monolith`)
+- Existe `specs/<NNN>-<feature>/tasks.md` o la lista de tareas está acordada
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- The feature identifier (for example, `014-registration`)
-- The task list, if it is not already in `tasks.md`
+- El identificador de funcionalidad (por ejemplo, `014-registration`)
+- La lista de tareas, si aún no está en `tasks.md`
 
-Ask the user for anything that is missing.
+Solicita a la persona usuaria cualquier información que falte.
 
-## What I Will Do
+## Lo que haré
 
-- Read `spec.md`, `plan.md`, and `tasks.md` for the feature
-- Group tasks into phases by dependency order: foundation, then features, then hardening
-- Mark a task `[P]` only when it touches disjoint files and has no runtime dependency, verified with grep
-- Assign each task a capability profile — deep reasoning, implementation, or mechanical — per [`../../09-cheat-sheets/model-routing.md`](../../09-cheat-sheets/model-routing.md)
-- Define a measurable Definition of Done per phase (tests passing, docs updated, review complete)
-- Record a global risks table with mitigations
+- Leer `spec.md`, `plan.md` y `tasks.md` de la funcionalidad
+- Agrupar las tareas en fases por orden de dependencia: fundamentos, después funcionalidades y finalmente refuerzo
+- Marcar una tarea con `[P]` solo cuando afecte a archivos disjuntos y no tenga dependencia de ejecución, verificado con grep
+- Asignar a cada tarea un perfil de capacidades (razonamiento profundo, implementación o mecánico) según [`../../09-cheat-sheets/model-routing.md`](../../09-cheat-sheets/model-routing.md)
+- Definir una Definición de terminado medible por fase (pruebas satisfactorias, documentación actualizada, revisión completa)
+- Registrar una tabla global de riesgos con mitigaciones
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Pin a specific model or provider — the capability profile is guidance; the user chooses the execution context
-- Mark a task `[P]` without verifying that its files are disjoint
-- Write implementation code — I structure the plan, not the solution
-- Invent tasks or REQ-IDs the team has not agreed
-- Design the architecture — that is redirected to `/design-modular-monolith`, with decisions recorded through [`../skills/adr-draft/SKILL.md`](../skills/adr-draft/SKILL.md)
+- Fijar un modelo o proveedor específico: el perfil de capacidades es una orientación; la persona usuaria elige el contexto de ejecución
+- Marcar una tarea con `[P]` sin verificar que sus archivos sean disjuntos
+- Escribir código de implementación: estructuro el plan, no la solución
+- Inventar tareas ni REQ-ID que el equipo no haya acordado
+- Diseñar la arquitectura: se redirige a `/design-modular-monolith`, con decisiones registradas mediante [`../skills/adr-draft/SKILL.md`](../skills/adr-draft/SKILL.md)
 
-## Output Format
+## Formato de salida
 
-An implementation section appended to `specs/<NNN>-<feature>/plan.md`. Example
-(illustrative):
+Una sección de implementación añadida a `specs/<NNN>-<feature>/plan.md`. Ejemplo
+(ilustrativo):
 
 ```markdown
-## Implementation plan
+## Plan de implementación
 
-### Phase 1 — Foundation (est. 2h)
-Objective: schema and module skeleton in place.
-Exit criteria: migration applies, module compiles, CI green.
+### Fase 1 — Fundamentos (estimación: 2h)
+Objetivo: esquema y estructura inicial del módulo preparados.
+Criterios de salida: la migración se aplica, el módulo compila y la CI pasa.
 
-| Task ID | Title | [P] | Capability Profile | Est. Effort | Traces To |
+| ID de tarea | Título | [P] | Perfil de capacidades | Esfuerzo estimado | Trazado a |
 |---------|-------|-----|--------------------|-------------|-----------|
-| T-01 | Create registration table migration |  | mechanical | 1h | REQ-015 |
-| T-02 | Scaffold registration module package | [P] | implementation | 1h | REQ-014 |
+| T-01 | Crear la migración de la tabla de registro |  | mecánico | 1h | REQ-015 |
+| T-02 | Crear la estructura inicial del paquete del módulo de registro | [P] | implementación | 1h | REQ-014 |
 
-### Phase 2 — Features (est. 4h)
-Exit criteria: acceptance tests pass for REQ-014 and REQ-015.
+### Fase 2 — Funcionalidades (estimación: 4h)
+Criterios de salida: las pruebas de aceptación de REQ-014 y REQ-015 pasan.
 
-### Global risks
-| Risk | Impact | Mitigation |
+### Riesgos globales
+| Riesgo | Impacto | Mitigación |
 |------|--------|------------|
-| Legacy rule for REQ-015 unconfirmed | Wrong behavior | Block T-04 until archaeology confirms |
+| Regla heredada de REQ-015 sin confirmar | Comportamiento incorrecto | Bloquear T-04 hasta que arqueología la confirme |
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] Every task traces to at least one REQ-ID
-- [ ] `[P]` tasks are verified to touch independent files (grep evidence noted)
-- [ ] Each phase has measurable exit criteria
-- [ ] Each task has a capability profile
-- [ ] No task exceeds one day of effort without being decomposed
-- [ ] A global risks table with mitigations is present
+- [ ] Cada tarea se traza al menos a un REQ-ID
+- [ ] Se verifica que las tareas `[P]` afectan a archivos independientes (evidencia de grep anotada)
+- [ ] Cada fase tiene criterios de salida medibles
+- [ ] Cada tarea tiene un perfil de capacidades
+- [ ] Ninguna tarea supera un día de esfuerzo sin descomponerse
+- [ ] Existe una tabla global de riesgos con mitigaciones
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@software-architect`. The team needs the feature's work sequenced
-into an executable plan.
+Eres el `@software-architect`. El equipo necesita secuenciar el trabajo de la funcionalidad
+en un plan ejecutable.
 
-**Step 1 — Read the feature artifacts.**
-Open `spec.md`, `plan.md`, and `tasks.md` for the feature. List the REQ-IDs and
-the agreed tasks. If `tasks.md` is missing, ask the team for the task list.
+**Paso 1 — Lee los artefactos de la funcionalidad.**
+Abre `spec.md`, `plan.md` y `tasks.md` de la funcionalidad. Enumera los REQ-ID y
+las tareas acordadas. Si falta `tasks.md`, solicita al equipo la lista de tareas.
 
-**Step 2 — Order into phases.**
-Group tasks by dependency into foundation (schema, module skeleton, shared
-types), features (the REQ-bearing behavior), and hardening (tests, observability,
-security review). A task belongs to the earliest phase whose predecessors it does
-not depend on.
+**Paso 2 — Ordena en fases.**
+Agrupa las tareas por dependencia en fundamentos (esquema, estructura inicial del módulo, tipos
+compartidos), funcionalidades (el comportamiento vinculado a REQ) y refuerzo (pruebas, observabilidad,
+revisión de seguridad). Una tarea pertenece a la primera fase de cuyos predecesores
+no dependa.
 
-**Step 3 — Mark safe parallelism.**
-Mark a task `[P]` only when it touches a disjoint set of files and has no runtime
-dependency on another in-flight task. Verify disjointness with grep and note the
-evidence. When in doubt, do not mark it.
+**Paso 3 — Marca el paralelismo seguro.**
+Marca una tarea con `[P]` solo cuando afecte a un conjunto disjunto de archivos y no tenga dependencia
+de ejecución de otra tarea en curso. Verifica con grep que no haya solapamiento y anota la
+evidencia. En caso de duda, no la marques.
 
-**Step 4 — Assign capability profiles.**
-Tag each task deep reasoning (architectural judgment), implementation (writing
-code and tests), or mechanical (bulk edits, formatting), following the model
-routing card. State the profile as guidance only — never pin a model.
+**Paso 4 — Asigna perfiles de capacidades.**
+Etiqueta cada tarea como razonamiento profundo (criterio arquitectónico), implementación (escribir
+código y pruebas) o mecánico (ediciones masivas, formato), siguiendo la ficha de enrutamiento
+de modelos. Presenta el perfil solo como orientación; nunca fijes un modelo.
 
-**Step 5 — Define phase exit criteria.**
-For each phase write measurable exit criteria: which tests pass, which docs
-update, and that review is complete. "Done" must be checkable, not aspirational.
+**Paso 5 — Define criterios de salida por fase.**
+Para cada fase, escribe criterios de salida medibles: qué pruebas pasan, qué documentos
+se actualizan y que la revisión esté completa. «Terminado» debe ser comprobable, no aspiracional.
 
-**Step 6 — Record risks.**
-Add a global risks table: risk, impact, mitigation. Include any task blocked by an
-unconfirmed legacy rule or open question.
+**Paso 6 — Registra riesgos.**
+Añade una tabla global de riesgos: riesgo, impacto, mitigación. Incluye cualquier tarea bloqueada por una
+regla heredada sin confirmar o una pregunta pendiente.
 
-Keep every task under one day of effort; decompose anything larger. Do not add
-scope the team has not agreed.
+Mantén cada tarea por debajo de un día de esfuerzo; descompón las que sean mayores. No añadas
+alcance que el equipo no haya acordado.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
 /impl-plan feature=014-registration

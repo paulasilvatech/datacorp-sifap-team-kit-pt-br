@@ -1,18 +1,18 @@
 ---
-description: "Use when building frontend UI components, pages, client interactions, component state, accessibility, and user-facing flows."
+description: "Utiliza al construir componentes de interfaz de frontend, páginas, interacciones del cliente, estado de componentes, accesibilidad y flujos de uso."
 applyTo: "frontend/app/**,frontend/components/**,frontend/src/app/**,frontend/src/components/**"
 ---
 
-# Frontend Conventions — Component Craft and Interaction
+# Convenciones de frontend — Construcción de componentes e interacción
 
-This file activates when you build UI under `frontend/app/**` or `frontend/components/**`. It focuses on component craft, client interaction, component state, accessibility execution, and user-facing flows. It owns how components behave for users; [`frontend-spec.instructions.md`](frontend-spec.instructions.md) owns the platform contract for Next.js 15 App Router, strict TypeScript, Tailwind/shadcn styling, Server Components, and Server Actions — follow that file for those topics and do not restate them here.
+Este archivo se activa al construir interfaces en `frontend/app/**` o `frontend/components/**`. Se centra en la construcción de componentes, la interacción en el cliente, el estado de los componentes, la aplicación de accesibilidad y los flujos de uso. Define cómo se comportan los componentes para las personas usuarias; [`frontend-spec.instructions.md`](frontend-spec.instructions.md) define el contrato de plataforma de Next.js 15 App Router, TypeScript estricto, estilos Tailwind/shadcn, componentes de servidor y acciones de servidor. Sigue ese archivo para esos temas y no los repitas aquí.
 
 > [!NOTE]
-> `frontend/` does not exist yet; the team scaffolds it in Stage 3. These are the conventions the components must follow as they are written.
+> `frontend/` todavía no existe; el equipo crea su estructura inicial en la etapa 3. Estas son las convenciones que deben seguir los componentes a medida que se escriben.
 
-## Component Craft
+## Construcción de componentes
 
-Build small, single-responsibility components with named exports and typed props. Prefer composition over a growing prop list, and keep presentational components free of data fetching.
+Construye componentes pequeños, de responsabilidad única, con exportaciones con nombre y propiedades tipadas. Prioriza la composición frente a una lista creciente de propiedades y mantén los componentes de presentación libres de obtención de datos.
 
 ```tsx
 import type { ResourceDto } from '@/types/resource';
@@ -27,11 +27,11 @@ export function ResourceCard({ resource }: { resource: ResourceDto }) {
 }
 ```
 
-Keep the `'use client'` surface as small as possible: a Server Component fetches the data and passes it to a small Client Component that handles interaction (see [`frontend-spec.instructions.md`](frontend-spec.instructions.md)).
+Mantén la superficie de `'use client'` lo más pequeña posible: un componente de servidor obtiene los datos y los pasa a un pequeño componente de cliente que gestiona la interacción (consulta [`frontend-spec.instructions.md`](frontend-spec.instructions.md)).
 
-## Component State
+## Estado de los componentes
 
-Default to local `useState`. Lift state to the nearest common parent when siblings must share it. Reach for Context **only** for genuinely shared client state, and add a state-management library only with an ADR that justifies the dependency.
+Utiliza `useState` local de forma predeterminada. Eleva el estado al padre común más cercano cuando deban compartirlo componentes hermanos. Recurre a Context **solo** para estado de cliente realmente compartido y añade una biblioteca de gestión de estado únicamente con un ADR que justifique la dependencia.
 
 ```tsx
 'use client';
@@ -52,11 +52,11 @@ export function ResourceFilter({ onFilter }: { onFilter: (term: string) => void 
 }
 ```
 
-Inputs are controlled (`value` + `onChange`). Derive values during render instead of mirroring props into state.
+Las entradas son controladas (`value` + `onChange`). Deriva los valores durante la renderización en lugar de duplicar las propiedades en el estado.
 
-## Client Interaction and Async Flows
+## Interacción en el cliente y flujos asíncronos
 
-Mutations go through server actions, not client `fetch` (see [`frontend-spec.instructions.md`](frontend-spec.instructions.md)). Wrap the call in `useTransition` to drive a disabled/pending state, and reflect it with `aria-busy`.
+Las mutaciones pasan por acciones de servidor, no por `fetch` del cliente (consulta [`frontend-spec.instructions.md`](frontend-spec.instructions.md)). Envuelve la llamada en `useTransition` para controlar un estado deshabilitado o pendiente y refléjalo con `aria-busy`.
 
 ```tsx
 'use client';
@@ -79,9 +79,9 @@ export function ArchiveButton({ id, onArchive }: { id: string; onArchive: (id: s
 }
 ```
 
-## User-Facing Flows
+## Flujos de uso
 
-Every async view renders three explicit states — **loading**, **empty**, and **error** — never a blank screen. Confirm destructive actions, and format money and dates with an explicit locale so output is deterministic.
+Cada vista asíncrona representa tres estados explícitos, **cargando**, **vacío** y **error**, nunca una pantalla en blanco. Confirma las acciones destructivas y da formato a importes y fechas con una configuración regional explícita para que la salida sea determinista.
 
 ```tsx
 if (isLoading) return <Spinner aria-label="Loading resources" />;
@@ -89,43 +89,43 @@ if (resources.length === 0) return <EmptyState message="No resources yet" />;
 if (error) return <ErrorState onRetry={refetch} />;
 ```
 
-## Accessibility (WCAG 2.1 AA)
+## Accesibilidad (WCAG 2.1 AA)
 
-| Requirement | How to satisfy it |
+| Requisito | Cómo cumplirlo |
 |---|---|
-| Labels | Every input has a `<label htmlFor>` or `aria-label` |
-| Keyboard | All interactive elements reachable and operable via Tab/Enter/Space |
-| Focus | Move focus into a dialog on open; return it to the trigger on close |
-| Contrast | Text ≥ 4.5:1, large text ≥ 3:1 |
-| Structure | One `<h1>` per page, logical heading order, landmark regions |
-| Color | Never the only signal — pair it with text or an icon |
+| Etiquetas | Cada entrada tiene un `<label htmlFor>` o `aria-label` |
+| Teclado | Todos los elementos interactivos son accesibles y manejables mediante Tab/Enter/Espacio |
+| Foco | Mueve el foco al diálogo al abrirlo; devuélvelo al activador al cerrarlo |
+| Contraste | Texto ≥ 4.5:1, texto grande ≥ 3:1 |
+| Estructura | Un `<h1>` por página, orden lógico de encabezados y regiones de referencia |
+| Color | Nunca es la única señal; acompáñalo de texto o de un icono |
 
-Use semantic elements (`<button>`, `<nav>`, `<table>`) before reaching for ARIA; add ARIA only when native semantics are missing.
+Utiliza elementos semánticos (`<button>`, `<nav>`, `<table>`) antes de recurrir a ARIA; añade ARIA solo cuando falte la semántica nativa.
 
-## Conventions
+## Convenciones
 
-| Rule | Rationale |
+| Regla | Justificación |
 |---|---|
-| Named exports for components | Consistent imports; tree-shakeable |
-| Typed props, no `any` | Failures surface at compile time |
-| Local `useState`, Context only when shared | Minimal, predictable state graph |
-| Colocate the test beside the component | Behavior and coverage stay together |
-| Explicit loading/empty/error states | No dead ends in the UI |
+| Exportaciones con nombre para componentes | Importaciones coherentes; permite eliminar código no utilizado |
+| Propiedades tipadas, sin `any` | Los fallos aparecen durante la compilación |
+| `useState` local, Context solo para estado compartido | Grafo de estado mínimo y predecible |
+| Colocar la prueba junto al componente | El comportamiento y la cobertura permanecen juntos |
+| Estados explícitos de carga, vacío y error | Sin callejones sin salida en la interfaz |
 
-## Do / Do Not
+## Qué hacer / Qué no hacer
 
-| Do | Do not |
+| Qué hacer | Qué no hacer |
 |---|---|
-| Push `'use client'` to the smallest leaf | Mark a whole page `'use client'` |
-| Mutate through a server action | `fetch` a mutation from the client |
-| Label every control | Rely on placeholder text as the label |
-| Format money/dates with a locale | Render raw numbers or ISO strings to users |
+| Situar `'use client'` en el componente hoja más pequeño | Marcar una página completa con `'use client'` |
+| Realizar mutaciones mediante una acción de servidor | Ejecutar con `fetch` una mutación desde el cliente |
+| Etiquetar cada control | Depender del texto de marcador de posición como etiqueta |
+| Dar formato a importes y fechas con una configuración regional | Mostrar a las personas números sin formato o cadenas ISO |
 
-## Checklist Before Opening a PR
+## Lista de verificación antes de abrir una PR
 
-- [ ] Components use named exports and fully typed props
-- [ ] `'use client'` is confined to the smallest interactive component
-- [ ] Shared state uses Context only when justified; no unapproved state library
-- [ ] Async views render loading, empty, and error states
-- [ ] Inputs are labeled, keyboard-operable, and meet AA contrast
-- [ ] A colocated Testing Library test covers the interaction (see [`tests.instructions.md`](tests.instructions.md))
+- [ ] Los componentes utilizan exportaciones con nombre y propiedades completamente tipadas
+- [ ] `'use client'` se limita al componente interactivo más pequeño
+- [ ] El estado compartido utiliza Context solo cuando se justifica; no hay bibliotecas de estado sin aprobar
+- [ ] Las vistas asíncronas representan los estados de carga, vacío y error
+- [ ] Las entradas tienen etiquetas, se manejan con teclado y cumplen el contraste AA
+- [ ] Una prueba de Testing Library ubicada junto al componente cubre la interacción (consulta [`tests.instructions.md`](tests.instructions.md))

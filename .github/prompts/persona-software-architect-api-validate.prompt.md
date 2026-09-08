@@ -1,108 +1,108 @@
 ---
 name: "api-validate"
-description: "Validate an API implementation against its OpenAPI/AsyncAPI contract and report every drift with an explicit fix location."
-argument-hint: "contract=<openapi.yaml|asyncapi.yaml> impl=<controllers path>"
+description: "Valida una implementación de API frente a su contrato OpenAPI/AsyncAPI e informa de cada divergencia con una ubicación explícita para corregirla."
+argument-hint: "contract=<openapi.yaml|asyncapi.yaml> impl=<ruta de controladores>"
 agent: "software-architect"
 tools: ["read", "search"]
 ---
 # /api-validate
 
-## Objective
+## Objetivo
 
-Compare an API implementation with its OpenAPI/AsyncAPI contract and expose all
-drift. The deliverable is a classified drift report — breaking, additive, or
-metadata — with an explicit fix location (contract or code) for each finding. Full
-coverage is the bar: every contract operation and every implementation endpoint is
-checked.
+Compara una implementación de API con su contrato OpenAPI/AsyncAPI y expón todas
+las divergencias. El entregable es un informe de divergencias clasificadas como incompatibles,
+aditivas o de metadatos, con una ubicación explícita de corrección (contrato o código) para cada hallazgo.
+La exigencia es cobertura completa: se comprueban todas las operaciones del contrato y todos
+los puntos de conexión de la implementación.
 
-## When to Invoke
+## Cuándo invocar
 
-After a controller or handler changes, before merging, or during review when the
-implementation and its published contract might disagree.
+Después de cambiar un controlador o manejador, antes de integrar o durante la revisión cuando
+la implementación y su contrato publicado puedan discrepar.
 
-## Preconditions
+## Precondiciones
 
-- A contract file exists (`openapi.yaml` or `asyncapi.yaml`)
-- The implementation exists (controllers or message handlers created by the team)
-- The REST conventions in [`../instructions/backend.instructions.md`](../instructions/backend.instructions.md) are the reference for paths and status codes
+- Existe un archivo de contrato (`openapi.yaml` o `asyncapi.yaml`)
+- Existe la implementación (controladores o manejadores de mensajes creados por el equipo)
+- Las convenciones REST de [`../instructions/backend.instructions.md`](../instructions/backend.instructions.md) son la referencia para rutas y códigos de estado
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- The path to the contract file
-- The path to the implementation (controllers, handlers)
-- Example request/response payloads, if available
+- La ruta del archivo de contrato
+- La ruta de la implementación (controladores, manejadores)
+- Ejemplos de cuerpos de solicitud y respuesta, si están disponibles
 
-Ask the user for anything that is missing.
+Solicita a la persona usuaria cualquier información que falte.
 
-## What I Will Do
+## Lo que haré
 
-- Load the contract and enumerate every operation
-- For each operation, check path, method, request schema, response schema, error codes, and auth scheme against the code
-- For each implementation endpoint, check whether the contract documents it (find undocumented endpoints)
-- Validate request and response schemas against real examples when provided
-- Classify each drift as breaking, additive, or metadata, and name the fix location
+- Cargar el contrato y enumerar cada operación
+- Para cada operación, comprobar frente al código la ruta, el método, el esquema de solicitud, el esquema de respuesta, los códigos de error y el esquema de autenticación
+- Para cada punto de conexión implementado, comprobar si el contrato lo documenta (encontrar los no documentados)
+- Validar los esquemas de solicitud y respuesta frente a ejemplos reales cuando se proporcionen
+- Clasificar cada divergencia como incompatible, aditiva o de metadatos e identificar dónde corregirla
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Edit the contract or the code — I report drift and propose fixes; the owner applies them
-- Invent operations, fields, or status codes that neither side declares
-- Treat an additive optional field as breaking — I triage by real impact
-- Decide an irreversible contract change beyond naming the cheaper, safer side — that is redirected to the [`../skills/adr-draft/SKILL.md`](../skills/adr-draft/SKILL.md) skill
+- Editar el contrato ni el código: informo de divergencias y propongo correcciones; las aplica la persona responsable
+- Inventar operaciones, campos ni códigos de estado que ninguna de las dos partes declare
+- Tratar un campo opcional añadido como incompatible: clasifico según el impacto real
+- Decidir un cambio irreversible de contrato más allá de identificar la parte más económica y segura que cambiar: eso se redirige a la habilidad [`../skills/adr-draft/SKILL.md`](../skills/adr-draft/SKILL.md)
 
-## Output Format
+## Formato de salida
 
-A Markdown table presented for review. Example (illustrative):
+Una tabla Markdown presentada para revisión. Ejemplo (ilustrativo):
 
 ```markdown
-## API drift — orders-service
+## Divergencias de API — orders-service
 
-| Endpoint | Drift Type | Severity | Fix Location |
+| Punto de conexión | Tipo de divergencia | Gravedad | Ubicación de corrección |
 |----------|-----------|----------|--------------|
-| GET /api/v1/orders/{id} | Response field `status` missing in code | Breaking | code |
-| POST /api/v1/orders | Undocumented 409 returned by code | Additive | contract |
-| GET /api/v1/orders | Description mismatch | Metadata | contract |
+| GET /api/v1/orders/{id} | Campo de respuesta `status` ausente en el código | Incompatible | código |
+| POST /api/v1/orders | El código devuelve un 409 no documentado | Aditiva | contrato |
+| GET /api/v1/orders | Descripción discrepante | Metadatos | contrato |
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] Every contract operation has been checked (100% coverage)
-- [ ] Every implementation endpoint has been checked against the contract
-- [ ] Breaking drift is listed separately from additive drift
-- [ ] The fix location (contract vs. code) is explicit for each item
-- [ ] Undocumented endpoints are reported
+- [ ] Se han comprobado todas las operaciones del contrato (100% de cobertura)
+- [ ] Se ha comprobado cada punto de conexión implementado frente al contrato
+- [ ] Las divergencias incompatibles se enumeran por separado de las aditivas
+- [ ] La ubicación de corrección (contrato o código) es explícita para cada elemento
+- [ ] Se informa de los puntos de conexión no documentados
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@software-architect`. The team wants to know whether an API and its
-contract still agree.
+Eres el `@software-architect`. El equipo quiere saber si una API y su
+contrato siguen coincidiendo.
 
-**Step 1 — Load both sides.**
-Read the contract (`openapi.yaml` / `asyncapi.yaml`) and the implementation
-(controllers, handlers). Ask for either path if it is missing.
+**Paso 1 — Carga ambas partes.**
+Lee el contrato (`openapi.yaml` / `asyncapi.yaml`) y la implementación
+(controladores, manejadores). Solicita cualquiera de las rutas si falta.
 
-**Step 2 — Check each contract operation.**
-For every operation in the contract, verify against the code: path, HTTP method,
-request schema, response schema, declared error codes, and the authentication
-scheme. Record any mismatch.
+**Paso 2 — Comprueba cada operación del contrato.**
+Para cada operación del contrato, verifica frente al código: ruta, método HTTP,
+esquema de solicitud, esquema de respuesta, códigos de error declarados y esquema
+de autenticación. Registra cualquier discrepancia.
 
-**Step 3 — Check for undocumented endpoints.**
-For every endpoint in the implementation, confirm the contract declares it. Flag
-any endpoint the contract does not document.
+**Paso 3 — Busca puntos de conexión no documentados.**
+Para cada punto de conexión de la implementación, confirma que el contrato lo declare. Señala
+cualquier punto de conexión que el contrato no documente.
 
-**Step 4 — Validate with examples.**
-When the team provides example payloads, validate them against both the declared
-request and response schemas. Note where a real example violates the contract.
+**Paso 4 — Valida con ejemplos.**
+Cuando el equipo proporcione ejemplos de cuerpos de datos, valídalos frente a los esquemas
+de solicitud y respuesta declarados. Anota dónde incumple el contrato un ejemplo real.
 
-**Step 5 — Classify and locate the fix.**
-Classify each drift as breaking (removes or changes a field, method, or status),
-additive (new optional field or undocumented-but-compatible behavior), or metadata
-(description only). For each, state whether the correct fix belongs in the contract
-or the code.
+**Paso 5 — Clasifica y localiza la corrección.**
+Clasifica cada divergencia como incompatible (elimina o cambia un campo, método o estado),
+aditiva (campo opcional nuevo o comportamiento no documentado pero compatible) o de metadatos
+(solo descripción). Para cada una, indica si la corrección adecuada corresponde al contrato
+o al código.
 
-Report the table without editing either side. Do not downgrade a breaking change
-to additive to make the report look cleaner.
+Presenta la tabla sin editar ninguna de las dos partes. No rebajes un cambio incompatible
+a aditivo para que el informe parezca más limpio.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
 /api-validate contract=backend/src/main/resources/openapi.yaml impl=backend/src/main/java/app/orders

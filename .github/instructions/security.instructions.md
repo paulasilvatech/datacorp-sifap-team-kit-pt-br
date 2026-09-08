@@ -1,15 +1,15 @@
 ---
-description: "Use when implementing or reviewing authentication, authorization, crypto, secure configuration, secrets handling, and security-sensitive code."
+description: "Utiliza al implementar o revisar autenticación, autorización, criptografía, configuración segura, gestión de secretos y código sensible para la seguridad."
 applyTo: "backend/src/main/java/**/auth/**,backend/src/main/java/**/security/**,backend/src/main/java/**/config/**,backend/src/main/resources/**,frontend/**/auth/**,frontend/**/middleware.ts"
 ---
 
-# Security Conventions — Auth, Secrets, and Injection
+# Convenciones de seguridad — Autenticación, autorización, secretos e inyección
 
-This file activates on security-sensitive code: `auth/`, `security/`, and `config/` packages, everything under `backend/src/main/resources/`, plus `frontend/**/auth/**` and `frontend/middleware.ts`. It teaches authentication, authorization, input validation, CORS, secret handling, and sensitive-data protection following the repo's OWASP Top 10 rules. Generic REST shape lives in [`backend.instructions.md`](backend.instructions.md); Terraform secret storage lives in [`infrastructure.instructions.md`](infrastructure.instructions.md).
+Este archivo se activa para código sensible para la seguridad: paquetes `auth/`, `security/` y `config/`, todo el contenido de `backend/src/main/resources/`, además de `frontend/**/auth/**` y `frontend/middleware.ts`. Enseña autenticación, autorización, validación de entradas, CORS, gestión de secretos y protección de datos sensibles según las reglas OWASP Top 10 del repositorio. La estructura REST general se encuentra en [`backend.instructions.md`](backend.instructions.md); el almacenamiento de secretos con Terraform, en [`infrastructure.instructions.md`](infrastructure.instructions.md).
 
-## Authentication (OAuth2 / JWT)
+## Autenticación (OAuth2 / JWT)
 
-The backend is a stateless OAuth2 resource server validating JWTs via Spring Security. Never hand-roll token parsing or crypto.
+El backend es un servidor de recursos OAuth2 sin estado que valida JWT mediante Spring Security. Nunca implementes manualmente el análisis de tokens ni la criptografía.
 
 ```java
 @Configuration
@@ -25,43 +25,43 @@ class SecurityConfig {
                 .anyRequest().authenticated())
             .oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()))
             .cors(Customizer.withDefaults())
-            .csrf(csrf -> csrf.disable()); // stateless token API; no session cookie
+            .csrf(csrf -> csrf.disable()); // API de tokens sin estado; sin cookie de sesión
         return http.build();
     }
 }
 ```
 
-If passwords are ever stored, hash with argon2 or bcrypt (never a bare digest), rate-limit login, and require MFA for administrators.
+Si se almacenan contraseñas, aplica hash con argon2 o bcrypt (nunca un digest simple), limita la frecuencia de los inicios de sesión y exige MFA para administradores.
 
-## Authorization
+## Autorización
 
-Authorize every request, deny by default, and enforce the least privilege. Use method security for role checks and verify resource ownership explicitly.
+Autoriza cada solicitud, deniega de forma predeterminada y exige el privilegio mínimo. Utiliza seguridad a nivel de método para comprobar roles y verifica explícitamente la propiedad de los recursos.
 
 ```java
 @PreAuthorize("hasRole('AUDITOR')")
 public AuditReport generate(UUID resourceId, Authentication principal) {
     Resource resource = resourceService.getOwned(resourceId, principal.getName());
-    // ownership is checked in the service; a role alone is not enough
+    // La propiedad se comprueba en el servicio; un rol por sí solo no basta
     return AuditReport.of(resource);
 }
 ```
 
-## Input Validation and Injection
+## Validación de entradas e inyección
 
-Validate at every boundary with `@Valid` (see [`backend.instructions.md`](backend.instructions.md)). Build queries only with JPA/JPQL bound parameters, escape HTML on output, and validate uploads by type and size.
+Valida en cada límite con `@Valid` (consulta [`backend.instructions.md`](backend.instructions.md)). Construye consultas únicamente con parámetros vinculados de JPA/JPQL, escapa el HTML en la salida y valida los archivos cargados por tipo y tamaño.
 
 > [!WARNING]
-> Never concatenate user input into a query, a shell command, or markup. String-built SQL is the classic injection vector; parameter binding is not optional.
+> Nunca concatentes entradas de usuario en una consulta, un comando de shell ni código de marcado. El SQL construido con cadenas es el vector clásico de inyección; la vinculación de parámetros no es opcional.
 
 ## CORS
 
-Configure allowed origins explicitly. A `*` wildcard is forbidden in production.
+Configura explícitamente los orígenes permitidos. El comodín `*` está prohibido en producción.
 
 ```java
 @Bean
 CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration config = new CorsConfiguration();
-    config.setAllowedOrigins(List.of("https://app.example.gov.br")); // never "*" in prod
+    config.setAllowedOrigins(List.of("https://app.example.gov.br")); // Nunca "*" en producción
     config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE"));
     config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -70,23 +70,23 @@ CorsConfigurationSource corsConfigurationSource() {
 }
 ```
 
-## Secrets and Secure Config
+## Secretos y configuración segura
 
-No secret is hardcoded, committed, or logged. Read secrets from the environment or Key Vault; authenticate Azure service-to-service with Managed Identity. In the frontend, only non-secret values may use the `NEXT_PUBLIC_` prefix — anything prefixed is shipped to the browser.
+No se incorpora ningún secreto directamente en el código, los commits ni los registros. Lee los secretos del entorno o de Key Vault; autentica los servicios de Azure entre sí mediante identidades administradas (Managed Identity). En el frontend, solo los valores que no son secretos pueden utilizar el prefijo `NEXT_PUBLIC_`: todo valor con ese prefijo se envía al navegador.
 
-## Sensitive Data (CPF, Amounts)
+## Datos sensibles (CPF, importes)
 
 > [!IMPORTANT]
-> Mask regulated fields (CPF, benefit amounts) in logs, error responses, and URLs. Never place them in query strings or unencrypted storage, and always transmit over TLS.
+> Enmascara los campos regulados (CPF, importes de prestaciones) en registros, respuestas de error y URL. Nunca los incluyas en cadenas de consulta ni en almacenamiento sin cifrar y transmítelos siempre mediante TLS.
 
 ```java
-// keep the first 3 and last 2 digits of an 11-digit CPF
+// Conserva los primeros 3 y los últimos 2 dígitos de un CPF de 11 dígitos
 String masked = cpf.replaceAll("(\\d{3})\\d{6}(\\d{2})", "$1******$2");
 ```
 
-## Frontend Auth Boundary (`middleware.ts`)
+## Límite de autenticación del frontend (`middleware.ts`)
 
-Gate protected routes in middleware; never trust the client to enforce access. Keep tokens and secrets server-side.
+Controla las rutas protegidas en el middleware; nunca confíes en el cliente para exigir el control de acceso. Mantén los tokens y los secretos en el servidor.
 
 ```ts
 import { NextResponse, type NextRequest } from 'next/server';
@@ -100,35 +100,35 @@ export function middleware(request: NextRequest) {
 export const config = { matcher: ['/dashboard/:path*'] };
 ```
 
-## Automation and Agent Boundaries
+## Límites de automatización y agentes
 
-An AI agent or automation never grants itself new permissions and never touches a production database without explicit human approval. Changes to auth, roles, or secret handling require peer review before merge.
+Un agente de IA o una automatización nunca se concede nuevos permisos ni toca una base de datos de producción sin aprobación humana explícita. Los cambios en autenticación, autorización, roles o gestión de secretos requieren revisión por pares antes de integrarse.
 
-## Conventions
+## Convenciones
 
-| Rule | Rationale |
+| Regla | Justificación |
 |---|---|
-| OAuth2/JWT via Spring Security | No custom, error-prone auth code |
-| Authorize every request, deny by default | Least privilege at each boundary |
-| JPA/JPQL bound parameters only | Eliminates SQL injection |
-| Explicit CORS origins, no `*` in prod | Blocks cross-origin abuse |
-| Secrets from env/Key Vault, Managed Identity | No credentials in code or logs |
-| Mask CPF and amounts everywhere | Protects regulated data |
+| OAuth2/JWT mediante Spring Security | Sin código de autenticación propio propenso a errores |
+| Autorizar cada solicitud y denegar de forma predeterminada | Privilegio mínimo en cada límite |
+| Solo parámetros vinculados de JPA/JPQL | Elimina la inyección SQL |
+| Orígenes CORS explícitos, sin `*` en producción | Bloquea abusos entre orígenes |
+| Secretos desde el entorno/Key Vault, identidades administradas | Sin credenciales en el código ni en los registros |
+| Enmascarar CPF e importes en todas partes | Protege los datos regulados |
 
-## Do / Do Not
+## Qué hacer / Qué no hacer
 
-| Do | Do not |
+| Qué hacer | Qué no hacer |
 |---|---|
-| Hash passwords with argon2/bcrypt | Store or log plaintext or a bare digest |
-| Check role **and** resource ownership | Treat a role as sufficient authorization |
-| Keep secrets server-side | Prefix a secret with `NEXT_PUBLIC_` |
-| Mask sensitive fields before logging | Put CPF/amounts in logs or query strings |
+| Aplicar hash a las contraseñas con argon2/bcrypt | Almacenar o registrar texto plano o un digest simple |
+| Comprobar el rol **y** la propiedad del recurso | Considerar que un rol basta como autorización |
+| Mantener los secretos en el servidor | Añadir el prefijo `NEXT_PUBLIC_` a un secreto |
+| Enmascarar los campos sensibles antes de registrarlos | Poner CPF o importes en registros o cadenas de consulta |
 
-## Checklist Before Opening a PR
+## Lista de verificación antes de abrir una PR
 
-- [ ] Endpoints authenticate via Spring Security; no custom token parsing
-- [ ] Every request is authorized, denying by default, with ownership checks where relevant
-- [ ] All queries use bound parameters; uploads and inputs are validated
-- [ ] CORS lists explicit origins; no `*` in production configuration
-- [ ] No secret is hardcoded, committed, or logged; Azure auth uses Managed Identity
-- [ ] CPF, amounts, and tokens are masked in logs, errors, and URLs
+- [ ] Los puntos de conexión autentican mediante Spring Security; no hay análisis de tokens propio
+- [ ] Cada solicitud se autoriza, se deniega de forma predeterminada y se comprueba la propiedad cuando corresponde
+- [ ] Todas las consultas utilizan parámetros vinculados; las cargas de archivos y las entradas se validan
+- [ ] CORS enumera orígenes explícitos; no hay `*` en la configuración de producción
+- [ ] No hay secretos incorporados directamente en el código, los commits ni los registros; la autenticación de Azure utiliza identidades administradas
+- [ ] CPF, importes y tokens están enmascarados en registros, errores y URL

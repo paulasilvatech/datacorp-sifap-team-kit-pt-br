@@ -1,130 +1,130 @@
 ---
 name: "generate-equivalence-tests"
-description: "Generates JUnit tests that validate whether the modern Java implementation produces the same outputs as the original Natural program for the same inputs."
+description: "Genera pruebas JUnit que validan si la implementación Java moderna produce las mismas salidas que el programa Natural original para las mismas entradas."
 argument-hint: "class=<java.package>.<Service> method=<method>"
 agent: "builder"
 tools: ["read", "search", "edit", "execute"]
 ---
 # /generate-equivalence-tests
 
-## Objective
+## Objetivo
 
-Generate parameterized JUnit 5 tests that verify whether a translated Java method produces business results equivalent to the original Natural program for the same inputs.
+Genera pruebas parametrizadas JUnit 5 que verifiquen si un método Java traducido produce resultados de negocio equivalentes a los del programa Natural original para las mismas entradas.
 
-## When to Invoke
+## Cuándo invocar
 
-After a Natural program has been translated to Java (`/translate-natural-to-java`), to verify equivalence.
+Después de traducir un programa Natural a Java (`/translate-natural-to-java`), para verificar la equivalencia.
 
-## Preconditions
+## Precondiciones
 
-- The Java translation exists and compiles
-- The original Natural source is accessible in `01-archaeology/legacy-sifap/`
-- The Javadoc in the translated code references the Natural source file and lines
+- La traducción Java existe y compila
+- La fuente Natural original está accesible en `01-archaeology/legacy-sifap/`
+- El Javadoc del código traducido referencia el archivo fuente Natural y sus líneas
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- The Java class and method to test
-- The path to the original Natural file (usually found in the method's Javadoc)
-- Any test data or edge cases known from the team's Stage 1 analysis
+- La clase y el método Java que se probarán
+- La ruta del archivo Natural original (normalmente se encuentra en el Javadoc del método)
+- Los datos de prueba o casos límite conocidos a partir del análisis del equipo en la etapa 1
 
-## What I Will Do
+## Lo que haré
 
-- Read the original Natural program to identify input parameters and expected outputs
-- Identify every branch (IF/ELSE, DECIDE) to determine test cases
-- Generate parameterized JUnit 5 tests covering the happy path, branches, boundaries, and nulls
-- Run the tests and report results
-- List any uncovered branch
+- Leer el programa Natural original para identificar parámetros de entrada y salidas esperadas
+- Identificar cada rama (IF/ELSE, DECIDE) para determinar los casos de prueba
+- Generar pruebas parametrizadas JUnit 5 que cubran el caso satisfactorio, las ramas, los límites y los nulos
+- Ejecutar las pruebas e informar de los resultados
+- Enumerar cualquier rama sin cubrir
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Mark a method as "equivalent" without at least one test per identified branch
-- Skip boundary conditions for numeric inputs
-- Fabricate expected values — every expected value must be derivable from the Natural code logic
-- Ignore error paths — rejection and error branches also receive tests
+- Marcar un método como «equivalente» sin al menos una prueba por rama identificada
+- Omitir condiciones límite de entradas numéricas
+- Inventar valores esperados: cada valor esperado debe poder derivarse de la lógica del código Natural
+- Ignorar rutas de error: las ramas de rechazo y error también reciben pruebas
 
-## Output Format
+## Formato de salida
 
-Test file at `src/test/java/.../[ClassName]EquivalenceTest.java`
+Archivo de pruebas en `src/test/java/.../[ClassName]EquivalenceTest.java`
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] At least one test per branch identified in the Natural program
-- [ ] Parameterized tests cover: happy path, each branch, boundary values, and null/empty inputs
-- [ ] Tests compile and run
-- [ ] Pass/fail results are reported with branch coverage
-- [ ] Failing tests identify which branch diverged from the Natural logic
+- [ ] Al menos una prueba por rama identificada en el programa Natural
+- [ ] Las pruebas parametrizadas cubren el caso satisfactorio, cada rama, valores límite y entradas nulas o vacías
+- [ ] Las pruebas compilan y se ejecutan
+- [ ] Se informa de los resultados satisfactorios y fallidos junto con la cobertura de ramas
+- [ ] Las pruebas fallidas identifican qué rama divergió de la lógica Natural
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@builder`. The team translated a Natural program to Java and needs equivalence tests.
+Eres el `@builder`. El equipo tradujo un programa Natural a Java y necesita pruebas de equivalencia.
 
-**Step 1 — Locate the Natural source.**
-Read the Javadoc on the specified Java method. Extract the Natural file reference and line range. Open that Natural file.
+**Paso 1 — Localiza la fuente Natural.**
+Lee el Javadoc del método Java especificado. Extrae la referencia al archivo Natural y el intervalo de líneas. Abre ese archivo Natural.
 
-**Step 2 — Identify branches in the Natural code.**
-For the referenced line range, list every conditional branch:
+**Paso 2 — Identifica las ramas del código Natural.**
+Para el intervalo de líneas referenciado, enumera cada rama condicional:
 
-- Each `IF...THEN...ELSE` creates 2+ paths
-- Each `DECIDE ON` value creates N paths
-- Each `AT BREAK` creates a control-break path
+- Cada `IF...THEN...ELSE` crea 2+ rutas
+- Cada valor de `DECIDE ON` crea N rutas
+- Cada `AT BREAK` crea una ruta de ruptura de control
 
-For each branch, note:
+Para cada rama, anota:
 
-- The condition (what triggers this path)
-- The expected action/output
-- The input values that would trigger this path (derived from the condition)
+- La condición (qué activa esta ruta)
+- La acción o salida esperada
+- Los valores de entrada que activarían esta ruta (derivados de la condición)
 
-**Step 3 — Derive test cases.**
-For each branch, create at least one test case:
+**Paso 3 — Deriva los casos de prueba.**
+Para cada rama, crea al menos un caso de prueba:
 
 ```java
 @ParameterizedTest
 @CsvSource({
-    "input1, input2, expectedOutput",  // Branch 1: [description]
-    "input3, input4, expectedOutput",  // Branch 2: [description]
+    "input1, input2, expectedOutput",  // Rama 1: [descripción]
+    "input3, input4, expectedOutput",  // Rama 2: [descripción]
 })
 void should_produce_equivalent_output(Type param1, Type param2, Type expected) {
-    // Arrange
-    var service = new ServiceUnderTest(/* dependencies */);
-    // Act
+    // Preparar
+    var service = new ServiceUnderTest(/* dependencias */);
+    // Actuar
     var result = service.methodUnderTest(param1, param2);
-    // Assert
+    // Verificar
     assertThat(result).isEqualTo(expected);
 }
 ```
 
-Add more tests for:
+Añade más pruebas para:
 
-- **Boundary values**: min/max for numeric fields, empty strings, and single-character strings
-- **Null/empty inputs**: what happens when optional parameters are null?
-- **Packed decimal precision**: verify that `BigDecimal` calculations match Natural packed decimal arithmetic
+- **Valores límite**: mínimo y máximo de campos numéricos, cadenas vacías y cadenas de un carácter
+- **Entradas nulas o vacías**: ¿qué ocurre cuando los parámetros opcionales son nulos?
+- **Precisión de decimales empaquetados**: verificar que los cálculos con `BigDecimal` coincidan con la aritmética decimal empaquetada de Natural
 
-**Step 4 — Handle edge cases.**
-If the Natural code has a branch that depends on data state (for example, "if record exists"), generate separate tests with mocked repository responses:
+**Paso 4 — Gestiona los casos límite.**
+Si el código Natural tiene una rama que depende del estado de los datos (por ejemplo, «si el registro existe»), genera pruebas separadas con respuestas simuladas del repositorio:
 
-- Record exists → expected behavior
-- Record does not exist → expected error/alternative
+- El registro existe → comportamiento esperado
+- El registro no existe → error o alternativa esperados
 
-**Step 5 — Run the tests.**
-Run the test suite using the `runTests` tool. Report:
+**Paso 5 — Ejecuta las pruebas.**
+Ejecuta el conjunto de pruebas utilizando la herramienta `runTests`. Informa de:
 
-- Total tests: N
-- Passed: N
-- Failed: N (with details for each failure)
-- Branch coverage estimate (branches with tests / total identified branches)
+- Total de pruebas: N
+- Satisfactorias: N
+- Fallidas: N (con detalles de cada fallo)
+- Estimación de cobertura de ramas (ramas con pruebas / total de ramas identificadas)
 
-**Step 6 — Document discovered branches.**
-If any identified branch does not have a test (because of unclear logic or missing context), document it:
+**Paso 6 — Documenta las ramas descubiertas.**
+Si alguna rama identificada no tiene prueba (por lógica poco clara o falta de contexto), documéntala:
 
 ```java
 @Test
-@Disabled("MYSTERY: Branch at [nat-file:L73] — unclear condition; cannot derive expected output")
+@Disabled("MYSTERY: Rama en [nat-file:L73] — condición poco clara; no se puede derivar la salida esperada")
 void should_handle_mystery_branch() {
-    fail("Needs team investigation — see MYS-NNN");
+    fail("Requiere investigación del equipo — consulta MYS-NNN");
 }
 ```
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
 /generate-equivalence-tests class=<java.package>.<Service> method=<method>

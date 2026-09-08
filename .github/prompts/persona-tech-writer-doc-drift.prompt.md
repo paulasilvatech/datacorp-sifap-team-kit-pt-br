@@ -1,130 +1,130 @@
 ---
 name: "doc-drift"
-description: "Detect drift between SIFAP 2.0 documentation and the current code, and report prioritized corrections with exact lines and fixes."
+description: "Detecta divergencias entre la documentación de SIFAP 2.0 y el código actual e informa de correcciones priorizadas con líneas y cambios exactos."
 argument-hint: "docs=<paths> code=<paths> horizon=since-release|all"
 agent: "tech-writer"
 tools: ["search"]
 ---
 # /doc-drift
 
-## Objective
+## Objetivo
 
-Audit SIFAP 2.0 documentation for **drift**: places where the docs and the code
-disagree. The deliverable is a prioritized list of corrections, each with the
-exact line, the contradiction, and a one-line fix. The report exposes drift; it
-does not silently rewrite documentation — the owner approves each change.
+Audita la documentación de SIFAP 2.0 en busca de **divergencias**: lugares donde la documentación y el código
+discrepan. El entregable es una lista priorizada de correcciones, cada una con la
+línea exacta, la contradicción y una solución de una línea. El informe expone las divergencias;
+no reescribe silenciosamente la documentación: la persona responsable aprueba cada cambio.
 
-## When to Invoke
+## Cuándo invocar
 
-Before a release, after a batch of merges, or on a schedule, to keep README,
-CODEMAP, ADRs, and runbooks honest against the code.
+Antes de publicar una versión, después de un lote de integraciones o periódicamente, para mantener README,
+CODEMAP, ADR y guías operativas fieles al código.
 
-## Preconditions
+## Precondiciones
 
-- The documentation in scope exists (README, `docs/CODEMAP.md`, `specs/<NNN>-<feature>/`, `docs/runbooks/`, ADRs)
-- The reference code the team created (`backend/`, `frontend/`, `infra/`) is readable
-- The conventions in [`../../docs/DOC-STYLE-GUIDE.md`](../../docs/DOC-STYLE-GUIDE.md) are the standard being enforced
+- Existe la documentación del alcance (README, `docs/CODEMAP.md`, `specs/<NNN>-<feature>/`, `docs/runbooks/`, ADR)
+- Se puede leer el código de referencia que creó el equipo (`backend/`, `frontend/`, `infra/`)
+- Las convenciones de [`../../docs/DOC-STYLE-GUIDE.md`](../../docs/DOC-STYLE-GUIDE.md) son el estándar que se aplica
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- The documentation in scope
-- The reference code paths
-- The time horizon: "drift since the last release" or "all current drift"
-- A list of recent merges (titles + SHAs), if available, to focus the search
+- La documentación del alcance
+- Las rutas del código de referencia
+- El horizonte temporal: «divergencias desde la última versión» o «todas las divergencias actuales»
+- Una lista de integraciones recientes (títulos + SHA), si está disponible, para enfocar la búsqueda
 
-Ask the user for anything that is missing.
+Solicita a la persona usuaria cualquier información que falte.
 
-## What I Will Do
+## Lo que haré
 
-- Build an inventory of verifiable claims (files, routes, tables, config keys, commands, versions, REQ-IDs)
-- Verify each claim against its source: controllers, migrations, `application.yml`, `Makefile`, `pom.xml`, `package.json`, and GitHub Actions
-- Classify drift as Critical, Major, or Minor
-- Verify legacy mappings and cross-check ADRs against the code
-- Produce a correction list with file, line, claim, reality, and a one-line fix, delegating the style dimension to [`../skills/doc-style-lint/SKILL.md`](../skills/doc-style-lint/SKILL.md)
+- Construir un inventario de afirmaciones verificables (archivos, rutas, tablas, claves de configuración, comandos, versiones, REQ-ID)
+- Verificar cada afirmación frente a su fuente: controladores, migraciones, `application.yml`, `Makefile`, `pom.xml`, `package.json` y GitHub Actions
+- Clasificar las divergencias como críticas, mayores o menores
+- Verificar los mapeos heredados y contrastar los ADR con el código
+- Producir una lista de correcciones con archivo, línea, afirmación, realidad y una solución de una línea, delegando la dimensión de estilo a [`../skills/doc-style-lint/SKILL.md`](../skills/doc-style-lint/SKILL.md)
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Silently edit documentation — I expose drift first; ownership matters
-- Report "the README is outdated" without a line number — every finding is actionable
-- Treat every minor mismatch as critical — I triage by real impact
-- Assert what a Natural program contains — I verify a claimed mapping against its cited source, nothing more
-- Add or recommend a markdownlint pragma (style guide §9) — corrections never introduce one
+- Editar silenciosamente la documentación: primero expongo las divergencias; la responsabilidad importa
+- Informar de que «el README está desactualizado» sin un número de línea: cada hallazgo permite actuar
+- Tratar cada discrepancia menor como crítica: clasifico según el impacto real
+- Afirmar qué contiene un programa Natural: verifico un mapeo declarado frente a su fuente citada, nada más
+- Añadir o recomendar una directiva de markdownlint (guía de estilo §9): las correcciones nunca introducen una
 
-## Output Format
+## Formato de salida
 
-A Markdown report presented for review. Example (illustrative, abbreviated):
+Un informe Markdown presentado para revisión. Ejemplo (ilustrativo, abreviado):
 
 ```markdown
-## Documentation Drift Report — 2026-05-04
+## Informe de divergencias de documentación — 2026-05-04
 
-### Summary
-- Files audited: 12
-- Critical: 2 — Major: 3 — Minor: 4
-- Most outdated file: docs/runbooks/disburse.md
+### Resumen
+- Archivos auditados: 12
+- Críticas: 2 — Mayores: 3 — Menores: 4
+- Archivo más desactualizado: docs/runbooks/disburse.md
 
-### Critical
-| # | File | Line | Claim | Reality | Correction |
+### Críticas
+| # | Archivo | Línea | Afirmación | Realidad | Corrección |
 |---|------|------|-------|---------|------------|
-| 1 | README.md | 34 | `make run` starts the app | No `run` target in Makefile | Use `./mvnw spring-boot:run` |
+| 1 | README.md | 34 | `make run` inicia la aplicación | No existe el objetivo `run` en Makefile | Utilizar `./mvnw spring-boot:run` |
 
-### Major / Minor
-... (tables)
+### Mayores / Menores
+... (tablas)
 
-### Recommended workflow
-1. One PR per critical correction, citing document and line.
-2. Group related major corrections into one reviewable PR.
-3. Record minor findings in the backlog.
+### Flujo de trabajo recomendado
+1. Una PR por corrección crítica, citando documento y línea.
+2. Agrupar las correcciones mayores relacionadas en una PR revisable.
+3. Registrar los hallazgos menores en la lista de trabajo pendiente.
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] Each finding cites a file and line
-- [ ] Each finding has a one-line proposed correction
-- [ ] Severity (Critical/Major/Minor) is assigned
-- [ ] Cross-cutting issues are summarized so they can be fixed once
-- [ ] ADRs are checked explicitly, not skipped
-- [ ] Legacy lineage references are validated against the cited source
-- [ ] Recommended PR grouping keeps corrections reviewable
+- [ ] Cada hallazgo cita un archivo y una línea
+- [ ] Cada hallazgo tiene una corrección propuesta de una línea
+- [ ] Se asigna gravedad (crítica/mayor/menor)
+- [ ] Los problemas transversales se resumen para poder corregirlos una sola vez
+- [ ] Los ADR se comprueban explícitamente, no se omiten
+- [ ] Las referencias de linaje heredado se validan frente a la fuente citada
+- [ ] La agrupación de PR recomendada mantiene revisables las correcciones
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@tech-writer`. The team wants the documentation reconciled with the
-code.
+Eres el `@tech-writer`. El equipo quiere conciliar la documentación con el
+código.
 
-**Step 1 — Inventory the claims.**
-For each in-scope document, extract claims that can be checked against code: file
-and folder names, REST routes and methods, tables and columns, environment
-variables and config keys, build/run/deploy commands, version numbers, and REQ-ID
-references.
+**Paso 1 — Inventaría las afirmaciones.**
+Para cada documento del alcance, extrae afirmaciones que puedan comprobarse frente al código: nombres de archivos
+y carpetas, rutas y métodos REST, tablas y columnas, variables de entorno
+y claves de configuración, comandos de compilación/ejecución/despliegue, números de versión y referencias
+REQ-ID.
 
-**Step 2 — Verify each claim.**
-Check routes against controllers, schemas against migrations in `db/migration/`,
-configuration against `application.yml`, and commands against `Makefile`,
-`package.json`, `pom.xml`, and GitHub Actions. Record every mismatch with its file
-and line.
+**Paso 2 — Verifica cada afirmación.**
+Comprueba las rutas frente a los controladores, los esquemas frente a las migraciones de `db/migration/`,
+la configuración frente a `application.yml` y los comandos frente a `Makefile`,
+`package.json`, `pom.xml` y GitHub Actions. Registra cada discrepancia con su archivo
+y línea.
 
-**Step 3 — Classify.**
-Mark each drift Critical (instructions that fail when followed), Major (outdated
-facts that mislead but do not break the workflow), or Minor (terminology or an
-outdated example).
+**Paso 3 — Clasifica.**
+Marca cada divergencia como crítica (instrucciones que fallan al seguirlas), mayor (hechos desactualizados
+que inducen a error, pero no interrumpen el flujo de trabajo) o menor (terminología o un
+ejemplo desactualizado).
 
-**Step 4 — Verify legacy mappings.**
-For any document claiming a module replaces a Natural program, verify the cited
-source under `01-archaeology/legacy-sifap/natural-programs/`. Do not assert the
-program's behavior — only confirm the claim matches its cited evidence.
+**Paso 4 — Verifica los mapeos heredados.**
+Para cualquier documento que afirme que un módulo sustituye un programa Natural, verifica la fuente
+citada en `01-archaeology/legacy-sifap/natural-programs/`. No afirmes el
+comportamiento del programa: confirma solo que la afirmación coincide con la evidencia citada.
 
-**Step 5 — Cross-check ADRs.**
-An ADR marked "Status: Accepted" whose "Consequences" are not reflected in the
-code is Critical drift. Check ADRs explicitly; they drift the most.
+**Paso 5 — Contrasta los ADR.**
+Un ADR marcado como «Estado: Aceptado» cuyas «Consecuencias» no se reflejen en el
+código es una divergencia crítica. Comprueba los ADR explícitamente; son los que más divergen.
 
-**Step 6 — Assemble the correction list.**
-Group findings by severity into tables and add a recommended PR workflow. Audit
-only active documentation; mark `docs/archive/` as archived and skip it.
+**Paso 6 — Compón la lista de correcciones.**
+Agrupa los hallazgos por gravedad en tablas y añade un flujo de PR recomendado. Audita
+solo documentación activa; marca `docs/archive/` como archivado y omítelo.
 
-Always expose the drift and propose a correction — never rewrite silently, and
-never introduce a markdownlint pragma.
+Expón siempre la divergencia y propón una corrección; nunca reescribas silenciosamente
+ni introduzcas una directiva de markdownlint.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
 /doc-drift docs=README.md,docs/CODEMAP.md code=backend/,frontend/ horizon=all

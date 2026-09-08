@@ -1,88 +1,88 @@
 ---
 name: "comment-code-generate-a-tutorial"
-description: "Refactor a source file, add beginner-friendly instructional comments, and generate a README tutorial, deferring the workflow to the comment-code-generate-a-tutorial skill."
+description: "Refactoriza un archivo fuente, añade comentarios didácticos para principiantes y genera un tutorial README, delegando el flujo de trabajo a la habilidad comment-code-generate-a-tutorial."
 argument-hint: "file=<path-to-source>"
 agent: "tech-writer"
 tools: ["read", "edit", "search"]
 ---
 # /comment-code-generate-a-tutorial
 
-## Objective
+## Objetivo
 
-Turn a single source file into a teaching artifact: refactor it for clarity, add instructional comments that explain the reasoning, and generate a `README.md` tutorial. The full workflow lives in the [`comment-code-generate-a-tutorial`](../skills/comment-code-generate-a-tutorial/SKILL.md) skill; this prompt applies it to the SIFAP 2.0 stack without restating it.
+Convertir un único archivo fuente en un recurso didáctico: refactorizarlo para mejorar su claridad, añadir comentarios didácticos que expliquen el razonamiento y generar un tutorial en `README.md`. El flujo de trabajo completo se encuentra en la habilidad [`comment-code-generate-a-tutorial`](../skills/comment-code-generate-a-tutorial/SKILL.md); este prompt lo aplica a las tecnologías de SIFAP 2.0 sin repetirlo.
 
 > [!NOTE]
-> The skill's example is Python; in this kit apply it to Java 21 or TypeScript and follow the matching style guide.
+> El ejemplo de la habilidad utiliza Python; en este kit, aplícala a Java 21 o TypeScript y sigue la guía de estilo correspondiente.
 
-## When to Invoke
+## Cuándo invocar
 
-During Stage 3/4, when preparing a walkthrough for the workshop — for example, explaining a translated module to the rest of the team.
+Durante las etapas 3/4, al preparar una explicación guiada para la inmersión; por ejemplo, para explicar un módulo traducido al resto del equipo.
 
-## Preconditions
+## Precondiciones
 
-- The target source file exists and runs (or compiles)
-- The audience and the concept to teach are known
-- The file contains no unmasked sensitive data
+- El archivo fuente de destino existe y se ejecuta (o compila)
+- Se conocen el público y el concepto que se quiere enseñar
+- El archivo no contiene datos sensibles sin enmascarar
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- `file` — the path to the source file to document
-- The intended audience and the teaching goal
-- Ask the user for anything that is missing.
+- `file` — la ruta del archivo fuente que se va a documentar
+- El público destinatario y el objetivo didáctico
+- Solicita a la persona usuaria cualquier información que falte.
 
-## What I Will Do
+## Lo que haré
 
-- Follow the refactor → comment → tutorial procedure in the [`comment-code-generate-a-tutorial`](../skills/comment-code-generate-a-tutorial/SKILL.md) skill
-- Apply it to the kit's languages — Java 21 (backend) or TypeScript on Next.js 15 (frontend)
-- Add instructional comments that explain intent and reasoning, not syntax
-- Generate a `README.md` with overview, setup, how-it-works, and example usage
+- Seguir el procedimiento refactorización → comentarios → tutorial de la habilidad [`comment-code-generate-a-tutorial`](../skills/comment-code-generate-a-tutorial/SKILL.md)
+- Aplicarlo a los lenguajes del kit: Java 21 (backend) o TypeScript sobre Next.js 15 (frontend)
+- Añadir comentarios didácticos que expliquen la intención y el razonamiento, no la sintaxis
+- Generar un `README.md` con una descripción general, instrucciones de configuración, explicación del funcionamiento y un ejemplo de uso
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Apply Python/PEP 8 conventions unless the file really is Python
-- Add superficial comments that restate the code
-- Put sensitive data (CPF, benefit amounts) in examples or sample output
-- Write the tutorial in any language other than English
+- Aplicar las convenciones de Python/PEP 8 a menos que el archivo realmente sea de Python
+- Añadir comentarios superficiales que repitan el código
+- Incluir datos sensibles (CPF, importes de prestaciones) en los ejemplos o las salidas de muestra
+- Escribir el tutorial en un idioma distinto del de la rama de destino: español en `espanol`, inglés en `main` y `develop`, y portugués de Brasil en `portugues-br`
 
-## Output Format
+## Formato de salida
 
 ```markdown
-### Refactored
-`backend/.../PaymentRules.java` — clearer names and instructional comments added
+### Refactorizado
+`backend/.../PaymentRules.java` — nombres más claros y comentarios didácticos añadidos
 
 ### Tutorial (README.md)
-- Project Overview
-- Setup Instructions
-- How It Works
-- Example Usage
-- Sample Output (optional)
+- Descripción general del proyecto
+- Instrucciones de configuración
+- Cómo funciona
+- Ejemplo de uso
+- Salida de muestra (opcional)
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] The code is refactored for clarity and follows the language's style guide
-- [ ] Instructional comments explain reasoning, without noise
-- [ ] `README.md` covers overview, setup, how-it-works, and example usage
-- [ ] No sensitive data appears; all prose is in English
+- [ ] El código se refactoriza para mejorar su claridad y sigue la guía de estilo del lenguaje
+- [ ] Los comentarios didácticos explican el razonamiento, sin ruido
+- [ ] `README.md` abarca la descripción general, la configuración, el funcionamiento y un ejemplo de uso
+- [ ] No aparecen datos sensibles; toda la prosa del tutorial está en el idioma de la rama de destino
 
-## Prompt Body
+## Cuerpo del prompt
 
-The [`comment-code-generate-a-tutorial`](../skills/comment-code-generate-a-tutorial/SKILL.md) skill owns the refactor-comment-tutorial procedure — read it, then apply it to the file.
+La habilidad [`comment-code-generate-a-tutorial`](../skills/comment-code-generate-a-tutorial/SKILL.md) define el procedimiento de refactorización, comentarios y tutorial: léela y aplícala al archivo.
 
-**Step 1 — Read and refactor.**
-Understand the file, then improve names and structure per its language's best practices (Java 21 or TypeScript).
+**Paso 1 — Leer y refactorizar.**
+Comprende el archivo y mejora los nombres y la estructura según las buenas prácticas de su lenguaje (Java 21 o TypeScript).
 
-**Step 2 — Apply the skill.**
-Add beginner-friendly instructional comments and generate the `README.md` sections the skill prescribes.
+**Paso 2 — Aplicar la habilidad.**
+Añade comentarios didácticos para principiantes y genera las secciones de `README.md` que prescribe la habilidad.
 
-**Step 3 — Respect the kit rules.**
-Use the correct style guide for the language, write in English, and mask any sensitive data.
+**Paso 3 — Respetar las reglas del kit.**
+Utiliza la guía de estilo correcta para el lenguaje, escribe la prosa del tutorial en el idioma de la rama de destino y enmascara cualquier dato sensible.
 
-**Step 4 — Review.**
-Confirm the comments teach intent and the tutorial stands on its own.
+**Paso 4 — Revisar.**
+Confirma que los comentarios expliquen la intención y que el tutorial se entienda por sí solo.
 
-## Invocation Example
+## Ejemplo de invocación
 
-```
+```text
 /comment-code-generate-a-tutorial file=backend/src/main/java/com/sifap/payment/PaymentRules.java
 ```

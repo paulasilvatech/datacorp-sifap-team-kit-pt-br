@@ -1,90 +1,90 @@
 ---
 name: "refactor-safely"
-description: "Use when refactoring legacy code, extracting a service, or making behavior-preserving changes. Triggers include \"refactor\", \"legacy code\", \"strangler fig\", \"characterization test\", and \"mikado method\"."
+description: "Úsala para refactorizar código legado, extraer un servicio o realizar cambios que preserven el comportamiento. Los desencadenantes incluyen \"refactorizar\", \"código legado\", \"strangler fig\", \"prueba de caracterización\" y \"método Mikado\"."
 ---
-# Refactor safely
+# Refactorización segura
 
-## When to invoke
+## Cuándo invocar
 
-- When working on code without sufficient tests.
-- When splitting a monolith or extracting a service.
-- When a change is "one line" but touches a risky path.
+- Al trabajar en código sin suficientes pruebas.
+- Al dividir un monolito o extraer un servicio.
+- Cuando un cambio es de "una línea", pero afecta a una ruta de riesgo.
 
-## First rule
+## Primera regla
 
-**Refactoring preserves behavior.** If you cannot prove that behavior was preserved, it is not refactoring—it is a rewrite. Put characterization tests in place first.
+**La refactorización preserva el comportamiento.** Si no puedes demostrar que el comportamiento se conservó, no es una refactorización, sino una reescritura. Establece primero pruebas de caracterización.
 
-## Workflow
+## Flujo de trabajo
 
-1. **Characterize** - write tests that lock in current behavior, including quirks. Do not fix bugs yet; the goal is a safety net, not a correction.
-2. **Take small, reversible steps** - apply one behavior-preserving transformation at a time. Commit after each one.
-3. **Keep it green** - run tests after every step. Revert immediately if they turn red and you do not know why.
-4. **Separate refactoring commits from behavior-change commits** - reviewers can focus, and bisect remains useful.
-5. **Integrate frequently** - long-lived refactoring branches decay.
+1. **Caracteriza**: escribe pruebas que fijen el comportamiento actual, incluidas sus peculiaridades. Aún no corrijas errores; el objetivo es una red de seguridad, no una corrección.
+2. **Da pasos pequeños y reversibles**: aplica una transformación que preserve el comportamiento a la vez. Haz un commit después de cada una.
+3. **Mantén las pruebas en verde**: ejecútalas después de cada paso. Revierte de inmediato si pasan a rojo y no sabes por qué.
+4. **Separa los commits de refactorización de los que cambian el comportamiento**: así quienes revisan pueden concentrarse y bisect sigue siendo útil.
+5. **Integra con frecuencia**: las ramas de refactorización de larga duración se deterioran.
 
-## Patterns
+## Patrones
 
-### Strangler Fig (for systems)
+### Strangler Fig (para sistemas)
 
-1. Put a facade (proxy, router, feature flag) in front of the old system.
-2. Route a thin slice of traffic to the new implementation.
-3. Grow the new implementation slice by slice while shrinking the old one.
-4. Delete the old implementation when its traffic reaches zero.
+1. Coloca una fachada (proxy, enrutador o bandera de funcionalidad) delante del sistema antiguo.
+2. Dirige una pequeña porción del tráfico a la nueva implementación.
+3. Amplía la nueva implementación por partes mientras reduces la antigua.
+4. Elimina la implementación antigua cuando su tráfico llegue a cero.
 
-### Mikado Method (for code)
+### Método Mikado (para código)
 
-1. Write down the goal.
-2. Attempt it naively; record what breaks as **prerequisites**.
-3. Revert. Address one prerequisite first. Recurse.
-4. Complete the leaves first; achieve the original goal last.
+1. Anota el objetivo.
+2. Intenta alcanzarlo directamente; registra lo que se rompa como **prerrequisitos**.
+3. Revierte. Resuelve primero un prerrequisito. Repite el proceso de forma recursiva.
+4. Completa primero las hojas del árbol; alcanza el objetivo original al final.
 
-### Branch by Abstraction
+### Ramificación mediante abstracción (Branch by Abstraction)
 
-Introduce an interface, migrate callers to it, swap implementations, and retire the old one—all without a long-lived branch.
+Introduce una interfaz, migra quienes la invocan, intercambia las implementaciones y retira la antigua, todo ello sin una rama de larga duración.
 
-## Characterization tests - how
+## Cómo crear pruebas de caracterización
 
-- Run the code with representative inputs and record the output (golden files / snapshot tests).
-- Prefer observing from the outside (HTTP, CLI, database state)—this is resilient to internal refactoring.
-- Cover unusual cases too; they are the ones that break.
-- Accept that some behaviors are *bugs you are now preserving*. Mark them, then fix them after the safety net is in place.
+- Ejecuta el código con entradas representativas y registra la salida (archivos de referencia o pruebas de instantáneas).
+- Prefiere observar desde fuera (HTTP, CLI, estado de la base de datos); este enfoque resiste las refactorizaciones internas.
+- Cubre también los casos inusuales; son los que fallan.
+- Acepta que algunos comportamientos son *errores que ahora estás preservando*. Márcalos y corrígelos una vez establecida la red de seguridad.
 
-## Antipatterns
+## Antipatrones
 
-- "Refactor" PRs that also fix bugs, change APIs, and rename files—impossible to review and impossible to revert.
-- Big-bang rewrites with no delivery for months.
-- Deleting old code before the new code handles 100% of traffic.
-- Refactoring without tests and relying on manual happy-path verification.
+- PR de "refactorización" que también corrigen errores, cambian API y renombran archivos; imposibles de revisar y de revertir.
+- Reescrituras completas de una sola vez, sin entregas durante meses.
+- Eliminar código antiguo antes de que el nuevo gestione el 100% del tráfico.
+- Refactorizar sin pruebas y depender de la comprobación manual del flujo exitoso.
 
-## Output template
+## Plantilla de salida
 
 ```markdown
-## Refactor plan - <target>
+## Plan de refactorización - <objetivo>
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| Goal | <behavior-preserving change> |
-| Safety net | <characterization test path> |
-| Pattern | Strangler Fig / Mikado / Branch by Abstraction |
-| Steps | <ordered, reversible transformations> |
+| Objetivo | <cambio que preserva el comportamiento> |
+| Red de seguridad | <ruta de la prueba de caracterización> |
+| Patrón | Strangler Fig / Mikado / Branch by Abstraction |
+| Pasos | <transformaciones ordenadas y reversibles> |
 
-### Prerequisites (Mikado)
-- <prerequisite discovered by attempting the goal>
+### Prerrequisitos (Mikado)
+- <prerrequisito descubierto al intentar alcanzar el objetivo>
 
 ### Commits
-- refactor: <one behavior-preserving step per commit>
+- refactor: <un paso que preserva el comportamiento por commit>
 ```
 
-## Quality gate
+## Puerta de calidad
 
-- [ ] Characterization tests capture current behavior (including quirks) before any change.
-- [ ] Refactoring commits are separate from behavior-change commits.
-- [ ] Tests stay green after every step; a red step is reverted, not pushed through.
-- [ ] Old code is deleted only after the new path handles all traffic.
+- [ ] Las pruebas de caracterización capturan el comportamiento actual (incluidas sus peculiaridades) antes de cualquier cambio.
+- [ ] Los commits de refactorización están separados de los commits que cambian el comportamiento.
+- [ ] Las pruebas siguen pasando después de cada paso; un paso en rojo se revierte en lugar de forzar su continuación.
+- [ ] El código antiguo se elimina solo cuando la nueva ruta gestiona todo el tráfico.
 
-## References
+## Referencias
 
-- [Martin Fowler - Refactoring (2nd ed.)](https://martinfowler.com/books/refactoring.html)
-- [Michael Feathers - Working Effectively with Legacy Code](https://www.oreilly.com/library/view/working-effectively-with/0131177052/)
-- [Mikado Method](https://mikadomethod.info/)
-- [Fowler - Strangler Fig Application](https://martinfowler.com/bliki/StranglerFigApplication.html)
+- [Martin Fowler - Refactoring (2.ª edición)](https://martinfowler.com/books/refactoring.html)
+- [Michael Feathers - Working Effectively with Legacy Code (trabajo eficaz con código legado)](https://www.oreilly.com/library/view/working-effectively-with/0131177052/)
+- [Método Mikado](https://mikadomethod.info/)
+- [Fowler - Aplicación del patrón Strangler Fig](https://martinfowler.com/bliki/StranglerFigApplication.html)

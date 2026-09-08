@@ -1,70 +1,70 @@
-# Inquiry Checkpoints
+# Puntos de control de la investigación
 
-Per-template investigation questions for Phase 2 of the acquire-codebase-knowledge workflow. For each template area, look for answers in the scan output first, then read source files to fill gaps.
+Preguntas de investigación por plantilla para la fase 2 del flujo de trabajo de acquire-codebase-knowledge. Para cada área de la plantilla, busca primero las respuestas en la salida del análisis y luego lee los archivos fuente para cubrir las carencias.
 
 ---
 
-## 1. STACK.md — Tech Stack
+## 1. STACK.md — Stack tecnológico
 
-- What is the primary language and exact version? (check `.nvmrc`, `go.mod`, `pyproject.toml`, Docker `FROM` line)
-- What package manager is used? (`npm`, `yarn`, `pnpm`, `go mod`, `pip`, `uv`)
-- What are the core runtime frameworks? (web server, ORM, DI container)
-- What do `dependencies` (production) vs `devDependencies` (dev tooling) contain?
-- Is there a Docker image and what base image does it use?
-- What are the key scripts in `package.json` / `Makefile` / `pyproject.toml`?
+- ¿Cuál es el lenguaje principal y su versión exacta? (Revisa `.nvmrc`, `go.mod`, `pyproject.toml` y la línea `FROM` de Docker).
+- ¿Qué gestor de paquetes se utiliza? (`npm`, `yarn`, `pnpm`, `go mod`, `pip`, `uv`).
+- ¿Cuáles son los frameworks principales de ejecución? (Servidor web, ORM, contenedor de inyección de dependencias).
+- ¿Qué contienen `dependencies` (producción) y `devDependencies` (herramientas de desarrollo)?
+- ¿Existe una imagen de Docker y qué imagen base utiliza?
+- ¿Cuáles son los scripts principales de `package.json` / `Makefile` / `pyproject.toml`?
 
-## 2. STRUCTURE.md — Directory Layout
+## 2. STRUCTURE.md — Organización de directorios
 
-- Where does source code live? (usually `src/`, `lib/`, or project root for Go)
-- What are the entry points? (check `main` in `package.json`, `scripts.start`, `cmd/main.go`, `app.py`)
-- What is the stated purpose of each top-level directory?
-- Are there non-obvious directories (e.g., `eng/`, `platform/`, `infra/`)?
-- Are there hidden config directories (`.github/`, `.vscode/`, `.husky/`)?
-- What naming conventions do directories follow? (camelCase, kebab-case, domain-based vs layer-based)
+- ¿Dónde se encuentra el código fuente? (Por lo general, en `src/`, `lib/` o la raíz del proyecto en Go).
+- ¿Cuáles son los puntos de entrada? (Revisa `main` en `package.json`, `scripts.start`, `cmd/main.go`, `app.py`).
+- ¿Cuál es la finalidad declarada de cada directorio del nivel superior?
+- ¿Hay directorios cuya finalidad no sea evidente (por ejemplo, `eng/`, `platform/`, `infra/`)?
+- ¿Hay directorios ocultos de configuración (`.github/`, `.vscode/`, `.husky/`)?
+- ¿Qué convenciones de nomenclatura siguen los directorios? (camelCase, kebab-case, organización por dominio o por capa).
 
-## 3. ARCHITECTURE.md — Patterns
+## 3. ARCHITECTURE.md — Patrones
 
-- Is the code organized by layer (controllers → services → repos) or by feature?
-- What is the primary data flow? Trace one request or command from entry to data store.
-- Are there singletons, dependency injection patterns, or explicit initialization order requirements?
-- Are there background workers, queues, or event-driven components?
-- What design patterns appear repeatedly? (Factory, Repository, Decorator, Strategy)
+- ¿El código está organizado por capas (controladores → servicios → repositorios) o por funcionalidad?
+- ¿Cuál es el flujo principal de datos? Sigue una solicitud o un comando desde la entrada hasta el almacén de datos.
+- ¿Hay singletons, patrones de inyección de dependencias o requisitos explícitos sobre el orden de inicialización?
+- ¿Hay procesos en segundo plano, colas o componentes orientados a eventos?
+- ¿Qué patrones de diseño aparecen de forma recurrente? (Factory, Repository, Decorator, Strategy).
 
-## 4. CONVENTIONS.md — Coding Standards
+## 4. CONVENTIONS.md — Estándares de código
 
-- What is the file naming convention? (check 10+ files — camelCase, kebab-case, PascalCase)
-- What is the function and variable naming convention?
-- Are private methods/fields prefixed (e.g., `_methodName`, `#field`)?
-- What linter and formatter are configured? (check `.eslintrc`, `.prettierrc`, `golangci.yml`)
-- What are the TypeScript strictness settings? (`strict`, `noImplicitAny`, etc.)
-- How are errors handled at each layer? (throw vs. return structured error)
-- What logging library is used and what is the log message format?
-- How are imports organized? (barrel exports, path aliases, grouping rules)
+- ¿Cuál es la convención de nomenclatura de archivos? (Revisa 10 o más archivos: camelCase, kebab-case, PascalCase).
+- ¿Cuál es la convención de nomenclatura de funciones y variables?
+- ¿Los métodos o campos privados llevan prefijos (por ejemplo, `_methodName`, `#field`)?
+- ¿Qué linter y formateador están configurados? (Revisa `.eslintrc`, `.prettierrc`, `golangci.yml`).
+- ¿Qué opciones de comprobación estricta utiliza TypeScript? (`strict`, `noImplicitAny`, etc.).
+- ¿Cómo se gestionan los errores en cada capa? (Lanzar una excepción o devolver un error estructurado).
+- ¿Qué biblioteca de registro se utiliza y cuál es el formato de los mensajes de registro?
+- ¿Cómo se organizan las importaciones? (Exportaciones mediante archivos índice, alias de rutas y reglas de agrupación).
 
-## 5. INTEGRATIONS.md — External Services
+## 5. INTEGRATIONS.md — Servicios externos
 
-- What external APIs are called? (search for `axios.`, `fetch(`, `http.Get(`, base URLs in constants)
-- How are credentials stored and accessed? (`.env`, secrets manager, env vars)
-- What databases are connected? (check manifest for `pg`, `mongoose`, `prisma`, `typeorm`, `sqlalchemy`)
-- Is there an API gateway, service mesh, or proxy between the app and external services?
-- What monitoring or observability tools are used? (APM, Prometheus, logging pipeline)
-- Are there message queues or event buses? (Kafka, RabbitMQ, SQS, Pub/Sub)
+- ¿A qué API externas se llama? (Busca `axios.`, `fetch(`, `http.Get(` y URL base en constantes).
+- ¿Cómo se almacenan las credenciales y cómo se accede a ellas? (`.env`, gestor de secretos, variables de entorno).
+- ¿A qué bases de datos se conecta el sistema? (Busca `pg`, `mongoose`, `prisma`, `typeorm`, `sqlalchemy` en el manifiesto).
+- ¿Hay una puerta de enlace de API, una malla de servicios o un proxy entre la aplicación y los servicios externos?
+- ¿Qué herramientas de supervisión u observabilidad se utilizan? (APM, Prometheus, canalización de registros).
+- ¿Hay colas de mensajes o buses de eventos? (Kafka, RabbitMQ, SQS, Pub/Sub).
 
-## 6. TESTING.md — Test Setup
+## 6. TESTING.md — Configuración de pruebas
 
-- What test runner is configured? (check `scripts.test` in `package.json`, `pytest.ini`, `go test`)
-- Where are test files located? (alongside source, in `tests/`, in `__tests__/`)
-- What assertion library is used? (Jest expect, Chai, pytest assert)
-- How are external dependencies mocked? (jest.mock, dependency injection, fixtures)
-- Are there integration tests that hit real services vs. unit tests with mocks?
-- Is there a coverage threshold enforced? (check `jest.config.js`, `.nycrc`, `pyproject.toml`)
+- ¿Qué ejecutor de pruebas está configurado? (Revisa `scripts.test` en `package.json`, `pytest.ini`, `go test`).
+- ¿Dónde se encuentran los archivos de prueba? (Junto al código fuente, en `tests/`, en `__tests__/`).
+- ¿Qué biblioteca de aserciones se utiliza? (Jest expect, Chai, pytest assert).
+- ¿Cómo se simulan las dependencias externas? (jest.mock, inyección de dependencias, fixtures).
+- ¿Hay pruebas de integración que accedan a servicios reales, a diferencia de las pruebas unitarias con simulaciones?
+- ¿Se exige un umbral de cobertura? (Revisa `jest.config.js`, `.nycrc`, `pyproject.toml`).
 
-## 7. CONCERNS.md — Known Issues
+## 7. CONCERNS.md — Problemas conocidos
 
-- How many TODOs/FIXMEs/HACKs are in production code? (see scan output)
-- Which files have the highest git churn in the last 90 days? (see scan output)
-- Are there any files over 500 lines that mix multiple responsibilities?
-- Do any services make sequential calls that could be parallelized?
-- Are there hardcoded values (URLs, IDs, magic numbers) that should be config?
-- What security risks exist? (missing input validation, raw error messages exposed to clients, missing auth checks)
-- Are there performance patterns that don't scale? (N+1 queries, in-memory caches in multi-instance setups)
+- ¿Cuántos TODO/FIXME/HACK hay en el código de producción? (Consulta la salida del análisis).
+- ¿Qué archivos acumulan más cambios en Git en los últimos 90 días? (Consulta la salida del análisis).
+- ¿Hay archivos de más de 500 líneas que mezclen varias responsabilidades?
+- ¿Hay servicios que hagan llamadas secuenciales que podrían paralelizarse?
+- ¿Hay valores incrustados en el código (URL, ID, números mágicos) que deberían formar parte de la configuración?
+- ¿Qué riesgos de seguridad existen? (Falta de validación de entradas, mensajes de error sin filtrar expuestos a clientes, ausencia de comprobaciones de autenticación).
+- ¿Hay patrones de rendimiento que no escalen? (Consultas N+1, cachés en memoria en configuraciones con varias instancias).

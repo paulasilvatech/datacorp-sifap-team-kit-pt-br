@@ -1,116 +1,116 @@
 ---
 name: "coverage-gaps"
-description: "Audit test coverage by REQ-ID and report untested requirements, missing edge cases, and spec-to-test gaps ranked by risk."
+description: "Audita la cobertura de pruebas por REQ-ID e informa de requisitos sin probar, casos límite ausentes y lagunas entre especificación y pruebas, ordenados por riesgo."
 argument-hint: "feature=<NNN>-<feature> scope=all|diff|REQ-COMP"
 agent: "qa-engineer"
 tools: ["read", "search", "execute"]
 ---
 # /coverage-gaps
 
-## Objective
+## Objetivo
 
-Audit test coverage in SIFAP 2.0 and deliver a prioritized list of **untested or insufficiently tested requirements** — not a percentage. Line coverage is a vanity metric; requirement coverage is the truth. The report is ready to paste into a sprint-planning ticket, highest risk first, with a one-line test recipe for each gap.
+Audita la cobertura de pruebas de SIFAP 2.0 y entrega una lista priorizada de **requisitos sin probar o insuficientemente probados**, no un porcentaje. La cobertura de líneas es una métrica de vanidad; la cobertura de requisitos es la verdad. El informe está listo para pegar en un ticket de planificación de sprint, con el mayor riesgo primero y una propuesta de prueba de una línea por cada laguna.
 
-## When to Invoke
+## Cuándo invocar
 
-Before a bounded context is declared done, during PR review, or ahead of sprint planning — whenever the team needs to know which requirements are genuinely verified versus merely executed.
+Antes de declarar terminado un contexto delimitado, durante una revisión de PR o antes de planificar un sprint: siempre que el equipo necesite saber qué requisitos están realmente verificados y cuáles simplemente se ejecutan.
 
-## Preconditions
+## Precondiciones
 
-- `specs/<NNN>-<feature>/spec.md` declares the `REQ-ID`s in scope
-- Implementation and test sources exist under `backend/` and/or `frontend/`
-- A coverage report is available or can be generated (JaCoCo XML for the backend, Vitest LCOV for the frontend)
+- `specs/<NNN>-<feature>/spec.md` declara los `REQ-ID` del alcance
+- Existen fuentes de implementación y pruebas en `backend/` y/o `frontend/`
+- Hay disponible un informe de cobertura o puede generarse (XML de JaCoCo para backend, LCOV de Vitest para frontend)
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- The feature folder (`specs/<NNN>-<feature>/`) and the implementation folders
-- A recent coverage report, or permission to generate one
-- The scope: all `REQ-ID`s in the folder, only this PR's diff, or only the regulatory `REQ-COMP-*` set
+- La carpeta de funcionalidad (`specs/<NNN>-<feature>/`) y las carpetas de implementación
+- Un informe de cobertura reciente o permiso para generar uno
+- El alcance: todos los `REQ-ID` de la carpeta, solo las diferencias de esta PR o solo el conjunto regulatorio `REQ-COMP-*`
 
-Ask the user for anything that is missing.
+Solicita a la persona usuaria cualquier información que falte.
 
-## What I Will Do
+## Lo que haré
 
-- Build a requirements inventory from `spec.md`, keyed by `REQ-ID` and EARS pattern
-- Cross-reference the `spec-traceability` job output in `.github/workflows/spec-quality.yml` for `REQ-ID`s CI already flags as untested
-- Map each `REQ-ID` to its tests and rate it `MISSING`, `WEAK`, or `OK`
-- Inspect EARS variants for hidden negative and state-transition cases
-- Check legacy-derived edge cases generically against `01-archaeology/legacy-sifap/natural-programs/`
-- Score every gap by risk and deliver the prioritized list
+- Construir un inventario de requisitos a partir de `spec.md`, organizado por `REQ-ID` y patrón EARS
+- Contrastar con la salida del trabajo `spec-traceability` de `.github/workflows/spec-quality.yml` para identificar los `REQ-ID` que la CI ya señala como no probados
+- Vincular cada `REQ-ID` a sus pruebas y calificarlo como `MISSING`, `WEAK` u `OK`
+- Inspeccionar las variantes EARS para encontrar casos negativos y de transición de estados ocultos
+- Comprobar de forma general los casos límite derivados del sistema heredado frente a `01-archaeology/legacy-sifap/natural-programs/`
+- Puntuar cada laguna por riesgo y entregar la lista priorizada
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Invent SIFAP behavior, a missing requirement, or a legacy edge case — I reference `01-archaeology/legacy-sifap/` generically and ask the team when a value is unknown
-- Write the tests (`/create-tests`), implement fixes (`@builder`), or edit the spec (`@requirements-engineer`)
-- Report a line-coverage percentage as if it were behavior coverage
-- Count redundant happy-path tests as sufficient, or treat UI snapshot tests as UX requirement coverage
-- Suggest recipes that assert implementation details (private methods, SQL strings)
+- Inventar comportamiento de SIFAP, un requisito ausente ni un caso límite heredado: referencio `01-archaeology/legacy-sifap/` de forma general y pregunto al equipo cuando se desconoce un valor
+- Escribir las pruebas (`/create-tests`), implementar correcciones (`@builder`) ni editar la especificación (`@requirements-engineer`)
+- Informar de un porcentaje de cobertura de líneas como si fuera cobertura de comportamiento
+- Considerar suficientes las pruebas redundantes del caso satisfactorio ni tratar las instantáneas de interfaz como cobertura de requisitos UX
+- Sugerir pruebas que verifiquen detalles de implementación (métodos privados, cadenas SQL)
 
-## Output Format
+## Formato de salida
 
-A Markdown report returned inline:
+Un informe Markdown devuelto directamente en la respuesta:
 
 ```markdown
-## Coverage Gap Report — <feature>
+## Informe de lagunas de cobertura — <feature>
 
-### Summary
-- Requirements in scope: 12
+### Resumen
+- Requisitos del alcance: 12
 - OK: 7 — WEAK: 3 — MISSING: 2
-- Highest-risk gap: REQ-014 (non-positive amount is not rejected)
+- Laguna de mayor riesgo: REQ-014 (no se rechaza un importe no positivo)
 
-### Gaps by risk
+### Lagunas por riesgo
 
-| REQ-ID | EARS pattern | Status | Risk (P×I) | Recipe |
+| REQ-ID | Patrón EARS | Estado | Riesgo (P×I) | Propuesta de prueba |
 |--------|--------------|--------|-----------|--------|
-| REQ-014 | Unwanted | MISSING | 9 | add negative test for amount <= minimum |
-| REQ-021 | State-driven | WEAK | 6 | add re-entry transition test |
-| REQ-015 | Event-driven | WEAK | 4 | add "event did not occur" negative test |
+| REQ-014 | No deseado | MISSING | 9 | añadir una prueba negativa para importe <= mínimo |
+| REQ-021 | Guiado por estados | WEAK | 6 | añadir una prueba de transición de reentrada |
+| REQ-015 | Guiado por eventos | WEAK | 4 | añadir una prueba negativa de «el evento no ocurrió» |
 
-### Legacy-derived edge cases still uncovered
-- Boundary from a Natural program in `01-archaeology/legacy-sifap/natural-programs/` — confirm with the team, then map to REQ-014.
+### Casos límite heredados aún sin cubrir
+- Límite de un programa Natural en `01-archaeology/legacy-sifap/natural-programs/`: confirmar con el equipo y después vincular a REQ-014.
 
-### Suggested test additions
+### Pruebas adicionales sugeridas
 1. `AmountRuleTest#should_reject_when_amount_below_minimum`
 2. `StatusMachineTest#should_allow_reentry_after_exit`
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] Every in-scope `REQ-ID` appears exactly once in the report
-- [ ] Each gap has a risk score (probability × impact) and a one-line test recipe
-- [ ] Negative / unwanted-behavior requirements without a negative test are marked `WEAK` or `MISSING`
-- [ ] Legacy-derived edge cases are explicitly checked against `01-archaeology/legacy-sifap/natural-programs/`
-- [ ] The top three gaps carry actionable test names ready for assignment
-- [ ] The output is ready to paste into a sprint-planning ticket
+- [ ] Cada `REQ-ID` del alcance aparece exactamente una vez en el informe
+- [ ] Cada laguna tiene una puntuación de riesgo (probabilidad × impacto) y una propuesta de prueba de una línea
+- [ ] Los requisitos negativos o de comportamiento no deseado sin prueba negativa están marcados como `WEAK` o `MISSING`
+- [ ] Los casos límite heredados se comprueban explícitamente frente a `01-archaeology/legacy-sifap/natural-programs/`
+- [ ] Las tres lagunas principales incluyen nombres de pruebas concretos listos para asignar
+- [ ] La salida está lista para pegar en un ticket de planificación de sprint
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@qa-engineer` auditing whether requirements are truly verified. Follow the pyramid and coverage philosophy in [`../skills/test-strategy/SKILL.md`](../skills/test-strategy/SKILL.md).
+Eres el `@qa-engineer` que audita si los requisitos están realmente verificados. Sigue la pirámide y la filosofía de cobertura de [`../skills/test-strategy/SKILL.md`](../skills/test-strategy/SKILL.md).
 
-**Step 1 — Build the requirements inventory.**
-Parse `spec.md` and extract each `REQ-ID` with its EARS pattern and acceptance criteria.
+**Paso 1 — Construye el inventario de requisitos.**
+Analiza `spec.md` y extrae cada `REQ-ID` con su patrón EARS y sus criterios de aceptación.
 
-**Step 2 — Find tests by REQ-ID.**
-Grep the test sources for `REQ-NNN`, `@Tag("REQ-NNN")`, `@implements REQ-NNN`, `describe('REQ-NNN', ...)`, and naming conventions such as `Req014_*`. Cross-check the `spec-traceability` job in `.github/workflows/spec-quality.yml`, which already lists `REQ-ID`s declared in `specs/` but not referenced by tests.
+**Paso 2 — Encuentra pruebas por REQ-ID.**
+Busca en las fuentes de pruebas `REQ-NNN`, `@Tag("REQ-NNN")`, `@implements REQ-NNN`, `describe('REQ-NNN', ...)` y convenciones de nombres como `Req014_*`. Contrasta con el trabajo `spec-traceability` de `.github/workflows/spec-quality.yml`, que ya enumera los `REQ-ID` declarados en `specs/` pero no referenciados por pruebas.
 
-**Step 3 — Map test to requirement.**
-For each `REQ-ID`, list the covering tests and rate it: `MISSING` (none), `WEAK` (only one happy-path test), or `OK` (happy path plus at least one boundary or error case).
+**Paso 3 — Vincula pruebas con requisitos.**
+Para cada `REQ-ID`, enumera las pruebas que lo cubren y califícalo como `MISSING` (ninguna), `WEAK` (solo una prueba del caso satisfactorio) u `OK` (caso satisfactorio más al menos un caso de límite o error).
 
-**Step 4 — Inspect EARS variants for hidden cases.**
-Event-driven and unwanted-behavior (`If ...`) requirements almost always need a negative test. State-driven (`While ...`) requirements need a transition test. Flag any that lack one.
+**Paso 4 — Inspecciona las variantes EARS en busca de casos ocultos.**
+Los requisitos guiados por eventos y de comportamiento no deseado (`If ...`) casi siempre necesitan una prueba negativa. Los requisitos guiados por estados (`While ...`) necesitan una prueba de transición. Señala los que carezcan de ella.
 
-**Step 5 — Cross-check the legacy system.**
-For requirements mapped to a Natural program in `01-archaeology/legacy-sifap/natural-programs/`, confirm that the edge cases the team identified in Stage 1 are covered. Reference paths generically — do not assert what a specific program computes.
+**Paso 5 — Contrasta con el sistema heredado.**
+Para los requisitos vinculados a un programa Natural de `01-archaeology/legacy-sifap/natural-programs/`, confirma que estén cubiertos los casos límite que el equipo identificó en la etapa 1. Referencia las rutas de forma general; no afirmes qué calcula un programa específico.
 
-**Step 6 — Score by risk.**
-Rate probability (how often it runs in production) and impact (financial, regulatory, security) on a 1–3 scale. Risk = probability × impact. Put the highest risk first.
+**Paso 6 — Puntúa por riesgo.**
+Puntúa la probabilidad (con qué frecuencia se ejecuta en producción) y el impacto (financiero, regulatorio, de seguridad) en una escala de 1–3. Riesgo = probabilidad × impacto. Sitúa primero el mayor riesgo.
 
-**Step 7 — Deliver the prioritized gap list.**
-Include a one-line recipe per gap — the shape of the missing test, not the test code — and actionable names for the top three.
+**Paso 7 — Entrega la lista priorizada de lagunas.**
+Incluye una propuesta de una línea por laguna (la forma de la prueba ausente, no su código) y nombres concretos para las tres principales.
 
-Report requirement coverage, never a bare line-coverage number. A `REQ-ID` with five "should work" tests and zero "should not" tests is `WEAK`. Every gap carries a risk score. Never invent a requirement or a legacy edge case — flag the unknown and ask the team.
+Informa de la cobertura de requisitos, nunca de una cifra aislada de cobertura de líneas. Un `REQ-ID` con cinco pruebas de «debería funcionar» y cero pruebas de «no debería» es `WEAK`. Cada laguna incluye una puntuación de riesgo. Nunca inventes un requisito ni un caso límite heredado: señala lo desconocido y pregunta al equipo.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
 /coverage-gaps feature=<NNN>-<feature> scope=all

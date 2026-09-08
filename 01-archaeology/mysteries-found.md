@@ -1,56 +1,56 @@
-# Open Questions Record — Stage 1
+# Registro de preguntas abiertas — Etapa 1
 
-> **Track:** [Team Kit](../README.md) › [Stage 1](README.md) › **Open Questions**
+> **Ruta:** [Kit del equipo](../README.md) › [Etapa 1](README.md) › **Preguntas abiertas**
 
-**Traceable record of Stage 1 uncertainties.** Each entry documents an unanswered question with evidence, a hypothesis marked as unconfirmed, and a validation owner.
+**Registro trazable de las incertidumbres de la Etapa 1.** Cada entrada documenta una pregunta sin respuesta con evidencia, una hipótesis marcada como sin confirmar y una persona responsable de la validación.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | All pairs |
-| **Prerequisites** | Read the assigned programs |
-| **Stage** | Stage 1 — Archaeology |
-| **Expected outcome** | Questions without conclusions, with evidence and an identified owner |
+| **Público objetivo** | Todas las parejas |
+| **Prerrequisitos** | Leer los programas asignados |
+| **Etapa** | Etapa 1 — Arqueología |
+| **Resultado esperado** | Preguntas sin conclusiones, con evidencia y una persona responsable identificada |
 
 > [!IMPORTANT]
-> A question does not become a business rule, requirement, or conclusion until it has explicit human validation and evidence preserved as `path:line`. This record is not an answer and does not replace that validation.
+> Una pregunta no se convierte en una regla de negocio, requisito o conclusión hasta que cuente con validación humana explícita y evidencia conservada como `path:line`. Este registro no es una respuesta ni sustituye esa validación.
 
 ---
 
-## Record
+## Registro
 
-Use one row per mystery. Enter your pair's **canonical ID** (`SIFAP-M-01` … `SIFAP-M-20`—see the [checklist](mysteries-checklist.md)) or `BONUS` for findings outside the list.
+Usa una fila por misterio. Introduce el **ID canónico** de tu pareja (`SIFAP-M-01` … `SIFAP-M-20`: consulta la [lista de verificación](mysteries-checklist.md)) o `BONUS` para hallazgos fuera de la lista.
 
-| ID | Open question | Evidence (`path:line`) | Impact | Hypothesis (unconfirmed) | Responsible person/area | Status |
+| ID | Pregunta abierta | Evidencia (`path:line`) | Impacto | Hipótesis (sin confirmar) | Persona/área responsable | Estado |
 |---|---|---|---|---|---|---|
-| `SIFAP-M-__` | <!-- fill in: a real question ending with a question mark --> | <!-- fill in: path:line --> | <!-- fill in: what breaks in the Java migration --> | <!-- fill in: unconfirmed --> | <!-- fill in --> | <!-- fill in: open / awaiting human validation / closed after human validation --> |
-| `SIFAP-M-__` | <!-- fill in --> | <!-- fill in: path:line --> | <!-- fill in --> | <!-- fill in: unconfirmed --> | <!-- fill in --> | <!-- fill in --> |
-| `SIFAP-M-__` | <!-- fill in --> | <!-- fill in: path:line --> | <!-- fill in --> | <!-- fill in: unconfirmed --> | <!-- fill in --> | <!-- fill in --> |
-| `SIFAP-M-__` | <!-- fill in --> | <!-- fill in: path:line --> | <!-- fill in --> | <!-- fill in: unconfirmed --> | <!-- fill in --> | <!-- fill in --> |
+| `SIFAP-M-__` | <!-- completar: una pregunta real que termine con un signo de interrogación --> | <!-- completar: path:line --> | <!-- completar: qué falla en la migración a Java --> | <!-- completar: sin confirmar --> | <!-- completar --> | <!-- completar: abierta / pendiente de validación humana / cerrada tras validación humana --> |
+| `SIFAP-M-__` | <!-- completar --> | <!-- completar: path:line --> | <!-- completar --> | <!-- completar: sin confirmar --> | <!-- completar --> | <!-- completar --> |
+| `SIFAP-M-__` | <!-- completar --> | <!-- completar: path:line --> | <!-- completar --> | <!-- completar: sin confirmar --> | <!-- completar --> | <!-- completar --> |
+| `SIFAP-M-__` | <!-- completar --> | <!-- completar: path:line --> | <!-- completar --> | <!-- completar: sin confirmar --> | <!-- completar --> | <!-- completar --> |
 
-### Additional findings (bonus)
+### Hallazgos adicionales (bonus)
 
-Legitimate findings outside the 20 canonical mysteries. They count in the debrief, **do not** change the denominator, and **do not** replace a missing canonical mystery.
+Hallazgos legítimos fuera de los 20 misterios canónicos. Cuentan en la puesta en común, **no** cambian el denominador y **no** reemplazan un misterio canónico faltante.
 
-| ID | Open question | Evidence (`path:line`) | Impact | Hypothesis (unconfirmed) | Responsible person/area | Status |
+| ID | Pregunta abierta | Evidencia (`path:line`) | Impacto | Hipótesis (sin confirmar) | Persona/área responsable | Estado |
 |---|---|---|---|---|---|---|
-| `BONUS` | <!-- fill in --> | <!-- fill in: path:line --> | <!-- fill in --> | <!-- fill in: unconfirmed --> | <!-- fill in --> | <!-- fill in --> |
+| `BONUS` | <!-- completar --> | <!-- completar: path:line --> | <!-- completar --> | <!-- completar: sin confirmar --> | <!-- completar --> | <!-- completar --> |
 
 ---
 
-## Integrity rules
+## Reglas de integridad
 
-- Record only open questions; do not write an answer in the catalog.
-- Keep evidence in `path:line` format to preserve traceability.
-- Mark every hypothesis explicitly as **unconfirmed**.
-- Only the responsible person may provide human validation and change the status.
-- Without human evidence, the question remains open.
+- Registra solo preguntas abiertas; no escribas una respuesta en el catálogo.
+- Mantén la evidencia en formato `path:line` para preservar la trazabilidad.
+- Marca cada hipótesis explícitamente como **sin confirmar**.
+- Solo la persona responsable puede aportar validación humana y cambiar el estado.
+- Sin evidencia humana, la pregunta permanece abierta.
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Open Questions Checklist](mysteries-checklist.md)<br/><sub>Traceability verification.</sub> | [Discovery Report](discovery-report.md)<br/><sub>Final consolidation for the stage.</sub> |
+| [Lista de verificación de preguntas abiertas](mysteries-checklist.md)<br/><sub>Verificación de trazabilidad.</sub> | [Informe de descubrimiento](discovery-report.md)<br/><sub>Consolidación final de la etapa.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

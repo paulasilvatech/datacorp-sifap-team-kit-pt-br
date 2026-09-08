@@ -1,108 +1,108 @@
-# Stage 1 — Digital Archaeology (90 min)
+# Etapa 1 — Arqueología digital (90 min)
 
-> **Track:** [Team Kit](../README.md) › [Stage 1](README.md) › **GUIDE**
+> **Ruta:** [Kit del equipo](../README.md) › [Etapa 1](README.md) › **GUÍA**
 
-**A 90-minute schedule for reading assigned Natural programs, recording traceable evidence, and defining the prototype scope.**
+**Cronograma de 90 minutos para leer los programas Natural asignados, registrar evidencia trazable y definir el alcance del prototipo.**
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | All 5 pairs |
-| **Prerequisites** | Read [`README.md`](README.md) and access the `legacy-sifap/` directory |
-| **Estimated time** | 90 min (11:00–12:00 + 13:30–14:00) |
-| **Stage** | Stage 1 — Archaeology |
-| **Expected outcome** | Candidate rules catalog, discovery report, and completed H1 handoff |
+| **Público objetivo** | Las 5 parejas |
+| **Prerrequisitos** | Leer [`README.md`](README.md) y acceder al directorio `legacy-sifap/` |
+| **Tiempo estimado** | 90 min (11:00–12:00 + 13:30–14:00) |
+| **Etapa** | Etapa 1 — Arqueología |
+| **Resultado esperado** | Catálogo de reglas candidatas, informe de descubrimiento y transición H1 completada |
 
 > [!IMPORTANT]
-> **Mandatory gate.** Before writing EARS in Stage 2, the pair must have read the assigned Natural programs and have evidence for every selected behavior. Every subsequent formal requirement needs a valid `source_legacy:` or `[GREENFIELD]` with justification. The gate is not a quantity target.
+> **Puerta obligatoria.** Antes de escribir EARS en la Etapa 2, la pareja debe haber leído los programas Natural asignados y contar con evidencia de cada comportamiento seleccionado. Cada requisito formal posterior necesita un `source_legacy:` válido o `[GREENFIELD]` con justificación. La puerta no es una meta de cantidad.
 
 ---
 
-## Objective
+## Objetivo
 
-Read the assigned Natural programs, record traceable evidence, and choose a small scope that can become a feature. The goal is not to explain the entire SIFAP Payment Inspection and Administration System, complete encyclopedic documentation, or solve mysteries.
+Leer los programas Natural asignados, registrar evidencia trazable y elegir un alcance pequeño que pueda convertirse en una funcionalidad. El objetivo no es explicar todo SIFAP, el Sistema de Fiscalización y Administración de Pagos, completar documentación enciclopédica ni resolver misterios.
 
 ---
 
-## Timed schedule
+## Cronograma
 
-| Time | Activity | Minimum outcome |
+| Horario | Actividad | Resultado mínimo |
 |---|---|---|
-| 11:00–11:10 | Open the three programs assigned to the pair and agree on who reads each one. | Program coverage and reader names. |
-| 11:10–11:40 | Guided reading: inputs, outputs, calls, and domain decisions. | Notes with paths and line ranges. |
-| 11:40–12:00 | Record candidate rules and questions without inferring absent behavior. | Evidence in the catalog and explicit open items. |
-| 13:30–13:45 | Consolidate only the evidence supporting the prototype scope. | Updated catalog and discovery report. |
-| 13:45–13:55 | The PO prioritizes **one thin feature**; the team discards or postpones the rest. | Scope decision for Stage 2. |
-| 13:55–14:00 | H1 handoff with Pair 2. | Sources, scope, and questions transferred live. |
+| 11:00–11:10 | Abrir los tres programas asignados a la pareja y acordar quién lee cada uno. | Cobertura de programas y nombres de quienes los leen. |
+| 11:10–11:40 | Lectura guiada: entradas, salidas, llamadas y decisiones del dominio. | Notas con rutas y rangos de líneas. |
+| 11:40–12:00 | Registrar reglas candidatas y preguntas sin inferir comportamientos ausentes. | Evidencia en el catálogo y asuntos abiertos explícitos. |
+| 13:30–13:45 | Consolidar solo la evidencia que sustenta el alcance del prototipo. | Catálogo e informe de descubrimiento actualizados. |
+| 13:45–13:55 | El PO prioriza **una funcionalidad acotada**; el equipo descarta o pospone el resto. | Decisión de alcance para la Etapa 2. |
+| 13:55–14:00 | Transición H1 con la Pareja 2. | Fuentes, alcance y preguntas transferidos en vivo. |
 
 ---
 
-## Who reads what
+## Quién lee qué
 
-Each pair reads the three programs below. Reading may focus on domain decisions; do not try to translate every Natural statement during this step.
+Cada pareja lee los tres programas siguientes. La lectura puede centrarse en las decisiones del dominio; no intentes traducir cada instrucción Natural durante este paso.
 
-| Pair | Programs |
+| Pareja | Programas |
 |---|---|
-| 1 · Vision | `CADBENEF.NSP`, `CADDEPEN.NSP`, `CADPROG.NSP` |
-| 2 · Architecture | `BATCHPGT.NSP`, `BATCHREL.NSP`, `BATCHCON.NSP` |
-| 3 · Implementation | `CALCBENF.NSN`, `CALCCORR.NSP`, `CALCDSCT.NSP` |
-| 4 · Quality | `VALBENEF.NSN`, `VALDOCS.NSP`, `VALELEG.NSN` |
-| 5 · Operations | `CONSBENF.NSP`, `RELPGT.NSP`, `RELAUDIT.NSP` |
+| 1 · Visión | `CADBENEF.NSP`, `CADDEPEN.NSP`, `CADPROG.NSP` |
+| 2 · Arquitectura | `BATCHPGT.NSP`, `BATCHREL.NSP`, `BATCHCON.NSP` |
+| 3 · Implementación | `CALCBENF.NSN`, `CALCCORR.NSP`, `CALCDSCT.NSP` |
+| 4 · Calidad | `VALBENEF.NSN`, `VALDOCS.NSP`, `VALELEG.NSN` |
+| 5 · Operaciones | `CONSBENF.NSP`, `RELPGT.NSP`, `RELAUDIT.NSP` |
 
-Pair 4 also reviews the DDMs needed for the selected feature. Mapping every field or proposing the complete schema is not mandatory at this stage.
+La Pareja 4 también revisa los DDM necesarios para la funcionalidad seleccionada. Mapear todos los campos o proponer el esquema completo no es obligatorio en esta etapa.
 
 ---
 
-## What to record
+## Qué registrar
 
-Use the [templates](templates/) for support. For every candidate rule in scope, record at least:
+Usa las [plantillas](templates/) como apoyo. Para cada regla candidata dentro del alcance, registra al menos:
 
-- a short description of the observed behavior;
-- the `.NSN` or `.ddm` path and, when possible, the line range;
-- the question that still prevents a conclusion, without turning it into a requirement;
-- the rule's impact on the prioritized feature.
+- una breve descripción del comportamiento observado;
+- la ruta `.NSN` o `.ddm` y, cuando sea posible, el rango de líneas;
+- la pregunta que aún impide llegar a una conclusión, sin convertirla en un requisito;
+- el impacto de la regla en la funcionalidad priorizada.
 
-`business-rules-catalog.md` is the input to the formal spec; use the [catalog template](templates/business-rules-catalog.template.md) if the file does not yet exist. The glossary, dependency map, and mystery record may be enriched if they help the scope, but numeric targets do not block the handoff.
+`business-rules-catalog.md` es la entrada de la especificación formal; usa la [plantilla del catálogo](templates/business-rules-catalog.template.md) si el archivo todavía no existe. El glosario, el mapa de dependencias y el registro de misterios pueden enriquecerse si ayudan al alcance, pero las metas numéricas no bloquean la transición.
 
 > [!IMPORTANT]
-> **Exception—the mysteries have a fixed denominator.** SIFAP contains **20 canonical mysteries**, **4 per pair**. This is the only numeric target in Stage 1, because without it each pair reported a different quantity after reading the same material. See [`mysteries-checklist.md`](mysteries-checklist.md) for your pair's IDs and record them in [`mysteries-found.md`](mysteries-found.md). Findings outside the list are bonuses and do not change the denominator.
+> **Excepción: los misterios tienen un denominador fijo.** SIFAP contiene **20 misterios canónicos**, **4 por pareja**. Esta es la única meta numérica de la Etapa 1, porque sin ella cada pareja informaba una cantidad diferente después de leer el mismo material. Consulta los ID de tu pareja en [`mysteries-checklist.md`](mysteries-checklist.md) y regístralos en [`mysteries-found.md`](mysteries-found.md). Los hallazgos fuera de la lista son adicionales y no cambian el denominador.
 
 ---
 
-## H1 handoff
+## Transición H1
 
-In five minutes, Pair 1 hands the following to Pair 2:
+En cinco minutos, la Pareja 1 entrega lo siguiente a la Pareja 2:
 
-1. the selected thin feature and what remains out of scope;
-2. rules that may become requirements, with legacy paths;
-3. open questions that **must not** become EARS;
-4. DDM and dependency references only when they affect the feature.
+1. la funcionalidad acotada seleccionada y lo que queda fuera del alcance;
+2. las reglas que pueden convertirse en requisitos, con rutas del legado;
+3. las preguntas abiertas que **no deben** convertirse en EARS;
+4. las referencias a DDM y dependencias solo cuando afecten a la funcionalidad.
 
-Pair 2 confirms that it received enough evidence to start `specs/<NNN>-<feature>/spec.md`. If not, the team reduces the scope; it does not invent a source.
-
----
-
-## Definition of done
-
-- [ ] The three programs assigned to each pair were read.
-- [ ] The selected behavior has evidence in `.NSN` or `.ddm`, or was explicitly separated as a greenfield proposal.
-- [ ] The catalog identifies the source of every candidate rule.
-- [ ] The discovery report records the scope and relevant questions.
-- [ ] The H1 handoff occurred before 14:00.
+La Pareja 2 confirma que recibió suficiente evidencia para iniciar `specs/<NNN>-<feature>/spec.md`. Si no es así, el equipo reduce el alcance; no inventa una fuente.
 
 ---
 
-## References
+## Definición de terminado
 
-- [Exploration checklist](LEGACY-EXPLORATION-CHECKLIST.md)—gate verification and criteria by pair.
-- [Stage 2 guide](../02-modern-spec/GUIDE.md)—next step after the H1 handoff.
-- [How to read Natural](legacy-sifap/HOW-TO-READ-NATURAL.md)—syntax tutorial for non-developers.
+- [ ] Se leyeron los tres programas asignados a cada pareja.
+- [ ] El comportamiento seleccionado tiene evidencia en `.NSN` o `.ddm`, o se separó explícitamente como una propuesta greenfield.
+- [ ] El catálogo identifica la fuente de cada regla candidata.
+- [ ] El informe de descubrimiento registra el alcance y las preguntas relevantes.
+- [ ] La transición H1 se realizó antes de las 14:00.
 
 ---
 
-### Continue reading
+## Referencias
 
-| Previous | Next |
+- [Lista de verificación de exploración](LEGACY-EXPLORATION-CHECKLIST.md): verificación de la puerta y criterios por pareja.
+- [Guía de la Etapa 2](../02-modern-spec/GUIDE.md): siguiente paso después de la transición H1.
+- [Cómo leer Natural](legacy-sifap/HOW-TO-READ-NATURAL.md): tutorial de sintaxis para quienes no desarrollan software.
+
+---
+
+### Sigue leyendo
+
+| Anterior | Siguiente |
 |---|---|
-| [Stage 1 — README](README.md)<br/><sub>Stage overview.</sub> | [Exploration Checklist](LEGACY-EXPLORATION-CHECKLIST.md)<br/><sub>Mandatory gate before Stage 2.</sub> |
+| [Etapa 1 — README](README.md)<br/><sub>Descripción general de la etapa.</sub> | [Lista de verificación de exploración](LEGACY-EXPLORATION-CHECKLIST.md)<br/><sub>Puerta obligatoria antes de la Etapa 2.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

@@ -1,18 +1,18 @@
-# Workflows, Best Practices & Scripting Patterns
+# Flujos de trabajo, buenas prácticas y patrones de scripting
 
-## Table of Contents
+## Índice
 
-- [Common Workflows](#common-workflows)
-- [Best Practices](#best-practices)
-- [Error Handling & Retry Patterns](#error-handling--retry-patterns)
-- [Scripting Patterns for Idempotent Operations](#scripting-patterns-for-idempotent-operations)
-- [Real-World Workflows](#real-world-workflows)
+- [Flujos de trabajo habituales](#flujos-de-trabajo-habituales)
+- [Buenas prácticas](#buenas-prácticas)
+- [Gestión de errores y patrones de reintento](#gestión-de-errores-y-patrones-de-reintento)
+- [Patrones de scripting para operaciones idempotentes](#patrones-de-scripting-para-operaciones-idempotentes)
+- [Flujos de trabajo reales](#flujos-de-trabajo-reales)
 
 ---
 
-## Common Workflows
+## Flujos de trabajo habituales
 
-### Create PR from current branch
+### Crear una PR desde la rama actual
 
 ```bash
 CURRENT_BRANCH=$(git branch --show-current)
@@ -23,7 +23,7 @@ az repos pr create \
   --open
 ```
 
-### Create work item on pipeline failure
+### Crear un elemento de trabajo cuando falle una canalización
 
 ```bash
 az boards work-item create \
@@ -33,7 +33,7 @@ az boards work-item create \
   --project $SYSTEM_TEAMPROJECT
 ```
 
-### Download latest pipeline artifact
+### Descargar el artefacto más reciente de una canalización
 
 ```bash
 RUN_ID=$(az pipelines runs list --pipeline {pipeline-id} --top 1 --query "[0].id" -o tsv)
@@ -43,89 +43,89 @@ az pipelines runs artifact download \
   --run-id $RUN_ID
 ```
 
-### Approve and complete PR
+### Aprobar y completar una PR
 
 ```bash
-# Vote approve
+# Votar a favor de la aprobación
 az repos pr set-vote --id {pr-id} --vote approve
 
-# Complete PR
+# Completar la PR
 az repos pr update --id {pr-id} --status completed
 ```
 
-### Create pipeline from local repo
+### Crear una canalización desde un repositorio local
 
 ```bash
-# From local git repository (auto-detects repo, branch, etc.)
+# Desde un repositorio Git local (detecta automáticamente el repositorio, la rama, etc.)
 az pipelines create --name 'CI-Pipeline' --description 'Continuous Integration'
 ```
 
-### Bulk update work items
+### Actualizar elementos de trabajo en bloque
 
 ```bash
-# Query items and update in loop
+# Consultar los elementos y actualizarlos en un bucle
 for id in $(az boards query --wiql "SELECT ID FROM WorkItems WHERE State='New'" -o tsv); do
   az boards work-item update --id $id --state "Active"
 done
 ```
 
-## Best Practices
+## Buenas prácticas
 
-### Authentication and Security
+### Autenticación y seguridad
 
 ```bash
-# Use PAT from environment variable (most secure)
+# Usar un PAT desde una variable de entorno (opción más segura)
 export AZURE_DEVOPS_EXT_PAT=$MY_PAT
 az devops login --organization $ORG_URL
 
-# Pipe PAT securely (avoids shell history)
+# Pasar el PAT por una tubería de forma segura (evita el historial del shell)
 echo $MY_PAT | az devops login --organization $ORG_URL
 
-# Set defaults to avoid repetition
+# Establecer valores predeterminados para evitar repeticiones
 az devops configure --defaults organization=$ORG_URL project=$PROJECT
 
-# Clear credentials after use
+# Limpiar las credenciales después de usarlas
 az devops logout --organization $ORG_URL
 ```
 
-### Idempotent Operations
+### Operaciones idempotentes
 
 ```bash
-# Always use --detect for auto-detection
+# Usar siempre --detect para la detección automática
 az devops configure --defaults organization=$ORG_URL project=$PROJECT
 
-# Check existence before creation
+# Comprobar la existencia antes de crear
 if ! az pipelines show --id $PIPELINE_ID 2>/dev/null; then
   az pipelines create --name "$PIPELINE_NAME" --yaml-path azure-pipelines.yml
 fi
 
-# Use --output tsv for shell parsing
+# Usar --output tsv para el análisis desde el shell
 PIPELINE_ID=$(az pipelines list --query "[?name=='MyPipeline'].id" --output tsv)
 
-# Use --output json for programmatic access
+# Usar --output json para el acceso programático
 BUILD_STATUS=$(az pipelines build show --id $BUILD_ID --query "status" --output json)
 ```
 
-### Script-Safe Output
+### Salida adecuada para scripts
 
 ```bash
-# Suppress warnings and errors
+# Suprimir advertencias y errores
 az pipelines list --only-show-errors
 
-# No output (useful for commands that only need to execute)
+# Sin salida (útil para comandos que solo necesitan ejecutarse)
 az pipelines run --name "$PIPELINE_NAME" --output none
 
-# TSV format for shell scripts (clean, no formatting)
+# Formato TSV para scripts de shell (limpio, sin formato adicional)
 az repos pr list --output tsv --query "[].{ID:pullRequestId,Title:title}"
 
-# JSON with specific fields
+# JSON con campos concretos
 az pipelines list --output json --query "[].{Name:name, ID:id, URL:url}"
 ```
 
-### Pipeline Orchestration
+### Orquestación de canalizaciones
 
 ```bash
-# Run pipeline and wait for completion
+# Ejecutar la canalización y esperar a que termine
 RUN_ID=$(az pipelines run --name "$PIPELINE_NAME" --query "id" -o tsv)
 
 while true; do
@@ -136,7 +136,7 @@ while true; do
   sleep 10
 done
 
-# Check result
+# Comprobar el resultado
 RESULT=$(az pipelines runs show --run-id $RUN_ID --query "result" -o tsv)
 if [[ "$RESULT" == "succeeded" ]]; then
   echo "Pipeline succeeded"
@@ -146,10 +146,10 @@ else
 fi
 ```
 
-### Variable Group Management
+### Gestión de grupos de variables
 
 ```bash
-# Create variable group idempotently
+# Crear un grupo de variables de forma idempotente
 VG_NAME="production-variables"
 VG_ID=$(az pipelines variable-group list --query "[?name=='$VG_NAME'].id" -o tsv)
 
@@ -165,10 +165,10 @@ else
 fi
 ```
 
-### Service Connection Automation
+### Automatización de conexiones de servicio
 
 ```bash
-# Create service connection using configuration file
+# Crear una conexión de servicio mediante un archivo de configuración
 cat > service-connection.json <<'EOF'
 {
   "data": {
@@ -198,10 +198,10 @@ az devops service-endpoint create \
   --project "$PROJECT"
 ```
 
-### Pull Request Automation
+### Automatización de solicitudes de incorporación de cambios
 
 ```bash
-# Create PR with work items and reviewers
+# Crear una PR con elementos de trabajo y revisores
 PR_ID=$(az repos pr create \
   --repository "$REPO_NAME" \
   --source-branch "$FEATURE_BRANCH" \
@@ -215,16 +215,16 @@ PR_ID=$(az repos pr create \
   --open \
   --query "pullRequestId" -o tsv)
 
-# Set auto-complete when policies pass
+# Configurar la finalización automática cuando se cumplan las políticas
 az repos pr update --id $PR_ID --auto-complete true
 ```
 
-## Error Handling & Retry Patterns
+## Gestión de errores y patrones de reintento
 
-### Retry Logic for Transient Failures
+### Lógica de reintentos para fallos transitorios
 
 ```bash
-# Retry function for network operations
+# Función de reintento para operaciones de red
 retry_command() {
   local max_attempts=3
   local attempt=1
@@ -244,14 +244,14 @@ retry_command() {
   return 1
 }
 
-# Usage
+# Uso
 retry_command az pipelines run --name "$PIPELINE_NAME"
 ```
 
-### Check and Handle Errors
+### Comprobar y gestionar errores
 
 ```bash
-# Check if pipeline exists before operations
+# Comprobar si la canalización existe antes de las operaciones
 PIPELINE_ID=$(az pipelines list --query "[?name=='$PIPELINE_NAME'].id" -o tsv)
 
 if [[ -z "$PIPELINE_ID" ]]; then
@@ -262,26 +262,26 @@ else
 fi
 ```
 
-### Validate Inputs
+### Validar entradas
 
 ```bash
-# Validate required parameters
+# Validar los parámetros obligatorios
 if [[ -z "$PROJECT" || -z "$REPO" ]]; then
   echo "Error: PROJECT and REPO must be set"
   exit 1
 fi
 
-# Check if branch exists
+# Comprobar si la rama existe
 if ! az repos ref list --repository "$REPO" --query "[?name=='refs/heads/$BRANCH']" -o tsv | grep -q .; then
   echo "Error: Branch $BRANCH does not exist"
   exit 1
 fi
 ```
 
-### Handle Permission Errors
+### Gestionar errores de permisos
 
 ```bash
-# Try operation, handle permission errors
+# Intentar la operación y gestionar los errores de permisos
 if az devops security permission update \
   --id "$USER_ID" \
   --namespace "GitRepositories" \
@@ -294,13 +294,13 @@ if az devops security permission update \
 fi
 ```
 
-### Pipeline Failure Notification
+### Notificación de fallos de canalización
 
 ```bash
-# Run pipeline and check result
+# Ejecutar la canalización y comprobar el resultado
 RUN_ID=$(az pipelines run --name "$PIPELINE_NAME" --query "id" -o tsv)
 
-# Wait for completion
+# Esperar a que termine
 while true; do
   STATUS=$(az pipelines runs show --run-id $RUN_ID --query "status" -o tsv)
   if [[ "$STATUS" != "inProgress" && "$STATUS" != "notStarted" ]]; then
@@ -309,7 +309,7 @@ while true; do
   sleep 10
 done
 
-# Check result and create work item on failure
+# Comprobar el resultado y crear un elemento de trabajo si falla
 RESULT=$(az pipelines runs show --run-id $RUN_ID --query "result" -o tsv)
 if [[ "$RESULT" != "succeeded" ]]; then
   BUILD_NUMBER=$(az pipelines runs show --run-id $RUN_ID --query "buildNumber" -o tsv)
@@ -321,27 +321,27 @@ if [[ "$RESULT" != "succeeded" ]]; then
 fi
 ```
 
-### Graceful Degradation
+### Degradación controlada
 
 ```bash
-# Try to download artifact, fallback to alternative source
+# Intentar descargar el artefacto y recurrir a una fuente alternativa si falla
 if ! az pipelines runs artifact download \
   --artifact-name 'webapp' \
   --path ./output \
   --run-id $RUN_ID 2>/dev/null; then
   echo "Warning: Failed to download from pipeline run. Falling back to backup source..."
 
-  # Alternative download method
+  # Método de descarga alternativo
   curl -L "$BACKUP_URL" -o ./output/backup.zip
 fi
 ```
 
-## Scripting Patterns for Idempotent Operations
+## Patrones de scripting para operaciones idempotentes
 
-### Create or Update Pattern
+### Patrón de creación o actualización
 
 ```bash
-# Ensure pipeline exists, update if different
+# Garantizar que la canalización exista y actualizarla si difiere
 ensure_pipeline() {
   local name=$1
   local yaml_path=$2
@@ -357,10 +357,10 @@ ensure_pipeline() {
 }
 ```
 
-### Ensure Variable Group
+### Garantizar la existencia de un grupo de variables
 
 ```bash
-# Create variable group with idempotent updates
+# Crear un grupo de variables con actualizaciones idempotentes
 ensure_variable_group() {
   local vg_name=$1
   shift
@@ -383,10 +383,10 @@ ensure_variable_group() {
 }
 ```
 
-### Ensure Service Connection
+### Garantizar la existencia de una conexión de servicio
 
 ```bash
-# Check if service connection exists, create if not
+# Comprobar si la conexión de servicio existe y crearla si no existe
 ensure_service_connection() {
   local name=$1
   local project=$2
@@ -398,7 +398,7 @@ ensure_service_connection() {
 
   if [[ -z "$SC_ID" ]]; then
     echo "Service connection not found. Creating..."
-    # Create logic here
+    # Lógica de creación aquí
   else
     echo "Service connection exists: $name"
     echo "$SC_ID"
@@ -406,10 +406,10 @@ ensure_service_connection() {
 }
 ```
 
-### Idempotent Work Item Creation
+### Creación idempotente de elementos de trabajo
 
 ```bash
-# Create work item only if doesn't exist with same title
+# Crear un elemento de trabajo solo si no existe otro con el mismo título
 create_work_item_if_new() {
   local title=$1
   local type=$2
@@ -429,10 +429,10 @@ create_work_item_if_new() {
 }
 ```
 
-### Bulk Idempotent Operations
+### Operaciones idempotentes en bloque
 
 ```bash
-# Ensure multiple pipelines exist
+# Garantizar que existan varias canalizaciones
 declare -a PIPELINES=(
   "ci-pipeline:azure-pipelines.yml"
   "deploy-pipeline:deploy.yml"
@@ -445,10 +445,10 @@ for pipeline in "${PIPELINES[@]}"; do
 done
 ```
 
-### Configuration Synchronization
+### Sincronización de configuración
 
 ```bash
-# Sync variable groups from config file
+# Sincronizar grupos de variables desde un archivo de configuración
 sync_variable_groups() {
   local config_file=$1
 
@@ -457,27 +457,27 @@ sync_variable_groups() {
   done < "$config_file"
 }
 
-# config.csv format:
+# Formato de config.csv:
 # prod-vars,API_URL=prod.com,API_KEY=secret123
 # dev-vars,API_URL=dev.com,API_KEY=secret456
 ```
 
-## Real-World Workflows
+## Flujos de trabajo reales
 
-### CI/CD Pipeline Setup
+### Configuración de una canalización CI/CD
 
 ```bash
-# Setup complete CI/CD pipeline
+# Configurar una canalización CI/CD completa
 setup_cicd_pipeline() {
   local project=$1
   local repo=$2
   local branch=$3
 
-  # Create variable groups
+  # Crear grupos de variables
   VG_DEV=$(ensure_variable_group "dev-vars" "ENV=dev API_URL=api-dev.com")
   VG_PROD=$(ensure_variable_group "prod-vars" "ENV=prod API_URL=api-prod.com")
 
-  # Create CI pipeline
+  # Crear la canalización de CI
   az pipelines create \
     --name "$repo-CI" \
     --repository "$repo" \
@@ -485,7 +485,7 @@ setup_cicd_pipeline() {
     --yaml-path .azure/pipelines/ci.yml \
     --skip-run true
 
-  # Create CD pipeline
+  # Crear la canalización de CD
   az pipelines create \
     --name "$repo-CD" \
     --repository "$repo" \
@@ -497,24 +497,24 @@ setup_cicd_pipeline() {
 }
 ```
 
-### Automated PR Creation
+### Creación automatizada de PR
 
 ```bash
-# Create PR from feature branch with automation
+# Crear una PR automáticamente desde una rama de funcionalidad
 create_automated_pr() {
   local branch=$1
   local title=$2
 
-  # Get branch info
+  # Obtener información de la rama
   LAST_COMMIT=$(git log -1 --pretty=%B "$branch")
   COMMIT_SHA=$(git rev-parse "$branch")
 
-  # Find related work items
+  # Encontrar elementos de trabajo relacionados
   WORK_ITEMS=$(az boards query \
     --wiql "SELECT ID FROM WorkItems WHERE [System.ChangedBy] = @Me AND [System.State] = 'Active'" \
     --query "[].id" -o tsv)
 
-  # Create PR
+  # Crear la PR
   PR_ID=$(az repos pr create \
     --source-branch "$branch" \
     --target-branch main \
@@ -524,7 +524,7 @@ create_automated_pr() {
     --auto-complete true \
     --query "pullRequestId" -o tsv)
 
-  # Set required reviewers
+  # Establecer revisores obligatorios
   az repos pr reviewer add \
     --id $PR_ID \
     --reviewers $(git log -1 --pretty=format:'%ae' "$branch") \
@@ -534,71 +534,71 @@ create_automated_pr() {
 }
 ```
 
-### Pipeline Monitoring and Alerting
+### Supervisión y alertas de canalizaciones
 
 ```bash
-# Monitor pipeline and alert on failure
+# Supervisar la canalización y alertar si falla
 monitor_pipeline() {
   local pipeline_name=$1
   local slack_webhook=$2
 
   while true; do
-    # Get latest run
+    # Obtener la ejecución más reciente
     RUN_ID=$(az pipelines list --query "[?name=='$pipeline_name'] | [0].id" -o tsv)
     RUNS=$(az pipelines runs list --pipeline $RUN_ID --top 1)
 
     LATEST_RUN_ID=$(echo "$RUNS" | jq -r '.[0].id')
     RESULT=$(echo "$RUNS" | jq -r '.[0].result')
 
-    # Check if failed and not already processed
+    # Comprobar si falló y aún no se procesó
     if [[ "$RESULT" == "failed" ]]; then
-      # Send Slack alert
+      # Enviar una alerta de Slack
       curl -X POST "$slack_webhook" \
         -H 'Content-Type: application/json' \
         -d "{\"text\": \"Pipeline $pipeline_name failed! Run ID: $LATEST_RUN_ID\"}"
     fi
 
-    sleep 300 # Check every 5 minutes
+    sleep 300 # Comprobar cada 5 minutos
   done
 }
 ```
 
-### Bulk Work Item Management
+### Gestión de elementos de trabajo en bloque
 
 ```bash
-# Bulk update work items based on query
+# Actualizar elementos de trabajo en bloque a partir de una consulta
 bulk_update_work_items() {
   local wiql=$1
   local updates=("$@")
 
-  # Query work items
+  # Consultar elementos de trabajo
   WI_IDS=$(az boards query --wiql "$wiql" --query "[].id" -o tsv)
 
-  # Update each work item
+  # Actualizar cada elemento de trabajo
   for wi_id in $WI_IDS; do
     az boards work-item update --id $wi_id "${updates[@]}"
     echo "Updated work item: $wi_id"
   done
 }
 
-# Usage: bulk_update_work_items "SELECT ID FROM WorkItems WHERE State='New'" --state "Active" --assigned-to "user@example.com"
+# Uso: bulk_update_work_items "SELECT ID FROM WorkItems WHERE State='New'" --state "Active" --assigned-to "user@example.com"
 ```
 
-### Branch Policy Automation
+### Automatización de políticas de ramas
 
 ```bash
-# Apply branch policies to all repositories
+# Aplicar políticas de ramas a todos los repositorios
 apply_branch_policies() {
   local branch=$1
   local project=$2
 
-  # Get all repositories
+  # Obtener todos los repositorios
   REPOS=$(az repos list --project "$project" --query "[].id" -o tsv)
 
   for repo_id in $REPOS; do
     echo "Applying policies to repo: $repo_id"
 
-    # Require minimum approvers
+    # Exigir un mínimo de aprobadores
     az repos policy approver-count create \
       --blocking true \
       --enabled true \
@@ -607,14 +607,14 @@ apply_branch_policies() {
       --minimum-approver-count 2 \
       --creator-vote-counts true
 
-    # Require work item linking
+    # Exigir la vinculación de elementos de trabajo
     az repos policy work-item-linking create \
       --blocking true \
       --branch "$branch" \
       --enabled true \
       --repository-id "$repo_id"
 
-    # Require build validation
+    # Exigir la validación de compilación
     BUILD_ID=$(az pipelines list --query "[?name=='CI'].id" -o tsv | head -1)
     az repos policy build create \
       --blocking true \
@@ -627,36 +627,36 @@ apply_branch_policies() {
 }
 ```
 
-### Multi-Environment Deployment
+### Despliegue en varios entornos
 
 ```bash
-# Deploy across multiple environments
+# Desplegar en varios entornos
 deploy_to_environments() {
   local run_id=$1
   shift
   local environments=("$@")
 
-  # Download artifacts
+  # Descargar artefactos
   ARTIFACT_NAME=$(az pipelines runs artifact list --run-id $run_id --query "[0].name" -o tsv)
   az pipelines runs artifact download \
     --artifact-name "$ARTIFACT_NAME" \
     --path ./artifacts \
     --run-id $run_id
 
-  # Deploy to each environment
+  # Desplegar en cada entorno
   for env in "${environments[@]}"; do
     echo "Deploying to: $env"
 
-    # Get environment-specific variables
+    # Obtener variables específicas del entorno
     VG_ID=$(az pipelines variable-group list --query "[?name=='$env-vars'].id" -o tsv)
 
-    # Run deployment pipeline
+    # Ejecutar la canalización de despliegue
     DEPLOY_RUN_ID=$(az pipelines run \
       --name "Deploy-$env" \
       --variables ARTIFACT_PATH=./artifacts ENV="$env" \
       --query "id" -o tsv)
 
-    # Wait for deployment
+    # Esperar al despliegue
     while true; do
       STATUS=$(az pipelines runs show --run-id $DEPLOY_RUN_ID --query "status" -o tsv)
       if [[ "$STATUS" != "inProgress" ]]; then

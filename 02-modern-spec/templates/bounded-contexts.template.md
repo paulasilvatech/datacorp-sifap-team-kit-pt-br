@@ -1,67 +1,67 @@
 ---
 
-title: "Template: Bounded Contexts"
-description: "Skeleton for bounded context definitions through /carve-bounded-contexts"
-author: "Paula Silva, AI-Native Software Engineer, Americas Global Black Belt at Microsoft"
+title: "Plantilla: contextos delimitados"
+description: "Estructura para definir contextos delimitados mediante /carve-bounded-contexts"
+author: "Paula Silva, ingeniera de software nativo de IA, Global Black Belt para las Américas en Microsoft"
 date: "2026-04-29"
 version: "1.0.0"
 status: "approved"
 tags: ["template", "bounded-contexts", "architect", "stage-2"]
 ---
 
-<!-- How to use: run /carve-bounded-contexts. Clone the context block for each context. -->
+<!-- Uso: ejecuta /carve-bounded-contexts. Duplica el bloque de contexto para cada contexto. -->
 
-# Bounded Context Map
+# Mapa de contextos delimitados
 
-![Bounded-contexts template](https://img.shields.io/badge/Template-bounded--contexts-737373?style=flat-square) ![Copy — do not edit the original](https://img.shields.io/badge/Copy-do%20not%20edit%20the%20original-A3A3A3?style=flat-square)
+![Plantilla de contextos delimitados](https://img.shields.io/badge/Template-bounded--contexts-737373?style=flat-square) ![Copia: no edites el original](https://img.shields.io/badge/Copy-do%20not%20edit%20the%20original-A3A3A3?style=flat-square)
 
-> **Path:** [Team Kit](../../README.md) › [Stage 2](../README.md) › Templates › **bounded-contexts**
+> **Ruta:** [Kit del equipo](../../README.md) › [Etapa 2](../README.md) › Plantillas › **bounded-contexts**
 
 > [!NOTE]
-> This file is a TEMPLATE. Copy it to your team's repository and fill it with actual data. Do not edit the original.
+> Este archivo es una PLANTILLA. Cópiala al repositorio de tu equipo y complétala con datos reales. No edites el original.
 
 ---
 
-## Concept: Bounded Context
+## Concepto: contexto delimitado
 
-A bounded context is an explicit boundary within which a domain model is valid and consistent. The term comes from Domain-Driven Design (DDD) and provides the foundation for defining the modules of a Modular Monolith.
+Un contexto delimitado es un límite explícito dentro del cual un modelo de dominio es válido y coherente. El término proviene del diseño guiado por el dominio (DDD) y proporciona la base para definir los módulos de un Monolito Modular.
 
-**Why it matters:** in SIFAP, the payments module uses the term "beneficiary" in one way, while the inspection module may use the same term with different rules. Defining bounded contexts prevents a single model from being distorted to serve every context at once, which causes unwanted coupling and makes evolution difficult.
+**Por qué importa:** en SIFAP, el módulo de pagos usa el término "beneficiario" de una manera, mientras que el módulo de fiscalización puede usar el mismo término con reglas diferentes. Definir contextos delimitados evita que se distorsione un único modelo para atender todos los contextos a la vez, lo que provoca acoplamiento no deseado y dificulta la evolución.
 
-**Modular Monolith:** an architecture in which bounded contexts are independent Java modules within a single JVM. Each module has its own layers (`domain/`, `application/`, `infrastructure/`) and communicates with other modules only through defined public interfaces.
+**Monolito Modular:** arquitectura en la que los contextos delimitados son módulos Java independientes dentro de una única JVM. Cada módulo tiene sus propias capas (`domain/`, `application/`, `infrastructure/`) y se comunica con otros módulos solo mediante interfaces públicas definidas.
 
-**Strangler Fig:** an incremental migration pattern in which the modern system grows around the legacy system and replaces features one at a time. SIFAP 2.0 does not need to replace everything at once. Each bounded context can be modernized independently.
+**Strangler Fig:** patrón de migración incremental en el que el sistema moderno crece alrededor del sistema heredado y reemplaza las funcionalidades una a una. SIFAP 2.0 no necesita reemplazar todo a la vez. Cada contexto delimitado puede modernizarse de forma independiente.
 
 ---
 
-## Hypothesis assessments
+## Evaluaciones de hipótesis
 
-### <!-- placeholder: Name --> — <!-- placeholder: ACCEPTED / REJECTED -->
+### <!-- placeholder: Nombre --> — <!-- placeholder: ACEPTADA / RECHAZADA -->
 
-| Criterion | Assessment | Evidence |
+| Criterio | Evaluación | Evidencia |
 |---|---|---|
-| Cohesion | <!-- placeholder --> | <!-- placeholder --> |
-| Coupling | <!-- placeholder --> | <!-- placeholder --> |
-| Change frequency | <!-- placeholder --> | <!-- placeholder --> |
+| Cohesión | <!-- placeholder --> | <!-- placeholder --> |
+| Acoplamiento | <!-- placeholder --> | <!-- placeholder --> |
+| Frecuencia de cambios | <!-- placeholder --> | <!-- placeholder --> |
 
 ---
 
-## Final bounded contexts
+## Contextos delimitados finales
 
-### <!-- placeholder: Context Name -->
+### <!-- placeholder: Nombre del contexto -->
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Responsibility** | <!-- placeholder --> |
-| **Owned data** | <!-- placeholder --> |
-| **Public interface** | <!-- placeholder --> |
-| **Why it is its own context** | <!-- placeholder --> |
+| **Responsabilidad** | <!-- placeholder --> |
+| **Datos propios** | <!-- placeholder --> |
+| **Interfaz pública** | <!-- placeholder --> |
+| **Por qué es un contexto propio** | <!-- placeholder --> |
 
 ---
 
-## Communication between contexts
+## Comunicación entre contextos
 
-| From | To | Mechanism | Data |
+| Origen | Destino | Mecanismo | Datos |
 |---|---|---|---|
 | <!-- placeholder --> | <!-- placeholder --> | <!-- placeholder --> | <!-- placeholder --> |
 
@@ -70,20 +70,20 @@ A bounded context is an explicit boundary within which a domain model is valid a
 flowchart LR
     classDef ctx fill:#F5F5F5,stroke:#171717,color:#171717
 
-    CTX1["Context 1"]:::ctx -->|"calls"| CTX2["Context 2"]:::ctx
+    CTX1["Contexto 1"]:::ctx -->|"llama a"| CTX2["Contexto 2"]:::ctx
 ```
 
 ---
 
 > [!IMPORTANT]
-> Definition of Done: hypotheses assessed, rejections documented, 2 to 5 contexts named, and the Mermaid diagram renders without errors.
+> Definición de terminado: hipótesis evaluadas, rechazos documentados, de 2 a 5 contextos con nombre y diagrama Mermaid que se renderiza sin errores.
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Stage 2 GUIDE](../GUIDE.md)<br/><sub>Step-by-step instructions.</sub> | [ADR Template](ADR.template.md)<br/><sub>ADR template.</sub> |
+| [GUÍA de la Etapa 2](../GUIDE.md)<br/><sub>Instrucciones paso a paso.</sub> | [Plantilla de ADR](ADR.template.md)<br/><sub>Plantilla de ADR.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Volver al índice del kit](../../README.md)</sub>

@@ -1,71 +1,71 @@
 ---
 name: "azure-resource-health-diagnose"
-description: "Use when the user reports that a deployed Azure resource is failing, degraded, throttling, or unhealthy, or asks to troubleshoot or investigate one. Diagnoses a specific resource from its logs, metrics, and telemetry, then produces a prioritized remediation plan. Requires the resource to be deployed and emitting telemetry. Triggers include \"resource is unhealthy\", \"troubleshoot Azure\", \"why is this failing\", \"diagnose throttling\", and \"investigate degraded resource\"."
+description: "Úsala cuando la persona informe de que un recurso de Azure desplegado falla, está degradado, sufre limitaciones de solicitudes o no está en buen estado, o pida investigarlo. Diagnostica un recurso concreto mediante sus registros, métricas y telemetría y genera un plan de corrección priorizado. Requiere que el recurso esté desplegado y emita telemetría. Los desencadenantes incluyen \"recurso en mal estado\", \"solucionar problemas de Azure\", \"por qué está fallando\", \"diagnosticar limitaciones\" e \"investigar recurso degradado\"."
 ---
-# Azure Resource Health and Issue Diagnosis
+# Estado de recursos de Azure y diagnóstico de problemas
 
-This workflow analyzes a specific Azure resource to assess its health, diagnose issues using logs and telemetry, and develop a remediation plan for any problems discovered.
+Este flujo analiza un recurso concreto de Azure para evaluar su estado, diagnosticar problemas con registros y telemetría y elaborar un plan de corrección para los problemas detectados.
 
 > [!NOTE]
-> This skill depends on the **Azure MCP server** (or the `az` CLI) and requires the target resource to be deployed and emitting telemetry. Prefer Azure MCP tools (`azmcp-*`) over direct Azure CLI when both are available.
+> Esta skill depende del **servidor Azure MCP** (o de la CLI `az`) y requiere que el recurso de destino esté desplegado y emita telemetría. Prefiere las herramientas Azure MCP (`azmcp-*`) al uso directo de Azure CLI cuando ambas estén disponibles.
 
-## When to invoke
+## Cuándo invocar
 
-- "Our App Service is returning 500s — diagnose it."
-- "Investigate why this Cosmos DB is throttling."
-- "The storage account looks degraded; find the root cause."
-- "Troubleshoot this VM and give me a remediation plan."
+- "Nuestro App Service devuelve errores 500; diagnostícalo."
+- "Investiga por qué este Cosmos DB está limitando solicitudes."
+- "La cuenta de almacenamiento parece degradada; encuentra la causa raíz."
+- "Investiga los problemas de esta VM y dame un plan de corrección."
 
-## Prerequisites
+## Prerrequisitos
 
-- Azure MCP server configured and authenticated.
-- Target Azure resource identified (name, and optionally resource group/subscription).
-- The resource must be deployed and running so it generates logs and telemetry.
+- Servidor Azure MCP configurado y autenticado.
+- Recurso de Azure de destino identificado (nombre y, opcionalmente, grupo de recursos o suscripción).
+- El recurso debe estar desplegado y en ejecución para generar registros y telemetría.
 
-## Workflow steps
+## Pasos del flujo de trabajo
 
-### Step 1: Get Azure best practices
+### Paso 1: Obtener buenas prácticas de Azure
 
-Retrieve diagnostic and troubleshooting best practices with the Azure best-practices tool. Focus on health monitoring, log analysis, and issue-resolution patterns, and use them to inform the diagnostic approach and remediation recommendations.
+Obtén buenas prácticas de diagnóstico y solución de problemas con la herramienta de buenas prácticas de Azure. Céntrate en supervisión del estado, análisis de registros y patrones de resolución, y úsalos para orientar el diagnóstico y las recomendaciones de corrección.
 
-### Step 2: Resource discovery and identification
+### Paso 2: Descubrir e identificar el recurso
 
-1. **Locate the resource**:
-   - If only a name is provided, search across subscriptions (`azmcp-subscription-list`, or `az resource list --name <resource-name>`).
-   - If multiple matches are found, prompt the user to specify subscription/resource group.
-   - Gather resource type and status, location, tags, configuration, and dependencies.
-2. **Detect the resource type** to choose the right diagnostics:
+1. **Localiza el recurso**:
+   - Si solo se proporciona un nombre, busca entre suscripciones (`azmcp-subscription-list` o `az resource list --name <resource-name>`).
+   - Si se encuentran varias coincidencias, pide a la persona que especifique la suscripción o el grupo de recursos.
+   - Recopila el tipo y estado del recurso, su ubicación, etiquetas, configuración y dependencias.
+2. **Detecta el tipo de recurso** para elegir los diagnósticos adecuados:
 
-| Resource type | Primary diagnostics |
+| Tipo de recurso | Diagnósticos principales |
 |---|---|
-| Web Apps / Function Apps | Application logs, performance metrics, dependency tracking |
-| Virtual Machines | System logs, performance counters, boot diagnostics |
-| Cosmos DB | Request metrics, throttling, partition statistics |
-| Storage Accounts | Access logs, performance metrics, availability |
-| SQL Database | Query performance, connection logs, resource utilization |
-| Application Insights | Application telemetry, exceptions, dependencies |
-| Key Vault | Access logs, certificate status, secret usage |
-| Service Bus | Message metrics, dead-letter queues, throughput |
+| Web Apps / Function Apps | Registros de aplicación, métricas de rendimiento y seguimiento de dependencias |
+| Máquinas virtuales | Registros del sistema, contadores de rendimiento y diagnóstico de arranque |
+| Cosmos DB | Métricas de solicitudes, limitación de solicitudes y estadísticas de particiones |
+| Cuentas de almacenamiento | Registros de acceso, métricas de rendimiento y disponibilidad |
+| SQL Database | Rendimiento de consultas, registros de conexiones y uso de recursos |
+| Application Insights | Telemetría de aplicación, excepciones y dependencias |
+| Key Vault | Registros de acceso, estado de certificados y uso de secretos |
+| Service Bus | Métricas de mensajes, colas de mensajes no procesados y rendimiento |
 
-### Step 3: Health status assessment
+### Paso 3: Evaluar el estado
 
-1. **Basic health check**: provisioning state and operational status, service availability, recent deployment or configuration changes, and current utilization (CPU, memory, storage).
-2. **Service-specific indicators**:
+1. **Comprobación básica de estado**: estado de aprovisionamiento y funcionamiento, disponibilidad del servicio, cambios recientes de despliegue o configuración y uso actual (CPU, memoria, almacenamiento).
+2. **Indicadores específicos del servicio**:
 
-| Resource type | Health indicators |
+| Tipo de recurso | Indicadores de estado |
 |---|---|
-| Web Apps | HTTP response codes, response times, uptime |
-| Databases | Connection success rate, query performance, deadlocks |
-| Storage | Availability percentage, request success rate, latency |
-| VMs | Boot diagnostics, guest OS metrics, network connectivity |
-| Functions | Execution success rate, duration, error frequency |
+| Web Apps | Códigos y tiempos de respuesta HTTP, tiempo de actividad |
+| Bases de datos | Tasa de conexiones correctas, rendimiento de consultas e interbloqueos |
+| Storage | Porcentaje de disponibilidad, tasa de solicitudes correctas y latencia |
+| VM | Diagnóstico de arranque, métricas del sistema operativo invitado y conectividad de red |
+| Functions | Tasa de ejecuciones correctas, duración y frecuencia de errores |
 
-### Step 4: Log and telemetry analysis
+### Paso 4: Analizar registros y telemetría
 
-1. **Find monitoring sources**: identify Log Analytics workspaces (`azmcp-monitor-workspace-list`), associated Application Insights instances, and relevant log tables (`azmcp-monitor-table-list`).
-2. **Execute diagnostic queries** with `azmcp-monitor-log-query`, choosing KQL based on the resource type.
+1. **Encuentra fuentes de supervisión**: identifica áreas de trabajo de Log Analytics (`azmcp-monitor-workspace-list`), instancias asociadas de Application Insights y tablas de registros pertinentes (`azmcp-monitor-table-list`).
+2. **Ejecuta consultas de diagnóstico** con `azmcp-monitor-log-query`, eligiendo KQL según el tipo de recurso.
 
-General error analysis:
+Análisis general de errores:
 
 ```kql
 union isfuzzy=true
@@ -79,7 +79,7 @@ union isfuzzy=true
 | order by TimeGenerated desc
 ```
 
-Performance analysis:
+Análisis de rendimiento:
 
 ```kql
 Perf
@@ -89,7 +89,7 @@ Perf
 | where avg_CounterValue > 80
 ```
 
-Application-specific queries:
+Consultas específicas de la aplicación:
 
 ```kql
 requests
@@ -99,131 +99,131 @@ requests
 | order by timestamp desc
 ```
 
-3. **Recognize patterns**: recurring errors or anomalies, correlation with deployment/configuration changes, performance degradation trends, and dependency or external-service failures.
+3. **Reconoce patrones**: errores o anomalías recurrentes, correlación con cambios de despliegue o configuración, tendencias de degradación del rendimiento y fallos de dependencias o servicios externos.
 
-### Step 5: Issue classification and root-cause analysis
+### Paso 5: Clasificar problemas y analizar sus causas raíz
 
-1. **Classify severity**:
+1. **Clasifica la gravedad**:
 
-| Severity | Meaning |
+| Gravedad | Significado |
 |---|---|
-| Critical | Service unavailable, data loss, security breach |
-| High | Performance degradation, intermittent failures, high error rate |
-| Medium | Warnings, suboptimal configuration, minor performance issues |
-| Low | Informational alerts, optimization opportunities |
+| Crítica | Servicio no disponible, pérdida de datos o vulneración de seguridad |
+| Alta | Degradación del rendimiento, fallos intermitentes o tasa de errores elevada |
+| Media | Advertencias, configuración poco óptima o problemas menores de rendimiento |
+| Baja | Alertas informativas u oportunidades de optimización |
 
-2. **Determine the root-cause category**: configuration issue, resource constraint (CPU/memory/disk/throttling), network issue, application issue (bug, memory leak, inefficient query), external dependency, or security issue (auth failure, certificate expiration).
-3. **Assess impact**: affected users/systems, data integrity and security implications, and recovery-time priorities.
+2. **Determina la categoría de la causa raíz**: problema de configuración, limitación de recursos (CPU, memoria, disco o solicitudes), problema de red, problema de aplicación (error, fuga de memoria, consulta ineficiente), dependencia externa o problema de seguridad (fallo de autenticación, certificado caducado).
+3. **Evalúa el impacto**: usuarios y sistemas afectados, consecuencias para la integridad y seguridad de los datos y prioridades de tiempo de recuperación.
 
-### Step 6: Generate a remediation plan
+### Paso 6: Generar un plan de corrección
 
-1. **Immediate actions** (Critical): emergency fixes to restore availability, temporary workarounds, escalation procedures.
-2. **Short-term fixes** (High/Medium): configuration adjustments, resource scaling, patches, monitoring improvements.
-3. **Long-term improvements**: architectural changes for resilience, preventive measures, documentation.
-4. **Implementation steps**: prioritized items with specific Azure CLI commands, testing/validation, rollback plans, and post-change monitoring.
+1. **Acciones inmediatas** (gravedad crítica): correcciones de emergencia para restablecer la disponibilidad, soluciones temporales y procedimientos de escalamiento.
+2. **Correcciones a corto plazo** (gravedad alta o media): ajustes de configuración, escalado de recursos, parches y mejoras de supervisión.
+3. **Mejoras a largo plazo**: cambios de arquitectura para aumentar la resiliencia, medidas preventivas y documentación.
+4. **Pasos de implementación**: elementos priorizados con comandos concretos de Azure CLI, pruebas y validación, planes de reversión y supervisión posterior al cambio.
 
-### Step 7: User confirmation and report generation
+### Paso 7: Confirmación de la persona y generación del informe
 
-Present a summary and gate remediation on user approval:
+Presenta un resumen y condiciona las medidas de corrección a la aprobación de la persona:
 
 ```text
-Azure Resource Health Assessment
+Evaluación del estado del recurso de Azure
 
-Resource Overview:
-- Resource: [Name] ([Type])
-- Status: [Healthy/Warning/Critical]
-- Location: [Region]
-- Last Analyzed: [Timestamp]
+Descripción general del recurso:
+- Recurso: [Nombre] ([Tipo])
+- Estado: [Correcto/Advertencia/Crítico]
+- Ubicación: [Región]
+- Último análisis: [Marca de tiempo]
 
-Issues Identified:
-- Critical: X issues requiring immediate attention
-- High: Y issues affecting performance/reliability
-- Medium: Z issues for optimization
-- Low: N informational items
+Problemas identificados:
+- Críticos: X problemas que requieren atención inmediata
+- Altos: Y problemas que afectan al rendimiento o la fiabilidad
+- Medios: Z problemas de optimización
+- Bajos: N elementos informativos
 
-Top Issues:
-1. [Issue Type]: [Description] - Impact: [High/Medium/Low]
+Problemas principales:
+1. [Tipo de problema]: [Descripción] - Impacto: [Alto/Medio/Bajo]
 
-Remediation Plan:
-- Immediate Actions: X items
-- Short-term Fixes: Y items
-- Long-term Improvements: Z items
-- Estimated Resolution Time: [Timeline]
+Plan de corrección:
+- Acciones inmediatas: X elementos
+- Correcciones a corto plazo: Y elementos
+- Mejoras a largo plazo: Z elementos
+- Tiempo estimado de resolución: [Plazo]
 
-Proceed with detailed remediation plan? (y/n)
+¿Continuar con el plan detallado de corrección? (y/n)
 ```
 
-On approval, generate the detailed report using the Output template below.
+Tras la aprobación, genera el informe detallado con la plantilla de salida siguiente.
 
-## Error handling
+## Gestión de errores
 
-| Situation | Action |
+| Situación | Acción |
 |---|---|
-| Resource not found | Ask for the exact name/location |
-| Authentication issues | Guide the user through Azure authentication setup |
-| Insufficient permissions | List the required read-only RBAC roles |
-| No logs available | Suggest enabling diagnostic settings and waiting for data |
-| Query timeouts | Break the analysis into smaller time windows |
-| Service-specific gaps | Provide a generic health assessment and note the limitations |
+| Recurso no encontrado | Solicitar el nombre y la ubicación exactos |
+| Problemas de autenticación | Guiar a la persona en la configuración de autenticación de Azure |
+| Permisos insuficientes | Enumerar los roles RBAC de solo lectura necesarios |
+| No hay registros disponibles | Sugerir habilitar la configuración de diagnóstico y esperar a recibir datos |
+| Consultas que agotan el tiempo de espera | Dividir el análisis en intervalos de tiempo más pequeños |
+| Carencias específicas del servicio | Proporcionar una evaluación genérica del estado e indicar las limitaciones |
 
-## Output template
+## Plantilla de salida
 
-The skill writes a health report. Below its H1 title (`Azure Resource Health Report: <resource>`) it contains:
+La skill escribe un informe de estado. Bajo su título H1 (`Informe de estado del recurso de Azure: <recurso>`), contiene:
 
 ````markdown
-## Executive Summary
+## Resumen ejecutivo
 
-<overview of health status and key findings>
+<visión general del estado y de los hallazgos principales>
 
-## Health Metrics
+## Métricas de estado
 
-- Availability: X% over last 24h
-- Error Rate: X% over last 24h
-- Resource Utilization: CPU/Memory/Storage percentages
+- Disponibilidad: X% en las últimas 24h
+- Tasa de errores: X% en las últimas 24h
+- Uso de recursos: porcentajes de CPU, memoria y almacenamiento
 
-## Issues Identified
+## Problemas identificados
 
-### Critical Issues
+### Problemas críticos
 
-- <Issue>: root cause, business impact, immediate action
+- <Problema>: causa raíz, impacto de negocio y acción inmediata
 
-### High Priority Issues
+### Problemas de prioridad alta
 
-- <Issue>: root cause, reliability impact, recommended fix
+- <Problema>: causa raíz, impacto en la fiabilidad y corrección recomendada
 
-## Remediation Plan
+## Plan de corrección
 
-### Phase 1: Immediate Actions (0-2 hours)
-
-```bash
-<Azure CLI commands to restore service, with explanations>
-```
-
-### Phase 2: Short-term Fixes (2-24 hours)
+### Fase 1: Acciones inmediatas (0-2 horas)
 
 ```bash
-<Azure CLI commands for reliability improvements>
+<comandos de Azure CLI para restablecer el servicio, con explicaciones>
 ```
 
-### Phase 3: Long-term Improvements (1-4 weeks)
+### Fase 2: Correcciones a corto plazo (2-24 horas)
 
 ```bash
-<Azure CLI and configuration changes>
+<comandos de Azure CLI para mejorar la fiabilidad>
 ```
 
-## Validation Steps
+### Fase 3: Mejoras a largo plazo (1-4 semanas)
 
-- [ ] Verify issue resolution through logs
-- [ ] Confirm performance improvements
-- [ ] Test application functionality
-- [ ] Update monitoring and alerting
+```bash
+<comandos de Azure CLI y cambios de configuración>
+```
+
+## Pasos de validación
+
+- [ ] Verificar la resolución de los problemas mediante registros
+- [ ] Confirmar las mejoras de rendimiento
+- [ ] Probar la funcionalidad de la aplicación
+- [ ] Actualizar la supervisión y las alertas
 ````
 
-## Quality gate
+## Puerta de calidad
 
-- [ ] Resource health status accurately assessed from logs, metrics, and telemetry.
-- [ ] All significant issues identified and classified by severity.
-- [ ] Root-cause analysis completed for every Critical and High finding.
-- [ ] Remediation plan provides specific Azure CLI steps with validation and rollback.
-- [ ] Issues prioritized by business impact, with monitoring and prevention recommendations.
-- [ ] Detailed remediation actions taken only after explicit user confirmation.
+- [ ] El estado del recurso se evalúa con precisión a partir de registros, métricas y telemetría.
+- [ ] Todos los problemas importantes se identifican y clasifican por gravedad.
+- [ ] Se completa el análisis de causa raíz para cada hallazgo crítico o alto.
+- [ ] El plan de corrección proporciona pasos específicos de Azure CLI con validación y reversión.
+- [ ] Los problemas se priorizan por impacto de negocio, con recomendaciones de supervisión y prevención.
+- [ ] Las acciones detalladas de corrección se realizan solo tras la confirmación explícita de la persona.

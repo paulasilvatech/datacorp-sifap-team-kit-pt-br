@@ -1,67 +1,67 @@
-# Agents Index
+# Índice de agentes
 
-This directory contains the GitHub Copilot custom agents for the workshop — **17** in total, each in its own `<name>.agent.md`.
+Este directorio contiene los agentes personalizados de GitHub Copilot para la inmersión: **17** en total, cada uno en su propio `<name>.agent.md`.
 
 > [!NOTE]
-> Copilot discovers `*.agent.md` files in `.github/agents/`. Invoke an agent by its `name` with `@<name>` (for example `@archaeologist`). The `name` also binds prompts: a `*.prompt.md` file selects its agent through the `agent:` frontmatter key, so an agent's id is a contract, not a label.
+> Copilot descubre archivos `*.agent.md` en `.github/agents/`. Invoca un agente por su `name` mediante `@<name>` (por ejemplo, `@archaeologist`). El `name` también vincula los prompts: un archivo `*.prompt.md` selecciona su agente mediante la clave `agent:` del frontmatter, por lo que el identificador de un agente es un contrato, no una etiqueta.
 
-The kit uses **two agent layers** — this is the core mental model, so the agents are grouped by layer rather than listed flat:
+El kit utiliza **dos capas de agentes**: este es el modelo mental central, por lo que los agentes se agrupan por capa en lugar de enumerarse sin jerarquía:
 
-- **Stage agents (4)** — one per workshop stage, used sequentially across the day.
-- **Persona agents (10)** — one per team role, used by the pair that owns that role.
+- **Agentes de etapa (4)**: uno por etapa de la inmersión, utilizados secuencialmente a lo largo de la jornada.
+- **Agentes de persona (10)**: uno por rol del equipo, utilizados por la pareja responsable de ese rol.
 
-Three further **specialist agents** sit outside both layers; they add depth for specific work and are listed last.
+Otros tres **agentes especialistas** se sitúan fuera de ambas capas; aportan profundidad para trabajos específicos y se enumeran al final.
 
-## Stage agents
+## Agentes de etapa
 
-Four sequential agents, one per workshop stage. They chain through the `handoffs:` frontmatter key — `archaeologist -> architect -> builder` each hand off to the next; the terminal Stage 4 agent (`evolution`) has none.
+Cuatro agentes secuenciales, uno por etapa de la inmersión. Se encadenan mediante la clave `handoffs:` del frontmatter: en `archaeologist -> architect -> builder`, cada uno realiza el traspaso al siguiente; el agente terminal de la etapa 4 (`evolution`) no tiene ninguno.
 
-| Stage | Agent | Invoke | Bound prompts | Description |
+| Etapa | Agente | Invocación | Prompts vinculados | Descripción |
 | --- | --- | --- | --- | --- |
-| Stage 1 | [`archaeologist`](archaeologist.agent.md) | `@archaeologist` | 5 | Stage 1 agent — reads legacy Natural/Adabas code, extracts business rules, maps dependencies, and records open questions |
-| Stage 2 | [`architect`](architect.agent.md) | `@architect` | 4 | Stage 2 agent — defines bounded contexts, writes EARS specifications, generates ADRs, and designs a Modular Monolith architecture |
-| Stage 3 | [`builder`](builder.agent.md) | `@builder` | 5 | Stage 3 agent — translates Natural to Java, generates JPA from FDTs, writes equivalence tests, and builds REST + Next.js |
-| Stage 4 | [`evolution`](evolution.agent.md) | `@evolution` | 4 | Stage 4 agent — writes GitHub issues for Copilot Agent, reviews AI-generated PRs, and configures CI/CD and IaC |
+| Etapa 1 | [`archaeologist`](archaeologist.agent.md) | `@archaeologist` | 5 | Agente de la etapa 1: lee código heredado Natural/Adabas, extrae reglas de negocio, mapea dependencias y registra preguntas pendientes |
+| Etapa 2 | [`architect`](architect.agent.md) | `@architect` | 4 | Agente de la etapa 2: define contextos delimitados, escribe especificaciones EARS, genera ADR y diseña una arquitectura de monolito modular |
+| Etapa 3 | [`builder`](builder.agent.md) | `@builder` | 5 | Agente de la etapa 3: traduce Natural a Java, genera JPA a partir de FDT, escribe pruebas de equivalencia y construye REST + Next.js |
+| Etapa 4 | [`evolution`](evolution.agent.md) | `@evolution` | 4 | Agente de la etapa 4: escribe incidencias de GitHub para Copilot Agent, revisa PR generadas por IA y configura CI/CD e IaC |
 
-## Persona agents
+## Agentes de persona
 
-Ten agents, one per team role. The Developer persona is served by the [`implementer`](implementer.agent.md) agent, so its prompts are named `persona-developer-*` but bind to `agent: "implementer"`.
+Diez agentes, uno por rol del equipo. El agente [`implementer`](implementer.agent.md) atiende a la persona desarrolladora, por lo que sus prompts se llaman `persona-developer-*`, pero se vinculan a `agent: "implementer"`.
 
-| Agent | Invoke | Bound prompts | Description |
+| Agente | Invocación | Prompts vinculados | Descripción |
 | --- | --- | --- | --- |
-| [`product-owner`](product-owner.agent.md) | `@product-owner` | 3 | Product Owner assistant for writing specifications, refining the backlog, and validating acceptance with EARS notation and the SDD workflow |
-| [`requirements-engineer`](requirements-engineer.agent.md) | `@requirements-engineer` | 4 | Requirements engineering assistant for EARS notation, specification validation, and legacy-traceable requirements in the SDD workflow |
-| [`enterprise-architect`](enterprise-architect.agent.md) | `@enterprise-architect` | 3 | Enterprise architecture assistant for the Spec-Kit constitution, ADRs, external integration mapping, and cross-cutting design |
-| [`software-architect`](software-architect.agent.md) | `@software-architect` | 3 | Software architecture assistant for CODEMAP, bounded contexts, module topology, and API contracts |
-| [`tech-lead`](tech-lead.agent.md) | `@tech-lead` | 3 | Technical leadership assistant for CODEMAP and context curation, Copilot usage guidance, and code-review standards |
-| [`implementer`](implementer.agent.md) | `@implementer` | 6 | Implementation assistant for Java 21 and Next.js 15 — TDD, bug fixing, and refactoring with REQ-ID traceability |
-| [`dba`](dba.agent.md) | `@dba` | 4 | Database assistant for PostgreSQL migrations, query optimization, indexing strategy, and SQL-injection auditing |
-| [`qa-engineer`](qa-engineer.agent.md) | `@qa-engineer` | 5 | Quality assurance assistant for test generation from specs, coverage-gap analysis, and CI quality gates |
-| [`devops-engineer`](devops-engineer.agent.md) | `@devops-engineer` | 5 | DevOps assistant for GitHub Actions pipelines, Terraform IaC, container builds, observability, and incident analysis |
-| [`tech-writer`](tech-writer.agent.md) | `@tech-writer` | 5 | Technical writing assistant for API docs, runbooks, ADRs, CODEMAP, and Diátaxis-style content with drift detection |
+| [`product-owner`](product-owner.agent.md) | `@product-owner` | 3 | Asistente del responsable del producto para escribir especificaciones, refinar la lista priorizada de trabajo y validar la aceptación con notación EARS y el flujo de SDD |
+| [`requirements-engineer`](requirements-engineer.agent.md) | `@requirements-engineer` | 4 | Asistente de ingeniería de requisitos para notación EARS, validación de especificaciones y requisitos trazables al sistema heredado en el flujo de SDD |
+| [`enterprise-architect`](enterprise-architect.agent.md) | `@enterprise-architect` | 3 | Asistente de arquitectura empresarial para la constitución de Spec-Kit, ADR, mapeo de integraciones externas y diseño transversal |
+| [`software-architect`](software-architect.agent.md) | `@software-architect` | 3 | Asistente de arquitectura de software para CODEMAP, contextos delimitados, topología de módulos y contratos de API |
+| [`tech-lead`](tech-lead.agent.md) | `@tech-lead` | 3 | Asistente de liderazgo técnico para mantener CODEMAP y contexto, orientar el uso de Copilot y definir estándares de revisión de código |
+| [`implementer`](implementer.agent.md) | `@implementer` | 6 | Asistente de implementación para Java 21 y Next.js 15: TDD, corrección de errores y refactorización con trazabilidad REQ-ID |
+| [`dba`](dba.agent.md) | `@dba` | 4 | Asistente de bases de datos para migraciones PostgreSQL, optimización de consultas, estrategia de indexación y auditoría de inyección SQL |
+| [`qa-engineer`](qa-engineer.agent.md) | `@qa-engineer` | 5 | Asistente de aseguramiento de la calidad para generar pruebas a partir de especificaciones, analizar lagunas de cobertura y definir puertas de calidad de CI |
+| [`devops-engineer`](devops-engineer.agent.md) | `@devops-engineer` | 5 | Asistente de DevOps para canalizaciones de GitHub Actions, IaC con Terraform, compilaciones de contenedores, observabilidad y análisis de incidentes |
+| [`tech-writer`](tech-writer.agent.md) | `@tech-writer` | 5 | Asistente de redacción técnica para documentación de API, guías operativas, ADR, CODEMAP y contenido de estilo Diátaxis con detección de divergencias |
 
-## Specialist agents
+## Agentes especialistas
 
-Three depth specialists that fit neither the Stage nor the persona layer. Each owns **no** prompts; invoke them directly with `@<name>`.
+Tres especialistas avanzados que no encajan ni en la capa de etapa ni en la de persona. **Ninguno** tiene prompts propios; invócalos directamente mediante `@<name>`.
 
-| Agent | Invoke | Bound prompts | Description |
+| Agente | Invocación | Prompts vinculados | Descripción |
 | --- | --- | --- | --- |
-| [`se-ux-ui-designer`](se-ux-ui-designer.agent.md) | `@se-ux-ui-designer` | 0 | UX/UI research specialist for the SIFAP modern UI — Jobs-to-be-Done, user journeys, and accessibility specs that feed the frontend build. Use for research and design intent; use @expert-react-frontend-engineer or @implementer to write the actual Next.js code. |
-| [`expert-react-frontend-engineer`](expert-react-frontend-engineer.agent.md) | `@expert-react-frontend-engineer` | 0 | Frontend depth specialist for the SIFAP UI — React 19 + Next.js 15 App Router, Server/Client boundaries, Server Actions, optimistic UI, accessibility, and performance. Use for frontend-heavy work; use @implementer for a single traceable tasks.md item or any backend change. |
-| [`java-mcp-expert`](java-mcp-expert.agent.md) | `@java-mcp-expert` | 0 | Greenfield specialist for building Model Context Protocol (MCP) servers in Java with the official MCP Java SDK, Project Reactor, and Spring Boot 3.3. Use when a team extends the toolchain with a custom MCP server; the SIFAP legacy-to-Java modernization itself belongs to @archaeologist, @architect, and @builder. |
+| [`se-ux-ui-designer`](se-ux-ui-designer.agent.md) | `@se-ux-ui-designer` | 0 | Especialista en investigación UX/UI para la interfaz moderna de SIFAP: Jobs-to-be-Done, recorridos de usuario y especificaciones de accesibilidad que orientan la construcción del frontend. Utiliza para investigación e intención de diseño; utiliza @expert-react-frontend-engineer o @implementer para escribir el código Next.js. |
+| [`expert-react-frontend-engineer`](expert-react-frontend-engineer.agent.md) | `@expert-react-frontend-engineer` | 0 | Especialista avanzado de frontend para la interfaz de SIFAP: React 19 + Next.js 15 App Router, límites servidor/cliente, acciones de servidor, interfaz optimista, accesibilidad y rendimiento. Utiliza para trabajo centrado en frontend; utiliza @implementer para un único elemento trazable de tasks.md o cualquier cambio de backend. |
+| [`java-mcp-expert`](java-mcp-expert.agent.md) | `@java-mcp-expert` | 0 | Especialista en desarrollos desde cero para crear servidores Model Context Protocol (MCP) en Java con el SDK oficial MCP Java, Project Reactor y Spring Boot 3.3. Utiliza cuando un equipo amplíe la cadena de herramientas con un servidor MCP personalizado; la modernización del SIFAP heredado a Java corresponde a @archaeologist, @architect y @builder. |
 
-## Prompt ownership
+## Responsabilidad sobre los prompts
 
-The 59 prompts in [`../prompts/`](../prompts/) bind to an agent through their `agent:` key:
+Los 59 prompts de [`../prompts/`](../prompts/) se vinculan a un agente mediante su clave `agent:`:
 
-- All **59** bind to one of the **14** named agents above (Stage + persona) — no prompt is left on the generic built-in `agent: "agent"`. The per-agent counts are in the tables' **Bound prompts** columns.
-- The three specialist agents (`se-ux-ui-designer`, `expert-react-frontend-engineer`, `java-mcp-expert`) own **0** prompts and are invoked directly.
+- Los **59** se vinculan a uno de los **14** agentes con nombre anteriores (etapa + persona); ningún prompt permanece vinculado al agente integrado genérico `agent: "agent"`. Los recuentos por agente se encuentran en las columnas **Prompts vinculados** de las tablas.
+- Los tres agentes especialistas (`se-ux-ui-designer`, `expert-react-frontend-engineer`, `java-mcp-expert`) tienen **0** prompts y se invocan directamente.
 
-Regenerate the counts with `grep -h '^agent:' ../prompts/*.prompt.md | sort | uniq -c`.
+Regenera los recuentos con `grep -h '^agent:' ../prompts/*.prompt.md | sort | uniq -c`.
 
-## Maintenance Rule
+## Regla de mantenimiento
 
-- Renaming an agent silently breaks **every** prompt bound to it via `agent:`; rename the agent and all its prompt bindings together, then re-run the validator.
-- `description` is the only frontmatter key the gate strictly requires; `handoffs` is for Stage agents only and only when a next stage exists.
-- The required body sections (`Mission`, `Lead Personas`, `Operating Principles`, `What This Agent Knows`, `What This Agent Does NOT Know`, `Available Prompts`, a `Definition of Done` heading, `Anti-Patterns This Agent Rejects`, `Spec-Kit Integration`) and the full schema are defined in [`../PRIMITIVE-STANDARD.md`](../PRIMITIVE-STANDARD.md) and enforced by [`../scripts/validate-copilot-primitives.py`](../scripts/validate-copilot-primitives.py).
-- When you add an agent, add its row to the correct layer above and, if a prompt should invoke it, set that prompt's `agent:` to this `name`.
+- Cambiar el nombre de un agente rompe sin aviso **todos** los prompts vinculados a él mediante `agent:`; cambia el nombre del agente y todos sus vínculos de prompts conjuntamente y después vuelve a ejecutar el validador.
+- `description` es la única clave del frontmatter que la puerta exige estrictamente; `handoffs` es solo para agentes de etapa y únicamente cuando existe una etapa siguiente.
+- Las secciones obligatorias del cuerpo (`Misión`, `Personas líderes`, `Principios operativos`, `Lo que este agente sabe`, `Lo que este agente NO sabe`, `Prompts disponibles`, un encabezado `Definición de terminado`, `Antipatrones que este agente rechaza`, `Integración con Spec-Kit`) y el esquema completo se definen en [`../PRIMITIVE-STANDARD.md`](../PRIMITIVE-STANDARD.md) y se exigen mediante [`../scripts/validate-copilot-primitives.py`](../scripts/validate-copilot-primitives.py).
+- Cuando añadas un agente, incorpora su fila a la capa correcta anterior y, si un prompt debe invocarlo, establece el `agent:` de ese prompt en este `name`.

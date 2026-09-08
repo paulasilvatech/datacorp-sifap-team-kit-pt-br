@@ -1,104 +1,104 @@
 ---
 
-title: "Template: Discovery Report"
-description: "Report skeleton for the Stage 1 handoff through /discovery-report"
-author: "Paula Silva, AI-Native Software Engineer, Americas Global Black Belt at Microsoft"
+title: "Plantilla: informe de descubrimiento"
+description: "Estructura de informe para la transición de la Etapa 1 mediante /discovery-report"
+author: "Paula Silva, ingeniera de software nativo de IA, Global Black Belt para las Américas en Microsoft"
 date: "2026-04-29"
 version: "1.0.0"
 status: "approved"
 tags: ["template", "discovery-report", "archaeology", "stage-1"]
 ---
 
-# Template: Discovery Report — Stage 1
+# Plantilla: informe de descubrimiento — Etapa 1
 
-> **Track:** [Team Kit](../../README.md) › [Stage 1](../README.md) › **Templates** › **discovery-report**
+> **Ruta:** [Kit del equipo](../../README.md) › [Etapa 1](../README.md) › **Plantillas** › **discovery-report**
 
-**Discovery report template for the Stage 1 handoff.**
+**Plantilla de informe de descubrimiento para la transición de la Etapa 1.**
 
 > [!NOTE]
-> **This file is a template.** Copy it to your team repository and complete it with real data. Do not edit the original.
+> **Este archivo es una plantilla.** Cópiala al repositorio de tu equipo y complétala con datos reales. No edites el original.
 
-**Team:** <!-- placeholder -->
-
----
-
-## Executive summary
-
-<!-- placeholder: maximum 5 sentences -->
+**Equipo:** <!-- placeholder -->
 
 ---
 
-## What we know (confirmed)
+## Resumen ejecutivo
 
-### Business rules
-
-<!-- placeholder: confirmed rules with EARS candidates -->
-
-### Dependencies
-
-<!-- placeholder: edge counts from the dependency map -->
-
-### Data structures
-
-<!-- placeholder: DDM summaries -->
+<!-- placeholder: máximo 5 frases -->
 
 ---
 
-## What is risky
+## Lo que sabemos (confirmado)
 
-### Open questions awaiting human validation
+### Reglas de negocio
 
-| Open question | Evidence (`path:line`) | Impact | Hypothesis (unconfirmed) | Responsible person/area | Status |
+<!-- placeholder: reglas confirmadas con candidatas EARS -->
+
+### Dependencias
+
+<!-- placeholder: cantidades de aristas del mapa de dependencias -->
+
+### Estructuras de datos
+
+<!-- placeholder: resúmenes de los DDM -->
+
+---
+
+## Lo que presenta riesgos
+
+### Preguntas abiertas pendientes de validación humana
+
+| Pregunta abierta | Evidencia (`path:line`) | Impacto | Hipótesis (sin confirmar) | Persona/área responsable | Estado |
 |---|---|---|---|---|---|
-| <!-- placeholder --> | <!-- placeholder: path:line --> | <!-- placeholder --> | <!-- placeholder: unconfirmed --> | <!-- placeholder --> | <!-- placeholder --> |
+| <!-- placeholder --> | <!-- placeholder: path:line --> | <!-- placeholder --> | <!-- placeholder: sin confirmar --> | <!-- placeholder --> | <!-- placeholder --> |
 
-### Rules with weak evidence
+### Reglas con evidencia débil
 
-<!-- placeholder: inferred rules -->
+<!-- placeholder: reglas inferidas -->
 
 ---
 
-## Recommended carving hypotheses
+## Hipótesis de delimitación recomendadas
 
-### Hypothesis 1: <!-- placeholder: business name -->
+### Hipótesis 1: <!-- placeholder: nombre de negocio -->
 
-- Programs: <!-- placeholder -->
+- Programas: <!-- placeholder -->
 - DDMs: <!-- placeholder -->
-- Rationale: <!-- placeholder -->
+- Justificación: <!-- placeholder -->
 
 ---
 
-## Source artifacts
+## Artefactos de origen
 
-| Artifact | Path | Status |
+| Artefacto | Ruta | Estado |
 |---|---|---|
-| Inventory | [inventory.md](../inventory.md) | <!-- placeholder --> |
-| Business Rules | [business-rules-catalog.md](../business-rules-catalog.md) | <!-- placeholder --> |
-| Dependencies | [dependency-map.md](../dependency-map.md) | <!-- placeholder --> |
-| Open questions | [mysteries-found.md](../mysteries-found.md) | <!-- placeholder --> |
+| Inventario | [inventory.md](../inventory.md) | <!-- placeholder --> |
+| Reglas de negocio | [business-rules-catalog.md](../business-rules-catalog.md) | <!-- placeholder --> |
+| Dependencias | [dependency-map.md](../dependency-map.md) | <!-- placeholder --> |
+| Preguntas abiertas | [mysteries-found.md](../mysteries-found.md) | <!-- placeholder --> |
 
 ---
 
-## Team approval
+## Aprobación del equipo
 
-- Reviewed by: <!-- placeholder -->
-- Confidence: <!-- placeholder: High/Medium/Low -->
-
----
-
-## Definition of done
-
-- [ ] Summary with no more than 5 sentences.
-- [ ] 3 to 5 carving hypotheses documented.
-- [ ] All source artifacts have a completed status.
-- [ ] Document is no longer than 3 pages.
+- Revisado por: <!-- placeholder -->
+- Confianza: <!-- placeholder: Alta/Media/Baja -->
 
 ---
 
-### Continue reading
+## Definición de terminado
 
-| Previous | Next |
+- [ ] Resumen de no más de 5 frases.
+- [ ] De 3 a 5 hipótesis de delimitación documentadas.
+- [ ] Todos los artefactos de origen tienen su estado completado.
+- [ ] El documento no supera las 3 páginas.
+
+---
+
+### Sigue leyendo
+
+| Anterior | Siguiente |
 |---|---|
-| [Stage 1 GUIDE](../GUIDE.md)<br/><sub>Step-by-step schedule.</sub> | [Team file](../discovery-report.md)<br/><sub>Where you complete it.</sub> |
+| [GUÍA de la Etapa 1](../GUIDE.md)<br/><sub>Cronograma paso a paso.</sub> | [Archivo del equipo](../discovery-report.md)<br/><sub>Donde debes completarlo.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Volver al índice del kit](../../README.md)</sub>

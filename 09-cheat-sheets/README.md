@@ -1,43 +1,43 @@
-# Quick Reference Cards
+# Fichas de referencia rápida
 
-> **Path:** [Team Kit](../README.md) › **Reference Cards**
+> **Ruta:** [Kit del equipo](../README.md) › **Fichas de referencia**
 
-**Three one-page cards for quick consultation during the workshop: Copilot modes, the Spec-Kit workflow, and model routing.**
+**Tres fichas de una página para consultas rápidas durante la inmersión: modos de Copilot, flujo de Spec-Kit y selección de modelos.**
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | The entire team—quick reference without reading a complete guide |
-| **Prerequisites** | None |
-| **Estimated time** | 2 min per card |
-| **Stage** | All |
-| **Expected outcome** | Know which card to consult for each question |
+| **Público objetivo** | Todo el equipo: referencia rápida sin leer una guía completa |
+| **Prerrequisitos** | Ninguno |
+| **Tiempo estimado** | 2 min por ficha |
+| **Etapa** | Todas |
+| **Resultado esperado** | Saber qué ficha consultar para cada pregunta |
 
-![Reference cards](https://img.shields.io/badge/Type-Quick%20reference-171717?style=flat-square)
-
----
-
-## When to use them
-
-Open a reference card when you need a quick answer without reading a complete guide. Each card answers a specific question.
-
-![Three quick reference cards: Copilot in 3 modes, Spec-Kit on 1 page, and model routing](../assets/cheat-sheets-index.svg)
+![Fichas de referencia](https://img.shields.io/badge/Type-Quick%20reference-171717?style=flat-square)
 
 ---
 
-## Contents
+## Cuándo usarlas
 
-| File | Topic | Use when |
+Abre una ficha de referencia cuando necesites una respuesta rápida sin leer una guía completa. Cada ficha responde a una pregunta específica.
+
+![Tres fichas de referencia rápida: Copilot en 3 modos, Spec-Kit en 1 página y selección de modelos](../assets/cheat-sheets-index.svg)
+
+---
+
+## Contenido
+
+| Archivo | Tema | Úsala cuando |
 |---|---|---|
-| [`copilot-3-modes.md`](copilot-3-modes.md) | GitHub Copilot: Ask, Plan, and Agent modes | You are unsure which Copilot mode to use |
-| [`spec-kit-workflow.md`](spec-kit-workflow.md) | Spec-Kit workflow at a glance | You do not know which `/speckit.*` command to use |
-| [`model-routing.md`](model-routing.md) | Which AI model to use for each task type | You are deciding between Haiku, Sonnet, and Opus |
+| [`copilot-3-modes.md`](copilot-3-modes.md) | GitHub Copilot: modos Ask, Plan y Agent | No sabes qué modo de Copilot usar |
+| [`spec-kit-workflow.md`](spec-kit-workflow.md) | Flujo de trabajo de Spec-Kit de un vistazo | No sabes qué comando `/speckit.*` usar |
+| [`model-routing.md`](model-routing.md) | Qué modelo de IA usar para cada tipo de tarea | Estás decidiendo entre Haiku, Sonnet y Opus |
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Persona Kits — Index](../05-personas/README.md)<br/><sub>10 personas with role-specific agents, prompts, skills, and MCP.</sub> | [Copilot in 3 Modes](copilot-3-modes.md)<br/><sub>When to use Ask, Plan, or Agent—a situation-to-mode table.</sub> |
+| [Kits de personas — Índice](../05-personas/README.md)<br/><sub>10 personas con agentes, prompts, skills y MCP específicos de cada rol.</sub> | [Copilot en 3 modos](copilot-3-modes.md)<br/><sub>Cuándo usar Ask, Plan o Agent: tabla de situaciones y modos.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

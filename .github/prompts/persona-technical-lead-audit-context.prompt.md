@@ -1,114 +1,114 @@
 ---
 name: "audit-context"
-description: "Audit the repository's Copilot context surface (AGENTS.md, CODEMAP.md, instructions, prompts, agents) and return prioritized corrections."
+description: "Audita la superficie de contexto de Copilot del repositorio (AGENTS.md, CODEMAP.md, instrucciones, prompts, agentes) y devuelve correcciones priorizadas."
 argument-hint: "scope=.github"
 agent: "tech-lead"
 tools: ["read", "search"]
 ---
 # /audit-context
 
-## Objective
+## Objetivo
 
-Audit the repository's context-engineering surface — `AGENTS.md`, `CODEMAP.md`,
-`.github/instructions/*`, `.github/prompts/*`, `.github/agents/*` — and return a
-prioritized, actionable list of corrections. Every finding is a real issue with a
-concrete fix, sorted by severity.
+Audita la superficie de ingeniería de contexto del repositorio (`AGENTS.md`, `CODEMAP.md`,
+`.github/instructions/*`, `.github/prompts/*`, `.github/agents/*`) y devuelve una
+lista priorizada de correcciones concretas. Cada hallazgo es un problema real con una
+solución específica, ordenado por gravedad.
 
-## When to Invoke
+## Cuándo invocar
 
-Periodically, before a stage handoff, or after several primitives change, to catch
-drift, missing scopes, and stale references.
+Periódicamente, antes de un traspaso de etapa o después de cambiar varias primitivas, para detectar
+divergencias, alcances ausentes y referencias obsoletas.
 
-## Preconditions
+## Precondiciones
 
-- The repository has a `.github/` context surface to audit
-- The index files [`../instructions/README.md`](../instructions/README.md) and the [prompts index](README.md) are the reference for expected files and conventions
+- El repositorio tiene una superficie de contexto `.github/` que auditar
+- Los archivos de índice [`../instructions/README.md`](../instructions/README.md) y el [índice de prompts](README.md) son la referencia para los archivos y convenciones esperados
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- The scope to audit, if narrower than the whole `.github/` surface (optional)
+- El alcance que auditar, si es menor que toda la superficie `.github/` (opcional)
 
-Ask the user only if the scope is ambiguous.
+Pregunta a la persona usuaria solo si el alcance es ambiguo.
 
-## What I Will Do
+## Lo que haré
 
-- List every file in `.github/instructions/`, `.github/prompts/`, and `.github/agents/` with line counts
-- Check the `applyTo:` scope in each instructions file and flag `**` or a missing scope
-- Read `CODEMAP.md` and flag it stale if untouched for 30+ days or referencing deleted files
-- Check each prompt/agent frontmatter for an informative `description`, an `agent` that resolves to a real agent, minimal tools, and no pinned model
-- Use grep to find stale folder references and broken relative links
-- Summarize findings in a severity-sorted table, delegating the audit procedure to [`../skills/context-audit/SKILL.md`](../skills/context-audit/SKILL.md)
+- Enumerar cada archivo de `.github/instructions/`, `.github/prompts/` y `.github/agents/` con su número de líneas
+- Comprobar el alcance `applyTo:` de cada archivo de instrucciones y señalar `**` o un alcance ausente
+- Leer `CODEMAP.md` y marcarlo como desactualizado si lleva 30+ días sin cambios o referencia archivos eliminados
+- Comprobar que el frontmatter de cada prompt/agente tenga una `description` informativa, un `agent` que se resuelva a un agente real, herramientas mínimas y ningún modelo fijado
+- Utilizar grep para encontrar referencias obsoletas a carpetas y enlaces relativos rotos
+- Resumir los hallazgos en una tabla ordenada por gravedad, delegando el procedimiento de auditoría a [`../skills/context-audit/SKILL.md`](../skills/context-audit/SKILL.md)
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Flag anything that is not a real issue — no false positives
-- Edit code or context files — I audit and recommend; the owner applies fixes
-- Suggest pinning a model or provider — the user chooses the execution context (see [`../../09-cheat-sheets/model-routing.md`](../../09-cheat-sheets/model-routing.md))
-- Rewrite the primitives myself — restructuring work is redirected to the owning persona's prompt
+- Señalar algo que no sea un problema real: sin falsos positivos
+- Editar código ni archivos de contexto: audito y recomiendo; la persona responsable aplica las correcciones
+- Sugerir fijar un modelo o proveedor: la persona usuaria elige el contexto de ejecución (consulta [`../../09-cheat-sheets/model-routing.md`](../../09-cheat-sheets/model-routing.md))
+- Reescribir las primitivas por mi cuenta: el trabajo de reestructuración se redirige al prompt de la persona responsable
 
-## Output Format
+## Formato de salida
 
-A severity-sorted Markdown table plus a top-3 summary. Example (illustrative):
+Una tabla Markdown ordenada por gravedad y un resumen de las 3 correcciones principales. Ejemplo (ilustrativo):
 
 ```markdown
-## Context audit — 2026-05-04
+## Auditoría de contexto — 2026-05-04
 
-| File | Issue | Severity | Correction |
+| Archivo | Problema | Gravedad | Corrección |
 |------|-------|----------|------------|
-| .github/instructions/frontend.instructions.md | applyTo: "**" too broad | High | Scope to frontend/**/*.{ts,tsx} |
-| .github/prompts/persona-dba-tune.prompt.md | description is "TBD" | Medium | Write an imperative one-line description |
-| CODEMAP.md | Not updated in 62 days | Medium | Run /update-codemap |
+| .github/instructions/frontend.instructions.md | applyTo: "**" demasiado amplio | Alta | Limitar el alcance a frontend/**/*.{ts,tsx} |
+| .github/prompts/persona-dba-tune.prompt.md | description es "TBD" | Media | Escribir una descripción imperativa de una línea |
+| CODEMAP.md | Sin actualizar en 62 días | Media | Ejecutar /update-codemap |
 
-### Top 3 corrections
-1. Narrow the frontend instructions scope.
-2. Refresh CODEMAP.md.
-3. Fix the DBA prompt description.
+### Las 3 correcciones principales
+1. Reducir el alcance de las instrucciones de frontend.
+2. Actualizar CODEMAP.md.
+3. Corregir la descripción del prompt del DBA.
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] No false positives — every flagged item is an actual issue
-- [ ] Every High-severity item has a concrete correction, not a vague suggestion
-- [ ] `CODEMAP.md` freshness is explicitly reported
-- [ ] `applyTo` scopes are checked in every instructions file
-- [ ] Findings are sorted by severity with a top-3 summary
-- [ ] No suggestion edits application code — only context files
+- [ ] Sin falsos positivos: cada elemento señalado es un problema real
+- [ ] Cada elemento de gravedad alta tiene una corrección concreta, no una sugerencia vaga
+- [ ] Se informa explícitamente de la vigencia de `CODEMAP.md`
+- [ ] Se comprueban los alcances `applyTo` de cada archivo de instrucciones
+- [ ] Los hallazgos se ordenan por gravedad con un resumen de los 3 principales
+- [ ] Ninguna sugerencia modifica código de aplicación: solo archivos de contexto
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@tech-lead`. The team wants the context surface kept healthy.
+Eres el `@tech-lead`. El equipo quiere mantener en buen estado la superficie de contexto.
 
-**Step 1 — Inventory.**
-List every file under `.github/instructions/`, `.github/prompts/`, and
-`.github/agents/`, with line counts. Compare against the index files to spot
-anything missing or undocumented.
+**Paso 1 — Haz el inventario.**
+Enumera cada archivo de `.github/instructions/`, `.github/prompts/` y
+`.github/agents/`, con su número de líneas. Compara con los archivos de índice para detectar
+cualquier elemento ausente o no documentado.
 
-**Step 2 — Check instruction scopes.**
-Open each `*.instructions.md` and read its `applyTo:`. Flag any file with
-`applyTo: "**"` or a missing scope as High severity — broad scopes leak context
-into unrelated work.
+**Paso 2 — Comprueba los alcances de instrucciones.**
+Abre cada `*.instructions.md` y lee su `applyTo:`. Señala cualquier archivo con
+`applyTo: "**"` o alcance ausente como gravedad alta: los alcances amplios introducen contexto
+en trabajos no relacionados.
 
-**Step 3 — Check CODEMAP freshness.**
-Read `CODEMAP.md`. Flag it stale if it has not changed in 30+ days or references
-files that no longer exist. Report its freshness explicitly, even when healthy.
+**Paso 3 — Comprueba la vigencia de CODEMAP.**
+Lee `CODEMAP.md`. Márcalo como desactualizado si lleva 30+ días sin cambios o referencia
+archivos que ya no existen. Informa explícitamente de su vigencia, incluso cuando esté al día.
 
-**Step 4 — Check frontmatter quality.**
-For each prompt and agent, verify the `description` is informative (not "TBD"), the
-`agent` resolves to a real file in `.github/agents/`, the tool set is minimal, and
-no model or provider is pinned.
+**Paso 4 — Comprueba la calidad del frontmatter.**
+Para cada prompt y agente, verifica que la `description` sea informativa (no "TBD"), que el
+`agent` se resuelva a un archivo real en `.github/agents/`, que el conjunto de herramientas sea mínimo y que
+no haya ningún modelo ni proveedor fijado.
 
-**Step 5 — Find stale references and broken links.**
-Grep for references to renamed or deleted folders and for relative links whose
-target is missing. Record each with its file and line.
+**Paso 5 — Encuentra referencias obsoletas y enlaces rotos.**
+Busca con grep referencias a carpetas renombradas o eliminadas y enlaces relativos cuyo
+destino esté ausente. Registra cada uno con su archivo y línea.
 
-**Step 6 — Prioritize.**
-Summarize findings in a table sorted by severity (High, Medium, Low), each with a
-concrete correction, and end with the top three corrections.
+**Paso 6 — Prioriza.**
+Resume los hallazgos en una tabla ordenada por gravedad (alta, media, baja), cada uno con una
+corrección concreta, y termina con las tres correcciones principales.
 
-Report only real issues. Do not propose editing application code — this audit
-covers context files only.
+Informa solo de problemas reales. No propongas editar código de aplicación: esta auditoría
+cubre únicamente archivos de contexto.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
 /audit-context scope=.github

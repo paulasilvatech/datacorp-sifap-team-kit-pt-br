@@ -1,61 +1,61 @@
-# Business Rules Catalog — Legacy SIFAP
+# Catálogo de reglas de negocio — SIFAP heredado
 
-> **Track:** [Team Kit](../README.md) › [Stage 1](README.md) › **Business Rules Catalog**
+> **Ruta:** [Kit del equipo](../README.md) › [Etapa 1](README.md) › **Catálogo de reglas de negocio**
 
-**Artifact completed by the team during Stage 1.** Each pair extracts rules from its assigned `.NSN` programs and records them here with mandatory traceability to the source program.
+**Artefacto que completa el equipo durante la Etapa 1.** Cada pareja extrae reglas de sus programas `.NSN` asignados y las registra aquí con trazabilidad obligatoria al programa de origen.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | All pairs—each pair completes its program section |
-| **Prerequisites** | Read the assigned `.NSN` programs |
-| **Stage** | Stage 1 — Archaeology |
-| **Expected outcome** | Catalog with `Source Program` completed for every candidate rule |
+| **Público objetivo** | Todas las parejas: cada una completa la sección de su programa |
+| **Prerrequisitos** | Leer los programas `.NSN` asignados |
+| **Etapa** | Etapa 1 — Arqueología |
+| **Resultado esperado** | Catálogo con el `Programa de origen` completado para cada regla candidata |
 
 > [!NOTE]
-> Each rule cites the source program with a line range (`file.NSN:Lstart-Lend`) and is classified as **Confirmed** (corroborated by historical documentation in `legacy-sifap/legacy-docs/`), **Inferred** (from code only), or **Mystery** (an open question—also record it in [`mysteries-found.md`](mysteries-found.md) with `path:line` evidence, an unconfirmed hypothesis, owner, and status).
+> Cada regla cita el programa de origen con un rango de líneas (`file.NSN:Lstart-Lend`) y se clasifica como **Confirmada** (corroborada por la documentación histórica de `legacy-sifap/legacy-docs/`), **Inferida** (solo a partir del código) o **Misterio** (una pregunta abierta: regístrala también en [`mysteries-found.md`](mysteries-found.md) con evidencia `path:line`, una hipótesis sin confirmar, una persona responsable y un estado).
 
 > [!IMPORTANT]
-> Step-by-step guide: [`GUIDE.md`](GUIDE.md).
+> Guía paso a paso: [`GUIDE.md`](GUIDE.md).
 
-**Team**: <!-- fill in -->
+**Equipo**: <!-- completar -->
 
 ---
 
-## Rules from `<fill in: PROGRAM.NSN>`
+## Reglas de `<completar: PROGRAM.NSN>`
 
-| # | Rule Statement | EARS Candidate | Source | Classification | Notes |
+| # | Enunciado de la regla | Candidata EARS | Fuente | Clasificación | Notas |
 |---|---|---|---|---|---|
-| 1 | <!-- fill in --> | <!-- fill in: EARS pattern --> | <!-- fill in: file:line --> | <!-- fill in: Confirmed/Inferred/Mystery --> | <!-- fill in --> |
+| 1 | <!-- completar --> | <!-- completar: patrón EARS --> | <!-- completar: file:line --> | <!-- completar: Confirmada/Inferida/Misterio --> | <!-- completar --> |
 
 > [!NOTE]
-> Duplicate the section above for each `.NSN` program read by your pair.
+> Duplica la sección anterior para cada programa `.NSN` que lea tu pareja.
 
 ---
 
-## Overall summary
+## Resumen general
 
-| Metric | Value |
+| Métrica | Valor |
 |---|---:|
-| Natural programs read | <!-- fill in --> |
-| DDMs cross-referenced | <!-- fill in --> |
-| Confirmed rules | <!-- fill in --> |
-| Inferred rules | <!-- fill in --> |
-| Mysteries | <!-- fill in --> |
+| Programas Natural leídos | <!-- completar --> |
+| DDM cotejados | <!-- completar --> |
+| Reglas confirmadas | <!-- completar --> |
+| Reglas inferidas | <!-- completar --> |
+| Misterios | <!-- completar --> |
 
 ---
 
-## Definition of done
+## Definición de terminado
 
-- [ ] Every conditional block in the assigned programs was examined.
-- [ ] Every rule cites `file:line`.
-- [ ] Every open question is recorded in `mysteries-found.md` without a conclusion.
+- [ ] Se examinó cada bloque condicional de los programas asignados.
+- [ ] Cada regla cita `file:line`.
+- [ ] Cada pregunta abierta está registrada en `mysteries-found.md` sin una conclusión.
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Inventory](inventory.md)<br/><sub>Step 1 — file scan.</sub> | [Dependency Map](dependency-map.md)<br/><sub>Step 3 — call and access graph.</sub> |
+| [Inventario](inventory.md)<br/><sub>Paso 1 — exploración de archivos.</sub> | [Mapa de dependencias](dependency-map.md)<br/><sub>Paso 3 — grafo de llamadas y accesos.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

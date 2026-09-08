@@ -1,117 +1,117 @@
 ---
 name: "refactor"
-description: "Improve internal structure behind passing tests without changing observable behavior or breaking REQ-ID traceability."
+description: "Mejora la estructura interna con pruebas satisfactorias, sin cambiar el comportamiento observable ni romper la trazabilidad REQ-ID."
 argument-hint: "target=<file-or-package> smell=<code-smell>"
 agent: "implementer"
 tools: ["read", "search", "edit", "execute"]
 ---
 # /refactor
 
-## Objective
+## Objetivo
 
-Improve the internal structure of existing code without changing what it does. A change that alters behavior is not a refactor—it belongs in `/implement` or `/fix-bug`. The result leaves every existing test passing with the same names and every `REQ-ID` link intact: one smell, one move, one PR.
+Mejora la estructura interna del código existente sin cambiar lo que hace. Un cambio que altera el comportamiento no es una refactorización: corresponde a `/implement` o `/fix-bug`. El resultado mantiene todas las pruebas existentes satisfactorias, con los mismos nombres, y cada enlace `REQ-ID` intacto: un indicio de mal diseño, una transformación, una PR.
 
 > [!WARNING]
-> If any output, assertion, or public signature changes, it is not a refactor. Stop and use `/implement` or `/fix-bug`.
+> Si cambia cualquier salida, aserción o firma pública, no es una refactorización. Detente y utiliza `/implement` o `/fix-bug`.
 
-## When to Invoke
+## Cuándo invocar
 
-When a named code smell is slowing the team down and the target has (or can quickly get) a passing test safety net. Run it on a dedicated `impl/<NNN>-<feature>` branch, separate from any feature or bug work.
+Cuando un indicio de mal diseño identificado esté ralentizando al equipo y el destino tenga (o pueda obtener rápidamente) una red de seguridad de pruebas satisfactorias. Ejecútalo en una rama dedicada `impl/<NNN>-<feature>`, separada de cualquier trabajo de funcionalidades o errores.
 
-## Preconditions
+## Precondiciones
 
-- The target file, package, or component exists and builds
-- Its tests currently pass, or characterization tests can be added first
-- No `/fix-bug` is pending on the same code—defects are fixed before refactoring from a clean baseline
-- Any constraints in `plan.md` or ADRs (for example, "controllers stay thin") are known
+- El archivo, paquete o componente de destino existe y compila
+- Sus pruebas pasan actualmente o pueden añadirse primero pruebas de caracterización
+- No hay ningún `/fix-bug` pendiente sobre el mismo código: los defectos se corrigen antes de refactorizar desde una base limpia
+- Se conocen las restricciones de `plan.md` o los ADR (por ejemplo, «los controladores se mantienen ligeros»)
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- The target file, package, or component
-- The motivation: the observed code smell (Long Method, Duplication, Primitive Obsession, Feature Envy, etc.)
-- Any constraints from `plan.md` or ADRs that limit the change
-- The area's current test coverage (run a coverage report if it is unknown)
-- Ask the user for any missing item.
+- El archivo, paquete o componente de destino
+- La motivación: el indicio de mal diseño observado (método largo, duplicación, obsesión por primitivos, envidia de funcionalidades, etc.)
+- Las restricciones de `plan.md` o los ADR que limiten el cambio
+- La cobertura de pruebas actual del área (ejecuta un informe de cobertura si se desconoce)
+- Solicita a la persona usuaria cualquier elemento que falte.
 
-## What I Will Do
+## Lo que haré
 
-- Confirm the safety net—if line coverage is below 80%, write characterization tests first
-- Name the smell precisely from the catalog and cite one or two lines of evidence
-- Choose one Fowler move that fits and apply it as a single behavior-preserving step
-- Run tests before and after every micro-step, keeping the suite green in each commit
-- Move every `@implements REQ-NNN` annotation with its method, unchanged
+- Confirmar la red de seguridad: si la cobertura de líneas es inferior al 80%, escribir primero pruebas de caracterización
+- Nombrar con precisión el indicio de mal diseño según el catálogo y citar una o dos líneas de evidencia
+- Elegir una transformación de Fowler adecuada y aplicarla como un único paso que conserve el comportamiento
+- Ejecutar pruebas antes y después de cada paso pequeño, manteniendo el conjunto satisfactorio en cada commit
+- Mover cada anotación `@implements REQ-NNN` junto con su método, sin cambios
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Refactor without tests—that is a rewrite by another name
-- Change behavior under the guise of refactoring—if any output or assertion changes, the work is void
-- Make "small improvements" to neighboring code—I stay strictly within the named smell
-- Rename or reshape a public API without a migration or deprecation plan
-- Combine a refactor with a feature or bug fix in the same PR
-- Invent a new behavior the spec does not describe—structural change only; requirement questions go to `/update-spec`
+- Refactorizar sin pruebas: eso es una reescritura con otro nombre
+- Cambiar el comportamiento bajo la apariencia de refactorización: si cambia cualquier salida o aserción, el trabajo queda invalidado
+- Hacer «pequeñas mejoras» en código vecino: me limito estrictamente al indicio de mal diseño identificado
+- Renombrar o reestructurar una API pública sin un plan de migración o retirada
+- Combinar una refactorización con una funcionalidad o corrección de error en la misma PR
+- Inventar un comportamiento nuevo que no describa la especificación: solo cambio estructural; las preguntas de requisitos se dirigen a `/update-spec`
 
-## Output Format
+## Formato de salida
 
 ```markdown
-### Named smell
-Long Method — `FeeService.calculate()` spans 74 lines across three nested branches.
+### Indicio de mal diseño identificado
+Método largo: `FeeService.calculate()` abarca 74 líneas repartidas entre tres ramas anidadas.
 
-### Chosen refactoring
-Extract Method — pull each branch into `applyExemption`, `applyCeiling`, and `applyRounding`.
+### Refactorización elegida
+Extraer método: llevar cada rama a `applyExemption`, `applyCeiling` y `applyRounding`.
 
-### Diff
-<before/after for every touched file>
+### Diferencias
+<antes/después de cada archivo modificado>
 
-### Test results
-`./mvnw test` → 12 passing (the same names as before).
+### Resultados de pruebas
+`./mvnw test` → 12 satisfactorias (los mismos nombres que antes).
 
-### Behavior-preservation note
-Public API unchanged. No new throws clauses. No DB migration. No new environment variables.
+### Nota de conservación del comportamiento
+API pública sin cambios. Sin nuevas cláusulas throws. Sin migración de base de datos. Sin nuevas variables de entorno.
 
-### Commit message
-refactor(fees): extract the fee-calculation steps
+### Mensaje de commit
+refactor(fees): extraer los pasos del cálculo de tasas
 
-Splits calculate() into three private methods. No behavior change.
+Divide calculate() en tres métodos privados. Sin cambios de comportamiento.
 Refs: REQ-031
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] Every test that passed before still passes, with the same names
-- [ ] No public API change, new exception, or new dependency
-- [ ] Coverage does not decrease
-- [ ] One smell, one move, one PR
-- [ ] All `@implements REQ-NNN` annotations remain present and correct
-- [ ] The commit message uses the `refactor:` type and states "no behavior change"
+- [ ] Todas las pruebas que pasaban antes siguen pasando, con los mismos nombres
+- [ ] Sin cambios en la API pública, nuevas excepciones ni nuevas dependencias
+- [ ] La cobertura no disminuye
+- [ ] Un indicio de mal diseño, una transformación, una PR
+- [ ] Todas las anotaciones `@implements REQ-NNN` permanecen presentes y correctas
+- [ ] El mensaje de commit utiliza el tipo `refactor:` e indica «sin cambios de comportamiento»
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@implementer`. The team wants a behavior-preserving structural improvement. Read [`refactor-safely`](../skills/refactor-safely/SKILL.md) before you start; it owns the safety-net, small-steps, and characterization-test procedures.
+Eres el `@implementer`. El equipo quiere una mejora estructural que conserve el comportamiento. Lee [`refactor-safely`](../skills/refactor-safely/SKILL.md) antes de comenzar; define los procedimientos de red de seguridad, pasos pequeños y pruebas de caracterización.
 
-**Step 1 — Confirm the safety net.**
-Check the target's line coverage. If it is below 80%, write characterization tests that lock in current behavior—including its quirks—before changing anything. Refactoring without tests is rewriting.
+**Paso 1 — Confirma la red de seguridad.**
+Comprueba la cobertura de líneas del destino. Si es inferior al 80%, escribe pruebas de caracterización que fijen el comportamiento actual, incluidas sus particularidades, antes de cambiar nada. Refactorizar sin pruebas es reescribir.
 
-**Step 2 — Name the smell precisely.**
-Choose from the catalog: Long Method, Large Class, Primitive Obsession, Data Clumps, Feature Envy, Shotgun Surgery, Divergent Change. Cite one or two lines of evidence. "Make it cleaner" is rejected.
+**Paso 2 — Nombra con precisión el indicio de mal diseño.**
+Elige del catálogo: método largo, clase grande, obsesión por primitivos, grupos de datos, envidia de funcionalidades, cirugía de escopeta o cambio divergente. Cita una o dos líneas de evidencia. Se rechaza «hazlo más limpio».
 
-**Step 3 — Choose one Fowler move.**
-Pick the matching move—Extract Method, Extract Class, Replace Conditional with Polymorphism, Introduce Parameter Object—and apply exactly one move per commit.
+**Paso 3 — Elige una transformación de Fowler.**
+Selecciona la transformación adecuada (extraer método, extraer clase, reemplazar condicional por polimorfismo o introducir objeto de parámetros) y aplica exactamente una por commit.
 
-**Step 4 — Run tests before you touch anything.**
-Confirm they pass. If any fail or are skipped, fix that first; never refactor a broken build.
+**Paso 4 — Ejecuta las pruebas antes de tocar nada.**
+Confirma que pasan. Si alguna falla o se omite, corrígelo primero; nunca refactorices una compilación averiada.
 
-**Step 5 — Apply the move.**
-Prefer IDE refactoring tools (Extract, Rename, Move). Manual edits must preserve method signatures unless the move is Change Function Declaration with a migration plan.
+**Paso 5 — Aplica la transformación.**
+Prioriza las herramientas de refactorización del IDE (Extract, Rename, Move). Las ediciones manuales deben conservar las firmas de métodos, salvo que la transformación sea cambiar la declaración de función con un plan de migración.
 
-**Step 6 — Run tests after every micro-step.**
-The suite must be green in every commit. If it turns red and you do not know why, revert and take a smaller step. Move each `@implements REQ-NNN` annotation with its method.
+**Paso 6 — Ejecuta las pruebas después de cada paso pequeño.**
+El conjunto de pruebas debe pasar en cada commit. Si falla y no sabes por qué, revierte y da un paso más pequeño. Mueve cada anotación `@implements REQ-NNN` junto con su método.
 
-**Step 7 — Stop when the smell is gone.**
-Resist refactoring neighboring code. Each invocation is one chat, one PR, one smell.
+**Paso 7 — Detente cuando desaparezca el indicio de mal diseño.**
+Resiste la tentación de refactorizar código vecino. Cada invocación es un chat, una PR y un indicio de mal diseño.
 
-If a genuine behavior change or a new requirement surfaces mid-refactor, stop and route it to `/implement`, `/fix-bug`, or `/update-spec`—do not fold it into this change.
+Si surge un cambio real de comportamiento o un requisito nuevo durante la refactorización, detente y dirígelo a `/implement`, `/fix-bug` o `/update-spec`; no lo incorpores a este cambio.
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```
 /refactor target=backend/src/main/java/com/example/app/fees/FeeService.java smell=long-method

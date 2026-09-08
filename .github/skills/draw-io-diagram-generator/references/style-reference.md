@@ -1,190 +1,190 @@
-# draw.io Style Reference
+# Referencia de estilos de draw.io
 
-Complete reference for the `style` attribute on `<mxCell>` elements. Styles are semicolon-delimited `key=value` pairs.
+Referencia completa del atributo `style` de los elementos `<mxCell>`. Los estilos son pares `key=value` delimitados por puntos y comas.
 
 ---
 
-## Style Format
+## Formato de estilo
 
 ```text
 style="key1=value1;key2=value2;key3=value3;"
 ```
 
-- Keys and values are case-sensitive
-- Trailing semicolon is optional but recommended
-- Unknown keys are silently ignored
-- Missing keys use draw.io defaults
+- Las claves y los valores distinguen mayúsculas y minúsculas
+- El punto y coma final es opcional, pero se recomienda
+- Las claves desconocidas se ignoran silenciosamente
+- Las claves ausentes usan los valores predeterminados de draw.io
 
 ---
 
-## Universal Style Keys
+## Claves de estilo universales
 
-Apply to all shapes and edges.
+Se aplican a todas las formas y aristas.
 
-| Key | Values | Default | Description |
+| Clave | Valores | Valor predeterminado | Descripción |
 | ----- | -------- | --------- | ------------- |
-| `fillColor` | `#hex` / `none` | `#FFFFFF` | Shape fill color (draw.io default; use semantic palette for project diagrams) |
-| `strokeColor` | `#hex` / `none` | `#000000` | Border/line color (draw.io default; use semantic palette for project diagrams) |
-| `fontColor` | `#hex` | `#000000` | Text color |
-| `fontSize` | integer | `11` | Font size in pt |
-| `fontStyle` | bitmask (see below) | `0` | Bold/italic/underline |
-| `fontFamily` | string | `Helvetica` | Font family name |
-| `align` | `left`/`center`/`right` | `center` | Horizontal text alignment |
-| `verticalAlign` | `top`/`middle`/`bottom` | `middle` | Vertical text alignment |
-| `opacity` | 0–100 | `100` | Shape opacity (%) |
-| `shadow` | `0`/`1` | `0` | Drop shadow |
-| `dashed` | `0`/`1` | `0` | Dashed border |
-| `dashPattern` | e.g. `8 8` | — | Custom dash/gap pattern (px) |
-| `strokeWidth` | float | `2` | Border/line width in px |
-| `spacing` | integer | `2` | Padding around text (px) |
-| `spacingTop` | integer | `0` | Top text padding |
-| `spacingBottom` | integer | `0` | Bottom text padding |
-| `spacingLeft` | integer | `4` | Left text padding |
-| `spacingRight` | integer | `4` | Right text padding |
-| `html` | `0`/`1` | `0` | Allow HTML in label |
-| `whiteSpace` | `wrap`/`nowrap` | `nowrap` | Text wrapping |
-| `overflow` | `visible`/`hidden`/`fill` | `visible` | Text overflow behaviour |
-| `rotatable` | `0`/`1` | `1` | Allow rotation in editor |
-| `movable` | `0`/`1` | `1` | Allow move in editor |
-| `resizable` | `0`/`1` | `1` | Allow resize in editor |
-| `deletable` | `0`/`1` | `1` | Allow delete in editor |
-| `editable` | `0`/`1` | `1` | Allow label edit in editor |
-| `locked` | `0`/`1` | `0` | Lock all editing |
-| `nolabel` | `0`/`1` | `0` | Hide label entirely |
-| `noLabel` | `0`/`1` | `0` | Alias of `nolabel` |
-| `labelPosition` | `left`/`center`/`right` | `center` | Label anchor horizontal |
-| `verticalLabelPosition` | `top`/`middle`/`bottom` | `middle` | Label anchor vertical |
-| `imageAlign` | `left`/`center`/`right` | `center` | Image alignment |
+| `fillColor` | `#hex` / `none` | `#FFFFFF` | Color de relleno de la forma (predeterminado de draw.io; usar la paleta semántica en diagramas del proyecto) |
+| `strokeColor` | `#hex` / `none` | `#000000` | Color del borde o línea (predeterminado de draw.io; usar la paleta semántica en diagramas del proyecto) |
+| `fontColor` | `#hex` | `#000000` | Color del texto |
+| `fontSize` | integer | `11` | Tamaño de fuente en puntos |
+| `fontStyle` | Máscara de bits (véase abajo) | `0` | Negrita/cursiva/subrayado |
+| `fontFamily` | string | `Helvetica` | Nombre de la familia tipográfica |
+| `align` | `left`/`center`/`right` | `center` | Alineación horizontal del texto |
+| `verticalAlign` | `top`/`middle`/`bottom` | `middle` | Alineación vertical del texto |
+| `opacity` | 0–100 | `100` | Opacidad de la forma (%) |
+| `shadow` | `0`/`1` | `0` | Sombra proyectada |
+| `dashed` | `0`/`1` | `0` | Borde discontinuo |
+| `dashPattern` | Por ejemplo, `8 8` | — | Patrón personalizado de guiones y espacios (píxeles) |
+| `strokeWidth` | float | `2` | Ancho del borde o línea en píxeles |
+| `spacing` | integer | `2` | Margen alrededor del texto (píxeles) |
+| `spacingTop` | integer | `0` | Margen superior del texto |
+| `spacingBottom` | integer | `0` | Margen inferior del texto |
+| `spacingLeft` | integer | `4` | Margen izquierdo del texto |
+| `spacingRight` | integer | `4` | Margen derecho del texto |
+| `html` | `0`/`1` | `0` | Permitir HTML en la etiqueta |
+| `whiteSpace` | `wrap`/`nowrap` | `nowrap` | Ajuste de líneas del texto |
+| `overflow` | `visible`/`hidden`/`fill` | `visible` | Comportamiento del desbordamiento de texto |
+| `rotatable` | `0`/`1` | `1` | Permitir rotación en el editor |
+| `movable` | `0`/`1` | `1` | Permitir movimiento en el editor |
+| `resizable` | `0`/`1` | `1` | Permitir cambiar el tamaño en el editor |
+| `deletable` | `0`/`1` | `1` | Permitir eliminación en el editor |
+| `editable` | `0`/`1` | `1` | Permitir editar la etiqueta en el editor |
+| `locked` | `0`/`1` | `0` | Bloquear toda edición |
+| `nolabel` | `0`/`1` | `0` | Ocultar completamente la etiqueta |
+| `noLabel` | `0`/`1` | `0` | Alias de `nolabel` |
+| `labelPosition` | `left`/`center`/`right` | `center` | Anclaje horizontal de la etiqueta |
+| `verticalLabelPosition` | `top`/`middle`/`bottom` | `middle` | Anclaje vertical de la etiqueta |
+| `imageAlign` | `left`/`center`/`right` | `center` | Alineación de imagen |
 
-### `fontStyle` Bitmask Values
+### Valores de máscara de bits de `fontStyle`
 
-| Value | Effect |
+| Valor | Efecto |
 | ------- | -------- |
 | `0` | Normal |
-| `1` | Bold |
-| `2` | Italic |
-| `4` | Underline |
-| `8` | Strikethrough |
+| `1` | Negrita |
+| `2` | Cursiva |
+| `4` | Subrayado |
+| `8` | Tachado |
 
-Combine by addition: `3` = bold + italic, `5` = bold + underline, `7` = bold + italic + underline.
+Combina sumando: `3` = negrita + cursiva, `5` = negrita + subrayado, `7` = negrita + cursiva + subrayado.
 
 ---
 
-## Shape Keys (Vertex Only)
+## Claves de formas (solo vértices)
 
-| Key | Values | Description |
+| Clave | Valores | Descripción |
 | ----- | -------- | ------------- |
-| `shape` | see Shape Catalog | Override default rectangle shape |
-| `rounded` | `0`/`1` | Rounded corners on rectangle |
-| `arcSize` | 0–50 | Corner radius % (when `rounded=1`) |
-| `perimeter` | function name | Connection perimeter type |
-| `aspect` | `fixed` | Lock aspect ratio on resize |
-| `rotation` | float | Rotation in degrees |
-| `fixedSize` | `0`/`1` | Prevent auto-size when editing label |
-| `container` | `0`/`1` | Treat shape as container for children |
-| `collapsible` | `0`/`1` | Allow collapse/expand toggle |
-| `startSize` | integer | Header size in swimlane/container (px) |
-| `swimlaneHead` | `0`/`1` | Show swimlane header |
-| `swimlaneBody` | `0`/`1` | Show swimlane body |
-| `fillOpacity` | 0–100 | Fill-only opacity (independent of `opacity`) |
-| `strokeOpacity` | 0–100 | Stroke-only opacity |
-| `gradientColor` | `#hex` / `none` | Gradient end color |
-| `gradientDirection` | `north`/`south`/`east`/`west` | Gradient direction |
-| `sketch` | `0`/`1` | Rough hand-drawn style |
-| `comic` | `0`/`1` | Comic/cartoon line style |
-| `glass` | `0`/`1` | Glass reflection effect |
+| `shape` | Véase Catálogo de formas | Sobrescribir la forma rectangular predeterminada |
+| `rounded` | `0`/`1` | Esquinas redondeadas del rectángulo |
+| `arcSize` | 0–50 | Porcentaje de radio de esquina (cuando `rounded=1`) |
+| `perimeter` | Nombre de función | Tipo de perímetro de conexión |
+| `aspect` | `fixed` | Bloquear la proporción al cambiar el tamaño |
+| `rotation` | float | Rotación en grados |
+| `fixedSize` | `0`/`1` | Impedir el tamaño automático al editar la etiqueta |
+| `container` | `0`/`1` | Tratar la forma como contenedor de elementos secundarios |
+| `collapsible` | `0`/`1` | Permitir alternar entre plegado y desplegado |
+| `startSize` | integer | Tamaño del encabezado del carril o contenedor (píxeles) |
+| `swimlaneHead` | `0`/`1` | Mostrar el encabezado del carril |
+| `swimlaneBody` | `0`/`1` | Mostrar el cuerpo del carril |
+| `fillOpacity` | 0–100 | Opacidad solo del relleno (independiente de `opacity`) |
+| `strokeOpacity` | 0–100 | Opacidad solo del trazo |
+| `gradientColor` | `#hex` / `none` | Color final del degradado |
+| `gradientDirection` | `north`/`south`/`east`/`west` | Dirección del degradado |
+| `sketch` | `0`/`1` | Estilo de boceto dibujado a mano |
+| `comic` | `0`/`1` | Estilo de línea de cómic o caricatura |
+| `glass` | `0`/`1` | Efecto de reflejo de cristal |
 
 ---
 
-## Shape Catalog
+## Catálogo de formas
 
-### Basic Shapes
+### Formas básicas
 
-| Shape | Style String | Visual |
+| Forma | Cadena de estilo | Aspecto |
 | ------- | ------------- | -------- |
-| Rectangle (default) | *(no shape key needed)* | □ |
-| Rounded rectangle | `rounded=1;` | ▢ |
-| Ellipse / Circle | `ellipse;` | ○ |
-| Diamond | `rhombus;` | ◇ |
-| Triangle | `triangle;` | △ |
-| Hexagon | `shape=hexagon;` | ⬡ |
-| Pentagon | `shape=mxgraph.basic.pentagon;` | ⬠ |
-| Star | `shape=mxgraph.basic.star;` | ★ |
-| Cross | `shape=mxgraph.basic.x;` | ✕ |
-| Cloud | `shape=cloud;` | ☁ |
-| Note / Callout | `shape=note;folded=1;` | 📝 |
-| Document | `shape=document;` | 📄 |
-| Cylinder (database) | `shape=cylinder3;` | 🗄 |
-| Tape | `shape=tape;` | — |
-| Parallelogram | `shape=parallelogram;perimeter=parallelogramPerimeter;` | ▱ |
+| Rectángulo (predeterminado) | *(no necesita clave shape)* | □ |
+| Rectángulo redondeado | `rounded=1;` | ▢ |
+| Elipse / Círculo | `ellipse;` | ○ |
+| Rombo | `rhombus;` | ◇ |
+| Triángulo | `triangle;` | △ |
+| Hexágono | `shape=hexagon;` | ⬡ |
+| Pentágono | `shape=mxgraph.basic.pentagon;` | ⬠ |
+| Estrella | `shape=mxgraph.basic.star;` | ★ |
+| Cruz | `shape=mxgraph.basic.x;` | ✕ |
+| Nube | `shape=cloud;` | ☁ |
+| Nota / Llamada | `shape=note;folded=1;` | 📝 |
+| Documento | `shape=document;` | 📄 |
+| Cilindro (base de datos) | `shape=cylinder3;` | 🗄 |
+| Cinta | `shape=tape;` | — |
+| Paralelogramo | `shape=parallelogram;perimeter=parallelogramPerimeter;` | ▱ |
 
-### Flowchart Shapes (`mxgraph.flowchart.*`)
+### Formas de diagramas de flujo (`mxgraph.flowchart.*`)
 
-| Shape | Style String | Used For |
+| Forma | Cadena de estilo | Uso |
 | ------- | ------------- | ---------- |
-| Process | `shape=mxgraph.flowchart.process;` | Standard process |
-| Start/End (terminal) | `ellipse;` or `shape=mxgraph.flowchart.terminate;` | Flow start/end |
-| Decision | `rhombus;` | Yes/No branch |
-| Data (I/O) | `shape=mxgraph.flowchart.io;` | Input/Output |
-| Predefined Process | `shape=mxgraph.flowchart.predefined_process;` | Subroutine |
-| Manual Input | `shape=mxgraph.flowchart.manual_input;` | Manual entry |
-| Manual Operation | `shape=mxgraph.flowchart.manual_operation;` | Manual step |
-| Database | `shape=mxgraph.flowchart.database;` | Data store |
-| Internal Storage | `shape=mxgraph.flowchart.internal_storage;` | Internal data |
-| Direct Data | `shape=mxgraph.flowchart.direct_data;` | Drum storage |
-| Document | `shape=mxgraph.flowchart.document;` | Document |
-| Multi-document | `shape=mxgraph.flowchart.multi-document;` | Multiple docs |
-| On-page Connector | `ellipse;` (small) | Page connector |
-| Off-page Connector | `shape=mxgraph.flowchart.off_page_connector;` | Off-page ref |
-| Preparation | `shape=mxgraph.flowchart.preparation;` | Initialization |
-| Delay | `shape=mxgraph.flowchart.delay;` | Wait state |
-| Display | `shape=mxgraph.flowchart.display;` | Output display |
-| Sort | `shape=mxgraph.flowchart.sort;` | Sort operation |
-| Extract | `shape=mxgraph.flowchart.extract;` | Extract operation |
-| Merge | `shape=mxgraph.flowchart.merge;` | Merge paths |
-| Or | `shape=mxgraph.flowchart.or;` | OR gate |
-| And | `shape=mxgraph.flowchart.and;` | AND gate |
-| Annotation | `shape=mxgraph.flowchart.annotation;` | Comment/note |
+| Proceso | `shape=mxgraph.flowchart.process;` | Proceso estándar |
+| Inicio/Fin (terminal) | `ellipse;` o `shape=mxgraph.flowchart.terminate;` | Inicio o fin del flujo |
+| Decisión | `rhombus;` | Bifurcación Sí/No |
+| Datos (E/S) | `shape=mxgraph.flowchart.io;` | Entrada/Salida |
+| Proceso predefinido | `shape=mxgraph.flowchart.predefined_process;` | Subrutina |
+| Entrada manual | `shape=mxgraph.flowchart.manual_input;` | Introducción manual |
+| Operación manual | `shape=mxgraph.flowchart.manual_operation;` | Paso manual |
+| Base de datos | `shape=mxgraph.flowchart.database;` | Almacén de datos |
+| Almacenamiento interno | `shape=mxgraph.flowchart.internal_storage;` | Datos internos |
+| Datos directos | `shape=mxgraph.flowchart.direct_data;` | Almacenamiento en tambor |
+| Documento | `shape=mxgraph.flowchart.document;` | Documento |
+| Varios documentos | `shape=mxgraph.flowchart.multi-document;` | Varios documentos |
+| Conector en la página | `ellipse;` (pequeño) | Conector de página |
+| Conector fuera de la página | `shape=mxgraph.flowchart.off_page_connector;` | Referencia fuera de la página |
+| Preparación | `shape=mxgraph.flowchart.preparation;` | Inicialización |
+| Retardo | `shape=mxgraph.flowchart.delay;` | Estado de espera |
+| Pantalla | `shape=mxgraph.flowchart.display;` | Visualización de salida |
+| Ordenación | `shape=mxgraph.flowchart.sort;` | Operación de ordenación |
+| Extracción | `shape=mxgraph.flowchart.extract;` | Operación de extracción |
+| Fusión | `shape=mxgraph.flowchart.merge;` | Fusión de rutas |
+| O | `shape=mxgraph.flowchart.or;` | Puerta OR |
+| Y | `shape=mxgraph.flowchart.and;` | Puerta AND |
+| Anotación | `shape=mxgraph.flowchart.annotation;` | Comentario o nota |
 
-### UML Shapes (`mxgraph.uml.*`)
+### Formas UML (`mxgraph.uml.*`)
 
-| Shape | Style String | Used For |
+| Forma | Cadena de estilo | Uso |
 | ------- | ------------- | ---------- |
-| Actor | `shape=mxgraph.uml.actor;` | Use-case actor |
-| Boundary | `shape=mxgraph.uml.boundary;` | System boundary |
-| Control | `shape=mxgraph.uml.control;` | Controller object |
-| Entity | `shape=mxgraph.uml.entity;` | Entity object |
-| Component | `shape=component;` | Component box |
-| Package | `shape=mxgraph.uml.package;` | Package |
-| Note | `shape=note;` | UML note |
-| Lifeline | `shape=umlLifeline;startSize=40;` | Sequence lifeline |
-| Activation | `shape=umlActivation;` | Activation box |
-| Destroy | `shape=mxgraph.uml.destroy;` | Destroy marker |
-| State | `ellipse;` | State node |
-| Initial State | `ellipse;fillColor=#000000;` | UML initial state |
-| Final State | `shape=doubleEllipse;fillColor=#000000;` | UML final state |
-| Fork/Join | `shape=mxgraph.uml.fork_or_join;` | Fork/join bar |
+| Actor | `shape=mxgraph.uml.actor;` | Actor de caso de uso |
+| Límite | `shape=mxgraph.uml.boundary;` | Límite del sistema |
+| Control | `shape=mxgraph.uml.control;` | Objeto controlador |
+| Entidad | `shape=mxgraph.uml.entity;` | Objeto entidad |
+| Componente | `shape=component;` | Recuadro de componente |
+| Paquete | `shape=mxgraph.uml.package;` | Paquete |
+| Nota | `shape=note;` | Nota UML |
+| Línea de vida | `shape=umlLifeline;startSize=40;` | Línea de vida de secuencia |
+| Activación | `shape=umlActivation;` | Recuadro de activación |
+| Destrucción | `shape=mxgraph.uml.destroy;` | Marcador de destrucción |
+| Estado | `ellipse;` | Nodo de estado |
+| Estado inicial | `ellipse;fillColor=#000000;` | Estado inicial UML |
+| Estado final | `shape=doubleEllipse;fillColor=#000000;` | Estado final UML |
+| Bifurcación/unión | `shape=mxgraph.uml.fork_or_join;` | Barra de bifurcación o unión |
 
-### Network Shapes (`mxgraph.network.*`)
+### Formas de red (`mxgraph.network.*`)
 
-| Shape | Style String |
+| Forma | Cadena de estilo |
 | ------- | ------------- |
-| Server | `shape=server;` |
-| Database server | `shape=mxgraph.network.database;` |
+| Servidor | `shape=server;` |
+| Servidor de base de datos | `shape=mxgraph.network.database;` |
 | Firewall | `shape=mxgraph.cisco.firewalls.firewall;` |
-| Router | `shape=mxgraph.cisco.routers.router;` |
+| Enrutador | `shape=mxgraph.cisco.routers.router;` |
 | Switch | `shape=mxgraph.cisco.switches.workgroup_switch;` |
-| Cloud | `shape=cloud;` |
+| Nube | `shape=cloud;` |
 | Internet | `shape=mxgraph.network.internet;` |
-| Laptop | `shape=mxgraph.network.laptop;` |
-| Desktop | `shape=mxgraph.network.desktop;` |
-| Mobile | `shape=mxgraph.network.mobile;` |
+| Portátil | `shape=mxgraph.network.laptop;` |
+| Equipo de escritorio | `shape=mxgraph.network.desktop;` |
+| Móvil | `shape=mxgraph.network.mobile;` |
 
-### AWS Shapes (`mxgraph.aws4.*`)
+### Formas de AWS (`mxgraph.aws4.*`)
 
-Use the AWS4 library. Common shapes:
+Usa la biblioteca AWS4. Formas habituales:
 
-| Shape | Style String |
+| Forma | Cadena de estilo |
 | ------- | ------------- |
 | EC2 | `shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;` |
 | Lambda | `shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;` |
@@ -199,11 +199,11 @@ Use the AWS4 library. Common shapes:
 | ECS | `shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ecs;` |
 | EKS | `shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.eks;` |
 | VPC | `shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_vpc;` |
-| Region | `shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_region;` |
+| Región | `shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_region;` |
 
-### Azure Shapes (`mxgraph.azure.*`)
+### Formas de Azure (`mxgraph.azure.*`)
 
-| Shape | Style String |
+| Forma | Cadena de estilo |
 | ------- | ------------- |
 | App Service | `shape=mxgraph.azure.app_service;` |
 | Function App | `shape=mxgraph.azure.function_apps;` |
@@ -214,9 +214,9 @@ Use the AWS4 library. Common shapes:
 | AKS | `shape=mxgraph.azure.aks;` |
 | Container Registry | `shape=mxgraph.azure.container_registry_registries;` |
 
-### GCP Shapes (`mxgraph.gcp2.*`)
+### Formas de GCP (`mxgraph.gcp2.*`)
 
-| Shape | Style String |
+| Forma | Cadena de estilo |
 | ------- | ------------- |
 | Cloud Run | `shape=mxgraph.gcp2.cloud_run;` |
 | Cloud Functions | `shape=mxgraph.gcp2.cloud_functions;` |
@@ -228,182 +228,182 @@ Use the AWS4 library. Common shapes:
 
 ---
 
-## Edge Style Keys
+## Claves de estilo de aristas
 
-| Key | Values | Description |
+| Clave | Valores | Descripción |
 | ----- | -------- | ------------- |
-| `edgeStyle` | see below | Connection routing algorithm |
-| `rounded` | `0`/`1` | Rounded corners on orthogonal edges |
-| `curved` | `0`/`1` | Curved line segments |
-| `orthogonal` | `0`/`1` | Force orthogonal routing |
-| `jettySize` | `auto`/integer | Source/target jet size |
-| `exitX` | 0.0–1.0 | Source exit point X (0=left, 0.5=center, 1=right) |
-| `exitY` | 0.0–1.0 | Source exit point Y (0=top, 0.5=center, 1=bottom) |
-| `exitDx` | float | Source exit X offset (px) |
-| `exitDy` | float | Source exit Y offset (px) |
-| `entryX` | 0.0–1.0 | Target entry point X |
-| `entryY` | 0.0–1.0 | Target entry point Y |
-| `entryDx` | float | Target entry X offset (px) |
-| `entryDy` | float | Target entry Y offset (px) |
-| `endArrow` | see Arrow Types | Arrow head at target |
-| `startArrow` | see Arrow Types | Arrow tail at source |
-| `endFill` | `0`/`1` | Filled end arrow head |
-| `startFill` | `0`/`1` | Filled start arrow head |
-| `endSize` | integer | End arrow head size (px) |
-| `startSize` | integer | Start arrow head size (px) |
-| `labelBackgroundColor` | `#hex`/`none` | Label background fill |
-| `labelBorderColor` | `#hex`/`none` | Label border color |
+| `edgeStyle` | Véase abajo | Algoritmo de recorrido de conexiones |
+| `rounded` | `0`/`1` | Esquinas redondeadas en aristas ortogonales |
+| `curved` | `0`/`1` | Segmentos de línea curvos |
+| `orthogonal` | `0`/`1` | Forzar recorrido ortogonal |
+| `jettySize` | `auto`/integer | Tamaño del tramo de salida o entrada |
+| `exitX` | 0.0–1.0 | Coordenada X del punto de salida (0=izquierda, 0.5=centro, 1=derecha) |
+| `exitY` | 0.0–1.0 | Coordenada Y del punto de salida (0=arriba, 0.5=centro, 1=abajo) |
+| `exitDx` | float | Desplazamiento X de salida en el origen (píxeles) |
+| `exitDy` | float | Desplazamiento Y de salida en el origen (píxeles) |
+| `entryX` | 0.0–1.0 | Coordenada X del punto de entrada en el destino |
+| `entryY` | 0.0–1.0 | Coordenada Y del punto de entrada en el destino |
+| `entryDx` | float | Desplazamiento X de entrada en el destino (píxeles) |
+| `entryDy` | float | Desplazamiento Y de entrada en el destino (píxeles) |
+| `endArrow` | Véase Tipos de flecha | Punta de flecha en el destino |
+| `startArrow` | Véase Tipos de flecha | Extremo de flecha en el origen |
+| `endFill` | `0`/`1` | Punta de flecha final rellena |
+| `startFill` | `0`/`1` | Punta de flecha inicial rellena |
+| `endSize` | integer | Tamaño de la punta de flecha final (píxeles) |
+| `startSize` | integer | Tamaño de la punta de flecha inicial (píxeles) |
+| `labelBackgroundColor` | `#hex`/`none` | Relleno de fondo de la etiqueta |
+| `labelBorderColor` | `#hex`/`none` | Color de borde de la etiqueta |
 
-### `edgeStyle` Values
+### Valores de `edgeStyle`
 
-| Value | Routing | Use When |
+| Valor | Recorrido | Uso |
 | ------- | --------- | ---------- |
-| `none` | Straight line | Simple direct connections |
-| `orthogonalEdgeStyle` | Right-angle turns | Flowcharts, architecture |
-| `elbowEdgeStyle` | Single elbow | Clean directional diagrams |
-| `entityRelationEdgeStyle` | ER-style routing | ER diagrams |
-| `segmentEdgeStyle` | Segmented with handles | Fine-tuned routing |
-| `isometricEdgeStyle` | Isometric grid | Isometric diagrams |
+| `none` | Línea recta | Conexiones directas sencillas |
+| `orthogonalEdgeStyle` | Giros en ángulo recto | Diagramas de flujo y arquitectura |
+| `elbowEdgeStyle` | Un solo codo | Diagramas direccionales claros |
+| `entityRelationEdgeStyle` | Recorrido de estilo ER | Diagramas ER |
+| `segmentEdgeStyle` | Segmentado con controles | Recorridos ajustados con precisión |
+| `isometricEdgeStyle` | Cuadrícula isométrica | Diagramas isométricos |
 
-### Arrow Types (`endArrow` / `startArrow`)
+### Tipos de flecha (`endArrow` / `startArrow`)
 
-| Value | Shape | Use For |
+| Valor | Forma | Uso |
 | ------- | ------- | --------- |
-| `block` | Filled triangle | Standard directed arrow |
-| `open` | Open chevron → | Open/light arrow |
-| `classic` | Classic arrow | Default draw.io arrow |
-| `classicThin` | Thin classic | Compact diagrams |
-| `none` | No arrowhead | Undirected lines |
-| `oval` | Circle dot | Aggregation start |
-| `diamond` | Hollow diamond | Aggregation |
-| `diamondThin` | Thin diamond | Slim diagrams |
-| `ERone` | `\|` bar | ER cardinality "one" |
-| `ERmany` | Crow's foot | ER cardinality "many" |
-| `ERmandOne` | `\|\|` | ER mandatory one |
-| `ERzeroToOne` | `o\|` | ER zero-or-one |
-| `ERzeroToMany` | `o<` | ER zero-or-many |
-| `ERoneToMany` | `\|<` | ER one-or-many |
+| `block` | Triángulo relleno | Flecha dirigida estándar |
+| `open` | Punta abierta → | Flecha abierta o ligera |
+| `classic` | Flecha clásica | Flecha predeterminada de draw.io |
+| `classicThin` | Clásica fina | Diagramas compactos |
+| `none` | Sin punta de flecha | Líneas sin dirección |
+| `oval` | Punto circular | Inicio de agregación |
+| `diamond` | Rombo hueco | Agregación |
+| `diamondThin` | Rombo fino | Diagramas estilizados |
+| `ERone` | Barra `\|` | Cardinalidad ER "uno" |
+| `ERmany` | Pata de cuervo | Cardinalidad ER "muchos" |
+| `ERmandOne` | `\|\|` | Uno obligatorio en ER |
+| `ERzeroToOne` | `o\|` | Cero o uno en ER |
+| `ERzeroToMany` | `o<` | Cero o muchos en ER |
+| `ERoneToMany` | `\|<` | Uno o muchos en ER |
 
 ---
 
-## Color Palette
+## Paleta de colores
 
-### Semantic Colors (Recommended for Consistent Diagrams)
+### Colores semánticos (recomendados para diagramas coherentes)
 
-| Meaning | Fill | Stroke | Usage |
+| Significado | Relleno | Trazo | Uso |
 | --------- | ------ | -------- | ------- |
-| User / Client | `#dae8fc` | `#6c8ebf` | Browser, client apps |
-| Service / Process | `#d5e8d4` | `#82b366` | Backend services |
-| Database / Storage | `#f5f5f5` | `#666666` | Databases, files |
-| Decision / Warning | `#fff2cc` | `#d6b656` | Decision nodes, alerts |
-| Error / Critical | `#f8cecc` | `#b85450` | Error paths, critical |
-| External / Partner | `#e1d5e7` | `#9673a6` | 3rd party, external |
-| Queue / Async | `#ffe6cc` | `#d79b00` | Message queues |
-| Gateway / Proxy | `#dae8fc` | `#0050ef` | API gateways, proxies |
+| Usuario / Cliente | `#dae8fc` | `#6c8ebf` | Navegador y aplicaciones cliente |
+| Servicio / Proceso | `#d5e8d4` | `#82b366` | Servicios backend |
+| Base de datos / Almacenamiento | `#f5f5f5` | `#666666` | Bases de datos y archivos |
+| Decisión / Advertencia | `#fff2cc` | `#d6b656` | Nodos de decisión y alertas |
+| Error / Crítico | `#f8cecc` | `#b85450` | Rutas de error y críticas |
+| Externo / Socio | `#e1d5e7` | `#9673a6` | Terceros y sistemas externos |
+| Cola / Asíncrono | `#ffe6cc` | `#d79b00` | Colas de mensajes |
+| Puerta de enlace / Proxy | `#dae8fc` | `#0050ef` | Puertas de enlace de API y proxies |
 
-### Dark Background Shapes
+### Formas de fondo oscuro
 
-For dark-themed diagrams, swap to:
+Para diagramas de tema oscuro, cambia a:
 
-- Fill: `#1e4d78` (dark blue), `#1a4731` (dark green)
-- Stroke: `#4aa3df`, `#67ab9f`
-- Font: `#ffffff`
+- Relleno: `#1e4d78` (azul oscuro), `#1a4731` (verde oscuro)
+- Trazo: `#4aa3df`, `#67ab9f`
+- Fuente: `#ffffff`
 
 ---
 
-## Complete Style Examples
+## Ejemplos completos de estilos
 
-### Rounded Blue Box
+### Recuadro azul redondeado
 
 ```text
 rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;
 ```
 
-### Green Process Step
+### Paso de proceso verde
 
 ```text
 rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;
 ```
 
-### Yellow Decision Diamond
+### Rombo de decisión amarillo
 
 ```text
 rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;
 ```
 
-### Red Error Box
+### Recuadro de error rojo
 
 ```text
 rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;
 ```
 
-### Database Cylinder
+### Cilindro de base de datos
 
 ```text
 shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;fillColor=#f5f5f5;strokeColor=#666666;
 ```
 
-### Swimlane Container
+### Contenedor de carriles
 
 ```text
 shape=pool;startSize=30;horizontal=1;fillColor=#f5f5f5;strokeColor=#999999;
 ```
 
-### Swimlane Lane
+### Carril
 
 ```text
 swimlane;startSize=30;fillColor=#ffffff;strokeColor=#999999;
 ```
 
-### Orthogonal Connector
+### Conector ortogonal
 
 ```text
 edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;
 ```
 
-### Directed Arrow (bold)
+### Flecha dirigida (gruesa)
 
 ```text
 edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;
 ```
 
-### Dashed Dependency Line
+### Línea de dependencia discontinua
 
 ```text
 edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;strokeColor=#666666;
 ```
 
-### ER Relationship Line (one-to-many)
+### Línea de relación ER (uno a muchos)
 
 ```text
 edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERmany;startArrow=ERmandOne;endFill=1;startFill=1;
 ```
 
-### UML Inheritance Arrow (hollow triangle)
+### Flecha de herencia UML (triángulo hueco)
 
 ```text
 edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=0;
 ```
 
-### UML Composition (filled diamond)
+### Composición UML (rombo relleno)
 
 ```text
 edgeStyle=orthogonalEdgeStyle;html=1;startArrow=diamond;startFill=1;endArrow=none;
 ```
 
-### UML Aggregation (open diamond)
+### Agregación UML (rombo abierto)
 
 ```text
 edgeStyle=orthogonalEdgeStyle;html=1;startArrow=diamond;startFill=0;endArrow=none;
 ```
 
-### UML Dependency (dashed arrow)
+### Dependencia UML (flecha discontinua)
 
 ```text
 edgeStyle=orthogonalEdgeStyle;dashed=1;html=1;endArrow=open;endFill=0;
 ```
 
-### Invisible connector (for alignment)
+### Conector invisible (para alineación)
 
 ```text
 edgeStyle=none;strokeColor=none;endArrow=none;

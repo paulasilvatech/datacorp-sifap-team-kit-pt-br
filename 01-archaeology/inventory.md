@@ -1,83 +1,83 @@
-# Legacy Inventory — Team `<fill in>`
+# Inventario del legado — Equipo `<completar>`
 
-> **Track:** [Team Kit](../README.md) › [Stage 1](README.md) › **Inventory**
+> **Ruta:** [Kit del equipo](../README.md) › [Etapa 1](README.md) › **Inventario**
 
-**First Stage 1 artifact.** Scan the structure and count files without opening any program—use only file names and folder structure.
+**Primer artefacto de la Etapa 1.** Examina la estructura y cuenta los archivos sin abrir ningún programa: usa solo los nombres de archivo y la estructura de carpetas.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Pair responsible for the initial scan |
-| **Prerequisites** | Access to the `legacy-sifap/` directory |
-| **Stage** | Stage 1 — Archaeology, Step 1 |
-| **Expected outcome** | Accurate counts, identified naming patterns, and 3 unusual items flagged |
+| **Público objetivo** | Pareja responsable de la exploración inicial |
+| **Prerrequisitos** | Acceso al directorio `legacy-sifap/` |
+| **Etapa** | Etapa 1 — Arqueología, Paso 1 |
+| **Resultado esperado** | Cantidades exactas, patrones de nombres identificados y 3 elementos inusuales señalados |
 
 > [!NOTE]
-> Build this inventory without opening any program. Work only from file names and folder structure. It will be revised as the team extracts rules, maps dependencies, and records mysteries.
+> Elabora este inventario sin abrir ningún programa. Trabaja solo con los nombres de archivo y la estructura de carpetas. Se revisará a medida que el equipo extraiga reglas, mapee dependencias y registre misterios.
 
-**Date:** <!-- fill in: YYYY-MM-DD -->
-**Responsible pair:** <!-- fill in -->
-**Scanned path:** `01-archaeology/legacy-sifap/`
+**Fecha:** <!-- completar: YYYY-MM-DD -->
+**Pareja responsable:** <!-- completar -->
+**Ruta examinada:** `01-archaeology/legacy-sifap/`
 
 ---
 
-## Folder structure
+## Estructura de carpetas
 
 ```text
-<!-- fill in: directory tree for legacy-sifap/ -->
+<!-- completar: árbol de directorios de legacy-sifap/ -->
 ```
 
 ---
 
-## File count by type
+## Cantidad de archivos por tipo
 
-| Extension | Count | Likely purpose |
+| Extensión | Cantidad | Propósito probable |
 |---|---|---|
-| `.NSN` | <!-- fill in --> | Natural source programs |
-| `.ddm` | <!-- fill in --> | Data Definition Modules (Adabas) |
-| `.md` / `.docx` | <!-- fill in --> | Historical documentation |
+| `.NSN` | <!-- completar --> | Programas fuente de Natural |
+| `.ddm` | <!-- completar --> | Módulos de definición de datos (Adabas) |
+| `.md` / `.docx` | <!-- completar --> | Documentación histórica |
 
 ---
 
-## Naming convention patterns
+## Patrones de convenciones de nombres
 
-| Prefix | Count | Domain hypothesis |
+| Prefijo | Cantidad | Hipótesis de dominio |
 |---|---|---|
-| <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
-| <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
-| <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
+| <!-- completar --> | <!-- completar --> | <!-- completar --> |
+| <!-- completar --> | <!-- completar --> | <!-- completar --> |
+| <!-- completar --> | <!-- completar --> | <!-- completar --> |
 
 ---
 
-## Unusual items (top 3)
+## Elementos inusuales (los 3 principales)
 
-| # | File path | What makes it unusual | Suggested investigation |
+| # | Ruta del archivo | Qué lo hace inusual | Investigación sugerida |
 |---|---|---|---|
-| 1 | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
-| 2 | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
-| 3 | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
+| 1 | <!-- completar --> | <!-- completar --> | <!-- completar --> |
+| 2 | <!-- completar --> | <!-- completar --> | <!-- completar --> |
+| 3 | <!-- completar --> | <!-- completar --> | <!-- completar --> |
 
 ---
 
-## Proposed reading order
+## Orden de lectura propuesto
 
-1. DDM files first—they reveal the data model before any logic.
-2. <!-- fill in: batch entry points -->
-3. <!-- fill in: most connected programs -->
-
----
-
-## Definition of done
-
-- [ ] The inventory exists with accurate counts.
-- [ ] 3 or more naming patterns identified.
-- [ ] 3 unusual items flagged.
+1. Primero, los archivos DDM: revelan el modelo de datos antes de cualquier lógica.
+2. <!-- completar: puntos de entrada batch -->
+3. <!-- completar: programas con más conexiones -->
 
 ---
 
-### Continue reading
+## Definición de terminado
 
-| Previous | Next |
+- [ ] El inventario existe y contiene cantidades exactas.
+- [ ] Se identificaron 3 o más patrones de nombres.
+- [ ] Se señalaron 3 elementos inusuales.
+
+---
+
+### Sigue leyendo
+
+| Anterior | Siguiente |
 |---|---|
-| [Stage 1 GUIDE](GUIDE.md)<br/><sub>Step-by-step schedule.</sub> | [Rules Catalog](business-rules-catalog.md)<br/><sub>Step 2 — rule extraction.</sub> |
+| [GUÍA de la Etapa 1](GUIDE.md)<br/><sub>Cronograma paso a paso.</sub> | [Catálogo de reglas](business-rules-catalog.md)<br/><sub>Paso 2 — extracción de reglas.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

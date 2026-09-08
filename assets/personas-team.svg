@@ -1,87 +1,87 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" font-family="Inter, system-ui, sans-serif">
   <rect width="1200" height="520" fill="#F7F7F5"/>
 
-  <text x="60" y="58" fill="#737373" font-family="JetBrains Mono, monospace" font-size="16" font-weight="500" letter-spacing="1.4">TEAM · 5 PEOPLE · 10 PERSONAS · 5 PAIRS</text>
-  <text x="60" y="108" fill="#1A1A1A" font-size="42" font-weight="500">Two Personas per Person</text>
-  <text x="60" y="146" fill="#737373" font-size="20">Each person covers a full SDLC pair, with no internal handoff between personas.</text>
+  <text x="60" y="58" fill="#737373" font-family="JetBrains Mono, monospace" font-size="16" font-weight="500" letter-spacing="1.4">EQUIPO · 5 PERSONAS · 10 ROLES · 5 PAREJAS</text>
+  <text x="60" y="108" fill="#1A1A1A" font-size="42" font-weight="500">Dos roles por persona</text>
+  <text x="60" y="146" fill="#737373" font-size="20">Cada persona cubre una pareja completa del SDLC, sin transición interna entre sus roles.</text>
 
   <g transform="translate(40, 200)">
     <rect width="208" height="270" rx="4" fill="#FFFFFF" stroke="#E5E5E0" stroke-width="1"/>
     <rect x="0" y="0" width="208" height="6" fill="#F25022"/>
-    <text x="18" y="44" fill="#B33816" font-family="JetBrains Mono, monospace" font-size="11" font-weight="500" letter-spacing="1.1">PAIR 1 · VISION</text>
-    <text x="18" y="82" fill="#1A1A1A" font-size="25" font-weight="500">Vision</text>
-    <text x="18" y="112" fill="#737373" font-size="14">Finds value and scope.</text>
+    <text x="18" y="44" fill="#B33816" font-family="JetBrains Mono, monospace" font-size="11" font-weight="500" letter-spacing="1.1">PAREJA 1 · VISIÓN</text>
+    <text x="18" y="82" fill="#1A1A1A" font-size="25" font-weight="500">Visión</text>
+    <text x="18" y="112" fill="#737373" font-size="14">Identifica valor y alcance.</text>
     <g transform="translate(18, 150)">
       <circle cx="8" cy="8" r="6" fill="#F25022"/>
-      <text x="24" y="13" fill="#1A1A1A" font-size="15">Product Owner</text>
+      <text x="24" y="13" fill="#1A1A1A" font-size="15">Responsable de producto</text>
     </g>
     <g transform="translate(18, 184)">
       <circle cx="8" cy="8" r="6" fill="#F25022"/>
-      <text x="24" y="13" fill="#1A1A1A" font-size="15">Requirements Engineer</text>
+      <text x="24" y="13" fill="#1A1A1A" font-size="15">Ingeniería de requisitos</text>
     </g>
   </g>
 
   <g transform="translate(268, 200)">
     <rect width="208" height="270" rx="4" fill="#FFFFFF" stroke="#E5E5E0" stroke-width="1"/>
     <rect x="0" y="0" width="208" height="6" fill="#FFB900"/>
-    <text x="18" y="44" fill="#B88500" font-family="JetBrains Mono, monospace" font-size="11" font-weight="500" letter-spacing="1.1">PAIR 2 · ARCHITECTURE</text>
-    <text x="18" y="82" fill="#1A1A1A" font-size="25" font-weight="500">Architecture</text>
-    <text x="18" y="112" fill="#737373" font-size="13">Designs bounds and decisions.</text>
+    <text x="18" y="44" fill="#B88500" font-family="JetBrains Mono, monospace" font-size="11" font-weight="500" letter-spacing="1.1">PAREJA 2 · ARQUITECTURA</text>
+    <text x="18" y="82" fill="#1A1A1A" font-size="25" font-weight="500">Arquitectura</text>
+    <text x="18" y="112" fill="#737373" font-size="13">Diseña límites y decisiones.</text>
     <g transform="translate(18, 150)">
       <circle cx="8" cy="8" r="6" fill="#FFB900"/>
-      <text x="24" y="13" fill="#1A1A1A" font-size="15">Enterprise Architect</text>
+      <text x="24" y="13" fill="#1A1A1A" font-size="15">Arquitecto empresarial</text>
     </g>
     <g transform="translate(18, 184)">
       <circle cx="8" cy="8" r="6" fill="#FFB900"/>
-      <text x="24" y="13" fill="#1A1A1A" font-size="15">Software Architect</text>
+      <text x="24" y="13" fill="#1A1A1A" font-size="15">Arquitecto de software</text>
     </g>
   </g>
 
   <g transform="translate(496, 200)">
     <rect width="208" height="270" rx="4" fill="#FFFFFF" stroke="#E5E5E0" stroke-width="1"/>
     <rect x="0" y="0" width="208" height="6" fill="#7FBA00"/>
-    <text x="18" y="44" fill="#5A8500" font-family="JetBrains Mono, monospace" font-size="11" font-weight="500" letter-spacing="1.1">PAIR 3 · DELIVERY</text>
-    <text x="18" y="82" fill="#1A1A1A" font-size="25" font-weight="500">Delivery</text>
-    <text x="18" y="112" fill="#737373" font-size="13">Coordinates and ships code.</text>
+    <text x="18" y="44" fill="#5A8500" font-family="JetBrains Mono, monospace" font-size="11" font-weight="500" letter-spacing="1.1">PAREJA 3 · ENTREGA</text>
+    <text x="18" y="82" fill="#1A1A1A" font-size="25" font-weight="500">Entrega</text>
+    <text x="18" y="112" fill="#737373" font-size="13">Coordina y entrega código.</text>
     <g transform="translate(18, 150)">
       <circle cx="8" cy="8" r="6" fill="#7FBA00"/>
-      <text x="24" y="13" fill="#1A1A1A" font-size="15">Technical Lead</text>
+      <text x="24" y="13" fill="#1A1A1A" font-size="15">Líder técnico</text>
     </g>
     <g transform="translate(18, 184)">
       <circle cx="8" cy="8" r="6" fill="#7FBA00"/>
-      <text x="24" y="13" fill="#1A1A1A" font-size="15">Developer</text>
+      <text x="24" y="13" fill="#1A1A1A" font-size="15">Desarrollador</text>
     </g>
   </g>
 
   <g transform="translate(724, 200)">
     <rect width="208" height="270" rx="4" fill="#FFFFFF" stroke="#E5E5E0" stroke-width="1"/>
     <rect x="0" y="0" width="208" height="6" fill="#00A4EF"/>
-    <text x="18" y="44" fill="#0076AC" font-family="JetBrains Mono, monospace" font-size="11" font-weight="500" letter-spacing="1.1">PAIR 4 · QUALITY</text>
-    <text x="18" y="82" fill="#1A1A1A" font-size="25" font-weight="500">Quality</text>
-    <text x="18" y="112" fill="#737373" font-size="14">Owns data and testing.</text>
+    <text x="18" y="44" fill="#0076AC" font-family="JetBrains Mono, monospace" font-size="11" font-weight="500" letter-spacing="1.1">PAREJA 4 · CALIDAD</text>
+    <text x="18" y="82" fill="#1A1A1A" font-size="25" font-weight="500">Calidad</text>
+    <text x="18" y="112" fill="#737373" font-size="14">Cuida datos y pruebas.</text>
     <g transform="translate(18, 150)">
       <circle cx="8" cy="8" r="6" fill="#00A4EF"/>
       <text x="24" y="13" fill="#1A1A1A" font-size="15">DBA</text>
     </g>
     <g transform="translate(18, 184)">
       <circle cx="8" cy="8" r="6" fill="#00A4EF"/>
-      <text x="24" y="13" fill="#1A1A1A" font-size="15">QA Engineer</text>
+      <text x="24" y="13" fill="#1A1A1A" font-size="15">Ingeniería de calidad</text>
     </g>
   </g>
 
   <g transform="translate(952, 200)">
     <rect width="208" height="270" rx="4" fill="#FFFFFF" stroke="#E5E5E0" stroke-width="1"/>
     <rect x="0" y="0" width="208" height="6" fill="#1B1B1F"/>
-    <text x="18" y="44" fill="#555555" font-family="JetBrains Mono, monospace" font-size="11" font-weight="500" letter-spacing="1.1">PAIR 5 · OPERATIONS</text>
-    <text x="18" y="82" fill="#1A1A1A" font-size="25" font-weight="500">Operations</text>
-    <text x="18" y="112" fill="#737373" font-size="14">Runs and documents.</text>
+    <text x="18" y="44" fill="#555555" font-family="JetBrains Mono, monospace" font-size="11" font-weight="500" letter-spacing="1.1">PAREJA 5 · OPERACIONES</text>
+    <text x="18" y="82" fill="#1A1A1A" font-size="25" font-weight="500">Operaciones</text>
+    <text x="18" y="112" fill="#737373" font-size="14">Opera y documenta.</text>
     <g transform="translate(18, 150)">
       <circle cx="8" cy="8" r="6" fill="#1B1B1F"/>
-      <text x="24" y="13" fill="#1A1A1A" font-size="15">DevOps Engineer</text>
+      <text x="24" y="13" fill="#1A1A1A" font-size="15">Ingeniería DevOps</text>
     </g>
     <g transform="translate(18, 184)">
       <circle cx="8" cy="8" r="6" fill="#1B1B1F"/>
-      <text x="24" y="13" fill="#1A1A1A" font-size="15">Tech Writer</text>
+      <text x="24" y="13" fill="#1A1A1A" font-size="15">Redacción técnica</text>
     </g>
   </g>
 </svg>

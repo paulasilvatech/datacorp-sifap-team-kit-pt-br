@@ -1,74 +1,74 @@
-# Tech Writer — Copilot Kit
+# Redactor Técnico — Kit de Copilot
 
-> **Track:** [Team Kit](../../README.md) › [Personas](../OVERVIEW.md) › **Tech Writer**
+> **Ruta:** [Kit del equipo](../../README.md) › [Personas](../OVERVIEW.md) › **Redactor Técnico**
 
-**Reference kit for the Tech Writer persona in the SIFAP modernization workshop.**
+**Kit de referencia para la persona Redactor Técnico en la inmersión de modernización de SIFAP.**
 
-![Persona](https://img.shields.io/badge/Persona-Tech%20Writer-171717?style=flat-square) ![Pair 5](https://img.shields.io/badge/Par-5%20%C2%B7%20Opera%C3%A7%C3%B5es-404040?style=flat-square) ![Cross-cutting](https://img.shields.io/badge/Atua%C3%A7%C3%A3o-Transversal-737373?style=flat-square)
+![Persona](https://img.shields.io/badge/Persona-Tech%20Writer-171717?style=flat-square) ![Pareja 5](https://img.shields.io/badge/Par-5%20%C2%B7%20Opera%C3%A7%C3%B5es-404040?style=flat-square) ![Transversal](https://img.shields.io/badge/Atua%C3%A7%C3%A3o-Transversal-737373?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Person taking the Tech Writer persona in the workshop |
-| **Focus** | API documentation, evolving README, `CODEMAP.md`, ADRs, changelog, and drift detection |
-| **SDLC phase** | Cross-cutting across all stages; leads Stage 4 — Evolution (Agent report) |
-| **Expected outcome** | Complete README, formalized ADRs, consistent glossary, and honest Stage 4 report |
+| **Público objetivo** | Quien asume la persona Redactor Técnico en la inmersión |
+| **Enfoque** | Documentación de API, evolución del README, `CODEMAP.md`, ADR, registro de cambios y detección de desalineaciones |
+| **Fase del SDLC** | Transversal a todas las etapas; lidera la Etapa 4 — Evolución (informe del agente) |
+| **Resultado esperado** | README completo, ADR formalizados, glosario coherente e informe honesto de la Etapa 4 |
 
-Read first: [PERSONA.md](PERSONA.md).
+Lee primero: [PERSONA.md](PERSONA.md).
 
 ---
 
-## Concept
+## Concepto
 
-The Tech Writer transforms decisions and code into durable project memory. In the SIFAP (Payment Inspection and Administration System) modernization, this persona maintains the glossary of Natural/Adabas legacy terms, formalizes architecture decisions as ADRs (Architecture Decision Records), and ensures that the README reflects the application's real state every hour of the workshop, not only at the end.
+El Redactor Técnico transforma las decisiones y el código en la memoria duradera del proyecto. En la modernización de SIFAP (Sistema de Fiscalización y Administración de Pagos), esta persona mantiene el glosario de términos del legado Natural/Adabas, formaliza las decisiones de arquitectura como ADR (registros de decisiones de arquitectura) y garantiza que el README refleje el estado real de la aplicación en cada hora de la inmersión, no solo al final.
 
-Why it matters: without deliberate documentation, ADRs remain empty, the README stays at "TODO: add instructions," and knowledge discovered during the workshop disappears afterward. The Tech Writer makes team learning traceable.
+Por qué importa: sin una documentación deliberada, los ADR permanecen vacíos, el README sigue en "TODO: añadir instrucciones" y el conocimiento descubierto durante la inmersión desaparece después. El Redactor Técnico hace trazable el aprendizaje del equipo.
 
-## Persona kit
+## Kit de la persona
 
-All active artifacts live in the repository root `.github/` directory. This folder is a reference; edit the files under `.github/` when maintenance is needed.
+Todos los artefactos activos residen en el directorio `.github/` de la raíz del repositorio. Esta carpeta es una referencia; edita los archivos de `.github/` cuando necesiten mantenimiento.
 
-| File | Type | Purpose |
+| Archivo | Tipo | Propósito |
 |---|---|---|
-| `PERSONA.md` | Profile | Tech Writer responsibilities, stages, prompts, and rubrics |
-| `.github/agents/tech-writer.agent.md` | Agent | API docs, README, `CODEMAP.md`, changelog, and drift detection |
+| `PERSONA.md` | Perfil | Responsabilidades, etapas, prompts y rúbricas del Redactor Técnico |
+| `.github/agents/tech-writer.agent.md` | Agente | Documentación de API, README, `CODEMAP.md`, registro de cambios y detección de desalineaciones |
 | `.github/prompts/persona-tech-writer-generate-docs.prompt.md` | Prompt | `/generate-docs` |
 | `.github/prompts/persona-tech-writer-update-codemap.prompt.md` | Prompt | `/update-codemap` |
 | `.github/prompts/persona-tech-writer-doc-drift.prompt.md` | Prompt | `/doc-drift` |
 
 > [!TIP]
-> If the facilitator requests a local MCP configuration and this kit has `mcp.json`, copy only that file to `.vscode/mcp.json`.
+> Si la persona facilitadora solicita una configuración MCP local y este kit tiene `mcp.json`, copia solo ese archivo a `.vscode/mcp.json`.
 
-## Where active artifacts live
+## Dónde residen los artefactos activos
 
-- Agents: `.github/agents/`
+- Agentes: `.github/agents/`
 - Prompts: `.github/prompts/persona-*.prompt.md`
 - Skills: `.github/skills/`
-- Instructions: `.github/instructions/`
+- Instrucciones: `.github/instructions/`
 
-## Best practices
+## Prácticas recomendadas
 
-- [ ] **Treat documentation as a feature.** Deliver, version, and review it with the code, not afterward.
-- [ ] **Lead with the answer, then provide context.** Write for someone with 30 seconds.
-- [ ] **Use Mermaid for diagrams.** Diagrams as code evolve with the system.
-- [ ] **Include drift checks in CI.** Outdated documentation is worse than none.
+- [ ] **Trata la documentación como una funcionalidad.** Entrégala, versiónala y revísala junto con el código, no después.
+- [ ] **Empieza por la respuesta y después aporta contexto.** Escribe para alguien que dispone de 30 segundos.
+- [ ] **Usa Mermaid para los diagramas.** Los diagramas como código evolucionan junto con el sistema.
+- [ ] **Incluye verificaciones de desalineación en la CI.** La documentación desactualizada es peor que no tenerla.
 
-## SIFAP example
+## Ejemplo de SIFAP
 
-In Stage 1, the Tech Writer documents `MU` (multiple-value field), `PE` (periodic field), and `FDT` (File Definition Table) in the glossary so the entire team uses consistent terminology. In Stage 3, they update `README.md` with the real endpoints created by the Developer (`POST /api/v1/beneficios`, `GET /api/v1/fiscalizacoes/{id}`) and commands for starting the local environment. In Stage 4, they follow the Agent and write `agent-experience-report.md` in real time.
+En la Etapa 1, el Redactor Técnico documenta `MU` (campo multivalor), `PE` (campo periódico) y `FDT` (tabla de definición de archivos) en el glosario para que todo el equipo use una terminología coherente. En la Etapa 3, actualiza `README.md` con los endpoints reales creados por el Desarrollador (`POST /api/v1/beneficios`, `GET /api/v1/fiscalizacoes/{id}`) y los comandos para iniciar el entorno local. En la Etapa 4, sigue al agente y escribe `agent-experience-report.md` en tiempo real.
 
-## References
+## Referencias
 
-- [Diátaxis Framework](https://diataxis.fr/)
-- [Google Developer Documentation Style Guide](https://developers.google.com/style)
+- [Marco Diátaxis](https://diataxis.fr/)
+- [Guía de estilo de documentación para desarrolladores de Google](https://developers.google.com/style)
 - [Write the Docs](https://www.writethedocs.org/)
-- [Mermaid — Diagramming as Code](https://mermaid.js.org/)
+- [Mermaid — Diagramas como código](https://mermaid.js.org/)
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Persona overview](../OVERVIEW.md)<br/><sub>Table of the 10 personas and their pairs.</sub> | [PERSONA.md](PERSONA.md)<br/><sub>Complete Tech Writer persona profile.</sub> |
+| [Descripción general de las personas](../OVERVIEW.md)<br/><sub>Tabla de las 10 personas y sus parejas.</sub> | [PERSONA.md](PERSONA.md)<br/><sub>Perfil completo de la persona Redactor Técnico.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Volver al índice del kit](../../README.md)</sub>

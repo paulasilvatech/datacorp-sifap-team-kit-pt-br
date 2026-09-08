@@ -1,90 +1,90 @@
 ---
 name: "azure-resource-health-diagnose"
-description: "Diagnose an Azure resource's health from logs and telemetry and produce a remediation plan, deferring the workflow to the azure-resource-health-diagnose skill."
+description: "Diagnostica el estado de un recurso de Azure a partir de los registros y la telemetría y elabora un plan de corrección, delegando el flujo de trabajo a la habilidad azure-resource-health-diagnose."
 argument-hint: "resource=<name> rg=<resource-group>"
 agent: "devops-engineer"
 tools: ["read", "search", "execute"]
 ---
 # /azure-resource-health-diagnose
 
-## Objective
+## Objetivo
 
-Assess the health of one Azure resource, diagnose issues from its logs and telemetry, and produce a prioritized remediation plan. The full workflow lives in the [`azure-resource-health-diagnose`](../skills/azure-resource-health-diagnose/SKILL.md) skill; this prompt applies it to the SIFAP 2.0 kit without restating it.
+Evaluar el estado de un recurso de Azure, diagnosticar problemas a partir de sus registros y su telemetría y elaborar un plan de corrección priorizado. El flujo de trabajo completo se encuentra en la habilidad [`azure-resource-health-diagnose`](../skills/azure-resource-health-diagnose/SKILL.md); este prompt lo aplica al kit SIFAP 2.0 sin repetirlo.
 
 > [!NOTE]
-> Diagnose before you change: classify issues by severity and confirm any fix against the Terraform in `infra/`.
+> Diagnostica antes de hacer cambios: clasifica los problemas por gravedad y verifica cualquier corrección con el código de Terraform de `infra/`.
 
-## When to Invoke
+## Cuándo invocar
 
-During Stage 4 (Evolution), when a deployed Azure resource behaves unexpectedly and the team needs a structured diagnosis before acting.
+Durante la etapa 4 (Evolución), cuando un recurso de Azure implementado se comporta de forma inesperada y el equipo necesita un diagnóstico estructurado antes de actuar.
 
-## Preconditions
+## Precondiciones
 
-- The team is authenticated to Azure
-- The resource is deployed and emitting logs/telemetry
-- Diagnostic settings route logs to a reachable Log Analytics workspace
+- El equipo está autenticado en Azure
+- El recurso está implementado y genera registros/telemetría
+- La configuración de diagnóstico envía los registros a un área de trabajo de Log Analytics accesible
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-- `resource` — the resource name (and, if known, its resource group/subscription)
-- The symptom observed and when it started
-- Ask the user for anything that is missing.
+- `resource` — el nombre del recurso (y, si se conocen, su grupo de recursos y su suscripción)
+- El síntoma observado y cuándo comenzó
+- Solicita a la persona usuaria cualquier información que falte.
 
-## What I Will Do
+## Lo que haré
 
-- Follow the health-assessment and log-analysis workflow in the [`azure-resource-health-diagnose`](../skills/azure-resource-health-diagnose/SKILL.md) skill
-- Focus first on the kit's resource types: Azure Database for PostgreSQL 16 and containerized Spring Boot services
-- Classify issues (Critical/High/Medium/Low) and trace each to a root cause
-- Produce a phased remediation plan with validation and rollback steps
+- Seguir el flujo de trabajo de evaluación del estado y análisis de registros de la habilidad [`azure-resource-health-diagnose`](../skills/azure-resource-health-diagnose/SKILL.md)
+- Centrarme primero en los tipos de recursos del kit: Azure Database for PostgreSQL 16 y servicios de Spring Boot en contenedores
+- Clasificar los problemas por gravedad (Crítica/Alta/Media/Baja) y rastrear cada uno hasta su causa raíz
+- Elaborar un plan de corrección por fases con pasos de validación y reversión
 
-## What I Will NOT Do
+## Lo que NO haré
 
-- Apply a remediation before diagnosis and team confirmation
-- Recommend a manual change that diverges from the Terraform in `infra/`
-- Ignore Managed Identity: I flag any resource still using shared keys or connection strings
-- Overstate certainty when logs are missing (I note the limitation)
+- Aplicar una corrección antes del diagnóstico y de la confirmación del equipo
+- Recomendar un cambio manual que se desvíe del código de Terraform de `infra/`
+- Ignorar las identidades administradas (Managed Identity): señalaré cualquier recurso que siga utilizando claves compartidas o cadenas de conexión
+- Exagerar el grado de certeza cuando falten registros (señalaré la limitación)
 
-## Output Format
+## Formato de salida
 
 ```markdown
-### Health assessment — payment-db (Azure Database for PostgreSQL)
-Status: Warning · Analyzed: <timestamp>
+### Evaluación del estado — payment-db (Azure Database for PostgreSQL)
+Estado: Advertencia · Analizado: <timestamp>
 
-### Issues
-| Severity | Issue | Root cause |
+### Problemas
+| Gravedad | Problema | Causa raíz |
 |---|---|---|
-| High | Connection failures | Max connections exhausted |
+| Alta | Fallos de conexión | Se alcanzó el número máximo de conexiones |
 
-### Remediation (phased)
-1. Immediate — raise connection limit / add pooling
-2. Short-term — right-size compute tier via Terraform
+### Corrección (por fases)
+1. Inmediata — aumentar el límite de conexiones / añadir un grupo de conexiones reutilizables
+2. A corto plazo — ajustar el nivel de cómputo a las necesidades mediante Terraform
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] Health status is stated with supporting metrics
-- [ ] Issues are classified by severity with a root cause each
-- [ ] The remediation plan is phased, with validation and rollback
-- [ ] Any fix is expressed against the Terraform in `infra/`
+- [ ] Se indica el estado del recurso con métricas que lo respaldan
+- [ ] Los problemas se clasifican por gravedad y cada uno tiene una causa raíz
+- [ ] El plan de corrección se organiza por fases, con validación y reversión
+- [ ] Toda corrección se expresa en términos del código de Terraform de `infra/`
 
-## Prompt Body
+## Cuerpo del prompt
 
-The [`azure-resource-health-diagnose`](../skills/azure-resource-health-diagnose/SKILL.md) skill owns the resource-type-specific diagnostics and KQL queries — read it, then apply it to the target resource.
+La habilidad [`azure-resource-health-diagnose`](../skills/azure-resource-health-diagnose/SKILL.md) define los diagnósticos y las consultas KQL específicos de cada tipo de recurso: léela y aplícala al recurso de destino.
 
-**Step 1 — Identify.**
-Locate the resource, its type, and its dependencies.
+**Paso 1 — Identificar.**
+Localiza el recurso, su tipo y sus dependencias.
 
-**Step 2 — Apply the skill.**
-Run the health checks and log/telemetry queries per the skill and recognize the failure patterns.
+**Paso 2 — Aplicar la habilidad.**
+Ejecuta las comprobaciones de estado y las consultas de registros/telemetría según la habilidad e identifica los patrones de fallo.
 
-**Step 3 — Respect the kit rules.**
-Prioritize PostgreSQL 16 and Spring Boot services, flag non-Managed-Identity auth, and tie fixes to `infra/` Terraform.
+**Paso 3 — Respetar las reglas del kit.**
+Prioriza PostgreSQL 16 y los servicios de Spring Boot, señala la autenticación que no utilice Managed Identity y vincula las correcciones al código de Terraform de `infra/`.
 
-**Step 4 — Plan.**
-Classify the issues and produce the phased remediation plan; wait for confirmation before acting.
+**Paso 4 — Planificar.**
+Clasifica los problemas y elabora el plan de corrección por fases; espera la confirmación antes de actuar.
 
-## Invocation Example
+## Ejemplo de invocación
 
-```
+```text
 /azure-resource-health-diagnose resource=payment-db rg=sifap-prod-rg
 ```

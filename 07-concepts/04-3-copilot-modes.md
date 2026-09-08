@@ -1,42 +1,42 @@
-# Copilot's 3 Modes — Ask, Plan, and Agent
+# Los 3 modos de Copilot — Ask, Plan y Agent
 
-> **Path:** [Team Kit](../README.md) › [Concepts](00-README.md) › **Copilot's 3 Modes**
+> **Ruta:** [Kit del equipo](../README.md) › [Conceptos](00-README.md) › **Los 3 modos de Copilot**
 
-**GitHub Copilot operates in three distinct modes—Ask, Plan, and Agent—and choosing the wrong mode for a task wastes time. This document provides objective criteria for selecting the right mode in each workshop situation.**
+**GitHub Copilot opera en tres modos distintos —Ask, Plan y Agent— y elegir el modo equivocado para una tarea hace perder tiempo. Este documento proporciona criterios objetivos para seleccionar el modo adecuado en cada situación de la inmersión.**
 
-![Concept 04](https://img.shields.io/badge/Concept-04-171717?style=flat-square) ![Used in All Stages](https://img.shields.io/badge/Used-All%20stages-737373?style=flat-square) ![Duration 15 min](https://img.shields.io/badge/Duration-15%20min-A3A3A3?style=flat-square)
+![Concepto 04](https://img.shields.io/badge/Concept-04-171717?style=flat-square) ![Se usa en todas las etapas](https://img.shields.io/badge/Used-All%20stages-737373?style=flat-square) ![Duración: 15 min](https://img.shields.io/badge/Duration-15%20min-A3A3A3?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | All personas |
-| **Prerequisites** | Read [Agents and Personas](02-agents-and-personas.md) |
-| **Estimated time** | 15 minutes |
-| **Stage** | All stages |
-| **Expected outcome** | Know which mode to use for each task without hesitation |
+| **Público objetivo** | Todas las personas |
+| **Prerrequisitos** | Leer [Agentes y personas](02-agents-and-personas.md) |
+| **Tiempo estimado** | 15 minutos |
+| **Etapa** | Todas las etapas |
+| **Resultado esperado** | Saber qué modo usar para cada tarea sin dudar |
 
 ---
 
-## Concept
+## Concepto
 
-Copilot Chat provides three operating modes with different levels of autonomy, time costs, and outputs:
+Copilot Chat proporciona tres modos de operación con distintos niveles de autonomía, costos de tiempo y resultados:
 
-- **Ask** — conversational mode. You ask questions and receive text answers. No code is changed.
-- **Plan** — planning mode. You describe a change, and Copilot proposes a plan listing the files to touch and the changes to make—before execution.
-- **Agent** — autonomous mode. You provide a well-defined task, usually as an Issue, and Copilot reads the code, implements the change, and opens a PR autonomously.
-
----
-
-## Why it matters
-
-Using the wrong mode has direct consequences:
-
-- **Ask when you should use Plan:** You receive correct guidance but must perform everything manually, making the work slower than necessary.
-- **Agent when you should use Ask:** Copilot changes multiple files based on incomplete context, generating a faulty PR that takes longer to correct than a manual change.
-- **Plan when you should use Agent:** You review a step-by-step plan for a large, well-defined task, creating unnecessary manual effort.
+- **Ask** — modo conversacional. Haces preguntas y recibes respuestas de texto. No se modifica código.
+- **Plan** — modo de planificación. Describes un cambio y Copilot propone un plan que enumera los archivos que debe tocar y los cambios que debe realizar, antes de ejecutarlos.
+- **Agent** — modo autónomo. Proporcionas una tarea bien definida, normalmente como una Issue, y Copilot lee el código, implementa el cambio y abre una PR de forma autónoma.
 
 ---
 
-## Decision tree
+## Por qué importa
+
+Usar el modo equivocado tiene consecuencias directas:
+
+- **Ask cuando deberías usar Plan:** recibes orientación correcta, pero debes hacerlo todo manualmente, por lo que el trabajo resulta más lento de lo necesario.
+- **Agent cuando deberías usar Ask:** Copilot modifica varios archivos a partir de un contexto incompleto y genera una PR defectuosa cuya corrección lleva más tiempo que un cambio manual.
+- **Plan cuando deberías usar Agent:** revisas un plan paso a paso para una tarea grande y bien definida, generando un esfuerzo manual innecesario.
+
+---
+
+## Árbol de decisión
 
 ```mermaid
 %%{init: {'theme':'neutral','themeVariables':{'fontFamily':'ui-sans-serif, system-ui, sans-serif','primaryColor':'#F5F5F5','primaryTextColor':'#171717','primaryBorderColor':'#171717','lineColor':'#525252','secondaryColor':'#FFFFFF','tertiaryColor':'#FAFAFA','background':'#FFFFFF'}}}%%
@@ -45,119 +45,119 @@ flowchart TD
     classDef result fill:#FFFFFF,stroke:#171717,color:#171717,stroke-width:2px
     classDef question fill:#FAFAFA,stroke:#A3A3A3,color:#404040
 
-    Q1{"Do you need to<br/>change code?"}:::question
-    Q2{"Does the change<br/>affect more than<br/>one file?"}:::question
-    Q3{"Is the requirement<br/>fully<br/>specified?"}:::question
+    Q1{"¿Necesitas<br/>cambiar código?"}:::question
+    Q2{"¿El cambio afecta<br/>a más de<br/>un archivo?"}:::question
+    Q3{"¿El requisito está<br/>completamente<br/>especificado?"}:::question
 
-    ASK["Ask<br/><sub>Question, explore, understand</sub>"]:::result
-    PLAN["Plan<br/><sub>Plan a change with human review</sub>"]:::result
-    AGENT["Agent<br/><sub>Delegate a complete task</sub>"]:::result
+    ASK["Ask<br/><sub>Preguntar, explorar, comprender</sub>"]:::result
+    PLAN["Plan<br/><sub>Planificar un cambio con revisión humana</sub>"]:::result
+    AGENT["Agent<br/><sub>Delegar una tarea completa</sub>"]:::result
 
     Q1 -- "No" --> ASK
-    Q1 -- "Yes" --> Q2
-    Q2 -- "No (1 file)" --> PLAN
-    Q2 -- "Yes" --> Q3
+    Q1 -- "Sí" --> Q2
+    Q2 -- "No (1 archivo)" --> PLAN
+    Q2 -- "Sí" --> Q3
     Q3 -- "No" --> PLAN
-    Q3 -- "Yes, detailed Issue" --> AGENT
+    Q3 -- "Sí, Issue detallada" --> AGENT
 ```
 
 ---
 
-## Comparing the three modes
+## Comparación de los tres modos
 
-| Criterion | Ask | Plan | Agent |
+| Criterio | Ask | Plan | Agent |
 |---|---|---|---|
-| **What it does** | Answers questions in text | Proposes a change plan without executing it | Implements autonomously and opens a PR |
-| **Autonomy** | None | Low (you approve each step) | High (runs without intervention) |
-| **Time cost** | Low | Medium | High—justified only for large tasks |
-| **When to use** | Explore, understand, answer questions | Multi-file change with human review | Fully specified Issue with context and acceptance criteria |
-| **Prerequisite** | None | Context for what to change | Issue containing context, REQ-IDs, acceptance criteria, and traceability |
-| **Rework risk** | None | Low | High if the Issue is incomplete |
+| **Qué hace** | Responde preguntas en texto | Propone un plan de cambios sin ejecutarlo | Implementa de forma autónoma y abre una PR |
+| **Autonomía** | Ninguna | Baja (apruebas cada paso) | Alta (se ejecuta sin intervención) |
+| **Costo de tiempo** | Bajo | Medio | Alto: justificado solo para tareas grandes |
+| **Cuándo usarlo** | Explorar, comprender y responder preguntas | Cambio en varios archivos con revisión humana | Issue completamente especificada con contexto y criterios de aceptación |
+| **Prerrequisito** | Ninguno | Contexto de lo que debe cambiarse | Issue con contexto, REQ-ID, criterios de aceptación y trazabilidad |
+| **Riesgo de repetir trabajo** | Ninguno | Bajo | Alto si la Issue está incompleta |
 
 ---
 
-## Prompt examples by mode — SIFAP context
+## Ejemplos de prompts por modo — Contexto de SIFAP
 
-### Ask — explore the legacy system
+### Ask — Explorar el sistema heredado
 
 ```text
-"Explain line by line what CALCPGTO.NSN does.
-Focus on business decisions. Ignore I/O routines."
+"Explica línea por línea qué hace CALCPGTO.NSN.
+Céntrate en las decisiones de negocio. Ignora las rutinas de entrada/salida."
 ```
 
 ```text
-"@archaeologist, which fields in BENEFIC.ddm
-are mandatory, and which are multiple-value fields (MU)?"
+"@archaeologist, ¿qué campos de BENEFIC.ddm
+son obligatorios y cuáles son campos multivalor (MU)?"
 ```
 
-### Plan — implement a requirement with review
+### Plan — Implementar un requisito con revisión
 
 ```text
-"Plan: implement REQ-042 (calculate the net benefit amount).
-List the files to create or modify, the order of changes,
-and the required integration tests.
-DO NOT implement yet—I am waiting for team approval."
+"Plan: implementar REQ-042 (calcular el importe neto del beneficio).
+Enumera los archivos que deben crearse o modificarse, el orden de los cambios
+y las pruebas de integración necesarias.
+NO implementes todavía: espero la aprobación del equipo."
 ```
 
 ```text
-"Plan: create Flyway migration V3 to add the
-status_pagamento column to the beneficiario table.
-Show the SQL script and the required JPA entity changes."
+"Plan: crear la migración Flyway V3 para añadir la
+columna status_pagamento a la tabla beneficiario.
+Muestra el script SQL y los cambios necesarios en las entidades JPA."
 ```
 
-### Agent — delegate a complete task (Stage 4)
+### Agent — Delegar una tarea completa (Etapa 4)
 
 ```text
-[Create a GitHub Issue containing:]
-- Title: Implement endpoint GET /api/v1/beneficiarios/{id}
-- Context: REQ-042 specified in Stage 2 and mapped to BeneficiarioService
-- Acceptance criteria: returns 200 with a DTO, returns 404 when not found,
-  validates the UUID in the path, and includes Testcontainers tests for both scenarios
-- Traceability: REQ-042 › CALCPGTO.NSN#L120-L198
-[Select Agent mode and reference the Issue]
+[Crear una GitHub Issue que contenga:]
+- Título: Implementar el endpoint GET /api/v1/beneficiarios/{id}
+- Contexto: REQ-042 especificado en la Etapa 2 y mapeado a BeneficiarioService
+- Criterios de aceptación: devuelve 200 con un DTO, devuelve 404 si no se encuentra,
+  valida el UUID de la ruta e incluye pruebas Testcontainers para ambos escenarios
+- Trazabilidad: REQ-042 › CALCPGTO.NSN#L120-L198
+[Seleccionar el modo Agent y referenciar la Issue]
 ```
 
 ---
 
-## Anti-patterns — what not to do
+## Antipatrones — Qué no hacer
 
-| Anti-pattern | Consequence | Correct alternative |
+| Antipatrón | Consecuencia | Alternativa correcta |
 |---|---|---|
-| Use Agent for a two-minute question | Delay, context consumption, and risk of unwanted changes | Use Ask |
-| Use Ask to implement an entire service | You receive guidance but perform everything manually | Use Plan or Agent |
-| Delegate to Agent without a detailed Issue | Generated PR contains incorrect or incomplete code | Write the complete Issue before starting Agent |
-| Use Plan during Stage 1 (archaeology) | Copilot may try to modify the legacy system | Use Ask with `@archaeologist` |
-| Ignore the Plan output before execution | Unexpected changes to unplanned files | Read and approve the plan before confirming |
+| Usar Agent para una pregunta de dos minutos | Demora, consumo de contexto y riesgo de cambios no deseados | Usa Ask |
+| Usar Ask para implementar un servicio completo | Recibes orientación, pero lo haces todo manualmente | Usa Plan o Agent |
+| Delegar a Agent sin una Issue detallada | La PR generada contiene código incorrecto o incompleto | Escribe la Issue completa antes de iniciar Agent |
+| Usar Plan durante la Etapa 1 (arqueología) | Copilot puede intentar modificar el sistema heredado | Usa Ask con `@archaeologist` |
+| Ignorar la salida de Plan antes de ejecutarlo | Cambios inesperados en archivos no previstos | Lee y aprueba el plan antes de confirmar |
 
 ---
 
-## Estimated time cost
+## Costo de tiempo estimado
 
-Use these estimates to choose a mode during the workshop. Actual time varies with task complexity:
+Usa estas estimaciones para elegir un modo durante la inmersión. El tiempo real varía según la complejidad de la tarea:
 
-| Mode | Simple task | Medium task | Complex task |
+| Modo | Tarea sencilla | Tarea mediana | Tarea compleja |
 |---|---|---|---|
 | Ask | 1–2 min | 3–5 min | 5–10 min |
-| Plan | 5–10 min (including review) | 15–20 min | 30+ min |
-| Agent | Not recommended | 20–30 min (including PR review) | 45–90 min |
+| Plan | 5–10 min (incluida la revisión) | 15–20 min | Más de 30 min |
+| Agent | No recomendado | 20–30 min (incluida la revisión de PR) | 45–90 min |
 
 > [!WARNING]
-> Agent time includes review of the generated PR. PRs with incomplete context may require multiple iterations.
+> El tiempo de Agent incluye la revisión de la PR generada. Las PR con contexto incompleto pueden requerir varias iteraciones.
 
 ---
 
-## References
+## Referencias
 
-- [One-page cheat sheet for the 3 modes](../09-cheat-sheets/copilot-3-modes.md)
-- [Agents and Personas](02-agents-and-personas.md)
-- [Stage 4 Guide — Agent mode in practice](../04-evolution/GUIDE.md)
+- [Ficha de una página sobre los 3 modos](../09-cheat-sheets/copilot-3-modes.md)
+- [Agentes y personas](02-agents-and-personas.md)
+- [Guía de la Etapa 4 — Modo Agent en la práctica](../04-evolution/GUIDE.md)
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Visual Glossary](03-visual-glossary.md)<br/><sub>30+ terms with definitions and SIFAP examples.</sub> | [EARS Notation](05-ears-notation.md)<br/><sub>How to write unambiguous requirements.</sub> |
+| [Glosario visual](03-visual-glossary.md)<br/><sub>Más de 30 términos con definiciones y ejemplos de SIFAP.</sub> | [Notación EARS](05-ears-notation.md)<br/><sub>Cómo escribir requisitos sin ambigüedades.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

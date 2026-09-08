@@ -1,76 +1,76 @@
-# ADR-0001: Single source of truth for agent instructions (no root AGENTS.md)
+# ADR-0001: fuente única de verdad para las instrucciones de agentes (sin AGENTS.md en la raíz)
 
-> **Path:** [Team Kit](../../README.md) › [Docs](../README.md) › [ADRs](README.md) › **ADR-0001**
+> **Ruta:** [Kit del equipo](../../README.md) › [Documentación](../README.md) › [ADR](README.md) › **ADR-0001**
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Status** | accepted |
-| **Date** | 2026-08-17 |
-| **Authors** | Harness audit |
-| **Supersedes** | N/A |
+| **Estado** | accepted |
+| **Fecha** | 2026-08-17 |
+| **Autores** | Auditoría del entorno de soporte |
+| **Sustituye a** | N/A |
 
 ---
 
-## Context
+## Contexto
 
-GitHub Copilot reads several kinds of custom-instruction files. This repository already ships `.github/copilot-instructions.md` (repository-wide) and the path-scoped `.github/instructions/*.instructions.md` files. It has **no** root `AGENTS.md`, and the question arose whether it should add one, because the open [agents.md](https://agents.md/) convention and the Copilot CLI both read `AGENTS.md`.
+GitHub Copilot lee varios tipos de archivos de instrucciones personalizadas. Este repositorio ya incluye `.github/copilot-instructions.md` (para todo el repositorio) y los archivos `.github/instructions/*.instructions.md`, delimitados por ruta. **No** tiene un `AGENTS.md` en la raíz y surgió la duda de si debía añadir uno, porque tanto la convención abierta [agents.md](https://agents.md/) como Copilot CLI leen `AGENTS.md`.
 
-The risk to weigh is drift. A second repository-wide instruction file can silently diverge from the first, so agents receive contradictory guidance depending on which file a surface loads. This kit therefore applies the smallest-useful-guidance rule: update the existing source of truth instead of adding duplicate repository-wide instructions.
+El riesgo que debe evaluarse es la desalineación. Un segundo archivo de instrucciones para todo el repositorio puede divergir silenciosamente del primero, de modo que los agentes reciban indicaciones contradictorias según el archivo que cargue cada interfaz. Por ello, este kit aplica la regla de las indicaciones mínimas útiles: actualizar la fuente de verdad existente en lugar de añadir instrucciones duplicadas para todo el repositorio.
 
-Two facts settle the decision.
+Dos hechos resuelven la decisión.
 
-**1. Surface coverage — `AGENTS.md` adds no reach here.** Every Copilot surface that reads `AGENTS.md` also reads `.github/copilot-instructions.md`:
+**1. Cobertura de interfaces — `AGENTS.md` no amplía el alcance aquí.** Toda interfaz de Copilot que lee `AGENTS.md` también lee `.github/copilot-instructions.md`:
 
-| Surface | Reads `.github/copilot-instructions.md` | Reads `AGENTS.md` |
+| Interfaz | Lee `.github/copilot-instructions.md` | Lee `AGENTS.md` |
 |---|---|---|
-| Copilot CLI (this repo's optional terminal tool) | Yes | Yes |
-| VS Code — Copilot Chat | Yes | Yes |
-| VS Code — cloud agent / code review | Yes | Yes |
-| GitHub.com — cloud agent | Yes | Yes |
-| GitHub.com — code review | Yes | Yes |
-| GitHub.com — Copilot Chat | Yes | No |
+| Copilot CLI (herramienta opcional de terminal de este repositorio) | Sí | Sí |
+| VS Code — Copilot Chat | Sí | Sí |
+| VS Code — agente en la nube / revisión de código | Sí | Sí |
+| GitHub.com — agente en la nube | Sí | Sí |
+| GitHub.com — revisión de código | Sí | Sí |
+| GitHub.com — Copilot Chat | Sí | No |
 
-The Copilot CLI's own `/help` output lists both `AGENTS.md` and `.github/copilot-instructions.md` as respected locations. GitHub.com Copilot Chat reads `.github/copilot-instructions.md` but **not** `AGENTS.md`, so the repository-wide file is the only one honoured by every surface.
+La propia salida de `/help` de Copilot CLI enumera tanto `AGENTS.md` como `.github/copilot-instructions.md` entre las ubicaciones que respeta. Copilot Chat de GitHub.com lee `.github/copilot-instructions.md`, pero **no** `AGENTS.md`, por lo que el archivo para todo el repositorio es el único respetado por todas las interfaces.
 
-**2. Precedence — the repo-wide file already outranks `AGENTS.md`.** When more than one file applies, all are provided to Copilot, but on conflict the order is (highest first): personal → path-specific `.github/instructions/**` → **repository-wide `.github/copilot-instructions.md`** → **agent `AGENTS.md`** → organization. A new `AGENTS.md` could therefore never win a disagreement with the existing file; it could only diverge from it. Nested `AGENTS.md` files are supported (the nearest one in the tree wins), which would multiply the drift surface rather than reduce it.
+**2. Precedencia — el archivo para todo el repositorio ya tiene prioridad sobre `AGENTS.md`.** Cuando se aplica más de un archivo, todos se proporcionan a Copilot, pero, en caso de conflicto, el orden es (de mayor a menor prioridad): personal → específico de ruta `.github/instructions/**` → **para todo el repositorio `.github/copilot-instructions.md`** → **de agente `AGENTS.md`** → organización. Por tanto, un nuevo `AGENTS.md` nunca podría prevalecer en una discrepancia con el archivo existente; solo podría divergir de él. Se admiten archivos `AGENTS.md` anidados (prevalece el más cercano en el árbol), lo que multiplicaría los puntos susceptibles de desalineación en lugar de reducirlos.
 
-## Decision
+## Decisión
 
-We will **not** add a root `AGENTS.md` (nor `CLAUDE.md` / `GEMINI.md`). `.github/copilot-instructions.md` remains the single source of truth for repository-wide agent instructions, complemented by path-scoped `.github/instructions/*.instructions.md`. The "Strict Rules" section of `.github/copilot-instructions.md` now forbids adding a competing root instruction file, so the rule is enforced at the point a contributor would otherwise violate it.
+**No** añadiremos un `AGENTS.md` en la raíz (ni `CLAUDE.md` / `GEMINI.md`). `.github/copilot-instructions.md` sigue siendo la fuente única de verdad para las instrucciones de agentes de todo el repositorio, complementada por `.github/instructions/*.instructions.md`, delimitadas por ruta. La sección "Reglas estrictas" de `.github/copilot-instructions.md` ahora prohíbe añadir un archivo de instrucciones competidor en la raíz, de modo que la regla se aplica justo donde un colaborador podría infringirla.
 
-## Alternatives considered
+## Alternativas consideradas
 
-| Alternative | Why it was rejected |
+| Alternativa | Por qué se rechazó |
 |---|---|
-| Add a full `AGENTS.md` mirroring the instructions | Pure duplication of an already-universally-read file; two repository-wide sources of truth drift apart — the exact regression this audit exists to prevent. |
-| Add a thin `AGENTS.md` that only points at `.github/copilot-instructions.md` | Adds a maintained file for near-zero benefit: every surface that reads it already reads the target, and the repository bans non-Copilot assistants, removing the cross-tool value that is `AGENTS.md`'s main selling point. It is still a link that can rot. |
+| Añadir un `AGENTS.md` completo que replique las instrucciones | Duplicación pura de un archivo que ya leen todas las interfaces; dos fuentes de verdad para todo el repositorio divergen: exactamente la regresión que esta auditoría busca prevenir. |
+| Añadir un `AGENTS.md` mínimo que solo apunte a `.github/copilot-instructions.md` | Añade un archivo que mantener a cambio de un beneficio casi nulo: toda interfaz que lo lee ya lee el destino, y el repositorio prohíbe los asistentes distintos de Copilot, eliminando el valor entre herramientas que constituye la principal ventaja de `AGENTS.md`. Sigue siendo un enlace que puede quedar obsoleto. |
 
-## Consequences
+## Consecuencias
 
-- **Easier:** one place to edit; no reconciliation between two repository-wide files; no surface receives conflicting guidance.
-- **Harder:** a contributor who expects an `AGENTS.md` must learn the convention. Mitigated by the explicit Strict Rule and this ADR.
-- **Risks:** if GitHub later makes `AGENTS.md` the only file a mandated surface reads, this decision must be revisited.
-- **Mitigations:** the Strict Rule links here; the Copilot-primitives drift check (`.github/scripts/validate-copilot-primitives.py`, tracked separately) is the natural place to assert "no stray root `AGENTS.md`" if active enforcement is later wanted.
+- **Más fácil:** un solo lugar que editar; sin conciliación entre dos archivos para todo el repositorio; ninguna interfaz recibe indicaciones contradictorias.
+- **Más difícil:** un colaborador que espere encontrar `AGENTS.md` debe aprender la convención. Se mitiga con la regla estricta explícita y este ADR.
+- **Riesgos:** si GitHub convierte en el futuro `AGENTS.md` en el único archivo que lea una interfaz obligatoria, habrá que reconsiderar esta decisión.
+- **Mitigaciones:** la regla estricta enlaza aquí; la verificación de desalineación de primitivas de Copilot (`.github/scripts/validate-copilot-primitives.py`, con seguimiento separado) es el lugar natural para comprobar que "no exista un `AGENTS.md` ajeno en la raíz" si más adelante se desea imponerlo activamente.
 
-## Related
+## Relaciones
 
-- REQ-IDs: N/A
-- ADRs: N/A
-- Instruction files: `.github/copilot-instructions.md`, `.github/instructions/*.instructions.md`
+- REQ-ID: N/A
+- ADR: N/A
+- Archivos de instrucciones: `.github/copilot-instructions.md`, `.github/instructions/*.instructions.md`
 
-## References
+## Referencias
 
-- GitHub Docs — About customizing GitHub Copilot responses (precedence of custom instructions): <https://docs.github.com/en/copilot/concepts/response-customization>
-- GitHub Docs — Support for different types of custom instructions (which surface reads which file): <https://docs.github.com/en/copilot/reference/custom-instructions-support>
-- GitHub Docs — Adding repository custom instructions (nested `AGENTS.md`, nearest wins): <https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions>
-- agents.md open convention: <https://agents.md/>
+- Documentación de GitHub — Acerca de la personalización de respuestas de GitHub Copilot (precedencia de instrucciones personalizadas): <https://docs.github.com/en/copilot/concepts/response-customization>
+- Documentación de GitHub — Compatibilidad con distintos tipos de instrucciones personalizadas (qué archivo lee cada interfaz): <https://docs.github.com/en/copilot/reference/custom-instructions-support>
+- Documentación de GitHub — Añadir instrucciones personalizadas al repositorio (`AGENTS.md` anidados, prevalece el más cercano): <https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions>
+- Convención abierta agents.md: <https://agents.md/>
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [ADRs — Index](README.md)<br/><sub>Index of recorded decisions.</sub> | [Documentation](../README.md)<br/><sub>Index of the kit's cross-cutting resources.</sub> |
+| [ADR — Índice](README.md)<br/><sub>Índice de decisiones registradas.</sub> | [Documentación](../README.md)<br/><sub>Índice de recursos transversales del kit.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Volver al índice del kit](../../README.md)</sub>

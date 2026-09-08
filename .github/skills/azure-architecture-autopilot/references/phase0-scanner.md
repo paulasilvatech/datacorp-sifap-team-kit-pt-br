@@ -1,80 +1,80 @@
-# Phase 0: Existing Resource Scanner
+# Fase 0: Analizador de recursos existentes
 
-This file contains the detailed instructions for Phase 0. When the user requests analysis of existing Azure resources (Path B), read and follow this file.
+Este archivo contiene las instrucciones detalladas de la fase 0. Cuando la persona solicite analizar recursos existentes de Azure (ruta B), lee y sigue este archivo.
 
-Scan results are visualized as an architecture diagram, and subsequent natural-language modification requests from the user are routed to Phase 1.
+Los resultados del análisis se visualizan como un diagrama de arquitectura y las solicitudes posteriores de modificación en lenguaje natural se dirigen a la fase 1.
 
-> **🚨 Output Storage Path Rule**: All outputs (scan JSON, diagram HTML, Bicep code) must be saved in **a project folder under the current working directory (cwd)**. NEVER save them inside `~/.copilot/session-state/`. The session-state directory is a temporary space and may be deleted when the session ends.
+> **🚨 Regla de ubicación de salidas**: todas las salidas (JSON del análisis, HTML del diagrama, código Bicep) deben guardarse en **una carpeta de proyecto bajo el directorio de trabajo actual (cwd)**. NUNCA las guardes en `~/.copilot/session-state/`. El directorio de estado de sesión es temporal y puede eliminarse al finalizar la sesión.
 
 ---
 
-## Step 1: Azure Login + Scan Scope Selection
+## Paso 1: Inicio de sesión en Azure y selección del alcance del análisis
 
-### 1-A: Verify Azure Login
+### 1-A: Verificar el inicio de sesión en Azure
 
 ```powershell
 az account show 2>&1
 ```
 
-- If logged in → Proceed to Step 1-B
-- If not logged in → Ask the user to run `az login`
+- Si la sesión está iniciada → Pasar al paso 1-B
+- Si no está iniciada → Pedir a la persona que ejecute `az login`
 
-### 1-B: Subscription Selection (Multiple Selection Supported)
+### 1-B: Selección de suscripciones (se admite selección múltiple)
 
 ```powershell
 az account list --output json
 ```
 
-Present the subscription list as `ask_user` choices. **Multiple subscriptions can be selected:**
+Presenta la lista de suscripciones como opciones de `ask_user`. **Se pueden seleccionar varias suscripciones:**
 
 ```
 ask_user({
-  question: "Please select the Azure subscription(s) to analyze. (You can add more one at a time for multiple selections)",
+  question: "Selecciona las suscripciones de Azure que se analizarán. (Puedes añadirlas una a una para seleccionar varias)",
   choices: [
-    "sub-002 (Current default subscription) (Recommended)",
+    "sub-002 (Suscripción predeterminada actual) (Recomendado)",
     "sub-001",
-    "Analyze all subscriptions above"
+    "Analizar todas las suscripciones anteriores"
   ]
 })
 ```
 
-- Single subscription selected → Scan only that subscription
-- "Analyze all" selected → Scan all subscriptions
-- If the user wants additional subscriptions → Use ask_user again to add more
+- Una suscripción seleccionada → Analizar solo esa suscripción
+- "Analizar todas" seleccionado → Analizar todas las suscripciones
+- Si la persona quiere suscripciones adicionales → Usar ask_user de nuevo para añadirlas
 
-### 1-C: Scan Scope Selection (Multiple RG Selection Supported)
+### 1-C: Selección del alcance del análisis (se admiten varios grupos de recursos)
 
 ```
 ask_user({
-  question: "What scope of Azure resources would you like to analyze?",
+  question: "¿Qué alcance de recursos de Azure quieres analizar?",
   choices: [
-    "Specify a particular resource group (Recommended)",
-    "Select multiple resource groups",
-    "All resource groups in the current subscription"
+    "Especificar un grupo de recursos concreto (Recomendado)",
+    "Seleccionar varios grupos de recursos",
+    "Todos los grupos de recursos de la suscripción actual"
   ]
 })
 ```
 
-- **Specific RG** → Select from the RG list or enter manually
-- **Multiple RGs** → Repeat ask_user to add RGs one at a time. Stop when the user says "that's enough."
-  Alternatively, the user can enter multiple RGs separated by commas (e.g., `rg-prod, rg-dev, rg-network`)
-- **Entire subscription** → `az group list` → Scan all RGs (warn if there are many resources that it may take time)
+- **Grupo de recursos concreto** → Seleccionarlo de la lista o introducirlo manualmente
+- **Varios grupos de recursos** → Repetir ask_user para añadirlos de uno en uno. Detenerse cuando la persona diga "es suficiente".
+  Como alternativa, la persona puede introducir varios grupos separados por comas (por ejemplo, `rg-prod, rg-dev, rg-network`)
+- **Suscripción completa** → `az group list` → Analizar todos los grupos de recursos (advertir que puede tardar si hay muchos recursos)
 
-**Combining multiple subscriptions + multiple RGs is supported:**
+**Se admite combinar varias suscripciones y varios grupos de recursos:**
 
-- rg-prod from subscription A + rg-network from subscription B → Scan both and display in a single diagram
+- rg-prod de la suscripción A + rg-network de la suscripción B → Analizar ambos y mostrarlos en un único diagrama
 
 ---
 
-## Diagram Hierarchy — Displaying Multiple Subscriptions/RGs
+## Jerarquía del diagrama: mostrar varias suscripciones y grupos de recursos
 
-**Single subscription + single RG**: Same as before (VNet boundary only)
-**Multiple RGs (same subscription)**: Dashed boundary per RG
-**Multiple subscriptions**: Two-level boundary of Subscription > RG
+**Una suscripción + un grupo de recursos**: igual que antes (solo el límite de la VNet)
+**Varios grupos de recursos (misma suscripción)**: límite discontinuo por grupo
+**Varias suscripciones**: límite de dos niveles, Suscripción > Grupo de recursos
 
-Pass hierarchy information in the diagram JSON:
+Pasa la información de jerarquía en el JSON del diagrama:
 
-**Add `subscription` and `resourceGroup` fields to the services JSON:**
+**Añade los campos `subscription` y `resourceGroup` al JSON de services:**
 
 ```json
 {
@@ -87,73 +87,73 @@ Pass hierarchy information in the diagram JSON:
 }
 ```
 
-**Pass hierarchy information via the `--hierarchy` parameter:**
+**Pasa la información de jerarquía mediante el parámetro `--hierarchy`:**
 
 ```
 --hierarchy '[{"subscription":"sub-002","resourceGroups":["rg-prod","rg-dev"]},{"subscription":"sub-001","resourceGroups":["rg-network"]}]'
 ```
 
-Based on this information, the diagram script will:
+Con esta información, el script del diagrama hará lo siguiente:
 
-- Multiple RGs → Represent each RG as a cluster with a dashed boundary (label: RG name)
-- Multiple subscriptions → Nest RG boundaries inside larger subscription boundaries
-- VNet boundaries are displayed inside the RG to which the VNet belongs
+- Varios grupos de recursos → Representar cada grupo como una agrupación con límite discontinuo (etiqueta: nombre del grupo)
+- Varias suscripciones → Anidar los límites de grupos de recursos dentro de límites de suscripción más amplios
+- Los límites de la VNet se muestran dentro del grupo de recursos al que pertenece
 
 ---
 
-## Step 2: Resource Scan
+## Paso 2: Análisis de recursos
 
-**🚨 az CLI Output Principles:**
+**🚨 Principios de salida de az CLI:**
 
-- az CLI output must **always be saved to a file** and then read with `view`. Direct terminal output may be truncated.
-- Bundle **no more than 3 az commands** per PowerShell call. Bundling too many may cause timeouts.
-- Use `--query` JMESPath to extract only the required fields and reduce output size.
+- La salida de az CLI debe **guardarse siempre en un archivo** y después leerse con `view`. La salida directa en el terminal puede truncarse.
+- Agrupa **como máximo 3 comandos az** por llamada de PowerShell. Agrupar demasiados puede agotar el tiempo de espera.
+- Usa `--query` con JMESPath para extraer solo los campos necesarios y reducir el tamaño de la salida.
 
 ```powershell
-# ✅ Correct approach — Save to file then read
+# ✅ Enfoque correcto: guardar en un archivo y después leer
 az resource list -g "<RG>" --query "[].{name:name,type:type,kind:kind,location:location}" -o json | Set-Content -Path "$outDir/resources.json"
 
-# ❌ Wrong approach — Direct terminal output (may be truncated)
+# ❌ Enfoque incorrecto: salida directa en el terminal (puede truncarse)
 az resource list -g "<RG>" -o json
 ```
 
-### 2-A: List All Resources + Display to User
+### 2-A: Enumerar todos los recursos y mostrarlos a la persona
 
 ```powershell
 $outDir = "<project-name>/azure-scan"
 New-Item -ItemType Directory -Path $outDir -Force | Out-Null
 
-# Step 1: Basic resource list (name, type, kind, location)
+# Paso 1: lista básica de recursos (name, type, kind, location)
 az resource list -g "<RG>" --query "[].{name:name,type:type,kind:kind,location:location,id:id}" -o json | Set-Content "$outDir/resources.json"
 ```
 
-**🚨 Immediately after reading resources.json, you MUST display the full resource list table to the user:**
+**🚨 Inmediatamente después de leer resources.json, DEBES mostrar a la persona la tabla completa de recursos:**
 
 ```
-📋 rg-<RG> Resource List (N resources)
+📋 Lista de recursos de rg-<RG> (N recursos)
 
 ┌─────────────────────────┬──────────────────────────────────────────────┬─────────────────┐
-│ Name                    │ Type                                         │ Location        │
+│ Nombre                  │ Tipo                                         │ Ubicación       │
 ├─────────────────────────┼──────────────────────────────────────────────┼─────────────────┤
 │ my-storage              │ Microsoft.Storage/storageAccounts             │ koreacentral    │
 │ my-keyvault             │ Microsoft.KeyVault/vaults                    │ koreacentral    │
 │ ...                     │ ...                                          │ ...             │
 └─────────────────────────┴──────────────────────────────────────────────┴─────────────────┘
 
-⏳ Retrieving detailed information...
+⏳ Recuperando información detallada...
 ```
 
-Display this table **first** before proceeding to detailed queries. Do not make the user wait without knowing what resources exist.
+Muestra **primero** esta tabla antes de continuar con las consultas detalladas. No hagas esperar a la persona sin que sepa qué recursos existen.
 
-### 2-B: Dynamic Detailed Query — Based on resources.json
+### 2-B: Consulta detallada dinámica basada en resources.json
 
-**Dynamically determine detailed query commands based on the resource types found in resources.json.**
+**Determina dinámicamente los comandos de consulta detallada según los tipos de recurso encontrados en resources.json.**
 
-Do not use a hardcoded command list. Only execute commands for types that exist in resources.json, selected from the mapping table below.
+No uses una lista fija de comandos. Ejecuta solo los comandos de tipos que existan en resources.json, seleccionados de la tabla de correspondencias siguiente.
 
-**Type → Detailed Query Command Mapping:**
+**Correspondencia Tipo → Comando de consulta detallada:**
 
-| Type in resources.json | Detailed Query Command | Output File |
+| Tipo en resources.json | Comando de consulta detallada | Archivo de salida |
 |---|---|---|
 | `Microsoft.Network/virtualNetworks` | `az network vnet list -g "<RG>" --query "[].{name:name,addressSpace:addressSpace.addressPrefixes,subnets:subnets[].{name:name,prefix:addressPrefix,pePolicy:privateEndpointNetworkPolicies}}" -o json` | `vnets.json` |
 | `Microsoft.Network/privateEndpoints` | `az network private-endpoint list -g "<RG>" --query "[].{name:name,subnetId:subnet.id,targetId:privateLinkServiceConnections[0].privateLinkServiceId,groupIds:privateLinkServiceConnections[0].groupIds,state:provisioningState}" -o json` | `pe.json` |
@@ -182,113 +182,113 @@ Do not use a hardcoded command list. Only execute commands for types that exist 
 | `Microsoft.Network/azureFirewalls` | `az network firewall list -g "<RG>" --query "[].{name:name,sku:sku,threatIntelMode:threatIntelMode,location:location}" -o json` | `firewall.json` |
 | `Microsoft.Network/bastionHosts` | `az network bastion list -g "<RG>" --query "[].{name:name,sku:sku.name,location:location}" -o json` | `bastion.json` |
 
-**Dynamic Query Process:**
+**Proceso de consulta dinámica:**
 
-1. Read `resources.json`
-2. Extract the distinct values of the `type` field
-3. Execute **only the commands for matching types** from the mapping table above (skip types not present)
-4. If a type not in the mapping table is found → Use generic query: `az resource show --ids "<ID>" --query "{name:name,sku:sku,kind:kind,location:location,properties:properties}" -o json`
-5. Execute commands in batches of 2-3 (do not run all at once)
+1. Lee `resources.json`
+2. Extrae los valores distintos del campo `type`
+3. Ejecuta **solo los comandos de los tipos coincidentes** de la tabla anterior (omite los tipos que no estén presentes)
+4. Si encuentras un tipo que no esté en la tabla → Usa la consulta genérica: `az resource show --ids "<ID>" --query "{name:name,sku:sku,kind:kind,location:location,properties:properties}" -o json`
+5. Ejecuta los comandos en grupos de 2-3 (no todos a la vez)
 
-### 2-C: Model Deployment Query (When Cognitive Services Exist)
+### 2-C: Consulta de despliegues de modelos (cuando existe Cognitive Services)
 
 ```powershell
-# Query model deployments for each Cognitive Services resource
+# Consultar los despliegues de modelos de cada recurso de Cognitive Services
 az cognitiveservices account deployment list --name "<NAME>" -g "<RG>" --query "[].{name:name,model:properties.model.name,version:properties.model.version,sku:sku.name}" -o json | Set-Content "$outDir/<NAME>-deployments.json"
 ```
 
-### 2-D: NIC + Public IP Query (When VMs Exist)
+### 2-D: Consulta de NIC e IP públicas (cuando existen máquinas virtuales)
 
 ```powershell
 az network nic list -g "<RG>" --query "[].{name:name,subnetId:ipConfigurations[0].subnet.id,privateIp:ipConfigurations[0].privateIPAddress,publicIpId:ipConfigurations[0].publicIPAddress.id}" -o json | Set-Content "$outDir/nics.json"
 az network public-ip list -g "<RG>" --query "[].{name:name,ip:ipAddress,sku:sku.name}" -o json | Set-Content "$outDir/public-ips.json"
 ```
 
-From the VNet:
+Desde la VNet:
 
 - `addressSpace.addressPrefixes` → CIDR
-- `subnets[].name`, `subnets[].addressPrefix` → Subnet information
-- `subnets[].privateEndpointNetworkPolicies` → PE policies
+- `subnets[].name`, `subnets[].addressPrefix` → Información de subredes
+- `subnets[].privateEndpointNetworkPolicies` → Políticas de PE
 
 ---
 
-## Step 3: Inferring Relationships Between Resources
+## Paso 3: Deducir relaciones entre recursos
 
-Automatically infer **relationships (connections)** between scanned resources to construct the connections JSON for the diagram.
+Deduce automáticamente las **relaciones (conexiones)** entre los recursos analizados para construir el JSON de connections del diagrama.
 
-### Relationship Inference Rules
+### Reglas para deducir relaciones
 
-**🚨 If there are insufficient connection lines, the diagram becomes meaningless. Infer as many relationships as possible.**
+**🚨 Si no hay suficientes líneas de conexión, el diagrama pierde sentido. Deduce tantas relaciones como sea posible.**
 
-#### Confirmed Inference (Directly verifiable from resource IDs/properties)
+#### Deducción confirmada (verificable directamente mediante ID o propiedades de recursos)
 
-| Relationship Type | Inference Method | connection type |
+| Tipo de relación | Método de deducción | Tipo de conexión |
 |---|---|---|
-| PE → Service | Extract service ID from PE's `privateLinkServiceId` | `private` |
-| PE → VNet | Extract VNet from PE's `subnet.id` | (Represented as VNet boundary) |
-| Foundry → Project | Parent resource of `accounts/projects` | `api` |
-| VM → NIC → Subnet | Infer VNet/Subnet from NIC's `subnet.id` | (VNet boundary) |
-| NSG → Subnet | Check connected subnets from NSG's `subnets[].id` | `network` |
-| NSG → NIC | Check connected VMs from NSG's `networkInterfaces[].id` | `network` |
-| NIC → Public IP | Check PIP from NIC's `publicIPAddress.id` | (Included in details) |
-| Databricks → VNet | Workspace's VNet injection configuration | (VNet boundary) |
+| PE → Servicio | Extraer el ID del servicio desde `privateLinkServiceId` del PE | `private` |
+| PE → VNet | Extraer la VNet desde `subnet.id` del PE | (Representada como límite de VNet) |
+| Foundry → Proyecto | Recurso principal de `accounts/projects` | `api` |
+| VM → NIC → Subred | Deducir la VNet y subred desde `subnet.id` de la NIC | (Límite de VNet) |
+| NSG → Subred | Comprobar las subredes conectadas desde `subnets[].id` del NSG | `network` |
+| NSG → NIC | Comprobar las máquinas virtuales conectadas desde `networkInterfaces[].id` del NSG | `network` |
+| NIC → IP pública | Comprobar la PIP desde `publicIPAddress.id` de la NIC | (Incluida en details) |
+| Databricks → VNet | Configuración de inyección en VNet del área de trabajo | (Límite de VNet) |
 
-#### Reasonable Inference (Common patterns between services within the same RG)
+#### Deducción razonable (patrones habituales entre servicios del mismo grupo de recursos)
 
-| Relationship Type | Inference Condition | connection type |
+| Tipo de relación | Condición para deducirla | Tipo de conexión |
 |---|---|---|
-| Foundry → AI Search | Both exist in the same RG → Infer RAG connection | `api` (label: "RAG Search") |
-| Foundry → Storage | Both exist in the same RG → Infer data connection | `data` (label: "Data") |
-| AI Search → Storage | Both exist in the same RG → Infer indexing connection | `data` (label: "Indexing") |
-| Service → Key Vault | Key Vault exists in the same RG → Infer secret management | `security` (label: "Secrets") |
-| VM → Foundry/Search | VM + AI services exist in the same RG → Infer API calls | `api` (label: "API") |
-| DI → Foundry | Document Intelligence + Foundry exist in the same RG → Infer OCR/extraction connection | `api` (label: "OCR/Extract") |
-| ADF → Storage | ADF + Storage exist in the same RG → Infer data pipeline | `data` (label: "Pipeline") |
-| ADF → SQL | ADF + SQL exist in the same RG → Infer data source | `data` (label: "Source") |
-| Databricks → Storage | Both exist in the same RG → Infer data lake connection | `data` (label: "Data Lake") |
+| Foundry → AI Search | Ambos existen en el mismo grupo → Deducir una conexión RAG | `api` (label: "Búsqueda RAG") |
+| Foundry → Storage | Ambos existen en el mismo grupo → Deducir una conexión de datos | `data` (label: "Datos") |
+| AI Search → Storage | Ambos existen en el mismo grupo → Deducir una conexión de indexación | `data` (label: "Indexación") |
+| Servicio → Key Vault | Key Vault existe en el mismo grupo → Deducir gestión de secretos | `security` (label: "Secretos") |
+| VM → Foundry/Search | Existen máquinas virtuales y servicios de IA en el mismo grupo → Deducir llamadas a API | `api` (label: "API") |
+| DI → Foundry | Existen Document Intelligence y Foundry en el mismo grupo → Deducir una conexión de OCR o extracción | `api` (label: "OCR/Extracción") |
+| ADF → Storage | Existen ADF y Storage en el mismo grupo → Deducir una canalización de datos | `data` (label: "Canalización") |
+| ADF → SQL | Existen ADF y SQL en el mismo grupo → Deducir un origen de datos | `data` (label: "Origen") |
+| Databricks → Storage | Ambos existen en el mismo grupo → Deducir una conexión de lago de datos | `data` (label: "Lago de datos") |
 
-#### User Confirmation After Inference
+#### Confirmación de la persona después de la deducción
 
-Show the inferred connection list to the user and request confirmation:
+Muestra la lista de conexiones deducidas y solicita confirmación:
 
 ```
-> **⏳ Relationships between resources have been inferred** — Please verify if the following are correct.
+> **⏳ Se han deducido relaciones entre los recursos**: verifica si las siguientes son correctas.
 
-Inferred connections:
-- Foundry → AI Search (RAG Search)
-- Foundry → Storage (Data)
-- VM → Foundry (API Call)
-- Document Intelligence → Foundry (OCR/Extract)
+Conexiones deducidas:
+- Foundry → AI Search (Búsqueda RAG)
+- Foundry → Storage (Datos)
+- VM → Foundry (Llamada a API)
+- Document Intelligence → Foundry (OCR/Extracción)
 
-Does this look correct? Let me know if you'd like to add or remove any connections.
+¿Es correcto? Indica si quieres añadir o quitar alguna conexión.
 ```
 
-#### Relationships That Cannot Be Inferred
+#### Relaciones que no pueden deducirse
 
-There may be connections that cannot be inferred using the rules above. The user can freely add additional connections.
+Puede haber conexiones que no se puedan deducir con las reglas anteriores. La persona puede añadir libremente conexiones adicionales.
 
-### Model Deployment Query (When Foundry Resources Exist)
+### Consulta de despliegues de modelos (cuando existen recursos de Foundry)
 
 ```powershell
 az cognitiveservices account deployment list --name "<FOUNDRY_NAME>" -g "<RG>" --query "[].{name:name,model:properties.model.name,version:properties.model.version,sku:sku.name}" -o json
 ```
 
-Add each deployment's model name, version, and SKU to the Foundry node's details.
+Añade el nombre del modelo, la versión y la SKU de cada despliegue a los detalles del nodo de Foundry.
 
 ---
 
-## Step 4: services/connections JSON Conversion
+## Paso 4: Conversión a JSON de services/connections
 
-Convert scan results into the input format for the built-in diagram engine.
+Convierte los resultados del análisis al formato de entrada del motor de diagramas integrado.
 
-### Resource Type → Diagram type Mapping
+### Correspondencia Tipo de recurso → type del diagrama
 
-| Azure Resource Type | Diagram type |
+| Tipo de recurso de Azure | type del diagrama |
 |---|---|
 | `Microsoft.CognitiveServices/accounts` (kind: AIServices) | `ai_foundry` |
 | `Microsoft.CognitiveServices/accounts` (kind: OpenAI) | `openai` |
 | `Microsoft.CognitiveServices/accounts` (kind: FormRecognizer) | `document_intelligence` |
-| `Microsoft.CognitiveServices/accounts` (kind: TextAnalytics, etc.) | `ai_foundry` (default) |
+| `Microsoft.CognitiveServices/accounts` (kind: TextAnalytics, etc.) | `ai_foundry` (predeterminado) |
 | `Microsoft.CognitiveServices/accounts/projects` | `ai_foundry` |
 | `Microsoft.Search/searchServices` | `search` |
 | `Microsoft.Storage/storageAccounts` | `storage` |
@@ -305,46 +305,46 @@ Convert scan results into the input format for the built-in diagram engine.
 | `Microsoft.DataFactory/factories` | `adf` |
 | `Microsoft.Compute/virtualMachines` | `vm` |
 | `Microsoft.Network/privateEndpoints` | `pe` |
-| `Microsoft.Network/virtualNetworks` | (Represented as VNet boundary — not included in services) |
+| `Microsoft.Network/virtualNetworks` | (Representada como límite de VNet; no se incluye en services) |
 | `Microsoft.Network/networkSecurityGroups` | `nsg` |
 | `Microsoft.Network/bastionHosts` | `bastion` |
 | `Microsoft.OperationalInsights/workspaces` | `log_analytics` |
 | `Microsoft.Insights/components` | `app_insights` |
-| Other | `default` |
+| Otros | `default` |
 
-### services JSON Construction Rules
+### Reglas de construcción del JSON de services
 
 ```json
 {
-  "id": "resource name (lowercase, special characters removed)",
-  "name": "actual resource name",
-  "type": "determined from the mapping table above",
-  "sku": "actual SKU (if available)",
-  "private": true/false,  // true if a PE is connected
+  "id": "nombre del recurso (en minúsculas, sin caracteres especiales)",
+  "name": "nombre real del recurso",
+  "type": "determinado a partir de la tabla de correspondencias anterior",
+  "sku": "SKU real (si está disponible)",
+  "private": true/false,  // true si hay un PE conectado
   "details": ["property1", "property2", ...]
 }
 ```
 
-**Information to include in details:**
+**Información que debe incluirse en details:**
 
-- Endpoint URL
-- SKU/tier details
+- URL del punto de conexión
+- Detalles de SKU o nivel
 - kind (AIServices, OpenAI, etc.)
-- Model deployment list (Foundry)
-- Key properties (isHnsEnabled, semanticSearch, etc.)
-- Region
+- Lista de despliegues de modelos (Foundry)
+- Propiedades principales (isHnsEnabled, semanticSearch, etc.)
+- Región
 
-### VNet Information → `--vnet-info` Parameter
+### Información de VNet → Parámetro `--vnet-info`
 
-If a VNet is found, display it in the boundary label via `--vnet-info`:
+Si se encuentra una VNet, muéstrala en la etiqueta del límite mediante `--vnet-info`:
 
 ```
 --vnet-info "10.0.0.0/16 | pe-subnet: 10.0.1.0/24 | <region>"
 ```
 
-### PE Node Generation
+### Generación de nodos PE
 
-If PEs are found, add each PE as a separate node and connect it to the corresponding service with a `private` type:
+Si se encuentran PE, añade cada uno como nodo independiente y conéctalo al servicio correspondiente con el tipo `private`:
 
 ```json
 {"id": "pe_<serviceId>", "name": "PE: <serviceName>", "type": "pe", "details": ["groupId: <groupId>", "<status>"]}
@@ -352,139 +352,139 @@ If PEs are found, add each PE as a separate node and connect it to the correspon
 
 ---
 
-## Step 5: Diagram Generation + Presentation to User
+## Paso 5: Generación del diagrama y presentación a la persona
 
-Diagram filename: `<project-name>/00_arch_current.html`
+Nombre del archivo de diagrama: `<project-name>/00_arch_current.html`
 
-Use the scanned RG name as the default project name:
+Usa el nombre del grupo de recursos analizado como nombre predeterminado del proyecto:
 
 ```
 ask_user({
-  question: "Please choose a project name. (This will be the folder name for scan results)",
+  question: "Elige un nombre de proyecto. (Será el nombre de la carpeta de resultados del análisis)",
   choices: ["<RG-name>", "azure-analysis"]
 })
 ```
 
-After generating the diagram, report:
+Después de generar el diagrama, informa:
 
 ```
-## Current Azure Architecture
+## Arquitectura actual de Azure
 
-[Interactive Diagram — 00_arch_current.html]
+[Diagrama interactivo: 00_arch_current.html]
 
-Scanned Resources (N total):
-[Summary table by resource type]
+Recursos analizados (N en total):
+[Tabla de resumen por tipo de recurso]
 
-What would you like to change here?
-- 🔧 Performance improvement ("it's slow", "increase throughput")
-- 💰 Cost optimization ("reduce costs", "make it cheaper")
-- 🔒 Security hardening ("add PE", "block public access")
-- 🌐 Network changes ("separate VNet", "add Bastion")
-- ➕ Add/remove resources ("add a VM", "delete this")
-- 📊 Monitoring ("set up logs", "add alerts")
-- 🤔 Diagnostics ("is this architecture OK?", "what's wrong?")
-- Or just take the diagram and stop here
+¿Qué quieres cambiar aquí?
+- 🔧 Mejora del rendimiento ("va lento", "aumentar el rendimiento")
+- 💰 Optimización de costos ("reducir costos", "abaratarlo")
+- 🔒 Fortalecimiento de seguridad ("añadir PE", "bloquear acceso público")
+- 🌐 Cambios de red ("separar la VNet", "añadir Bastion")
+- ➕ Añadir o quitar recursos ("añadir una VM", "eliminar esto")
+- 📊 Supervisión ("configurar registros", "añadir alertas")
+- 🤔 Diagnóstico ("¿está bien esta arquitectura?", "¿qué falla?")
+- O simplemente obtener el diagrama y terminar aquí
 ```
 
 ---
 
-## Step 6: Modification Conversation → Transition to Phase 1
+## Paso 6: Conversación sobre modificaciones → Transición a la fase 1
 
-When the user requests modifications, transition to Phase 1 (phase1-advisor.md).
-This is the **Path B entry point**, using the existing scan results as the baseline.
+Cuando la persona solicite modificaciones, pasa a la fase 1 (phase1-advisor.md).
+Este es el **punto de entrada de la ruta B**, que usa los resultados del análisis existente como referencia.
 
-### Natural Language Modification Request Handling — Clarifying Question Patterns
+### Gestión de solicitudes de modificación en lenguaje natural: patrones de preguntas aclaratorias
 
-Ask clarifying questions to make the user's vague requests more specific:
+Haz preguntas aclaratorias para concretar las solicitudes imprecisas de la persona:
 
-**🔧 Performance**
+**🔧 Rendimiento**
 
-| User Request | Clarifying Question Example |
+| Solicitud de la persona | Ejemplo de pregunta aclaratoria |
 |---|---|
-| "It's slow" / "Response takes too long" | "Which service is slow? Should we upgrade the SKU or change the region?" |
-| "I want to increase throughput" | "Which service's throughput should we increase? Scale out? Increase DTU/RU?" |
-| "AI Search indexing is slow" | "Should we add partitions? Upgrade the SKU to S2?" |
+| "Va lento" / "La respuesta tarda demasiado" | "¿Qué servicio va lento? ¿Conviene subir de SKU o cambiar la región?" |
+| "Quiero aumentar el rendimiento" | "¿De qué servicio debemos aumentar el rendimiento? ¿Escalar horizontalmente? ¿Aumentar DTU/RU?" |
+| "La indexación de AI Search es lenta" | "¿Añadimos particiones? ¿Subimos la SKU a S2?" |
 
-**💰 Cost**
+**💰 Costo**
 
-| User Request | Clarifying Question Example |
+| Solicitud de la persona | Ejemplo de pregunta aclaratoria |
 |---|---|
-| "I want to reduce costs" | "Which service's cost should we reduce? SKU downgrade? Clean up unused resources?" |
-| "How much does this cost?" | Look up pricing info from MS Docs and provide estimated cost based on current SKUs |
-| "It's a dev environment, so make it cheap" | "Should we switch to Free/Basic tiers? Which services?" |
+| "Quiero reducir costos" | "¿De qué servicio reducimos el costo? ¿Bajamos de SKU? ¿Limpiamos recursos sin uso?" |
+| "¿Cuánto cuesta esto?" | Consultar precios en MS Docs y proporcionar un costo estimado según las SKU actuales |
+| "Es un entorno de desarrollo, así que hazlo barato" | "¿Pasamos a niveles Free/Basic? ¿Qué servicios?" |
 
-**🔒 Security**
+**🔒 Seguridad**
 
-| User Request | Clarifying Question Example |
+| Solicitud de la persona | Ejemplo de pregunta aclaratoria |
 |---|---|
-| "Harden the security" | "Should we add PEs to services that don't have them? Check RBAC? Disable publicNetworkAccess?" |
-| "Block public access" | "Should we apply PE + publicNetworkAccess: Disabled to all services?" |
-| "Manage the keys" | "Should we add Key Vault and connect it with Managed Identity?" |
+| "Refuerza la seguridad" | "¿Añadimos PE a los servicios que no los tienen? ¿Revisamos RBAC? ¿Deshabilitamos publicNetworkAccess?" |
+| "Bloquea el acceso público" | "¿Aplicamos PE + publicNetworkAccess: Disabled a todos los servicios?" |
+| "Gestiona las claves" | "¿Añadimos Key Vault y lo conectamos con una identidad administrada?" |
 
-**🌐 Network**
+**🌐 Red**
 
-| User Request | Clarifying Question Example |
+| Solicitud de la persona | Ejemplo de pregunta aclaratoria |
 |---|---|
-| "Add PE" | "To which service? Should we add them to all services at once?" |
-| "Separate the VNet" | "Which subnets should we separate? Should we also add NSGs?" |
-| "Add Bastion" | "Adding Azure Bastion for VM access. Please specify the subnet CIDR." |
+| "Añade PE" | "¿A qué servicio? ¿Los añadimos a todos los servicios a la vez?" |
+| "Separa la VNet" | "¿Qué subredes separamos? ¿Añadimos también NSG?" |
+| "Añade Bastion" | "Se añadirá Azure Bastion para acceder a las máquinas virtuales. Especifica el CIDR de la subred." |
 
-**➕ Add/Remove Resources**
+**➕ Añadir o quitar recursos**
 
-| User Request | Clarifying Question Example |
+| Solicitud de la persona | Ejemplo de pregunta aclaratoria |
 |---|---|
-| "Add a VM" | "How many? What SKU? Same VNet? What OS?" |
-| "Add Fabric" | "What SKU? What's the admin email?" |
-| "Delete this" | "Are you sure you want to remove [resource name]? Connected PEs will also be removed." |
+| "Añade una VM" | "¿Cuántas? ¿Qué SKU? ¿La misma VNet? ¿Qué sistema operativo?" |
+| "Añade Fabric" | "¿Qué SKU? ¿Cuál es el correo del administrador?" |
+| "Elimina esto" | "¿Seguro que quieres eliminar [nombre del recurso]? También se eliminarán los PE conectados." |
 
-**📊 Monitoring/Operations**
+**📊 Supervisión y operaciones**
 
-| User Request | Clarifying Question Example |
+| Solicitud de la persona | Ejemplo de pregunta aclaratoria |
 |---|---|
-| "I want to see logs" | "Should we add a Log Analytics Workspace and connect Diagnostic Settings?" |
-| "Set up alerts" | "For which metrics? CPU? Error rate? Response time?" |
-| "Attach Application Insights" | "To which service? App Service? Function App?" |
+| "Quiero ver los registros" | "¿Añadimos un área de trabajo de Log Analytics y conectamos la configuración de diagnóstico?" |
+| "Configura alertas" | "¿Para qué métricas? ¿CPU? ¿Tasa de errores? ¿Tiempo de respuesta?" |
+| "Conecta Application Insights" | "¿A qué servicio? ¿App Service? ¿Function App?" |
 
-**🔄 Migration/Changes**
+**🔄 Migración y cambios**
 
-| User Request | Clarifying Question Example |
+| Solicitud de la persona | Ejemplo de pregunta aclaratoria |
 |---|---|
-| "Change the region" | "To which region? I'll verify that all services are available in that region." |
-| "Switch SQL to Cosmos" | "What Cosmos DB API type? (SQL/MongoDB/Cassandra) I can also provide a data migration guide." |
-| "Switch Foundry to Hub" | "Hub is suitable only when ML training/open-source models are needed. Let me verify the use case." |
+| "Cambia la región" | "¿A qué región? Verificaré que todos los servicios estén disponibles allí." |
+| "Cambia SQL por Cosmos" | "¿Qué tipo de API de Cosmos DB? (SQL/MongoDB/Cassandra) También puedo proporcionar una guía de migración de datos." |
+| "Cambia Foundry por Hub" | "Hub solo es adecuado cuando se necesita entrenamiento de ML o modelos de código abierto. Voy a verificar el caso de uso." |
 
-**🤔 Diagnostics/Questions**
+**🤔 Diagnóstico y preguntas**
 
-| User Request | Clarifying Question Example |
+| Solicitud de la persona | Ejemplo de pregunta aclaratoria |
 |---|---|
-| "What's wrong?" | Analyze current configuration (publicNetworkAccess open, PE not connected, inappropriate SKU, etc.) and suggest improvements |
-| "Is this architecture OK?" | Review against the Well-Architected Framework (security, reliability, performance, cost, operations) |
-| "Is the PE connected properly?" | Check connection status with `az network private-endpoint show` and report |
-| "Just give me the diagram" | Do not transition to Phase 1; provide the 00_arch_current.html path and finish |
+| "¿Qué falla?" | Analizar la configuración actual (publicNetworkAccess abierto, PE sin conectar, SKU inadecuada, etc.) y sugerir mejoras |
+| "¿Está bien esta arquitectura?" | Revisar según Well-Architected Framework (seguridad, fiabilidad, rendimiento, costo y operaciones) |
+| "¿Está bien conectado el PE?" | Comprobar el estado de conexión con `az network private-endpoint show` e informar |
+| "Solo quiero el diagrama" | No pasar a la fase 1; proporcionar la ruta de 00_arch_current.html y terminar |
 
-Once modifications are finalized:
+Una vez definidas las modificaciones:
 
-1. Apply Phase 1's Delta Confirmation Rule
-2. Fact-check (cross-verify with MS Docs)
-3. Generate updated diagram (01_arch_diagram_draft.html)
-4. User confirmation → Proceed to Phases 2–4
+1. Aplica la regla de confirmación de cambios de la fase 1
+2. Comprueba los hechos (contrasta con MS Docs)
+3. Genera el diagrama actualizado (01_arch_diagram_draft.html)
+4. Confirmación de la persona → Continuar con las fases 2–4
 
 ---
 
-## Scan Performance Optimization
+## Optimización del rendimiento del análisis
 
-- If there are 50+ resources, warn the user: "There are many resources, so the scan may take some time."
-- Run `az resource list` first to determine the resource count, then proceed with detailed queries
-- Query key services first (Foundry, Search, Storage, KeyVault, VNet, PE), then collect only basic information for the rest via `az resource show`
-- Keep the user informed of progress:
-  > **⏳ Scanning resources** — M of N resources completed
+- Si hay 50 recursos o más, advierte a la persona: "Hay muchos recursos, por lo que el análisis puede tardar."
+- Ejecuta primero `az resource list` para determinar el número de recursos y después continúa con las consultas detalladas
+- Consulta primero los servicios principales (Foundry, Search, Storage, KeyVault, VNet, PE) y recopila solo información básica del resto mediante `az resource show`
+- Mantén informada a la persona sobre el progreso:
+  > **⏳ Analizando recursos**: M de N recursos completados
 
 ---
 
-## Handling Unsupported Resources
+## Gestión de recursos no compatibles
 
-For resource types not in the diagram type mapping:
+Para tipos de recurso no incluidos en las correspondencias de tipos del diagrama:
 
-- Display with `default` type (question mark icon)
-- Include the resource name and type in details
-- Show to the user, but do not attempt relationship inference
+- Muéstralos con el tipo `default` (icono de interrogación)
+- Incluye el nombre y tipo del recurso en details
+- Muéstralos a la persona, pero no intentes deducir relaciones

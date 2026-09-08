@@ -1,121 +1,121 @@
-# Authentication & Security
+# Autenticación y seguridad
 
-## Table of Contents
+## Índice
 
-- [Individual Login](#individual-login)
-- [Microsoft Entra RBAC Roles](#microsoft-entra-rbac-roles)
-- [Service Principals](#service-principals)
-- [Managed Identities](#managed-identities)
-- [AKS Integration](#aks-integration)
-- [Repository-Scoped Tokens](#repository-scoped-tokens)
-- [Admin User](#admin-user)
-- [Content Trust (deprecated)](#content-trust-deprecated)
+- [Inicio de sesión individual](#inicio-de-sesión-individual)
+- [Roles RBAC de Microsoft Entra](#roles-rbac-de-microsoft-entra)
+- [Entidades de servicio](#entidades-de-servicio)
+- [Identidades administradas](#identidades-administradas)
+- [Integración con AKS](#integración-con-aks)
+- [Tokens con ámbito de repositorio](#tokens-con-ámbito-de-repositorio)
+- [Usuario administrador](#usuario-administrador)
+- [Confianza del contenido (obsoleta)](#confianza-del-contenido-obsoleta)
 
 ---
 
-## Individual Login
+## Inicio de sesión individual
 
 ```bash
-# Standard login — wires Docker/Podman credentials via your az login identity
+# Inicio de sesión estándar: configura las credenciales de Docker/Podman con tu identidad de az login
 az acr login --name {registry}
 
-# Without a Docker daemon: get an Entra access token and pipe it to docker login
+# Sin demonio de Docker: obtener un token de acceso de Entra y pasarlo por una tubería a docker login
 LOGIN_SERVER=$(az acr show --name {registry} --query loginServer --output tsv)
 az acr login --name {registry} --expose-token --query accessToken --output tsv | \
   docker login $LOGIN_SERVER --username 00000000-0000-0000-0000-000000000000 --password-stdin
 ```
 
-Notes:
+Notas:
 
-- `az acr login` tokens are valid for 3 hours; re-run on expiry.
-- Resolve the login server with `az acr show --name {registry} --query loginServer --output tsv` rather than hardcoding it: it is usually `{registry}.azurecr.io`, but sovereign clouds use other suffixes and registries with a domain name label scope get a hash suffix.
+- Los tokens de `az acr login` son válidos durante 3 horas; vuelve a ejecutar el comando cuando caduquen.
+- Obtén el servidor de inicio de sesión con `az acr show --name {registry} --query loginServer --output tsv` en lugar de fijarlo: suele ser `{registry}.azurecr.io`, pero las nubes soberanas usan otros sufijos y los registros con ámbito de etiqueta de nombre de dominio reciben un sufijo hash.
 
-## Microsoft Entra RBAC Roles
+## Roles RBAC de Microsoft Entra
 
-The applicable data-plane roles depend on the registry's **role assignment permissions mode** — check it first:
+Los roles aplicables al plano de datos dependen del **modo de permisos de asignación de roles** del registro; compruébalo primero:
 
 ```bash
 az acr show --name {registry} --query roleAssignmentMode --output tsv
-# LegacyRegistryPermissions  -> use AcrPull/AcrPush/AcrDelete
-# AbacRepositoryPermissions  -> use Container Registry Repository Reader/Writer/Contributor
+# LegacyRegistryPermissions  -> usar AcrPull/AcrPush/AcrDelete
+# AbacRepositoryPermissions  -> usar Container Registry Repository Reader/Writer/Contributor
 ```
 
-**Legacy mode (RBAC Registry Permissions):**
+**Modo heredado (permisos RBAC del registro):**
 
-| Role | Permissions |
+| Rol | Permisos |
 |---|---|
-| `AcrPull` | Pull images |
-| `AcrPush` | Pull + push images |
-| `AcrDelete` | Delete images |
-| `AcrImageSigner` | Sign images (content trust) |
-| `Contributor`/`Owner` | Full control-plane management + push/pull |
+| `AcrPull` | Extraer imágenes |
+| `AcrPush` | Extraer y enviar imágenes |
+| `AcrDelete` | Eliminar imágenes |
+| `AcrImageSigner` | Firmar imágenes (confianza del contenido) |
+| `Contributor`/`Owner` | Administración completa del plano de control y envío/extracción |
 
-**ABAC-enabled mode (RBAC Registry + ABAC Repository Permissions):** `AcrPull`/`AcrPush`/`AcrDelete` are **not honored**, and `Owner`/`Contributor`/`Reader` grant control-plane only. Use instead:
+**Modo con ABAC habilitado (permisos RBAC del registro + ABAC del repositorio):** `AcrPull`/`AcrPush`/`AcrDelete` **no se aplican**, y `Owner`/`Contributor`/`Reader` solo conceden acceso al plano de control. Usa en su lugar:
 
-| Role | Permissions |
+| Rol | Permisos |
 |---|---|
-| `Container Registry Repository Reader` | Read images, tags, metadata (add ABAC conditions to scope to repositories) |
-| `Container Registry Repository Writer` | Read + write/update |
-| `Container Registry Repository Contributor` | Read + write + delete |
-| `Container Registry Repository Catalog Lister` | List repositories — assign only when the identity must enumerate the catalog (e.g., `az acr repository list`); not needed for pull/push of known repositories |
+| `Container Registry Repository Reader` | Leer imágenes, etiquetas y metadatos (añade condiciones ABAC para limitar el ámbito a repositorios) |
+| `Container Registry Repository Writer` | Leer y escribir/actualizar |
+| `Container Registry Repository Contributor` | Leer, escribir y eliminar |
+| `Container Registry Repository Catalog Lister` | Enumerar repositorios; asignar solo cuando la identidad deba enumerar el catálogo (por ejemplo, `az acr repository list`); no es necesario para extraer o enviar en repositorios conocidos |
 
 ```bash
-# Get the registry resource ID
+# Obtener el ID de recurso del registro
 ACR_ID=$(az acr show --name {registry} --query id --output tsv)
 
-# Grant pull access to a user, group, service principal, or managed identity
+# Conceder acceso de extracción a un usuario, grupo, entidad de servicio o identidad administrada
 az role assignment create --assignee {principal-id} --scope $ACR_ID --role AcrPull
 
-# List who has access
+# Enumerar quién tiene acceso
 az role assignment list --scope $ACR_ID --output table
 ```
 
-## Service Principals
+## Entidades de servicio
 
-For CI/CD systems that cannot use OIDC/managed identity:
+Para sistemas CI/CD que no pueden usar OIDC o identidades administradas:
 
 ```bash
-# Create an SP scoped to pull only
+# Crear una entidad de servicio (SP) limitada a extracción
 ACR_ID=$(az acr show --name {registry} --query id --output tsv)
 az ad sp create-for-rbac --name {sp-name} --scopes $ACR_ID --role AcrPull
 
-# Docker login with the SP — pipe the secret via stdin, never pass it as an argument
-# (printf with a quoted variable preserves whitespace/glob characters exactly)
+# Iniciar sesión en Docker con la SP: pasar el secreto por stdin, nunca como argumento
+# (printf con una variable entre comillas conserva exactamente los espacios y caracteres glob)
 printf '%s' "$SP_PASSWORD" | docker login $LOGIN_SERVER --username {appId} --password-stdin
 ```
 
-Prefer federated credentials (OIDC) over SP passwords in GitHub Actions / Azure DevOps when possible.
+Prefiere credenciales federadas (OIDC) a contraseñas de entidades de servicio en GitHub Actions / Azure DevOps cuando sea posible.
 
-## Managed Identities
+## Identidades administradas
 
-For Azure compute (VM, App Service, Container Apps, Functions):
+Para recursos de proceso de Azure (VM, App Service, Container Apps, Functions):
 
 ```bash
-# Assign a system-assigned identity and grant it pull
+# Asignar una identidad administrada por el sistema y concederle permiso de extracción
 az vm identity assign --name {vm} --resource-group {rg}
 PRINCIPAL_ID=$(az vm show --name {vm} --resource-group {rg} --query identity.principalId --output tsv)
 az role assignment create --assignee $PRINCIPAL_ID --scope $ACR_ID --role AcrPull
 ```
 
-App Service / Container Apps then pull with `--assign-identity` + `--acr-identity` style flags of their own CLIs — no registry password needed.
+App Service / Container Apps extraen entonces con opciones como `--assign-identity` + `--acr-identity` de sus propias CLI, sin necesidad de contraseña del registro.
 
-## AKS Integration
+## Integración con AKS
 
 ```bash
-# Attach at cluster creation
+# Vincular al crear el clúster
 az aks create --name {cluster} --resource-group {rg} --attach-acr {registry}
 
-# Attach/detach an existing cluster (grants AcrPull to the kubelet identity)
+# Vincular o desvincular un clúster existente (concede AcrPull a la identidad del kubelet)
 az aks update --name {cluster} --resource-group {rg} --attach-acr {registry}
 az aks update --name {cluster} --resource-group {rg} --detach-acr {registry}
 
-# Validate the cluster can reach the registry
+# Validar que el clúster puede acceder al registro
 az aks check-acr --name {cluster} --resource-group {rg} --acr {registry}.azurecr.io
 ```
 
-`--attach-acr` requires Owner or User Access Administrator on the registry. Cross-subscription attach works by passing the full ACR resource ID.
+`--attach-acr` requiere Owner o User Access Administrator en el registro. La vinculación entre suscripciones funciona pasando el ID de recurso completo de ACR.
 
-⚠️ `--attach-acr` assigns `AcrPull`, which is **not honored on ABAC-enabled registries** (`roleAssignmentMode` = `AbacRepositoryPermissions`). For those, assign the ABAC roles to the kubelet identity manually:
+⚠️ `--attach-acr` asigna `AcrPull`, que **no se aplica en registros con ABAC habilitado** (`roleAssignmentMode` = `AbacRepositoryPermissions`). En esos registros, asigna manualmente los roles ABAC a la identidad del kubelet:
 
 ```bash
 ACR_ID=$(az acr show --name {registry} --query id --output tsv)
@@ -123,54 +123,54 @@ KUBELET_ID=$(az aks show --name {cluster} --resource-group {rg} \
   --query identityProfile.kubeletidentity.objectId --output tsv)
 az role assignment create --assignee $KUBELET_ID --scope $ACR_ID \
   --role "Container Registry Repository Reader"
-# "Container Registry Repository Catalog Lister" is NOT needed for pulls —
-# only add it if the identity must list repositories
+# "Container Registry Repository Catalog Lister" NO es necesario para extraer imágenes;
+# añádelo solo si la identidad debe enumerar repositorios
 ```
 
-## Repository-Scoped Tokens
+## Tokens con ámbito de repositorio
 
-Available in all service tiers. Fine-grained, non-Entra credentials (e.g., external partners, IoT devices):
+Disponibles en todos los niveles de servicio. Credenciales granulares ajenas a Entra (por ejemplo, para socios externos o dispositivos IoT):
 
 ```bash
-# 1. Create a scope map (actions: content/read, content/write, content/delete, metadata/read, metadata/write)
+# 1. Crear un mapa de ámbito (acciones: content/read, content/write, content/delete, metadata/read, metadata/write)
 az acr scope-map create --name {scope-map} --registry {registry} \
   --repository app content/read metadata/read \
   --description "Pull-only access to app"
 
-# 2. Create a token bound to the scope map
+# 2. Crear un token vinculado al mapa de ámbito
 az acr token create --name {token} --registry {registry} --scope-map {scope-map}
 
-# 3. Generate/rotate passwords (up to 2, optional expiry)
+# 3. Generar o rotar contraseñas (hasta 2, con caducidad opcional)
 az acr token credential generate --name {token} --registry {registry} --password1 --expiration-in-days 30
 
-# Login with the token — pipe the password via stdin, never pass it as an argument
+# Iniciar sesión con el token: pasar la contraseña por stdin, nunca como argumento
 printf '%s' "$TOKEN_PWD" | docker login $LOGIN_SERVER --username {token} --password-stdin
 
-# Disable or delete
+# Deshabilitar o eliminar
 az acr token update --name {token} --registry {registry} --status disabled
 az acr token delete --name {token} --registry {registry} --yes
 ```
 
-## Admin User
+## Usuario administrador
 
-Single account, full push/pull on the whole registry, not auditable per user — **keep disabled in production**:
+Cuenta única, con envío y extracción completos en todo el registro y sin auditoría por usuario; **mantener deshabilitada en producción**:
 
 ```bash
-az acr update --name {registry} --admin-enabled false   # recommended
-az acr credential show --name {registry}                # view username/passwords (if enabled)
-az acr credential renew --name {registry} --password-name password2   # rotate
+az acr update --name {registry} --admin-enabled false   # recomendado
+az acr credential show --name {registry}                # ver usuario y contraseñas (si está habilitado)
+az acr credential renew --name {registry} --password-name password2   # rotar
 ```
 
-Legitimate uses: quick local tests, services that only accept username/password and cannot use tokens.
+Usos legítimos: pruebas locales rápidas y servicios que solo admiten usuario y contraseña y no pueden usar tokens.
 
-## Content Trust (deprecated)
+## Confianza del contenido (obsoleta)
 
-Docker Content Trust (DCT) is being retired: **since May 31, 2026 it cannot be enabled on new registries** (or on registries that never enabled it), and it will be removed entirely on March 31, 2028. Do not set up DCT — sign images with **Notation (Notary Project)** and store signatures as OCI artifacts instead; see "Transition from Docker Content Trust to Notary Project" in the ACR docs.
+Docker Content Trust (DCT) está en proceso de retirada: **desde el 31 de mayo de 2026 no puede habilitarse en registros nuevos** (ni en registros donde nunca se habilitó), y se eliminará por completo el 31 de marzo de 2028. No configures DCT; firma las imágenes con **Notation (Notary Project)** y guarda las firmas como artefactos OCI. Consulta "Transición de Docker Content Trust a Notary Project" en la documentación de ACR.
 
 ```bash
-# Registries with legacy DCT only — inspect or disable the existing configuration
+# Solo registros con DCT heredado: inspeccionar o deshabilitar la configuración existente
 az acr config content-trust show --registry {registry}
 az acr config content-trust update --registry {registry} --status disabled
 ```
 
-Legacy DCT signers needed `AcrImageSigner` in addition to `AcrPush`.
+Los firmantes de DCT heredado necesitaban `AcrImageSigner` además de `AcrPush`.

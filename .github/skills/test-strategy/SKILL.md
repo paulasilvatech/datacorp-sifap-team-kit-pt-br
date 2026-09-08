@@ -1,63 +1,63 @@
 ---
 name: "test-strategy"
-description: "Use when designing a test strategy, choosing the test-pyramid shape, defining coverage targets, or evaluating testing investments across unit, integration, and E2E layers. Triggers include \"test strategy\", \"test pyramid\", \"coverage target\", \"E2E vs integration\", and \"testing investment\"."
+description: "Úsala para diseñar una estrategia de pruebas, elegir la forma de la pirámide de pruebas, definir objetivos de cobertura o evaluar la inversión en pruebas unitarias, de integración y E2E. Los desencadenantes incluyen \"estrategia de pruebas\", \"pirámide de pruebas\", \"objetivo de cobertura\", \"E2E frente a integración\" e \"inversión en pruebas\"."
 ---
-# Test strategy
+# Estrategia de pruebas
 
-## When to invoke
+## Cuándo invocar
 
-- "Design a test strategy for…"
-- "How much unit vs integration vs E2E testing?"
-- "What coverage target is right?"
-- "Audit our test pyramid."
+- "Diseña una estrategia de pruebas para…"
+- "¿Qué proporción de pruebas unitarias, de integración y E2E conviene?"
+- "¿Cuál es el objetivo de cobertura adecuado?"
+- "Audita nuestra pirámide de pruebas."
 
-## Workflow
+## Flujo de trabajo
 
-1. **Inventory** the code under test: modules, public APIs, external integrations, and critical paths.
-2. **Classify risk** by module (P0 / P1 / P2) based on the blast radius if it fails.
-3. **Allocate the pyramid**: target 70% unit, 20% integration, and 10% E2E as a starting point; justify deviations.
-4. **Define coverage targets**: a baseline of 80% line coverage, 90% for P0 modules, with branch coverage tracked separately.
-5. **Define the flaky-test budget**: a maximum flaky rate of 1%; anything above it triggers quarantine.
-6. **Choose tools by layer**: unit (Vitest/JUnit/pytest), integration (Testcontainers), E2E (Playwright).
-7. **Output**: a one-page strategy document with per-layer targets, tools, coverage thresholds, and quarantine rules.
+1. **Inventaría** el código bajo prueba: módulos, API públicas, integraciones externas y rutas críticas.
+2. **Clasifica el riesgo** por módulo (P0 / P1 / P2) según el alcance del impacto si falla.
+3. **Distribuye la pirámide**: parte de un objetivo de 70% de pruebas unitarias, 20% de integración y 10% E2E; justifica las desviaciones.
+4. **Define los objetivos de cobertura**: una base de 80% de cobertura de líneas y 90% para los módulos P0, con seguimiento separado de la cobertura de ramas.
+5. **Define el límite de inestabilidad de las pruebas**: una tasa máxima de fallos intermitentes del 1%; cualquier valor superior activa la cuarentena.
+6. **Elige las herramientas por nivel**: unitarias (Vitest/JUnit/pytest), integración (Testcontainers), E2E (Playwright).
+7. **Salida**: un documento de estrategia de una página con objetivos por nivel, herramientas, umbrales de cobertura y reglas de cuarentena.
 
-## Heuristics
+## Criterios orientativos
 
-- If an E2E test can be rewritten as an integration + contract test, do it—E2E is expensive and flaky.
-- Contract tests beat mocks for anything that crosses a service boundary.
-- Mutation testing (Stryker, PIT) is the only honest way to detect tests that prove nothing.
+- Si una prueba E2E puede reescribirse como una prueba de integración y de contrato, hazlo; las pruebas E2E son costosas e inestables.
+- Las pruebas de contrato son mejores que las simulaciones para todo lo que cruza el límite de un servicio.
+- Las pruebas de mutación (Stryker, PIT) son la única forma honesta de detectar pruebas que no demuestran nada.
 
-## Anti-patterns
+## Antipatrones
 
-- Inverted pyramid: many slow E2E tests sitting on top of few unit tests.
-- One global coverage number with no higher target for P0 modules.
-- Mocked service boundaries that never catch a real integration break.
-- Coverage treated as the goal instead of a proxy for confidence.
+- Pirámide invertida: muchas pruebas E2E lentas apoyadas sobre pocas pruebas unitarias.
+- Una única cifra global de cobertura, sin un objetivo más alto para los módulos P0.
+- Límites de servicio simulados que nunca detectan una rotura real de integración.
+- Tratar la cobertura como un objetivo en lugar de como un indicador de confianza.
 
-## Output template
+## Plantilla de salida
 
 ```markdown
-## Test strategy - <system or module>
+## Estrategia de pruebas - <sistema o módulo>
 
-| Layer | Target mix | Tools | Coverage target |
+| Nivel | Distribución objetivo | Herramientas | Objetivo de cobertura |
 |---|---|---|---|
-| Unit | 70% | JUnit 5 / Vitest | 80% line (90% for P0) |
-| Integration | 20% | Testcontainers | critical paths |
-| E2E | 10% | Playwright | top user journeys |
+| Unitarias | 70% | JUnit 5 / Vitest | 80% de líneas (90% para P0) |
+| Integración | 20% | Testcontainers | Rutas críticas |
+| E2E | 10% | Playwright | Recorridos principales de usuario |
 
-**Flaky-test budget**: <=1% (quarantine above)
-**Risk classification**: P0 <modules> / P1 <modules> / P2 <modules>
+**Límite de inestabilidad de las pruebas**: <=1% (cuarentena si se supera)
+**Clasificación de riesgo**: P0 <módulos> / P1 <módulos> / P2 <módulos>
 ```
 
-## Quality gate
+## Puerta de calidad
 
-- [ ] Every module is risk-classified (P0/P1/P2) with a coverage target.
-- [ ] The pyramid mix is set per layer, and deviations from 70/20/10 are justified.
-- [ ] Each layer names its tool and threshold.
-- [ ] A flaky-test budget and quarantine rule are defined.
+- [ ] Cada módulo tiene una clasificación de riesgo (P0/P1/P2) y un objetivo de cobertura.
+- [ ] La distribución de la pirámide se define por nivel y se justifican las desviaciones respecto de 70/20/10.
+- [ ] Cada nivel indica su herramienta y su umbral.
+- [ ] Se definen un límite de inestabilidad de las pruebas y una regla de cuarentena.
 
-## References
+## Referencias
 
-- [Google Testing Blog - Test Sizes](https://testing.googleblog.com/2010/12/test-sizes.html)
-- [ISTQB Foundation Syllabus](https://www.istqb.org/certifications/certified-tester-foundation-level)
-- [Martin Fowler - Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html)
+- [Google Testing Blog - Tamaños de las pruebas](https://testing.googleblog.com/2010/12/test-sizes.html)
+- [Programa de nivel básico de ISTQB](https://www.istqb.org/certifications/certified-tester-foundation-level)
+- [Martin Fowler - Pirámide práctica de pruebas](https://martinfowler.com/articles/practical-test-pyramid.html)

@@ -1,88 +1,88 @@
-# First 15 minutes: start here
+# Primeros 15 minutos: empieza aquí
 
-> **Track:** [Team kit](README.md) › **Start here**
+> **Ruta:** [Kit del equipo](README.md) › **Empieza aquí**
 
-**Language:** English (`main`). The [language selector and Copilot instructions](README.md#repository-languages) also link to the Brazilian Portuguese edition.
+**Idioma:** español (`espanol`). El [selector de idiomas y las instrucciones de Copilot](README.md#idiomas-del-repositorio) también enlazan a las ediciones en inglés (`main`) y portugués de Brasil (`portugues-br`).
 
-**If you just got here and want to know, "What do I do now?" this page is for you.** It does not matter whether you are a Product Owner, Tech Writer, Developer, business analyst, or DBA. The 15 minutes below work for everyone.
+**Si acabas de llegar y quieres saber "¿qué hago ahora?", esta página es para ti.** No importa si eres Responsable de Producto, Redactor Técnico, Desarrollador, analista de negocio o DBA. Los siguientes 15 minutos sirven para todos.
 
-![Start](https://img.shields.io/badge/Start-00-171717?style=flat-square) ![Duration: 15 min](https://img.shields.io/badge/Duration-15%20min-737373?style=flat-square) ![Audience: whole team](https://img.shields.io/badge/Audience-Whole%20team-A3A3A3?style=flat-square)
+![Inicio](https://img.shields.io/badge/Start-00-171717?style=flat-square) ![Duración: 15 min](https://img.shields.io/badge/Duration-15%20min-737373?style=flat-square) ![Público: todo el equipo](https://img.shields.io/badge/Audience-Whole%20team-A3A3A3?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Any participant, regardless of technical profile |
-| **Prerequisites** | None - this is reading only |
-| **Estimated time** | 15 minutes |
-| **Stage** | Warm-up (before Stage 1) |
-| **Expected result** | You know which pair you are in, what you do today, and what happens in Stage 1 |
+| **Público objetivo** | Cualquier participante, independientemente de su perfil técnico |
+| **Prerrequisitos** | Ninguno: esto es solo lectura |
+| **Tiempo estimado** | 15 minutos |
+| **Etapa** | Preparación (antes de la Etapa 1) |
+| **Resultado esperado** | Sabes a qué pareja perteneces, qué harás hoy y qué sucede en la Etapa 1 |
 
 ---
 
-## 15-minute schedule
+## Cronograma de 15 minutos
 
-| Minute | What to do | Time |
+| Minuto | Qué hacer | Tiempo |
 |---|---|---|
-| 0-2 | Step 1 - Confirm your pair | 2 min |
-| 2-4 | Step 2 - Open the day's schedule | 2 min |
-| 4-6 | Step 3 - Open the visual glossary | 2 min |
-| 6-11 | Step 4 - Read your role's `PERSONA.md` | 5 min |
-| 11-15 | Step 5 - Open Stage 1 and the Copilot cheat sheet | 4 min |
+| 0-2 | Paso 1 - Confirmar tu pareja | 2 min |
+| 2-4 | Paso 2 - Abrir el cronograma del día | 2 min |
+| 4-6 | Paso 3 - Abrir el glosario visual | 2 min |
+| 6-11 | Paso 4 - Leer el `PERSONA.md` de tu rol | 5 min |
+| 11-15 | Paso 5 - Abrir la Etapa 1 y la ficha de Copilot | 4 min |
 
 > [!NOTE]
-> Still missing the full technical setup? That is fine. These 15 minutes are reading only. The technical setup comes next, guided by `00-SETUP.md`.
+> ¿Todavía te falta completar la configuración técnica? No hay problema. Estos 15 minutos son solo de lectura. La configuración técnica viene después, guiada por `00-SETUP.md`.
 
 ---
 
-## Step 1: Confirm your pair (2 min)
+## Paso 1: confirma tu pareja (2 min)
 
-The team has **five people and 10 personas** (each person covers two personas, in one pair).
+El equipo tiene **cinco integrantes y 10 personas** (cada integrante cubre dos personas, en una pareja).
 
-| Pair | Personas | What you do |
+| Pareja | Personas | Qué haces |
 |---|---|---|
-| **1 - Vision** | Product Owner + Requirements Engineer | Decide **what** gets modernized |
-| **2 - Architecture** | Enterprise Architect + Software Architect | Decide **how** the system is organized |
-| **3 - Implementation** | Technical Lead + Developer | Write the **code** |
-| **4 - Quality** | DBA + QA Engineer | Take care of **data** and **tests** |
-| **5 - Operations** | DevOps Engineer + Tech Writer | Take care of **deployment** and **documentation** |
+| **1 - Visión** | Responsable de Producto + Especialista en Requisitos | Decides **qué** se moderniza |
+| **2 - Arquitectura** | Arquitecto Empresarial + Arquitecto de Software | Decides **cómo** se organiza el sistema |
+| **3 - Implementación** | Líder Técnico + Desarrollador | Escribes el **código** |
+| **4 - Calidad** | DBA + Ingeniero de Calidad | Te encargas de los **datos** y las **pruebas** |
+| **5 - Operaciones** | Ingeniero DevOps + Redactor Técnico | Te encargas del **despliegue** y la **documentación** |
 
-- [ ] **Confirm your pair.** Ask the facilitator which pair you are in. Write it down: My pair: _______ - My personas: _______ + _______
+- [ ] **Confirma tu pareja.** Pregunta a la persona facilitadora a qué pareja perteneces. Anótalo: Mi pareja: _______ - Mis personas: _______ + _______
 
 > [!TIP]
-> Are you not a programmer? That is fine. PO, RE, Tech Writer, and part of QA do not need to code. Every persona has a clear mission. You will not spend the day watching someone compile Java in silence.
+> ¿No programas? No hay problema. PO, RE, Redactor Técnico y parte de QA no necesitan programar. Cada persona tiene una misión clara. No pasarás el día viendo cómo alguien compila Java en silencio.
 
 ---
 
-## Step 2: Open the day's schedule (2 min)
+## Paso 2: abre el cronograma del día (2 min)
 
-- [ ] **Open `00-TEAM-FLOW.md` in a tab.** Look only at the schedule. The day has four stages.
+- [ ] **Abre `00-TEAM-FLOW.md` en una pestaña.** Mira solo el cronograma. El día tiene cuatro etapas.
 
-![Timeline for the day: pre-event, four stages, and demo, with the three H1, H2, and H3 handoffs](assets/timeline-stages.svg)
+![Cronograma del día: preparación previa, cuatro etapas y demo, con las tres transiciones H1, H2 y H3](assets/timeline-stages.svg)
 
-**What to pay attention to:**
+**En qué debes fijarte:**
 
-- You cannot skip stages. Stage 2 depends on what comes out of Stage 1.
-- **There is a handoff between stages** - the pair from one stage hands work to the next pair (a five-minute live sync). That is what keeps the day moving.
-- If you are blocked for more than **20 minutes**, raise your hand. That rule applies to every team.
+- No puedes saltarte etapas. La Etapa 2 depende de lo que salga de la Etapa 1.
+- **Hay una transición entre etapas**: la pareja de una etapa entrega su trabajo a la siguiente (una sincronización en vivo de cinco minutos). Eso es lo que mantiene el día en marcha.
+- Si llevas más de **20 minutos** sin poder avanzar, levanta la mano. Esa regla se aplica a todos los equipos.
 
 ---
 
-## Step 3: Open the visual glossary (2 min)
+## Paso 3: abre el glosario visual (2 min)
 
-You will see acronyms and technical terms today (EARS, ADR, REQ-ID, DDM, Flyway, JPA...). You do not need to memorize any of them. Open this page in a tab and come back when you need it:
+Hoy verás siglas y términos técnicos (EARS, ADR, REQ-ID, DDM, Flyway, JPA...). No necesitas memorizar ninguno. Abre esta página en una pestaña y vuelve cuando lo necesites:
 
 [`07-concepts/03-visual-glossary.md`](07-concepts/03-visual-glossary.md)
 
-Every term has three lines: **what it is**, an **everyday analogy**, and **where it appears**. Use it freely.
+Cada término tiene tres líneas: **qué es**, una **analogía cotidiana** y **dónde aparece**. Úsalo siempre que lo necesites.
 
-- [ ] **Open the glossary in a browser or VS Code tab.**
+- [ ] **Abre el glosario en una pestaña del navegador o de VS Code.**
 
-> **Example:** the term "EARS" can look intimidating. The glossary translates it to: "a standard way to write unambiguous requirements - each requirement follows a template with condition, subject, action, and expected result."
+> **Ejemplo:** el término "EARS" puede parecer intimidante. El glosario lo explica así: "una forma estándar de escribir requisitos sin ambigüedades: cada requisito sigue una plantilla con condición, sujeto, acción y resultado esperado".
 
 ---
 
-## Step 4: Read your role's `PERSONA.md` (5 min)
+## Paso 4: lee el `PERSONA.md` de tu rol (5 min)
 
-You have **two personas**. Read the `PERSONA.md` for each one:
+Tienes **dos personas**. Lee el `PERSONA.md` de cada una:
 
 ```text
 05-personas/01-product-owner/PERSONA.md
@@ -97,132 +97,132 @@ You have **two personas**. Read the `PERSONA.md` for each one:
 05-personas/10-tech-writer/PERSONA.md
 ```
 
-- [ ] **Read the `PERSONA.md` for persona A.**
-- [ ] **Read the `PERSONA.md` for persona B.**
+- [ ] **Lee el `PERSONA.md` de la persona A.**
+- [ ] **Lee el `PERSONA.md` de la persona B.**
 
-**Focus on three sections in each `PERSONA.md`:**
+**Céntrate en tres secciones de cada `PERSONA.md`:**
 
-1. **"Where you appear in each stage"** - a four-row table. It shows whether you lead, support, or observe in each stage.
-2. **"If you get stuck (emergency defaults)"** - what to do when you feel lost.
-3. **"Three sample prompts"** - copy-and-paste prompts that are ready to use in Copilot.
+1. **"Dónde participas en cada etapa"** - una tabla de cuatro filas. Muestra si lideras, apoyas u observas en cada etapa.
+2. **"Si no puedes avanzar (opciones de emergencia)"** - qué hacer cuando te sientes perdido.
+3. **"Tres ejemplos de prompts"** - prompts listos para copiar y pegar en Copilot.
 
 > [!TIP]
-> If your two personas feel "the same," look at **when** each one leads. They rarely lead together. That is why two personas in one pair can cover the whole day without sitting idle.
+> Si tus dos personas parecen "iguales", fíjate en **cuándo** lidera cada una. Rara vez lideran juntas. Por eso dos personas en una pareja pueden cubrir todo el día sin quedarse inactivas.
 
 ---
 
-## Step 5: Open Stage 1 and the Copilot cheat sheet (4 min)
+## Paso 5: abre la Etapa 1 y la ficha de Copilot (4 min)
 
-### 5a. Open the Stage 1 guide
+### 5a. Abre la guía de la Etapa 1
 
 [`01-archaeology/GUIDE.md`](01-archaeology/GUIDE.md)
 
-Read only:
+Lee solo:
 
-- The **"Timed walkthrough"** section (Stage 1 deliverables)
-- The **"Who reads what"** table (which three Natural programs your pair reads)
-- The **11:00-12:00 + 13:30-14:00** schedule (what your pair does in Stage 1)
+- La sección **"Cronograma"** (entregables de la Etapa 1)
+- La tabla **"Quién lee qué"** (qué tres programas Natural lee tu pareja)
+- El horario **11:00-12:00 + 13:30-14:00** (qué hace tu pareja en la Etapa 1)
 
-- [ ] **Read the "Timed walkthrough" section of the Stage 1 `GUIDE.md`.**
+- [ ] **Lee la sección "Cronograma" del `GUIDE.md` de la Etapa 1.**
 
-### 5b. Open the cheat sheet for Copilot's three modes
+### 5b. Abre la ficha de los tres modos de Copilot
 
 [`09-cheat-sheets/copilot-3-modes.md`](09-cheat-sheets/copilot-3-modes.md)
 
-This saves you 30 minutes of confusion. Copilot has three modes:
+Esto te ahorra 30 minutos de confusión. Copilot tiene tres modos:
 
-| Mode | When to use it | Payment Inspection and Administration System (SIFAP) example |
+| Modo | Cuándo usarlo | Ejemplo del Sistema de Fiscalización y Administración de Pagos (SIFAP) |
 |---|---|---|
-| **Ask** | You want to understand something | *"Explain this section of the Natural program SIFAP0001.NSN"* |
-| **Plan** | You want to change code carefully | *"Plan CPF validation. Show me the plan before you make changes."* |
-| **Agent** | You want to delegate a whole feature | Stage 4 issue for the Copilot Agent |
+| **Ask** | Quieres entender algo | *"Explica esta sección del programa Natural SIFAP0001.NSN"* |
+| **Plan** | Quieres cambiar código con cuidado | *"Planifica la validación de CPF. Muéstrame el plan antes de hacer cambios."* |
+| **Agent** | Quieres delegar una funcionalidad completa | Issue de la Etapa 4 para Copilot Agent |
 
-- [ ] **Open the cheat sheet in a tab.**
+- [ ] **Abre la ficha en una pestaña.**
 
-### 5c. If you have never opened Copilot Chat
+### 5c. Si nunca has abierto Copilot Chat
 
-- VS Code -> Copilot icon in the activity bar -> open the chat
-- Do not see the icon? Ask the facilitator. The extension may not be enabled.
-
----
-
-## Checklist for the first 15 minutes
-
-Before you move on, verify this:
-
-- [ ] I know which pair I am in and which two personas I have
-- [ ] I have `00-TEAM-FLOW.md` open in a tab (the day's schedule)
-- [ ] I have `visual-glossary.md` open in another tab (for jargon lookups)
-- [ ] I read the `PERSONA.md` files for my two personas (and focused on the three recommended sections)
-- [ ] I know what will happen in Stage 1
-- [ ] I know Copilot's three modes (Ask, Plan, Agent)
-
-If everything is checked, **you are ready**. Go to the technical setup (`00-SETUP.md`) or directly to Stage 1, depending on the day's schedule.
+- VS Code -> icono de Copilot en la barra de actividades -> abrir el chat
+- ¿No ves el icono? Pregunta a la persona facilitadora. Puede que la extensión no esté habilitada.
 
 ---
 
-## First hour: minute-by-minute walkthrough (for people who have never used VS Code or Copilot)
+## Lista de verificación de los primeros 15 minutos
 
-If you have never opened VS Code, Docker, or Copilot, this literal walkthrough gets you ready in 60 minutes. Follow it **in order**, without skipping steps.
+Antes de continuar, comprueba lo siguiente:
+
+- [ ] Sé a qué pareja pertenezco y cuáles son mis dos personas
+- [ ] Tengo `00-TEAM-FLOW.md` abierto en una pestaña (el cronograma del día)
+- [ ] Tengo `visual-glossary.md` abierto en otra pestaña (para consultar la terminología)
+- [ ] Leí los archivos `PERSONA.md` de mis dos personas (y me centré en las tres secciones recomendadas)
+- [ ] Sé qué sucederá en la Etapa 1
+- [ ] Conozco los tres modos de Copilot (Ask, Plan, Agent)
+
+Si todo está marcado, **estás listo**. Pasa a la configuración técnica (`00-SETUP.md`) o directamente a la Etapa 1, según el cronograma del día.
+
+---
+
+## Primera hora: recorrido minuto a minuto (para quienes nunca han usado VS Code o Copilot)
+
+Si nunca has abierto VS Code, Docker o Copilot, este recorrido literal te prepara en 60 minutos. Síguelo **en orden**, sin saltarte pasos.
 
 > [!TIP]
-> Do it with someone from your pair next to you. Two people get through setup issues in half the time.
+> Hazlo con alguien de tu pareja a tu lado. Dos personas resuelven los problemas de configuración en la mitad de tiempo.
 
-| Minute | Action | How to know it worked |
+| Minuto | Acción | Cómo saber que funcionó |
 |---:|---|---|
-| **00** | Open a terminal and run `cd ~/Code/workshop-team-XX` | The repository name appears in the prompt |
-| **02** | Run `code .` to open VS Code | VS Code opens and shows the folder list (`00-...`, `01-...`) |
-| **04** | Open the integrated terminal (`` Ctrl+` ``) and run `git status` | The branch and repository state appear with no error |
-| **08** | Validate tools: `java -version`, `node --version`, `git --version` | Each command prints a version |
-| **13** | Validate Docker (do not start anything yet): `docker --version` | The command prints a Docker version |
-| **18** | Validate Spec-Kit: `specify version` | The command prints a Specify CLI version |
-| **20** | Go back to VS Code -> Copilot icon in the activity bar | The Copilot Chat panel opens on the right |
-| **22** | In chat, type: *"Hello. What can you do?"* | Copilot responds and explains the three modes |
-| **25** | Select the day's agent from the chat dropdown | You see `@archaeologist`, `@architect`, `@builder`, and `@evolution` in the list |
-| **28** | Open two tabs in the browser: [`00-TEAM-FLOW.md`](00-TEAM-FLOW.md) and [`07-concepts/03-visual-glossary.md`](07-concepts/03-visual-glossary.md) | Two pinned tabs stay open for reference |
-| **32** | Open your two persona folders in `05-personas/0X-.../` and read each `PERSONA.md` | You know your two missions for the day |
-| **42** | Validate the consolidated `.github/`: `ls .github/agents .github/prompts .github/skills` | The folders exist and already contain agents, prompts, and skills |
-| **45** | Reload VS Code: `Cmd+Shift+P` -> *Reload Window* | Slash commands such as `/ears-convert` appear when you type `/` in Chat |
-| **50** | Open [`01-archaeology/GUIDE.md`](01-archaeology/GUIDE.md) and read the "Who reads what" section | You know which three `.NSN` programs your pair will read |
-| **55** | Agree with your pair on who covers which persona | Both of you know who does what |
-| **60** | You are ready to start Stage 1 | - |
+| **00** | Abre un terminal y ejecuta `cd ~/Code/workshop-team-XX` | El nombre del repositorio aparece en el prompt |
+| **02** | Ejecuta `code .` para abrir VS Code | VS Code se abre y muestra la lista de carpetas (`00-...`, `01-...`) |
+| **04** | Abre el terminal integrado (`` Ctrl+` ``) y ejecuta `git status` | Aparecen la rama y el estado del repositorio sin errores |
+| **08** | Valida las herramientas: `java -version`, `node --version`, `git --version` | Cada comando muestra una versión |
+| **13** | Valida Docker (no inicies nada todavía): `docker --version` | El comando muestra una versión de Docker |
+| **18** | Valida Spec-Kit: `specify version` | El comando muestra una versión de Specify CLI |
+| **20** | Vuelve a VS Code -> icono de Copilot en la barra de actividades | El panel de Copilot Chat se abre a la derecha |
+| **22** | En el chat, escribe: *"Hola. ¿Qué puedes hacer?"* | Copilot responde y explica los tres modos |
+| **25** | Selecciona el agente del día en la lista desplegable del chat | Ves `@archaeologist`, `@architect`, `@builder` y `@evolution` en la lista |
+| **28** | Abre dos pestañas en el navegador: [`00-TEAM-FLOW.md`](00-TEAM-FLOW.md) y [`07-concepts/03-visual-glossary.md`](07-concepts/03-visual-glossary.md) | Quedan dos pestañas fijadas para consulta |
+| **32** | Abre las carpetas de tus dos personas en `05-personas/0X-.../` y lee cada `PERSONA.md` | Conoces tus dos misiones del día |
+| **42** | Valida el `.github/` consolidado: `ls .github/agents .github/prompts .github/skills` | Las carpetas existen y ya contienen agentes, prompts y skills |
+| **45** | Recarga VS Code: `Cmd+Shift+P` -> *Reload Window* | Aparecen comandos de barra como `/ears-convert` al escribir `/` en el chat |
+| **50** | Abre [`01-archaeology/GUIDE.md`](01-archaeology/GUIDE.md) y lee la sección "Quién lee qué" | Sabes qué tres programas `.NSN` leerá tu pareja |
+| **55** | Acuerda con tu pareja quién cubre cada persona | Ambos saben quién hace qué |
+| **60** | Estás listo para iniciar la Etapa 1 | - |
 
-### If something blocks you in this walkthrough
+### Si algo te bloquea durante este recorrido
 
-| Blocked at... | Go to |
+| Bloqueo en... | Ve a |
 |---|---|
-| Minute 04 (terminal/Git) | [`docs/troubleshooting.md`](docs/troubleshooting.md) - *Setup* section |
-| Minute 13 (Docker) | [`docs/troubleshooting.md`](docs/troubleshooting.md) - *Docker* section |
-| Minute 20 (Copilot does not open) | [`docs/troubleshooting.md`](docs/troubleshooting.md) - *Copilot* section |
-| Minute 45 (slash command does not work) | [`docs/troubleshooting.md`](docs/troubleshooting.md) - *"Slash command does not appear"* section |
+| Minuto 04 (terminal/Git) | [`docs/troubleshooting.md`](docs/troubleshooting.md) - sección *Configuración* |
+| Minuto 13 (Docker) | [`docs/troubleshooting.md`](docs/troubleshooting.md) - sección *Docker* |
+| Minuto 20 (Copilot no se abre) | [`docs/troubleshooting.md`](docs/troubleshooting.md) - sección *Copilot* |
+| Minuto 45 (el comando de barra no funciona) | [`docs/troubleshooting.md`](docs/troubleshooting.md) - sección *"El comando de barra no aparece"* |
 
 > [!WARNING]
-> Blocked for more than 20 minutes? Stop and ask for help. That rule is defined in `00-TEAM-FLOW.md` §6.
+> ¿Llevas más de 20 minutos sin poder avanzar? Detente y pide ayuda. Esa regla está definida en `00-TEAM-FLOW.md` §6.
 
 ---
 
-## Common situations in the first 15 minutes
+## Situaciones comunes en los primeros 15 minutos
 
 <details>
-<summary><strong>FAQ - click to expand</strong></summary>
+<summary><strong>Preguntas frecuentes - haz clic para ampliar</strong></summary>
 
-| Situation | What to do |
+| Situación | Qué hacer |
 |---|---|
-| I do not know which pair I am in | Ask the room facilitator |
-| I cannot find my `PERSONA.md` | The folder is `05-personas/0X-name/PERSONA.md` - confirm the number in Step 1 |
-| A glossary term is still not clear | Open `07-concepts/03-visual-glossary.md` and use Ctrl+F |
-| VS Code or Copilot does not open | Go to `00-SETUP.md` § "Step 1: Check your laptop prerequisites" |
-| The schedule looks very tight | It is. Trust the pair split. You will not do everything alone |
-| I do not code. Will I get lost? | No. See `01-archaeology/legacy-sifap/HOW-TO-READ-NATURAL.md` (for Stage 1) and the defaults in your `PERSONA.md` |
+| No sé a qué pareja pertenezco | Pregunta a la persona facilitadora de la sala |
+| No encuentro mi `PERSONA.md` | La carpeta es `05-personas/0X-name/PERSONA.md` - confirma el número en el Paso 1 |
+| Un término del glosario sigue sin quedar claro | Abre `07-concepts/03-visual-glossary.md` y usa Ctrl+F |
+| VS Code o Copilot no se abren | Ve a `00-SETUP.md` § "Paso 1: comprueba los prerrequisitos de tu portátil" |
+| El cronograma parece muy ajustado | Lo es. Confía en la distribución por parejas. No lo harás todo a solas |
+| No programo. ¿Me perderé? | No. Consulta `01-archaeology/legacy-sifap/HOW-TO-READ-NATURAL.md` (para la Etapa 1) y las opciones de tu `PERSONA.md` |
 
 </details>
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Team kit](README.md)<br/><sub>Main hub for this repository. Start there if this is your first time opening the kit.</sub> | [Team flow](00-TEAM-FLOW.md)<br/><sub>8-hour schedule, pair handoffs, 20-minute rule, definition of done.</sub> |
+| [Kit del equipo](README.md)<br/><sub>Centro principal de este repositorio. Empieza allí si es la primera vez que abres el kit.</sub> | [Flujo del equipo](00-TEAM-FLOW.md)<br/><sub>Cronograma de 8 horas, transiciones entre parejas, regla de los 20 minutos y definición de terminado.</sub> |
 
-<sub>[Back to the kit index](README.md)</sub>
+<sub>[Volver al índice del kit](README.md)</sub>

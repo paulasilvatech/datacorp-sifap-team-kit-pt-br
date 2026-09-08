@@ -1,11 +1,11 @@
 # @WebMvcTest
 
-Testing Spring MVC controllers with focused slice tests.
+Pruebas de controladores Spring MVC mediante pruebas segmentadas y enfocadas.
 
 > [!IMPORTANT]
-> The examples below use `MockMvcTester` and `@MockitoBean`, which are **Spring Boot 3.4+** and **out of scope for the kit**. On the kit's Spring Boot 3.3, use classic `MockMvc` with `mockMvc.perform(...).andExpect(...)` and `@MockBean` — see [mockmvc-classic.md](mockmvc-classic.md).
+> Los ejemplos siguientes usan `MockMvcTester` y `@MockitoBean`, que corresponden a **Spring Boot 3.4+** y quedan **fuera del alcance del kit**. En Spring Boot 3.3 del kit, usa `MockMvc` clásico con `mockMvc.perform(...).andExpect(...)` y `@MockBean`; consulta [mockmvc-classic.md](mockmvc-classic.md).
 
-## Basic Structure
+## Estructura básica
 
 ```java
 @WebMvcTest(OrderController.class)
@@ -22,16 +22,16 @@ class OrderControllerTest {
 }
 ```
 
-## What Gets Loaded
+## Qué se carga
 
-- The specified controller(s)
-- Spring MVC infrastructure (HandlerMapping, HandlerAdapter)
-- Jackson ObjectMapper (for JSON)
-- Exception handlers (@ControllerAdvice)
-- Spring Security filters (if on classpath)
-- Validation (if on classpath)
+- Los controladores especificados
+- Infraestructura de Spring MVC (HandlerMapping, HandlerAdapter)
+- ObjectMapper de Jackson (para JSON)
+- Manejadores de excepciones (@ControllerAdvice)
+- Filtros de Spring Security (si están en el classpath)
+- Validación (si está en el classpath)
 
-## Testing GET Endpoints
+## Pruebas de puntos de conexión GET
 
 ```java
 @Test
@@ -48,9 +48,9 @@ void shouldReturnOrder() {
 }
 ```
 
-## Testing POST with Request Body
+## Pruebas de POST con cuerpo de solicitud
 
-### Using Text Blocks (Java 21)
+### Uso de bloques de texto (Java 21)
 
 ```java
 @Test
@@ -72,7 +72,7 @@ void shouldCreateOrder() {
 }
 ```
 
-### Using Records
+### Uso de records
 
 ```java
 record OrderRequest(String product, int quantity) {}
@@ -89,7 +89,7 @@ void shouldCreateOrderWithRecord() {
 }
 ```
 
-## Testing Validation Errors
+## Pruebas de errores de validación
 
 ```java
 @Test
@@ -110,7 +110,7 @@ void shouldRejectInvalidOrder() {
 }
 ```
 
-## Testing Query Parameters
+## Pruebas de parámetros de consulta
 
 ```java
 @Test
@@ -122,7 +122,7 @@ void shouldFilterOrdersByStatus() {
 }
 ```
 
-## Testing Path Variables
+## Pruebas de variables de ruta
 
 ```java
 @Test
@@ -134,7 +134,7 @@ void shouldCancelOrder() {
 }
 ```
 
-## Testing with Security
+## Pruebas con seguridad
 
 ```java
 @Test
@@ -151,30 +151,30 @@ void anonymousUserShouldBeForbidden() {
 }
 ```
 
-## Multiple Controllers
+## Varios controladores
 
 ```java
 @WebMvcTest({OrderController.class, ProductController.class})
 class WebLayerTest {
-  // Tests multiple controllers in one slice
+  // Prueba varios controladores en un segmento
 }
 ```
 
-## Excluding Auto-Configuration
+## Exclusión de la configuración automática
 
 ```java
 @WebMvcTest(OrderController.class)
-@AutoConfigureMockMvc(addFilters = false) // Skip security filters
+@AutoConfigureMockMvc(addFilters = false) // Omitir los filtros de seguridad
 class OrderControllerWithoutSecurityTest {
-  // Tests without security filters
+  // Pruebas sin filtros de seguridad
 }
 ```
 
-## Key Points
+## Puntos clave
 
-1. On Spring Boot 3.3, mock collaborators with `@MockBean` (`@MockitoBean` is the 3.4+ replacement)
-2. On Spring Boot 3.3, use classic `MockMvc` (`perform(...).andExpect(...)`); `MockMvcTester` requires 3.4+
-3. Test HTTP semantics (status, headers, content-type)
-4. Verify service method calls when side effects matter
-5. Don't test business logic here - that's for unit tests
-6. Leverage Java 21 text blocks for JSON payloads
+1. En Spring Boot 3.3, simula colaboradores con `@MockBean` (`@MockitoBean` es el reemplazo en 3.4+)
+2. En Spring Boot 3.3, usa `MockMvc` clásico (`perform(...).andExpect(...)`); `MockMvcTester` requiere 3.4+
+3. Prueba la semántica HTTP (estado, encabezados, content-type)
+4. Verifica las llamadas a métodos de servicio cuando importen sus efectos secundarios
+5. No pruebes aquí la lógica de negocio; corresponde a las pruebas unitarias
+6. Aprovecha los bloques de texto de Java 21 para cuerpos JSON

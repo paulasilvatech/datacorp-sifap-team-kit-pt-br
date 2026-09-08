@@ -1,31 +1,31 @@
 # Persona — DBA
 
-> **Track:** [Team Kit](../../README.md) › [Personas](../OVERVIEW.md) › [DBA](README.md) › **PERSONA**
+> **Ruta:** [Kit del equipo](../../README.md) › [Personas](../OVERVIEW.md) › [DBA](README.md) › **PERSONA**
 
-**Reference profile for the DBA persona in the SIFAP modernization workshop.**
+**Perfil de referencia de la persona DBA en la inmersión de modernización de SIFAP.**
 
-![Pair 4](https://img.shields.io/badge/Par-4%20%C2%B7%20Qualidade-171717?style=flat-square) ![Leads Stage 3](https://img.shields.io/badge/Lidera-Est%C3%A1gio%203%20(schema)-404040?style=flat-square) ![Supports all](https://img.shields.io/badge/Apoia-Todos%20os%20est%C3%A1gios-737373?style=flat-square)
+![Pareja 4](https://img.shields.io/badge/Par-4%20%C2%B7%20Qualidade-171717?style=flat-square) ![Lidera la Etapa 3](https://img.shields.io/badge/Lidera-Est%C3%A1gio%203%20(schema)-404040?style=flat-square) ![Apoya todas las etapas](https://img.shields.io/badge/Apoia-Todos%20os%20est%C3%A1gios-737373?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Role** | DBA (Database Administrator) |
-| **Pair** | Pair 4 — Quality (with QA Engineer) |
-| **Active stages** | Stage 1 (DDM mapping), Stage 2 (logical model + ADR), Stage 3 (leads schema), Stage 4 (validates integrity) |
-| **Artifacts produced** | DDM-to-relational-entity map, database ADR, Flyway migrations, indexes, test seed data |
-| **Artifacts consumed** | Adabas DDMs (Stage 1), bounded contexts (Software Architect), EARS requirements (Requirements Engineer) |
-| **Handoff to** | Developer — JPA-ready migrations; DevOps Engineer — stable schema for Terraform |
+| **Rol** | DBA (Administrador de Bases de Datos) |
+| **Pareja** | Pareja 4 — Calidad (con el Ingeniero de Calidad) |
+| **Etapas activas** | Etapa 1 (mapeo de DDM), Etapa 2 (modelo lógico + ADR), Etapa 3 (lidera el esquema), Etapa 4 (valida la integridad) |
+| **Artefactos producidos** | Mapa de DDM a entidades relacionales, ADR de base de datos, migraciones Flyway, índices y datos iniciales de prueba |
+| **Artefactos consumidos** | DDM de Adabas (Etapa 1), contextos delimitados (Arquitecto de Software), requisitos EARS (Especialista en Requisitos) |
+| **Entrega a** | Desarrollador — migraciones listas para JPA; Ingeniero DevOps — esquema estable para Terraform |
 
 ---
 
-## What this persona is
+## Qué es esta persona
 
-The DBA is responsible for the SIFAP 2.0 data layer. In the legacy modernization, this means reading the 4 Adabas DDMs—which describe MU (multiple-value), PE (periodic), and FDT (File Definition Table) structures—translating them into a normalized PostgreSQL 16 relational schema, and ensuring that Flyway migrations are idempotent, reversible, and safe for continuous deployment.
+El DBA es responsable de la capa de datos de SIFAP 2.0. En la modernización del legado, esto significa leer los 4 DDM de Adabas —que describen estructuras MU (multivalor), PE (periódicas) y FDT (tabla de definición de archivos)—, traducirlos a un esquema relacional normalizado de PostgreSQL 16 y garantizar que las migraciones Flyway sean idempotentes, reversibles y seguras para el despliegue continuo.
 
-Why it matters: the data model is the foundation for the Developer's JPA entities and the infrastructure provisioned by DevOps. A fragile schema or irreversible migrations compromise all of Stage 3 and create serious production risks.
+Por qué importa: el modelo de datos es la base de las entidades JPA del Desarrollador y de la infraestructura aprovisionada por DevOps. Un esquema frágil o unas migraciones irreversibles comprometen toda la Etapa 3 y generan riesgos graves en producción.
 
-Within the Agentic Legacy Modernization framework, the DBA works in the Assessment phase (Stage 1) and the data-layer Translation phase (Stage 3).
+Dentro del marco Agentic Legacy Modernization, el DBA trabaja en la fase de evaluación (Etapa 1) y en la fase de traducción de la capa de datos (Etapa 3).
 
-## Where you work in the SDLC
+## Dónde trabajas en el SDLC
 
 ```mermaid
 %%{init: {'theme':'neutral','themeVariables':{'fontFamily':'ui-sans-serif, system-ui, sans-serif','primaryColor':'#F5F5F5','primaryTextColor':'#171717','primaryBorderColor':'#171717','lineColor':'#525252','secondaryColor':'#FFFFFF','tertiaryColor':'#FAFAFA','background':'#FFFFFF'}}}%%
@@ -33,112 +33,112 @@ flowchart LR
     classDef step fill:#F5F5F5,stroke:#171717,color:#171717
     classDef active fill:#FFFFFF,stroke:#171717,color:#171717,stroke-width:2px
     classDef muted fill:#FAFAFA,stroke:#A3A3A3,color:#404040
-    S1["Stage 1<br/>Archaeology"]:::step --> S2["Stage 2<br/>Specification"]:::step
-    S2 --> S3["Stage 3<br/>Implementation"]:::active
-    S3 --> S4["Stage 4<br/>Evolution"]:::step
+    S1["Etapa 1<br/>Arqueología"]:::step --> S2["Etapa 2<br/>Especificación"]:::step
+    S2 --> S3["Etapa 3<br/>Implementación"]:::active
+    S3 --> S4["Etapa 4<br/>Evolución"]:::step
 ```
 
-| Stage | Responsibility | Deliverable |
+| Etapa | Responsabilidad | Entregable |
 |---|---|---|
-| **1 — Archaeology** | Read the 4 DDMs, map MU/PE fields to candidate relational entities, and identify key fields | DDM-to-relational-entity map |
-| **2 — Specification** | Design the logical data model and write the PostgreSQL ADR (reference ADR 002) | Data model + ADR 002 |
-| **3 — Implementation** | Write Flyway migrations, define indexes, seed test data, and answer JPA/Hibernate questions | PostgreSQL schema + seed |
-| **4 — Evolution** | Verify that Copilot Agent PRs change the schema safely (new migration, never retroactive edits) | Schema integrity preserved |
+| **1 — Arqueología** | Leer los 4 DDM, mapear los campos MU/PE a posibles entidades relacionales e identificar los campos clave | Mapa de DDM a entidades relacionales |
+| **2 — Especificación** | Diseñar el modelo lógico de datos y escribir el ADR de PostgreSQL (referencia: ADR 002) | Modelo de datos + ADR 002 |
+| **3 — Implementación** | Escribir migraciones Flyway, definir índices, cargar datos de prueba y responder preguntas sobre JPA/Hibernate | Esquema PostgreSQL + datos iniciales |
+| **4 — Evolución** | Verificar que las PR de Copilot Agent cambien el esquema de forma segura (migración nueva, nunca ediciones retroactivas) | Integridad del esquema preservada |
 
-## Core responsibility
+## Responsabilidad principal
 
-Translate the Adabas model needed by the selected scope into a PostgreSQL relational schema that preserves business integrity without inheriting legacy Adabas structures. Ensure idempotent migrations and full traceability of schema changes.
+Traducir el modelo Adabas necesario para el alcance seleccionado a un esquema relacional PostgreSQL que preserve la integridad del negocio sin heredar las estructuras antiguas de Adabas. Garantizar migraciones idempotentes y trazabilidad completa de los cambios del esquema.
 
-## Key skills
+## Competencias clave
 
-- Reading Adabas DDMs: simple, MU (multiple-value), and PE (periodic) fields
-- Normalized relational schema design in PostgreSQL 16
-- Flyway migrations: naming, idempotency, and expand-contract strategy
-- Indexing based on real queries identified in Natural programs
-- Auditing JPA/JPQL queries to prevent N+1 and SQL injection
+- Lectura de DDM de Adabas: campos simples, MU (multivalor) y PE (periódicos)
+- Diseño de esquemas relacionales normalizados en PostgreSQL 16
+- Migraciones Flyway: nombres, idempotencia y estrategia expand-contract
+- Indexación basada en consultas reales identificadas en los programas Natural
+- Auditoría de consultas JPA/JPQL para prevenir N+1 e inyección SQL
 
-## Persona kit
+## Kit de la persona
 
-| Artifact | Path | Use |
+| Artefacto | Ruta | Uso |
 |---|---|---|
-| DBA agent | `.github/agents/dba.agent.md` | Data modeling, migrations, and SQL auditing |
-| Prompt `/migration` | `.github/prompts/persona-dba-migration.prompt.md` | Plan and write a Flyway migration |
-| Prompt `/query-audit` | `.github/prompts/persona-dba-query-audit.prompt.md` | Audit queries for performance and security |
-| Database instructions | `.github/instructions/database.instructions.md` | Mandatory database conventions |
+| Agente DBA | `.github/agents/dba.agent.md` | Modelado de datos, migraciones y auditoría SQL |
+| Prompt `/migration` | `.github/prompts/persona-dba-migration.prompt.md` | Planificar y escribir una migración Flyway |
+| Prompt `/query-audit` | `.github/prompts/persona-dba-query-audit.prompt.md` | Auditar el rendimiento y la seguridad de las consultas |
+| Instrucciones de base de datos | `.github/instructions/database.instructions.md` | Convenciones obligatorias de base de datos |
 
-## Copilot tools and modes
+## Herramientas y modos de Copilot
 
-| Tool / Mode | When to use |
+| Herramienta / Modo | Cuándo usarlo |
 |---|---|
-| **Copilot Ask** | Translate Adabas DDMs to PostgreSQL SQL; understand legacy field semantics |
-| **Copilot Plan** | Plan migration batches; create several Flyway files at once |
-| **PostgreSQL MCP** (if available) | Inspect the running schema and run exploratory queries |
-| **Spec-Kit** (`/speckit.plan`) | Declare the data model for the Software Architect and Developer |
+| **Copilot Ask** | Traducir DDM de Adabas a SQL de PostgreSQL; comprender la semántica de los campos heredados |
+| **Copilot Plan** | Planificar lotes de migraciones; crear varios archivos Flyway a la vez |
+| **PostgreSQL MCP** (si está disponible) | Inspeccionar el esquema en ejecución y realizar consultas exploratorias |
+| **Spec-Kit** (`/speckit.plan`) | Declarar el modelo de datos para el Arquitecto de Software y el Desarrollador |
 
-## Recommended cheat sheets
+## Fichas de referencia recomendadas
 
-- [`09-cheat-sheets/spec-kit-workflow.md`](../../09-cheat-sheets/spec-kit-workflow.md) — declare the data model for `/speckit.plan` and review it with `/speckit.analyze`
-- [`09-cheat-sheets/model-routing.md`](../../09-cheat-sheets/model-routing.md) — Sonnet 4.6 is sufficient for most SQL work
+- [`09-cheat-sheets/spec-kit-workflow.md`](../../09-cheat-sheets/spec-kit-workflow.md) — declarar el modelo de datos para `/speckit.plan` y revisarlo con `/speckit.analyze`
+- [`09-cheat-sheets/model-routing.md`](../../09-cheat-sheets/model-routing.md) — Sonnet 4.6 es suficiente para la mayor parte del trabajo con SQL
 
-## How to perform well
+## Cómo desempeñarte bien
 
-- [ ] **Make every migration reversible.** Never edit an existing migration; create a new one: `V5__fix_xxx.sql`.
-- [ ] **Document MU/PE mapping decisions.** Record why an MU field became a related table rather than a `JSONB` column.
-- [ ] **Index critical monthly-cycle queries.** Rule of thumb: a field in `WHERE` or `JOIN` on a table with more than 100,000 rows needs an index.
-- [ ] **Keep the audit store append-only.** No `DELETE` in the audit schema.
+- [ ] **Haz reversible cada migración.** Nunca edites una migración existente; crea una nueva: `V5__fix_xxx.sql`.
+- [ ] **Documenta las decisiones de mapeo MU/PE.** Registra por qué un campo MU se convirtió en una tabla relacionada en lugar de una columna `JSONB`.
+- [ ] **Indexa las consultas críticas del ciclo mensual.** Regla práctica: un campo en `WHERE` o `JOIN` de una tabla con más de 100,000 filas necesita un índice.
+- [ ] **Mantén el almacén de auditoría como solo anexado.** Ningún `DELETE` en el esquema de auditoría.
 
-## Common mistakes and how to avoid them
+## Errores comunes y cómo evitarlos
 
-| Symptom | Cause | Correction |
+| Síntoma | Causa | Corrección |
 |---|---|---|
-| Schema uses `JSONB` columns for structured data | Adabas flexibility habit | Normalize PE and MU fields into related tables with foreign keys |
-| Migration breaks a teammate's environment | Non-idempotent migration | Never alter an existing migration file; create a higher-versioned file |
-| Missing index on a critical table | Index not based on evidence | Identify queries in Natural programs before defining indexes |
-| Habitual denormalization | Replicating the Adabas model | Start from the canonical relational model and denormalize only with measured performance evidence |
+| El esquema usa columnas `JSONB` para datos estructurados | Costumbre de la flexibilidad de Adabas | Normaliza los campos PE y MU en tablas relacionadas con claves foráneas |
+| La migración rompe el entorno de un compañero | Migración no idempotente | Nunca alteres un archivo de migración existente; crea un archivo con una versión superior |
+| Falta un índice en una tabla crítica | Índice no basado en evidencia | Identifica las consultas en los programas Natural antes de definir los índices |
+| Desnormalización por costumbre | Replicación del modelo Adabas | Empieza por el modelo relacional canónico y desnormaliza solo con evidencia de rendimiento medida |
 
-## Combinations with other personas
+## Combinaciones con otras personas
 
-| Combination | Note |
+| Combinación | Nota |
 |---|---|
-| **DBA + Developer** | You write your migrations and some JPA queries |
-| **DBA + DevOps Engineer** | You manage PostgreSQL and the Terraform that provisions it in Azure |
+| **DBA + Desarrollador** | Escribes tus migraciones y algunas consultas JPA |
+| **DBA + Ingeniero DevOps** | Gestionas PostgreSQL y el Terraform que lo aprovisiona en Azure |
 
-## Ready-to-use prompts
+## Prompts listos para usar
 
-1. **(Ask)** _"Read the DDM assigned to the team and propose relational mapping alternatives, including the trade-offs we must decide."_
-2. **(Plan)** _"Plan a Flyway migration for the fields, relationships, and indexes required by the prioritized EARS requirement."_
-3. **(Ask)** _"Review this schema and identify constraints and indexes that need evidence before they are created."_
+1. **(Ask)** _"Lee el DDM asignado al equipo y propón alternativas de mapeo relacional, incluidos los compromisos que debemos decidir."_
+2. **(Plan)** _"Planifica una migración Flyway para los campos, relaciones e índices que necesita el requisito EARS priorizado."_
+3. **(Ask)** _"Revisa este esquema e identifica las restricciones e índices que necesitan evidencia antes de crearse."_
 
-## Emergency defaults
+## Opciones de emergencia
 
-| Situation | What to do |
+| Situación | Qué hacer |
 |---|---|
-| Unknown DDM format | Open `01-archaeology/legacy-sifap/adabas-ddms/`—the comments help explain each field |
-| Broken migration | Never edit an existing migration. Create a new one: `V5__fix_xxx.sql` |
-| Unsure which index to create | For a field in `WHERE` or `JOIN` on a table with more than 100,000 rows, create the index |
-| PostgreSQL unavailable | Check whether Docker is running: `docker ps \| grep postgres` |
+| Formato DDM desconocido | Abre `01-archaeology/legacy-sifap/adabas-ddms/`: los comentarios ayudan a explicar cada campo |
+| Migración rota | Nunca edites una migración existente. Crea una nueva: `V5__fix_xxx.sql` |
+| No sabes qué índice crear | Para un campo en `WHERE` o `JOIN` de una tabla con más de 100,000 filas, crea el índice |
+| PostgreSQL no está disponible | Comprueba si Docker está en ejecución: `docker ps \| grep postgres` |
 
-## Dependencies
+## Dependencias
 
-| Persona | Relationship | Artifact |
+| Persona | Relación | Artefacto |
 |---|---|---|
-| Software Architect | You depend on them | Context boundaries for the model |
-| Developer | Depends on you | JPA-ready migrations |
-| DevOps Engineer | Depends on you | Stable schema for Terraform |
-| QA Engineer | Depends on you | Test seed data |
+| Arquitecto de Software | Dependes de esta persona | Límites de contextos para el modelo |
+| Desarrollador | Depende de ti | Migraciones listas para JPA |
+| Ingeniero DevOps | Depende de ti | Esquema estable para Terraform |
+| Ingeniero de Calidad | Depende de ti | Datos iniciales de prueba |
 
-## How you are evaluated
+## Cómo se te evalúa
 
-- **Rubric A3 — Technical Integrity:** idempotent migrations, schema consistent with JPA entities
-- **Rubric A1 — Archaeology:** documented DDM-to-relational-entity map
-- **Criterion:** the audit store is append-only—no `DELETE` in the audit schema
+- **Rúbrica A3 — Integridad técnica:** migraciones idempotentes y esquema coherente con las entidades JPA
+- **Rúbrica A1 — Arqueología:** mapa de DDM a entidades relacionales documentado
+- **Criterio:** el almacén de auditoría es de solo anexado: ningún `DELETE` en el esquema de auditoría
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Developer — PERSONA](../06-developer/PERSONA.md)<br/><sub>Pair 3 — Implementation — Java 21 + Next.js 15 + tests.</sub> | [QA Engineer — PERSONA](../08-qa-engineer/PERSONA.md)<br/><sub>Pair 4 — Quality — equivalence tests and coverage.</sub> |
+| [Desarrollador — PERSONA](../06-developer/PERSONA.md)<br/><sub>Pareja 3 — Implementación — Java 21 + Next.js 15 + pruebas.</sub> | [Ingeniero de Calidad — PERSONA](../08-qa-engineer/PERSONA.md)<br/><sub>Pareja 4 — Calidad — pruebas de equivalencia y cobertura.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Volver al índice del kit](../../README.md)</sub>

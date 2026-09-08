@@ -1,131 +1,131 @@
-# @builder — Stage 3: Implementation
+# @builder — Etapa 3: implementación
 
-> **Path:** [Team Kit](../../README.md) › [Stage Agents](../README.md) › **@builder**
+> **Ruta:** [Kit del equipo](../../README.md) › [Agentes de etapa](../README.md) › **@builder**
 
-**The `@builder` agent executes the Stage 2 specification, transforming EARS requirements into Java 21 + Spring Boot + Next.js 15 code with traceable tests and Flyway migrations.**
+**El agente `@builder` ejecuta la especificación de la Etapa 2, transformando los requisitos EARS en código Java 21 + Spring Boot + Next.js 15 con pruebas trazables y migraciones Flyway.**
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Developer (lead), Technical Lead, DBA, and QA Engineer during Stage 3 |
-| **Prerequisites** | Stage 2 handoff with `spec.md`, `plan.md`, `tasks.md`, and a prioritized first increment |
-| **Estimated time** | 15:00–16:10 |
-| **Stage** | Stage 3 — Implementation |
-| **Expected outcome** | Backend and frontend compile, tests pass, and commits include `Implements REQ-...` |
+| **Público objetivo** | Desarrollador (lidera), Líder Técnico, DBA e Ingeniero de Calidad durante la Etapa 3 |
+| **Prerrequisitos** | Transición de la Etapa 2 con `spec.md`, `plan.md`, `tasks.md` y un primer incremento priorizado |
+| **Tiempo estimado** | 15:00–16:10 |
+| **Etapa** | Etapa 3 — Implementación |
+| **Resultado esperado** | El backend y el frontend compilan, las pruebas se aprueban y los commits incluyen `Implements REQ-...` |
 
-![Stage 3](https://img.shields.io/badge/Stage-3%20%C2%B7%20Implementation-171717?style=flat-square)
-![Constructive approach](https://img.shields.io/badge/Approach-Constructive-404040?style=flat-square)
-
----
-
-## When to use
-
-Use this agent when the specification exists and the team needs to build. `@builder` does not replace design. It executes `spec.md`, `plan.md`, and `tasks.md` through code, tests, and traceability.
-
-- **Lead:** Developer
-- **Strong support:** Technical Lead, DBA, QA Engineer, and Software Architect
-- **Hard-gate prerequisite:** `spec.md`, `plan.md`, and `tasks.md` exist, and the first increment is prioritized
+![Etapa 3](https://img.shields.io/badge/Stage-3%20%C2%B7%20Implementation-171717?style=flat-square)
+![Enfoque constructivo](https://img.shields.io/badge/Approach-Constructive-404040?style=flat-square)
 
 ---
 
-## What the agent does
+## Cuándo usarlo
 
-- Translates Natural/Adabas rules into Java 21 with REQ-ID traceability
-- Generates JPA entities from Adabas DDMs and explains each mapping
-- Creates `/api/v1/...` REST controllers with DTOs, Bean Validation, and OpenAPI annotations
-- Writes JUnit 5 tests with Testcontainers for critical business rules
-- Generates idempotent Flyway migrations
-- Creates Next.js 15 App Router pages that consume REST endpoints
+Usa este agente cuando exista la especificación y el equipo necesite construir. `@builder` no reemplaza el diseño. Ejecuta `spec.md`, `plan.md` y `tasks.md` mediante código, pruebas y trazabilidad.
 
----
-
-## What the agent does NOT do
-
-- It does not write code without a REQ-ID referenced in the specification
-- It does not create a new architecture; it follows the Stage 2 ADRs and technical plan
-- It does not log CPF, benefit values, or any sensitive data
-- It does not skip tests to move faster; at least the minimum test for the critical rule is mandatory
+- **Lidera:** Desarrollador
+- **Apoyo principal:** Líder Técnico, DBA, Ingeniero de Calidad y Arquitecto de Software
+- **Prerrequisito de la puerta obligatoria:** existen `spec.md`, `plan.md` y `tasks.md`, y el primer incremento está priorizado
 
 ---
 
-## Inputs
+## Lo que hace el agente
 
-| Input | Location |
+- Traduce reglas Natural/Adabas a Java 21 con trazabilidad a REQ-ID
+- Genera entidades JPA a partir de DDM de Adabas y explica cada mapeo
+- Crea controladores REST `/api/v1/...` con DTO, Bean Validation y anotaciones OpenAPI
+- Escribe pruebas JUnit 5 con Testcontainers para las reglas de negocio críticas
+- Genera migraciones Flyway idempotentes
+- Crea páginas de Next.js 15 App Router que consumen endpoints REST
+
+---
+
+## Lo que el agente NO hace
+
+- No escribe código sin un REQ-ID referenciado en la especificación
+- No crea una arquitectura nueva; sigue los ADR y el plan técnico de la Etapa 2
+- No registra en logs CPF, importes de beneficios ni ningún dato sensible
+- No omite las pruebas para avanzar más rápido; al menos la prueba mínima de la regla crítica es obligatoria
+
+---
+
+## Entradas
+
+| Entrada | Ubicación |
 |---|---|
-| Feature specification | `specs/<NNN>-<feature>/spec.md` |
-| Technical plan | `specs/<NNN>-<feature>/plan.md` |
-| Task list | `specs/<NNN>-<feature>/tasks.md` |
-| Architecture ADRs | `02-modern-spec/` or `docs/adr/` |
-| Mapped DDMs | `01-archaeology/business-rules-catalog.md` |
+| Especificación de la funcionalidad | `specs/<NNN>-<feature>/spec.md` |
+| Plan técnico | `specs/<NNN>-<feature>/plan.md` |
+| Lista de tareas | `specs/<NNN>-<feature>/tasks.md` |
+| ADR de arquitectura | `02-modern-spec/` o `docs/adr/` |
+| DDM mapeados | `01-archaeology/business-rules-catalog.md` |
 
 ---
 
-## Expected outputs
+## Salidas esperadas
 
-| Artifact | Location |
+| Artefacto | Ubicación |
 |---|---|
-| Java 21 backend code | `backend/src/main/java/` |
-| Flyway migrations | `backend/src/main/resources/db/migration/` |
-| JUnit 5 tests | `backend/src/test/java/` |
-| Next.js frontend code | `frontend/` |
-| Traceable commits | Message: `Implements REQ-NNN: <short description>` |
+| Código de backend Java 21 | `backend/src/main/java/` |
+| Migraciones Flyway | `backend/src/main/resources/db/migration/` |
+| Pruebas JUnit 5 | `backend/src/test/java/` |
+| Código de frontend Next.js | `frontend/` |
+| Commits trazables | Mensaje: `Implements REQ-NNN: <short description>` |
 
 ---
 
-## How to select the agent in Copilot Chat
+## Cómo seleccionar el agente en Copilot Chat
 
-- [ ] **Open Copilot Chat** in VS Code (`Ctrl+Alt+I` / `Cmd+Alt+I`).
-- [ ] **Select `@builder`** from the agent selector.
-- [ ] **Open `tasks.md`** and identify the next task to implement.
-- [ ] **Paste the opening prompt** below and press Enter.
+- [ ] **Abre Copilot Chat** en VS Code (`Ctrl+Alt+I` / `Cmd+Alt+I`).
+- [ ] **Selecciona `@builder`** en el selector de agentes.
+- [ ] **Abre `tasks.md`** e identifica la siguiente tarea que debes implementar.
+- [ ] **Pega el prompt de apertura** que aparece a continuación y pulsa Enter.
 
 ```text
-I am starting Stage 3 — Implementation.
-We have spec.md, plan.md, tasks.md, ADRs, and a data model.
-Help implement the next traceable task with Java 21 + Spring Boot,
-PostgreSQL/JPA, and Next.js, starting with tests for business rules.
+Estoy comenzando la Etapa 3 — Implementación.
+Tenemos spec.md, plan.md, tasks.md, ADR y un modelo de datos.
+Ayuda a implementar la siguiente tarea trazable con Java 21 + Spring Boot,
+PostgreSQL/JPA y Next.js, empezando por las pruebas de las reglas de negocio.
 ```
 
 ---
 
-## Example prompts
+## Ejemplos de prompts
 
-| Situation | Useful prompt |
+| Situación | Prompt útil |
 |---|---|
-| JPA entity | "Generate the entity from this DDM and explain each mapping." |
-| Natural rule | "Translate this rule into Java with clear names and an equivalence test." |
-| REST controller | "Create `/api/v1/...` controller with DTOs, validation, and OpenAPI." |
-| Frontend | "Create a Next.js App Router page that consumes this endpoint without exposing secrets." |
-| Tests | "Write a JUnit test for REQ-NNN and add the traceability comment." |
+| Entidad JPA | "Genera la entidad a partir de este DDM y explica cada mapeo." |
+| Regla Natural | "Traduce esta regla a Java con nombres claros y una prueba de equivalencia." |
+| Controlador REST | "Crea un controlador `/api/v1/...` con DTO, validación y OpenAPI." |
+| Frontend | "Crea una página de Next.js App Router que consuma este endpoint sin exponer secretos." |
+| Pruebas | "Escribe una prueba JUnit para REQ-NNN y añade el comentario de trazabilidad." |
 
 ---
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] The backend compiles, and `mvn test` (or equivalent) passes.
-- [ ] The frontend compiles, and `npm test` (or equivalent) passes when a frontend exists.
-- [ ] The first feature increment works within the selected scope.
-- [ ] An interface or endpoint exists only when the scope requires it.
-- [ ] Flyway migrations apply without errors to a clean database.
-- [ ] Tests cite REQ-IDs in inline comments.
-- [ ] Commits that implement behavior mention `Implements REQ-...`.
+- [ ] El backend compila y `mvn test` (o equivalente) se aprueba.
+- [ ] El frontend compila y `npm test` (o equivalente) se aprueba cuando existe un frontend.
+- [ ] El primer incremento de la funcionalidad funciona dentro del alcance seleccionado.
+- [ ] Solo existe una interfaz o endpoint cuando el alcance lo requiere.
+- [ ] Las migraciones Flyway se aplican sin errores a una base de datos limpia.
+- [ ] Las pruebas citan REQ-ID en comentarios inline.
+- [ ] Los commits que implementan comportamiento mencionan `Implements REQ-...`.
 
 ---
 
-## Common mistakes
+## Errores comunes
 
-| Symptom | Cause | Correction |
+| Síntoma | Causa | Corrección |
 |---|---|---|
-| Code without a REQ-ID | Task started without checking the specification | Return to `tasks.md` and find the corresponding requirement |
-| New architectural decision in Stage 3 | Incomplete specification reached the builder | Pause, resolve it in Stage 2 with `@architect`, then resume |
-| Test skipped because of time pressure | Delivery pressure | Write at least the minimum test for the critical rule before committing |
-| CPF or value appears in logs | Data policy was overlooked | Mask logs; never log `cpf`, `valor`, or `beneficio` directly |
+| Código sin un REQ-ID | Se inició la tarea sin comprobar la especificación | Vuelve a `tasks.md` y encuentra el requisito correspondiente |
+| Nueva decisión de arquitectura en la Etapa 3 | Llegó una especificación incompleta al agente de implementación | Detente, resuélvela en la Etapa 2 con `@architect` y después continúa |
+| Prueba omitida por falta de tiempo | Presión por entregar | Escribe al menos la prueba mínima de la regla crítica antes de crear el commit |
+| CPF o importe en los logs | Se pasó por alto la política de datos | Enmascara los logs; nunca registres `cpf`, `valor` ni `beneficio` directamente |
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [@architect](../02-architect/README.md)<br/><sub>Stage 2: modern specification with Spec-Kit.</sub> | [@evolution](../04-evolution/README.md)<br/><sub>Stage 4: delegate, review, and record the outcome.</sub> |
+| [@architect](../02-architect/README.md)<br/><sub>Etapa 2: especificación moderna con Spec-Kit.</sub> | [@evolution](../04-evolution/README.md)<br/><sub>Etapa 4: delegar, revisar y registrar el resultado.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Volver al índice del kit](../../README.md)</sub>

@@ -1,59 +1,60 @@
-# Architecture Decision Records (ADRs)
+# Registros de decisiones de arquitectura (ADR)
 
-> **Path:** [Team Kit](../../README.md) › [Docs](../README.md) › **ADRs**
+> **Ruta:** [Kit del equipo](../../README.md) › [Documentación](../README.md) › **ADR**
 
-**Index of the team's architecture decision records** — one decision per file, numbered sequentially.
+**Índice de registros de decisiones de arquitectura del equipo** — una decisión por archivo, con numeración secuencial.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | The entire team, especially the Software Architect and Technical Lead |
-| **When to create** | For every decision that is difficult to revisit later (more than one hour to reverse) |
-| **Expected outcome** | Auditable history of decisions made under time pressure |
+| **Público objetivo** | Todo el equipo, especialmente el Arquitecto de Software y el Líder Técnico |
+| **Cuándo crear uno** | Para cada decisión que sea difícil de reconsiderar después (más de una hora para revertirla) |
+| **Resultado esperado** | Historial auditable de las decisiones tomadas bajo presión de tiempo |
 
 ---
 
-## Why write ADRs
+## Por qué escribir ADR
 
-Decisions made under time pressure are forgotten. Your future self will rediscover the same options and lose hours. An ADR takes five minutes to write now and saves 50 minutes later.
+Las decisiones tomadas bajo presión de tiempo se olvidan. Tu yo del futuro volverá a descubrir las mismas opciones y perderá horas. Escribir un ADR lleva cinco minutos ahora y ahorra 50 minutos después.
 
-## When to write an ADR
+## Cuándo escribir un ADR
 
-Write one when:
+Escribe uno cuando:
 
-- A decision will be difficult to revisit later (more than one hour to reverse).
-- Two or more team members would naturally make different choices.
-- A decision affects more than one bounded context or persona.
+- Una decisión sea difícil de reconsiderar después (más de una hora para revertirla).
+- Dos o más integrantes del equipo elegirían naturalmente opciones diferentes.
+- Una decisión afecte a más de un contexto delimitado o persona.
 
-Do not write an ADR for variable names, formatting configuration, or minor library versions.
+No escribas un ADR para nombres de variables, configuración de formato ni versiones menores de bibliotecas.
 
 ---
 
-## Index
+## Índice
 
-| ADR | Title | Status | Date |
+| ADR | Título | Estado | Fecha |
 |---|---|---|---|
-| 0000 | [Template](0000-template.md) | template | 2026-04-29 |
-| 0001 | [Agent instructions single source of truth](0001-agent-instructions-single-source-of-truth.md) | accepted | 2026-08-17 |
+| 0000 | [Plantilla](0000-template.md) | template | 2026-04-29 |
+| 0001 | [Fuente única de verdad para las instrucciones de agentes](0001-agent-instructions-single-source-of-truth.md) | accepted | 2026-08-17 |
+| 0002 | [Portal de documentación trilingüe con Astro](0002-trilingual-documentation-portal.md) | accepted | 2026-09-07 |
 
 > [!NOTE]
-> Add new ADRs to this table as they are created, first with status `proposed` and then `accepted` after team agreement.
+> Añade los nuevos ADR a esta tabla a medida que se creen, primero con el estado `proposed` y después `accepted` tras el acuerdo del equipo.
 
 ---
 
-## How to add an ADR
+## Cómo añadir un ADR
 
-- [ ] **Open an issue** using the [ADR issue template](../../.github/ISSUE_TEMPLATE/adr.yml).
-- [ ] **Copy the template** — `0000-template.md` → `NNNN-your-title.md` (next sequential number).
-- [ ] **Complete every section** — context, decision, alternatives, consequences, and status.
-- [ ] **Open a pull request** — require at least one review from an architecture persona.
-- [ ] **Merge with status `accepted`** — update this index.
+- [ ] **Abre una issue** usando la [plantilla de issue de ADR](../../.github/ISSUE_TEMPLATE/adr.yml).
+- [ ] **Copia la plantilla** — `0000-template.md` → `NNNN-your-title.md` (siguiente número secuencial).
+- [ ] **Completa cada sección** — contexto, decisión, alternativas, consecuencias y estado.
+- [ ] **Abre una pull request** — exige al menos una revisión de una persona de arquitectura.
+- [ ] **Integra con el estado `accepted`** — actualiza este índice.
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Cross-cutting Documentation](../README.md)<br/><sub>Glossary, SDLC flow, persona-agent matrix, and runbook.</sub> | [Stage 2 — Modern Specification](../../02-modern-spec/GUIDE.md)<br/><sub>14:00–15:00 — Write EARS, ADRs, and C4 diagrams.</sub> |
+| [Documentación transversal](../README.md)<br/><sub>Glosario, flujo del SDLC, matriz persona-agente y runbook.</sub> | [Etapa 2 — Especificación moderna](../../02-modern-spec/GUIDE.md)<br/><sub>14:00–15:00 — Escribir EARS, ADR y diagramas C4.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Volver al índice del kit](../../README.md)</sub>

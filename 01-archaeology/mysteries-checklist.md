@@ -1,110 +1,110 @@
-# Open Questions Checklist — Stage 1
+# Lista de verificación de preguntas abiertas — Etapa 1
 
-> **Track:** [Team Kit](../README.md) › [Stage 1](README.md) › **Open Questions Checklist**
+> **Ruta:** [Kit del equipo](../README.md) › [Etapa 1](README.md) › **Lista de verificación de preguntas abiertas**
 
-**Traceability of uncertainties before Stage 2.** Ensures every open question is recorded with evidence, a hypothesis marked as unconfirmed, and an identified owner.
+**Trazabilidad de las incertidumbres antes de la Etapa 2.** Garantiza que cada pregunta abierta se registre con evidencia, una hipótesis marcada como sin confirmar y una persona responsable identificada.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | All pairs—complete during Stage 1 |
-| **Prerequisites** | Read the assigned programs |
-| **Stage** | Stage 1 — Archaeology |
-| **Expected outcome** | List of questions without conclusions, with traceability and an owner |
+| **Público objetivo** | Todas las parejas: completar durante la Etapa 1 |
+| **Prerrequisitos** | Leer los programas asignados |
+| **Etapa** | Etapa 1 — Arqueología |
+| **Resultado esperado** | Lista de preguntas sin conclusiones, con trazabilidad y una persona responsable |
 
 > [!IMPORTANT]
-> **Traceability gate.** A question remains open until it receives explicit evidence-based human validation. It must not become an answer, rule, or requirement without that validation.
+> **Puerta de trazabilidad.** Una pregunta permanece abierta hasta recibir validación humana explícita basada en evidencia. No debe convertirse en una respuesta, regla o requisito sin esa validación.
 
 ---
 
-## The denominator is 20
+## El denominador es 20
 
-SIFAP, the Payment Inspection and Administration System, contains **20 canonical mysteries**—business rules, contradictions, and decisions that were never documented and exist only in the code. There are **4 per pair**, following the ladder **2 Obvious + 1 Medium + 1 Difficult**.
+SIFAP, el Sistema de Fiscalización y Administración de Pagos, contiene **20 misterios canónicos**: reglas de negocio, contradicciones y decisiones que nunca se documentaron y existen solo en el código. Hay **4 por pareja**, siguiendo la escala **2 Obvios + 1 Medio + 1 Difícil**.
 
-| Rule | Value |
+| Regla | Valor |
 |---|---|
-| Total canonical mysteries in the cohort | **20** (`SIFAP-M-01` … `SIFAP-M-20`) |
-| Per pair | **4** |
-| Complete pair | 4 of 4 |
-| Complete cohort | **≥16 of 20**, with no pair below 2 |
+| Total de misterios canónicos del grupo | **20** (`SIFAP-M-01` … `SIFAP-M-20`) |
+| Por pareja | **4** |
+| Pareja completa | 4 de 4 |
+| Grupo completo | **≥16 de 20**, sin ninguna pareja por debajo de 2 |
 
 > [!NOTE]
-> **Why use a fixed number.** Without a denominator, each pair reported a different quantity after reading exactly the same material—a variation of more than 30 items depending on aggregation granularity and how many artifacts each person opened. The denominator **does not change**: findings outside the list are **bonuses** recognized in the debrief, but they do not replace a missing canonical mystery, and facilitators do not create canonical IDs during the workshop.
+> **Por qué usar un número fijo.** Sin un denominador, cada pareja informaba una cantidad diferente después de leer exactamente el mismo material: una variación de más de 30 elementos según la granularidad de la agrupación y la cantidad de artefactos que abría cada persona. El denominador **no cambia**: los hallazgos fuera de la lista son **adicionales** reconocidos en la puesta en común, pero no reemplazan un misterio canónico faltante, y las personas facilitadoras no crean ID canónicos durante la inmersión.
 
-Eight of the twenty are **two-sided**: they count only with both pieces of evidence (code **and** DDM, or code **and** legacy document). Comparing sources is not optional.
+Ocho de los veinte son **de dos fuentes**: solo cuentan con ambas evidencias (código **y** DDM, o código **y** documento heredado). Comparar fuentes no es opcional.
 
-### Where to look—by pair
+### Dónde buscar: por pareja
 
-Labels indicate the mystery's **area**, never the finding.
+Las etiquetas indican el **área** del misterio, nunca el hallazgo.
 
-| Pair | Domain | IDs | Programs |
+| Pareja | Dominio | ID | Programas |
 |---|---|---|---|
-| 1 | Registration | `M-01` … `M-04` | `CADBENEF`, `CADDEPEN`, `CADPROG` |
+| 1 | Registro | `M-01` … `M-04` | `CADBENEF`, `CADDEPEN`, `CADPROG` |
 | 2 | Batch | `M-05` … `M-08` | `BATCHPGT`, `BATCHREL`, `BATCHCON` |
-| 3 | Calculation | `M-09` … `M-12` | `CALCBENF`, `CALCCORR`, `CALCDSCT`\* |
-| 4 | Validation | `M-13` … `M-16` | `VALBENEF`, `VALDOCS`, `VALELEG` |
-| 5 | Queries and reports | `M-17` … `M-20` | `CONSBENF`, `RELPGT`, `RELAUDIT` |
+| 3 | Cálculo | `M-09` … `M-12` | `CALCBENF`, `CALCCORR`, `CALCDSCT`\* |
+| 4 | Validación | `M-13` … `M-16` | `VALBENEF`, `VALDOCS`, `VALELEG` |
+| 5 | Consultas e informes | `M-17` … `M-20` | `CONSBENF`, `RELPGT`, `RELAUDIT` |
 
-\* `CALCDSCT.NSP` is supporting reading for Pair 3—no canonical mystery lives in it. It is worth asking why it exists.
+\* `CALCDSCT.NSP` es lectura de apoyo para la Pareja 3: no contiene ningún misterio canónico. Vale la pena preguntar por qué existe.
 
 > [!TIP]
-> **If you are stuck for more than 40 minutes, ask the facilitator for a hint.** A hint does not cost points; remaining stuck takes you out of the exercise.
+> **Si llevas más de 40 minutos sin avanzar, pide una pista a la persona facilitadora.** Una pista no resta puntos; quedarse bloqueado te deja fuera del ejercicio.
 
 ---
 
-## For every open question
+## Para cada pregunta abierta
 
-- [ ] The question was recorded without an answer or conclusion.
-- [ ] The evidence contains `path:line`.
-- [ ] The impact was recorded.
-- [ ] The hypothesis is explicitly marked as **unconfirmed**.
-- [ ] A responsible person or area was identified.
-- [ ] The status was recorded.
+- [ ] La pregunta se registró sin respuesta ni conclusión.
+- [ ] La evidencia contiene `path:line`.
+- [ ] Se registró el impacto.
+- [ ] La hipótesis está marcada explícitamente como **sin confirmar**.
+- [ ] Se identificó una persona o área responsable.
+- [ ] Se registró el estado.
 
 ---
 
-## Record structure
+## Estructura del registro
 
-| Open question | Evidence (`path:line`) | Impact | Hypothesis (unconfirmed) | Responsible person/area | Status |
+| Pregunta abierta | Evidencia (`path:line`) | Impacto | Hipótesis (sin confirmar) | Persona/área responsable | Estado |
 |---|---|---|---|---|---|
-| <!-- fill in --> | <!-- fill in: path:line --> | <!-- fill in --> | <!-- fill in: unconfirmed --> | <!-- fill in --> | <!-- fill in: open / awaiting human validation / closed after human validation --> |
+| <!-- completar --> | <!-- completar: path:line --> | <!-- completar --> | <!-- completar: sin confirmar --> | <!-- completar --> | <!-- completar: abierta / pendiente de validación humana / cerrada tras validación humana --> |
 
 ---
 
-## Pair scorecard
+## Tabla de seguimiento de la pareja
 
-Enter your pair's IDs (for example, Pair 2 enters `M-05` through `M-08`).
+Introduce los ID de tu pareja (por ejemplo, la Pareja 2 introduce de `M-05` a `M-08`).
 
-| Canonical ID | Found | Recorded in `mysteries-found.md` |
+| ID canónico | Encontrado | Registrado en `mysteries-found.md` |
 |---|---|---|
 | `SIFAP-M-__` | [ ] | [ ] |
 | `SIFAP-M-__` | [ ] | [ ] |
 | `SIFAP-M-__` | [ ] | [ ] |
 | `SIFAP-M-__` | [ ] | [ ] |
 
-**Additional findings (bonus):** <!-- list here; they do not change the denominator -->
+**Hallazgos adicionales (bonus):** <!-- enumerar aquí; no cambian el denominador -->
 
 ---
 
-## Methods for finding mysteries
+## Métodos para encontrar misterios
 
-None of these tips reveals a finding—they are all reusable legacy-code reading techniques.
+Ninguno de estos consejos revela un hallazgo: todos son técnicas reutilizables de lectura de código heredado.
 
-1. **Read comments before code.** In 29-year-old code, comments are often the only place where someone tried to explain *why*. A comment with a name and date is gold.
-2. **Read the program header.** Lines such as `* CHANGED: yyyy-mm-dd - NAME - reason` tell the system's story chronologically.
-3. **Compare code with documentation.** When `legacy-docs/` and the code disagree, you have found something.
-4. **Compare code with the DDM.** Type, size, and value domain must match between the program and `adabas-ddms/`—and they do not always match.
-5. **Look for numeric literals.** Every unexplained number in a calculation raises questions: where did it come from, who decided it, and what breaks if it changes?
-6. **Ask "who writes this field?"** Choose a DDM field and find every program that writes to it. Sometimes the answer is: none.
-7. **Read commented-out code.** Disabled blocks reveal what the system once did—and why it stopped.
-8. **Be suspicious of `ESCAPE`, `IF` without `ELSE`, and unconditional assignment.** Early exits and rules that always apply hide decisions nobody recorded.
-9. **Cross-reference the pair's three programs.** Several mysteries appear only when comparing two files.
+1. **Lee los comentarios antes que el código.** En un código de 29 años, los comentarios suelen ser el único lugar donde alguien intentó explicar el *porqué*. Un comentario con nombre y fecha vale oro.
+2. **Lee el encabezado del programa.** Líneas como `* CHANGED: yyyy-mm-dd - NAME - reason` cuentan la historia del sistema cronológicamente.
+3. **Compara el código con la documentación.** Cuando `legacy-docs/` y el código no coinciden, has encontrado algo.
+4. **Compara el código con el DDM.** El tipo, el tamaño y el dominio de valores deben coincidir entre el programa y `adabas-ddms/`, y no siempre lo hacen.
+5. **Busca literales numéricos.** Cada número sin explicar en un cálculo plantea preguntas: ¿de dónde salió, quién lo decidió y qué falla si cambia?
+6. **Pregunta "¿quién escribe este campo?"** Elige un campo DDM y encuentra todos los programas que escriben en él. A veces la respuesta es: ninguno.
+7. **Lee el código comentado.** Los bloques desactivados revelan lo que el sistema hacía antes y por qué dejó de hacerlo.
+8. **Desconfía de `ESCAPE`, de `IF` sin `ELSE` y de las asignaciones incondicionales.** Las salidas anticipadas y las reglas que siempre se aplican ocultan decisiones que nadie registró.
+9. **Coteja los tres programas de la pareja.** Varios misterios solo aparecen al comparar dos archivos.
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Stage 1 GUIDE](GUIDE.md)<br/><sub>Step-by-step schedule.</sub> | [Open Questions Record](mysteries-found.md)<br/><sub>Detailed record with evidence and owner.</sub> |
+| [GUÍA de la Etapa 1](GUIDE.md)<br/><sub>Cronograma paso a paso.</sub> | [Registro de preguntas abiertas](mysteries-found.md)<br/><sub>Registro detallado con evidencia y persona responsable.</sub> |
 
-<sub>[Back to the kit index](README.md)</sub>
+<sub>[Volver al índice del kit](README.md)</sub>

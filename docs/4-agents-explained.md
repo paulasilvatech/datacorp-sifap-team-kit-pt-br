@@ -1,126 +1,126 @@
-# The Four SDLC Agents — Explained
+# Los cuatro agentes del SDLC — Explicación
 
-![Concept Type](https://img.shields.io/badge/Type-Concept-171717?style=flat-square)
-![Use Understand agent kits](https://img.shields.io/badge/Use-Understand%20agent--kits-737373?style=flat-square)
+![Tipo: concepto](https://img.shields.io/badge/Type-Concept-171717?style=flat-square)
+![Uso: comprender los kits de agentes](https://img.shields.io/badge/Use-Understand%20agent--kits-737373?style=flat-square)
 
-> **Path:** [Team Kit](../README.md) › [Docs](README.md) › **Four Agents Explained**
+> **Ruta:** [Kit del equipo](../README.md) › [Documentación](README.md) › **Los cuatro agentes explicados**
 
-**Explains the reasoning behind the four stage agents** — read this when someone asks: "Why do we have stage agents if each persona already has its own kit?"
+**Explica el razonamiento detrás de los cuatro agentes de etapa** — léelo cuando alguien pregunte: "¿Por qué tenemos agentes de etapa si cada persona ya tiene su propio kit?"
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | The entire team, especially people using Copilot in a team context for the first time |
-| **Prerequisites** | Read the `PERSONA.md` for your role |
-| **Expected outcome** | Understand the difference between a persona kit and an agent kit, and know which one to use at each point |
+| **Público objetivo** | Todo el equipo, especialmente quienes usan Copilot en un contexto de equipo por primera vez |
+| **Prerrequisitos** | Leer el `PERSONA.md` de tu rol |
+| **Resultado esperado** | Comprender la diferencia entre un kit de persona y un kit de agente, y saber cuál usar en cada momento |
 
 ---
 
-## Concept
+## Concepto
 
-A **persona kit** answers: "What is my role?"
-An **agent kit** answers: "How is the team working right now, at this stage?"
+Un **kit de persona** responde: "¿Cuál es mi rol?"
+Un **kit de agente** responde: "¿Cómo está trabajando el equipo ahora, en esta etapa?"
 
-Both are necessary and complementary. One person may assume the Developer and Technical Lead personas, but in Stage 1 that person must still use `@archaeologist`, because the entire team is reading the legacy system at that time.
+Ambos son necesarios y complementarios. Una persona puede asumir los roles de Desarrollador y Líder Técnico, pero en la Etapa 1 debe seguir usando `@archaeologist`, porque en ese momento todo el equipo está leyendo el sistema heredado.
 
 ---
 
-## Why there are four agents
+## Por qué hay cuatro agentes
 
-The workshop has four working modes. Each mode requires different Copilot behavior.
+La inmersión tiene cuatro formas de trabajar. Cada una exige un comportamiento diferente de Copilot.
 
-| Stage | Working mode | Agent | Primary rule |
+| Etapa | Forma de trabajar | Agente | Regla principal |
 |---|---|---|---|
-| 1 — Archaeology | Observe and catalog | `@archaeologist` | Do not write code |
-| 2 — Modern Specification | Structure and decide | `@architect` | Do not accept a requirement without legacy evidence |
-| 3 — Implementation | Build and verify | `@builder` | Do not code without a REQ-ID and corresponding test |
-| 4 — Evolution | Delegate and review | `@evolution` | Do not accept an AI-generated pull request without human review |
+| 1 — Arqueología | Observar y catalogar | `@archaeologist` | No escribir código |
+| 2 — Especificación moderna | Estructurar y decidir | `@architect` | No aceptar un requisito sin evidencia del legado |
+| 3 — Implementación | Construir y verificar | `@builder` | No programar sin un REQ-ID y su prueba correspondiente |
+| 4 — Evolución | Delegar y revisar | `@evolution` | No aceptar una pull request generada por IA sin revisión humana |
 
-A single agent would have conflicting instructions: in Stage 1 it must be read-only; in Stage 3 it must edit files and run tests. Separating agents by stage makes the experience safer and easier for learners to understand.
+Un único agente tendría instrucciones contradictorias: en la Etapa 1 debe ser de solo lectura; en la Etapa 3 debe editar archivos y ejecutar pruebas. Separar los agentes por etapa hace que la experiencia sea más segura y fácil de comprender para quienes aprenden.
 
 ---
 
-## Agent anatomy
+## Anatomía de un agente
 
-![Agent anatomy: five layers (Agent + Instructions + Prompts + Skills + MCP)](../assets/agent-anatomy.svg)
+![Anatomía de un agente: cinco capas (Agente + Instrucciones + Prompts + Skills + MCP)](../assets/agent-anatomy.svg)
 
-| Layer | Purpose | Example |
+| Capa | Propósito | Ejemplo |
 |---|---|---|
-| Agent | Defines mission, tools, and behavior | `@builder` knows how to implement and test |
-| Instructions | Rules sensitive to file type | Natural/Adabas, Java, frontend |
-| Prompts | Reusable actions | `/translate-natural-to-java`, `/write-ears-spec` |
-| Skills | In-depth guidance for a technique | TDD, ADR, business-rule extraction |
-| MCP | Connects the agent to external systems | GitHub, databases, and Azure when configured |
+| Agente | Define misión, herramientas y comportamiento | `@builder` sabe implementar y probar |
+| Instrucciones | Reglas según el tipo de archivo | Natural/Adabas, Java, frontend |
+| Prompts | Acciones reutilizables | `/translate-natural-to-java`, `/write-ears-spec` |
+| Skills | Orientación detallada sobre una técnica | TDD, ADR, extracción de reglas de negocio |
+| MCP | Conecta el agente con sistemas externos | GitHub, bases de datos y Azure cuando estén configurados |
 
 ---
 
-## How to use the agents during the day
+## Cómo usar los agentes durante el día
 
-- [ ] **Start with the stage, not individual preference.** Check the schedule in [`00-TEAM-FLOW.md`](../00-TEAM-FLOW.md).
-- [ ] **Select the stage agent in Copilot Chat.** Example: `@architect` in Stage 2.
-- [ ] **Also read your `PERSONA.md`.** It describes what you, as a person, should observe during that stage.
-- [ ] **Use the stage prompts.** They turn conversation into a verifiable artifact.
-- [ ] **Stop at the gate.** Advance only when the stage's Definition of Done is satisfied.
+- [ ] **Empieza por la etapa, no por la preferencia individual.** Consulta el cronograma en [`00-TEAM-FLOW.md`](../00-TEAM-FLOW.md).
+- [ ] **Selecciona el agente de etapa en Copilot Chat.** Ejemplo: `@architect` en la Etapa 2.
+- [ ] **Lee también tu `PERSONA.md`.** Describe lo que tú, como persona, debes observar durante esa etapa.
+- [ ] **Usa los prompts de la etapa.** Convierten la conversación en un artefacto verificable.
+- [ ] **Detente en la puerta.** Avanza solo cuando se cumpla la definición de terminado de la etapa.
 
 ---
 
-## Interaction flow
+## Flujo de interacción
 
-During Stage 2, the Requirements Engineer can bring a confirmed finding to the Software Architect, who coordinates the stage with `@architect`.
+Durante la Etapa 2, el Especialista en Requisitos puede presentar un hallazgo confirmado al Arquitecto de Software, quien coordina la etapa con `@architect`.
 
 ```text
 @architect
-We have this rule extracted from the legacy system:
-"<confirmed rule>"
-Help structure it in EARS with a REQ-ID, acceptance criteria, and source_legacy.
+Tenemos esta regla extraída del sistema heredado:
+"<regla confirmada>"
+Ayuda a estructurarla en EARS con un REQ-ID, criterios de aceptación y source_legacy.
 ```
 
-The artifact must record only the team's evidence:
+El artefacto debe registrar solo la evidencia del equipo:
 
 ```yaml
 REQ-XXX:
-  pattern: <EARS pattern>
-  text: "<requirement>"
-  source_legacy: <file:lines or [GREENFIELD] + justification>
-  acceptance: "<verifiable scenario>"
+  pattern: <patrón EARS>
+  text: "<requisito>"
+  source_legacy: <file:lines o [GREENFIELD] + justificación>
+  acceptance: "<escenario verificable>"
 ```
 
 ---
 
-## Rule: no ready-made answer without evidence
+## Regla: no hay respuesta prefabricada sin evidencia
 
-The agents teach the path, but do not provide a ready-made answer without evidence. This protects learning and prevents hallucination.
+Los agentes enseñan el camino, pero no proporcionan una respuesta prefabricada sin evidencia. Esto protege el aprendizaje y evita alucinaciones.
 
-| If you ask... | The agent responds... |
+| Si preguntas... | El agente responde... |
 |---|---|
-| "Tell me the bounded contexts" | "Show me the program catalog and data map." |
-| "Create requirements for everything" | "Let us start with one rule that has a legacy source." |
-| "Implement this feature without a specification" | "The REQ-ID, acceptance criterion, and `source_legacy` are missing." |
+| "Dime los contextos delimitados" | "Muéstrame el catálogo de programas y el mapa de datos." |
+| "Crea requisitos para todo" | "Empecemos por una regla que tenga una fuente en el legado." |
+| "Implementa esta funcionalidad sin especificación" | "Faltan el REQ-ID, el criterio de aceptación y `source_legacy`." |
 
 ---
 
-## How to know you understand
+## Cómo saber que lo comprendes
 
-You understand the model when you can explain these three statements to someone else:
+Comprendes el modelo cuando puedes explicar estas tres afirmaciones a otra persona:
 
-1. A persona kit defines a role; an agent kit defines a stage.
-2. The stage agent changes throughout the day; your two personas remain the same.
-3. Every important artifact must survive outside chat in a version-controlled file.
-
----
-
-## References
-
-- [Agent kits](../06-stage-agents/README.md)
-- [Persona-agent matrix](persona-agent-matrix.md)
-- [Complete SDLC flow](sdlc-flow-guide.md)
-- [Persona kits](../05-personas/README.md)
+1. Un kit de persona define un rol; un kit de agente define una etapa.
+2. El agente de etapa cambia a lo largo del día; tus dos personas siguen siendo las mismas.
+3. Todo artefacto importante debe persistir fuera del chat en un archivo bajo control de versiones.
 
 ---
 
-### Continue reading
+## Referencias
 
-| Previous | Next |
+- [Kits de agentes](../06-stage-agents/README.md)
+- [Matriz persona-agente](persona-agent-matrix.md)
+- [Flujo completo del SDLC](sdlc-flow-guide.md)
+- [Kits de personas](../05-personas/README.md)
+
+---
+
+### Sigue leyendo
+
+| Anterior | Siguiente |
 |---|---|
-| [Persona-Agent Matrix](persona-agent-matrix.md)<br/><sub>Intensity by persona and stage.</sub> | [SDLC Flow](sdlc-flow-guide.md)<br/><sub>Contracts between pairs.</sub> |
+| [Matriz persona-agente](persona-agent-matrix.md)<br/><sub>Intensidad por persona y etapa.</sub> | [Flujo del SDLC](sdlc-flow-guide.md)<br/><sub>Contratos entre parejas.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

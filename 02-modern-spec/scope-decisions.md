@@ -1,40 +1,40 @@
-# Scope Decisions — Stage 2
+# Decisiones de alcance — Etapa 2
 
-> **Path:** [Team Kit](../README.md) › [Stage 2](README.md) › **Scope Decisions**
+> **Ruta:** [Kit del equipo](../README.md) › [Etapa 2](README.md) › **Decisiones de alcance**
 
-**Record the scope decisions made during Stage 2: what was selected, what was deferred, and which questions remain open.**
+**Registra las decisiones de alcance tomadas durante la Etapa 2: qué se seleccionó, qué se pospuso y qué preguntas siguen abiertas.**
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Pair 2 during Stage 2; Pairs 3 and 4 during the H2 handoff |
-| **Purpose** | Support the stage conversation; does not replace the formal Spec-Kit artifacts |
-| **Related feature** | `specs/<NNN>-<feature>/` |
+| **Público objetivo** | Pareja 2 durante la Etapa 2; Parejas 3 y 4 durante la transición H2 |
+| **Propósito** | Apoyar la conversación de la etapa; no reemplaza los artefactos formales de Spec-Kit |
+| **Funcionalidad relacionada** | `specs/<NNN>-<feature>/` |
 
 > [!NOTE]
-> Formal deliverables remain in `specs/<NNN>-<feature>/spec.md`, `plan.md`, and `tasks.md`. Do not record complete EARS requirements here. This file records only scope decisions and open questions.
+> Los entregables formales permanecen en `specs/<NNN>-<feature>/spec.md`, `plan.md` y `tasks.md`. No registres aquí requisitos EARS completos. Este archivo registra solo decisiones de alcance y preguntas abiertas.
 
 ---
 
-## Scope decisions
+## Decisiones de alcance
 
-| Decision | Evidence or rationale | Impact on formal artifacts |
+| Decisión | Evidencia o justificación | Impacto en los artefactos formales |
 |---|---|---|
-| <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
+| <!-- completar --> | <!-- completar --> | <!-- completar --> |
 
 ---
 
-## Open questions
+## Preguntas abiertas
 
-| Question | Source consulted | Next owner |
+| Pregunta | Fuente consultada | Siguiente responsable |
 |---|---|---|
-| <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
+| <!-- completar --> | <!-- completar --> | <!-- completar --> |
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Stage 2 Guide](GUIDE.md)<br/><sub>Step-by-step modern specification.</sub> | [ADR Template](ADR-TEMPLATE.md)<br/><sub>Record the scope decision as an ADR.</sub> |
+| [Guía de la Etapa 2](GUIDE.md)<br/><sub>Especificación moderna paso a paso.</sub> | [Plantilla de ADR](ADR-TEMPLATE.md)<br/><sub>Registrar la decisión de alcance como un ADR.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

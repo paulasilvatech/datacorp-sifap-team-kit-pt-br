@@ -1,10 +1,10 @@
-# AssertJ Basics
+# Fundamentos de AssertJ
 
-Fluent assertions for readable, maintainable tests.
+Aserciones fluidas para pruebas legibles y mantenibles.
 
-## Basic Assertions
+## Aserciones básicas
 
-### Object Equality
+### Igualdad de objetos
 
 ```java
 assertThat(order.getStatus()).isEqualTo("PENDING");
@@ -14,7 +14,7 @@ assertThat(order).isNotNull();
 assertThat(nullOrder).isNull();
 ```
 
-### String Assertions
+### Aserciones de cadenas
 
 ```java
 assertThat(order.getDescription())
@@ -26,7 +26,7 @@ assertThat(order.getDescription())
   .matches("[A-Za-z ]+");
 ```
 
-### Number Assertions
+### Aserciones numéricas
 
 ```java
 assertThat(order.getAmount())
@@ -38,14 +38,14 @@ assertThat(order.getAmount())
   .isNotZero();
 ```
 
-### Boolean Assertions
+### Aserciones booleanas
 
 ```java
 assertThat(order.isActive()).isTrue();
 assertThat(order.isDeleted()).isFalse();
 ```
 
-## Date/Time Assertions
+## Aserciones de fecha y hora
 
 ```java
 assertThat(order.getCreatedAt())
@@ -55,7 +55,7 @@ assertThat(order.getCreatedAt())
   .isCloseTo(LocalDateTime.now(), within(5, ChronoUnit.SECONDS));
 ```
 
-## Optional Assertions
+## Aserciones de Optional
 
 ```java
 Optional<Order> maybeOrder = orderService.findById(1L);
@@ -69,9 +69,9 @@ assertThat(maybeOrder)
 assertThat(orderService.findById(999L)).isEmpty();
 ```
 
-## Exception Assertions
+## Aserciones de excepciones
 
-### JUnit 5 Exception Handling
+### Gestión de excepciones con JUnit 5
 
 ```java
 @Test
@@ -85,7 +85,7 @@ void shouldThrowException() {
 }
 ```
 
-### AssertJ Exception Handling
+### Gestión de excepciones con AssertJ
 
 ```java
 @Test
@@ -96,9 +96,9 @@ void shouldThrowExceptionWithCause() {
 }
 ```
 
-## Custom Assertions
+## Aserciones personalizadas
 
-Create domain-specific assertions for reusable test code:
+Crea aserciones específicas del dominio para reutilizar código de prueba:
 
 ```java
 public class OrderAssert extends AbstractAssert<OrderAssert, Order> {
@@ -129,7 +129,7 @@ public class OrderAssert extends AbstractAssert<OrderAssert, Order> {
 }
 ```
 
-Usage:
+Uso:
 
 ```java
 OrderAssert.assertThat(order)
@@ -137,9 +137,9 @@ OrderAssert.assertThat(order)
   .hasTotal(new BigDecimal("99.99"));
 ```
 
-## Soft Assertions
+## Aserciones acumulativas
 
-Collect multiple failures before failing:
+Recopila varios fallos antes de hacer fallar la prueba:
 
 ```java
 @Test
@@ -154,7 +154,7 @@ void shouldValidateOrder() {
 }
 ```
 
-## Satisfies Pattern
+## Patrón satisfies
 
 ```java
 assertThat(order)
@@ -165,7 +165,7 @@ assertThat(order)
   });
 ```
 
-## Using with Spring
+## Uso con Spring
 
 ```java
 import static org.assertj.core.api.Assertions.assertThat;
@@ -188,9 +188,9 @@ class OrderServiceTest {
 }
 ```
 
-## Static Import
+## Importación estática
 
-Always use static import for clean assertions:
+Usa siempre importaciones estáticas para mantener las aserciones claras:
 
 ```java
 import static org.assertj.core.api.Assertions.assertThat;
@@ -198,10 +198,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.catchThrowable;
 ```
 
-## Key Benefits
+## Ventajas principales
 
-1. **Readable**: Sentence-like structure
-2. **Type-safe**: IDE autocomplete works
-3. **Rich API**: Many built-in assertions
-4. **Extensible**: Custom assertions for your domain
-5. **Better Errors**: Clear failure messages
+1. **Legibilidad**: estructura similar a una frase
+2. **Seguridad de tipos**: funciona el autocompletado del IDE
+3. **API amplia**: muchas aserciones integradas
+4. **Extensibilidad**: aserciones personalizadas para tu dominio
+5. **Mejores errores**: mensajes de fallo claros

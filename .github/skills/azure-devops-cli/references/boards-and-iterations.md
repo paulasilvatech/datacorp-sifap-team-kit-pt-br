@@ -1,151 +1,151 @@
-# Work Items, Area Paths & Iterations
+# Elementos de trabajo, rutas de área e iteraciones
 
-## Table of Contents
+## Índice
 
-- [Work Items (Boards)](#work-items-boards)
-- [Area Paths](#area-paths)
-- [Iterations](#iterations)
+- [Elementos de trabajo (Boards)](#elementos-de-trabajo-boards)
+- [Rutas de área](#rutas-de-área)
+- [Iteraciones](#iteraciones)
 
 ---
 
-## Work Items (Boards)
+## Elementos de trabajo (Boards)
 
-### Query Work Items
+### Consultar elementos de trabajo
 
 ```bash
-# WIQL query
+# Consulta WIQL
 az boards query \
   --wiql "SELECT [System.Id], [System.Title], [System.State] FROM WorkItems WHERE [System.AssignedTo] = @Me AND [System.State] = 'Active'"
 
-# Query with output format
+# Consulta con formato de salida
 az boards query --wiql "SELECT * FROM WorkItems" --output table
 ```
 
-### Show Work Item
+### Mostrar un elemento de trabajo
 
 ```bash
 az boards work-item show --id {work-item-id}
 az boards work-item show --id {work-item-id} --open
 ```
 
-### Create Work Item
+### Crear un elemento de trabajo
 
 ```bash
-# Basic work item
+# Elemento de trabajo básico
 az boards work-item create \
   --title "Fix login bug" \
   --type Bug \
   --assigned-to user@example.com \
   --description "Users cannot login with SSO"
 
-# With area and iteration
+# Con área e iteración
 az boards work-item create \
   --title "New feature" \
   --type "User Story" \
   --area "Project\\Area1" \
   --iteration "Project\\Sprint 1"
 
-# With custom fields
+# Con campos personalizados
 az boards work-item create \
   --title "Task" \
   --type Task \
   --fields "Priority=1" "Severity=2"
 
-# With discussion comment
+# Con comentario de discusión
 az boards work-item create \
   --title "Issue" \
   --type Bug \
   --discussion "Initial investigation completed"
 
-# For a long --discussion body on Windows, see references/long-comments-on-windows.md.
-# Short version: use azps.ps1 in PowerShell, or fall back to 'az devops invoke'
-# with --in-file when no native --file-path flag is available.
+# Para un cuerpo largo de --discussion en Windows, consulta references/long-comments-on-windows.md.
+# En resumen: usa azps.ps1 en PowerShell o recurre a 'az devops invoke'
+# con --in-file cuando no exista una opción nativa --file-path.
 
-# Open in browser after creation
+# Abrir en el navegador después de crear
 az boards work-item create --title "Bug" --type Bug --open
 ```
 
-### Update Work Item
+### Actualizar un elemento de trabajo
 
 ```bash
-# Update state, title, and assignee
+# Actualizar el estado, el título y la persona asignada
 az boards work-item update \
   --id {work-item-id} \
   --state "Active" \
   --title "Updated title" \
   --assigned-to user@example.com
 
-# Move to different area
+# Mover a otra área
 az boards work-item update \
   --id {work-item-id} \
   --area "{ProjectName}\\{Team}\\{Area}"
 
-# Change iteration
+# Cambiar la iteración
 az boards work-item update \
   --id {work-item-id} \
   --iteration "{ProjectName}\\Sprint 5"
 
-# Add comment/discussion
+# Añadir un comentario o una discusión
 az boards work-item update \
   --id {work-item-id} \
   --discussion "Work in progress"
 
-# Long comment on Windows: read the body into a PowerShell variable and call
-# azps.ps1 instead of az.cmd, or fall back to 'az devops invoke' with --in-file.
-# Full guidance in references/long-comments-on-windows.md.
+# Comentario largo en Windows: lee el cuerpo en una variable de PowerShell e invoca
+# azps.ps1 en lugar de az.cmd, o recurre a 'az devops invoke' con --in-file.
+# Orientaciones completas en references/long-comments-on-windows.md.
 #
-# PowerShell example:
+# Ejemplo de PowerShell:
 #   $body = Get-Content -Raw .\comment.md
 #   azps.ps1 boards work-item update --id 1234 --discussion $body
 
-# Update with custom fields
+# Actualizar con campos personalizados
 az boards work-item update \
   --id {work-item-id} \
   --fields "Priority=1" "StoryPoints=5"
 ```
 
-### Delete Work Item
+### Eliminar un elemento de trabajo
 
 ```bash
-# Soft delete (can be restored)
+# Eliminación temporal (se puede restaurar)
 az boards work-item delete --id {work-item-id} --yes
 
-# Permanent delete
+# Eliminación permanente
 az boards work-item delete --id {work-item-id} --destroy --yes
 ```
 
-### Work Item Relations
+### Relaciones de elementos de trabajo
 
 ```bash
-# List relations
+# Enumerar relaciones
 az boards work-item relation list --id {work-item-id}
 
-# List supported relation types
+# Enumerar los tipos de relación admitidos
 az boards work-item relation list-type
 
-# Add relation
+# Añadir una relación
 az boards work-item relation add --id {work-item-id} --relation-type parent --target-id {parent-id}
 
-# Remove relation
+# Eliminar una relación
 az boards work-item relation remove --id {work-item-id} --relation-id {relation-id}
 ```
 
-## Area Paths
+## Rutas de área
 
-### List Areas for Project
+### Enumerar las áreas de un proyecto
 
 ```bash
 az boards area project list --project {project}
 az boards area project show --path "Project\\Area1" --project {project}
 ```
 
-### Create Area
+### Crear un área
 
 ```bash
 az boards area project create --path "Project\\NewArea" --project {project}
 ```
 
-### Update Area
+### Actualizar un área
 
 ```bash
 az boards area project update \
@@ -154,31 +154,31 @@ az boards area project update \
   --project {project}
 ```
 
-### Delete Area
+### Eliminar un área
 
 ```bash
 az boards area project delete --path "Project\\AreaToDelete" --project {project} --yes
 ```
 
-### Area Team Management
+### Gestión de áreas del equipo
 
 ```bash
-# List areas for team
+# Enumerar las áreas del equipo
 az boards area team list --team {team-name} --project {project}
 
-# Add area to team
+# Añadir un área al equipo
 az boards area team add \
   --team {team-name} \
   --path "Project\\NewArea" \
   --project {project}
 
-# Remove area from team
+# Quitar un área del equipo
 az boards area team remove \
   --team {team-name} \
   --path "Project\\AreaToRemove" \
   --project {project}
 
-# Update team area
+# Actualizar un área del equipo
 az boards area team update \
   --team {team-name} \
   --path "Project\\Area" \
@@ -186,22 +186,22 @@ az boards area team update \
   --include-sub-areas true
 ```
 
-## Iterations
+## Iteraciones
 
-### List Iterations for Project
+### Enumerar las iteraciones de un proyecto
 
 ```bash
 az boards iteration project list --project {project}
 az boards iteration project show --path "Project\\Sprint 1" --project {project}
 ```
 
-### Create Iteration
+### Crear una iteración
 
 ```bash
 az boards iteration project create --path "Project\\Sprint 1" --project {project}
 ```
 
-### Update Iteration
+### Actualizar una iteración
 
 ```bash
 az boards iteration project update \
@@ -210,62 +210,62 @@ az boards iteration project update \
   --project {project}
 ```
 
-### Delete Iteration
+### Eliminar una iteración
 
 ```bash
 az boards iteration project delete --path "Project\\OldSprint" --project {project} --yes
 ```
 
-### Team Iterations
+### Iteraciones del equipo
 
 ```bash
-# List iterations for team
+# Enumerar las iteraciones del equipo
 az boards iteration team list --team {team-name} --project {project}
 
-# Add iteration to team
+# Añadir una iteración al equipo
 az boards iteration team add \
   --team {team-name} \
   --path "Project\\Sprint 1" \
   --project {project}
 
-# Remove iteration from team
+# Quitar una iteración del equipo
 az boards iteration team remove \
   --team {team-name} \
   --path "Project\\Sprint 1" \
   --project {project}
 
-# List work items in iteration
+# Enumerar los elementos de trabajo de la iteración
 az boards iteration team list-work-items \
   --team {team-name} \
   --path "Project\\Sprint 1" \
   --project {project}
 ```
 
-### Default & Backlog Iterations
+### Iteraciones predeterminada y del backlog
 
 ```bash
-# Set default iteration for team
+# Establecer la iteración predeterminada del equipo
 az boards iteration team set-default-iteration \
   --team {team-name} \
   --path "Project\\Sprint 1" \
   --project {project}
 
-# Show default iteration
+# Mostrar la iteración predeterminada
 az boards iteration team show-default-iteration \
   --team {team-name} \
   --project {project}
 
-# Set backlog iteration for team
+# Establecer la iteración del backlog del equipo
 az boards iteration team set-backlog-iteration \
   --team {team-name} \
   --path "Project\\Sprint 1" \
   --project {project}
 
-# Show backlog iteration
+# Mostrar la iteración del backlog
 az boards iteration team show-backlog-iteration \
   --team {team-name} \
   --project {project}
 
-# Show current iteration
+# Mostrar la iteración actual
 az boards iteration team show --team {team-name} --project {project} --timeframe current
 ```

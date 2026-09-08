@@ -1,198 +1,198 @@
-# Advanced Usage: Output, Queries & Parameters
+# Uso avanzado: salida, consultas y parámetros
 
-## Table of Contents
+## Índice
 
-- [Output Formats](#output-formats)
-- [JMESPath Queries](#jmespath-queries)
-- [Advanced JMESPath Queries](#advanced-jmespath-queries)
-- [Global Arguments](#global-arguments)
-- [Common Parameters](#common-parameters)
-- [Git Aliases](#git-aliases)
-- [Getting Help](#getting-help)
+- [Formatos de salida](#formatos-de-salida)
+- [Consultas JMESPath](#consultas-jmespath)
+- [Consultas JMESPath avanzadas](#consultas-jmespath-avanzadas)
+- [Argumentos globales](#argumentos-globales)
+- [Parámetros habituales](#parámetros-habituales)
+- [Alias de Git](#alias-de-git)
+- [Obtener ayuda](#obtener-ayuda)
 
 ---
 
-## Output Formats
+## Formatos de salida
 
-All commands support multiple output formats:
+Todos los comandos admiten varios formatos de salida:
 
 ```bash
-# Table format (human-readable)
+# Formato de tabla (legible para personas)
 az pipelines list --output table
 
-# JSON format (default, machine-readable)
+# Formato JSON (predeterminado, legible por máquina)
 az pipelines list --output json
 
-# JSONC (colored JSON)
+# JSONC (JSON con colores)
 az pipelines list --output jsonc
 
-# YAML format
+# Formato YAML
 az pipelines list --output yaml
 
-# YAMLC (colored YAML)
+# YAMLC (YAML con colores)
 az pipelines list --output yamlc
 
-# TSV format (tab-separated values)
+# Formato TSV (valores separados por tabuladores)
 az pipelines list --output tsv
 
-# None (no output)
+# None (sin salida)
 az pipelines list --output none
 ```
 
-## JMESPath Queries
+## Consultas JMESPath
 
-Filter and transform output:
+Filtra y transforma la salida:
 
 ```bash
-# Filter by name
+# Filtrar por nombre
 az pipelines list --query "[?name=='myPipeline']"
 
-# Get specific fields
+# Obtener campos concretos
 az pipelines list --query "[].{Name:name, ID:id}"
 
-# Chain queries
+# Encadenar consultas
 az pipelines list --query "[?name.contains('CI')].{Name:name, ID:id}" --output table
 
-# Get first result
+# Obtener el primer resultado
 az pipelines list --query "[0]"
 
-# Get top N
+# Obtener los primeros N
 az pipelines list --query "[0:5]"
 ```
 
-## Advanced JMESPath Queries
+## Consultas JMESPath avanzadas
 
-### Filtering and Sorting
+### Filtrado y ordenación
 
 ```bash
-# Filter by multiple conditions
+# Filtrar por varias condiciones
 az pipelines list --query "[?name.contains('CI') && enabled==true]"
 
-# Filter by status and result
+# Filtrar por estado y resultado
 az pipelines runs list --query "[?status=='completed' && result=='succeeded']"
 
-# Sort by date (descending)
+# Ordenar por fecha (descendente)
 az pipelines runs list --query "sort_by([?status=='completed'], &finishTime | reverse(@))"
 
-# Get top N items after filtering
+# Obtener los primeros N elementos después de filtrar
 az pipelines runs list --query "[?result=='succeeded'] | [0:5]"
 ```
 
-### Nested Queries
+### Consultas anidadas
 
 ```bash
-# Extract nested properties
+# Extraer propiedades anidadas
 az pipelines show --id $PIPELINE_ID --query "{Name:name, Repo:repository.{Name:name, Type:type}, Folder:folder}"
 
-# Query build details
+# Consultar los detalles de la compilación
 az pipelines build show --id $BUILD_ID --query "{ID:id, Number:buildNumber, Status:status, Result:result, Requested:requestedFor.displayName}"
 ```
 
-### Complex Filtering
+### Filtrado complejo
 
 ```bash
-# Find pipelines with specific YAML path
+# Encontrar canalizaciones con una ruta YAML concreta
 az pipelines list --query "[?process.type.name=='yaml' && process.yamlFilename=='azure-pipelines.yml']"
 
-# Find PRs from specific reviewer
+# Encontrar PR de un revisor concreto
 az repos pr list --query "[?contains(reviewers[?displayName=='John Doe'].displayName, 'John Doe')]"
 
-# Find work items with specific iteration and state
+# Encontrar elementos de trabajo con una iteración y estado concretos
 az boards work-item show --id $WI_ID --query "{Title:fields['System.Title'], State:fields['System.State'], Iteration:fields['System.IterationPath']}"
 ```
 
-### Aggregation
+### Agregación
 
 ```bash
-# Count items by status
+# Contar elementos por estado
 az pipelines runs list --query "groupBy([?status=='completed'], &[result]) | {Succeeded: [?key=='succeeded'][0].count, Failed: [?key=='failed'][0].count}"
 
-# Get unique reviewers
+# Obtener revisores únicos
 az repos pr list --query "unique_by(reviewers[], &displayName)"
 
-# Sum values
+# Sumar valores
 az pipelines runs list --query "[?result=='succeeded'] | [].{Duration:duration} | [0].Duration"
 ```
 
-### Conditional Transformation
+### Transformación condicional
 
 ```bash
-# Format dates
+# Dar formato a fechas
 az pipelines runs list --query "[].{ID:id, Date:createdDate, Formatted:createdDate | format_datetime(@, 'yyyy-MM-dd HH:mm')}"
 
-# Conditional output
+# Salida condicional
 az pipelines list --query "[].{Name:name, Status:(enabled ? 'Enabled' : 'Disabled')}"
 
-# Extract with defaults
+# Extraer con valores predeterminados
 az pipelines show --id $PIPELINE_ID --query "{Name:name, Folder:folder || 'Root', Description:description || 'No description'}"
 ```
 
-### Complex Workflows
+### Flujos de trabajo complejos
 
 ```bash
-# Find longest running builds
+# Encontrar las compilaciones de mayor duración
 az pipelines build list --query "sort_by([?result=='succeeded'], &queueTime) | reverse(@) | [0:3].{ID:id, Number:buildNumber, Duration:duration}"
 
-# Get PR statistics per reviewer
+# Obtener estadísticas de PR por revisor
 az repos pr list --query "groupBy([], &reviewers[].displayName) | [].{Reviewer:@.key, Count:length(@)}"
 
-# Find work items with multiple child items
+# Encontrar elementos de trabajo con varios elementos secundarios
 az boards work-item relation list --id $PARENT_ID --query "[?rel=='System.LinkTypes.Hierarchy-Forward'] | [].{ChildID:url | split('/', @) | [-1]}"
 ```
 
-## Global Arguments
+## Argumentos globales
 
-Available on all commands:
+Disponibles en todos los comandos:
 
-| Parameter | Description |
+| Parámetro | Descripción |
 |---|---|
-| `--help` / `-h` | Show command help |
-| `--output` / `-o` | Output format (json, jsonc, none, table, tsv, yaml, yamlc) |
-| `--query` | JMESPath query string for filtering output |
-| `--verbose` | Increase logging verbosity |
-| `--debug` | Show all debug logs |
-| `--only-show-errors` | Only show errors, suppress warnings |
-| `--subscription` | Name or ID of subscription |
-| `--yes` / `-y` | Skip confirmation prompts |
+| `--help` / `-h` | Mostrar la ayuda del comando |
+| `--output` / `-o` | Formato de salida (json, jsonc, none, table, tsv, yaml, yamlc) |
+| `--query` | Cadena de consulta JMESPath para filtrar la salida |
+| `--verbose` | Aumentar el detalle de los registros |
+| `--debug` | Mostrar todos los registros de depuración |
+| `--only-show-errors` | Mostrar solo errores y suprimir advertencias |
+| `--subscription` | Nombre o ID de la suscripción |
+| `--yes` / `-y` | Omitir las preguntas de confirmación |
 
-## Common Parameters
+## Parámetros habituales
 
-| Parameter | Description |
+| Parámetro | Descripción |
 |---|---|
-| `--org` / `--organization` | Azure DevOps organization URL (e.g., `https://dev.azure.com/{org}`) |
-| `--project` / `-p` | Project name or ID |
-| `--detect` | Auto-detect organization from git config |
-| `--yes` / `-y` | Skip confirmation prompts |
-| `--open` | Open resource in web browser |
-| `--subscription` | Azure subscription (for Azure resources) |
+| `--org` / `--organization` | URL de la organización de Azure DevOps (por ejemplo, `https://dev.azure.com/{org}`) |
+| `--project` / `-p` | Nombre o ID del proyecto |
+| `--detect` | Detectar automáticamente la organización desde la configuración de Git |
+| `--yes` / `-y` | Omitir las preguntas de confirmación |
+| `--open` | Abrir el recurso en el navegador web |
+| `--subscription` | Suscripción de Azure (para recursos de Azure) |
 
-## Git Aliases
+## Alias de Git
 
-After enabling git aliases:
+Después de habilitar los alias de Git:
 
 ```bash
-# Enable Git aliases
+# Habilitar alias de Git
 az devops configure --use-git-aliases true
 
-# Use Git commands for DevOps operations
+# Usar comandos de Git para operaciones de DevOps
 git pr create --target-branch main
 git pr list
 git pr checkout 123
 ```
 
-## Getting Help
+## Obtener ayuda
 
 ```bash
-# General help
+# Ayuda general
 az devops --help
 
-# Help for specific command group
+# Ayuda de un grupo de comandos concreto
 az pipelines --help
 az repos pr --help
 
-# Help for specific command
+# Ayuda de un comando concreto
 az repos pr create --help
 
-# Search for examples
+# Buscar ejemplos
 az find "az repos pr create"
 ```

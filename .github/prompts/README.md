@@ -1,47 +1,47 @@
-# Prompts Index
+# Índice de prompts
 
-This directory contains the GitHub Copilot prompt files for the workshop.
+Este directorio contiene los archivos de prompts de GitHub Copilot para la inmersión.
 
-> Important: keep `*.prompt.md` files directly in `.github/prompts/`. The workspace location documented by Copilot is flat (`.github/prompts/*.prompt.md`). Stage/persona organization is represented by the filename prefix and this index.
+> Importante: mantén los archivos `*.prompt.md` directamente en `.github/prompts/`. La ubicación del espacio de trabajo documentada por Copilot es plana (`.github/prompts/*.prompt.md`). La organización por etapa y persona se representa mediante el prefijo del nombre de archivo y este índice.
 
-## Naming Convention
+## Convención de nomenclatura
 
-| Prefix | Use |
+| Prefijo | Uso |
 | --- | --- |
-| `stage-<agent>-<task>.prompt.md` | Prompts for stage agents (`archaeologist`, `architect`, `builder`, `evolution`). |
-| `persona-<persona>-<task>.prompt.md` | Prompts for persona kits (`product-owner`, `developer`, `qa-engineer`, etc.). |
+| `stage-<agent>-<task>.prompt.md` | Prompts para agentes de etapa (`archaeologist`, `architect`, `builder`, `evolution`). |
+| `persona-<persona>-<task>.prompt.md` | Prompts para kits de persona (`product-owner`, `developer`, `qa-engineer`, etc.). |
 
-## Stage Prompts
+## Prompts de etapa
 
-| Agent | Files |
+| Agente | Archivos |
 | --- | --- |
 | `archaeologist` | `stage-archaeologist-*.prompt.md` |
 | `architect` | `stage-architect-*.prompt.md` |
 | `builder` | `stage-builder-*.prompt.md` |
 | `evolution` | `stage-evolution-*.prompt.md` |
 
-## Persona Prompts
+## Prompts de persona
 
-| Persona | Files |
+| Persona | Archivos |
 | --- | --- |
-| Product Owner | `persona-product-owner-*.prompt.md` |
-| Requirements Engineer | `persona-requirements-engineer-*.prompt.md` |
-| Enterprise Architect | `persona-enterprise-architect-*.prompt.md` |
-| Software Architect | `persona-software-architect-*.prompt.md` |
-| Technical Lead | `persona-technical-lead-*.prompt.md` |
-| Developer | `persona-developer-*.prompt.md` |
+| Responsable del producto | `persona-product-owner-*.prompt.md` |
+| Especialista en requisitos | `persona-requirements-engineer-*.prompt.md` |
+| Especialista en arquitectura empresarial | `persona-enterprise-architect-*.prompt.md` |
+| Especialista en arquitectura de software | `persona-software-architect-*.prompt.md` |
+| Responsable técnico | `persona-technical-lead-*.prompt.md` |
+| Persona desarrolladora | `persona-developer-*.prompt.md` |
 | DBA | `persona-dba-*.prompt.md` |
-| QA Engineer | `persona-qa-engineer-*.prompt.md` |
-| DevOps Engineer | `persona-devops-engineer-*.prompt.md` |
-| Tech Writer | `persona-tech-writer-*.prompt.md` |
+| Especialista en calidad | `persona-qa-engineer-*.prompt.md` |
+| Especialista en DevOps | `persona-devops-engineer-*.prompt.md` |
+| Especialista en redacción técnica | `persona-tech-writer-*.prompt.md` |
 
-## Maintenance Rules
+## Reglas de mantenimiento
 
-- Every prompt must have valid YAML frontmatter.
-- Prefer explicit `description`, `name`, `argument-hint` (when inputs exist), `agent`, and `tools` fields.
-- Avoid excessive tools; use the smallest set needed for the task.
-- Tools defined in the prompt replace, rather than extend, the custom agent's tools; declare all required permissions in the prompt itself.
-- Prefer portable VS Code aliases (`read`, `search`, `edit`, `execute`, `agent`, `web`, `todo`) over implementation-specific IDs.
-- Do not specify capacity or provider in the prompt. The user decides how to run the task.
-- When using a custom agent, reference its `name` from `.github/agents/` (for example, `archaeologist`, not the display name in the file body).
-- When adding a new prompt, use one of the prefixes above to preserve discoverability and organization.
+- Cada prompt debe tener un frontmatter YAML válido.
+- Prioriza campos explícitos `description`, `name`, `argument-hint` (cuando existan entradas), `agent` y `tools`.
+- Evita el exceso de herramientas; utiliza el conjunto mínimo necesario para la tarea.
+- Las herramientas definidas en el prompt sustituyen, no amplían, las herramientas del agente personalizado; declara todos los permisos necesarios en el propio prompt.
+- Prioriza alias portables de VS Code (`read`, `search`, `edit`, `execute`, `agent`, `web`, `todo`) frente a identificadores específicos de implementación.
+- No especifiques capacidad ni proveedor en el prompt. La persona usuaria decide cómo ejecutar la tarea.
+- Al utilizar un agente personalizado, referencia su `name` de `.github/agents/` (por ejemplo, `archaeologist`, no el nombre visible en el cuerpo del archivo).
+- Al añadir un prompt nuevo, utiliza uno de los prefijos anteriores para conservar la facilidad de descubrimiento y la organización.

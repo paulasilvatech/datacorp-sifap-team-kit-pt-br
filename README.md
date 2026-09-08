@@ -1,74 +1,79 @@
-# Team kit: SIFAP 2.0 workshop
+# Kit del equipo: inmersión SIFAP 2.0
 
-> **Track:** **Team kit** (you are here)
+> **Ruta:** **Kit del equipo** (estás aquí)
 
-Start at [`00-START-HERE.md`](00-START-HERE.md).
+Empieza por [`00-START-HERE.md`](00-START-HERE.md).
 
-## Repository languages
+## Idiomas del repositorio
 
-**`main` is always the English edition and the default branch.** The Brazilian Portuguese edition lives on `portugues-br`.
+**Esta es la edición en español, en la rama `espanol`. `main` es siempre la edición en inglés y la rama predeterminada.** La edición en portugués de Brasil reside en `portugues-br`.
 
-| Language | Branch | Documentation | Clone |
+| Idioma | Rama | Documentación | Clonación |
 |---|---|---|---|
-| **English** | [`main`](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/tree/main) | [Start here](00-START-HERE.md) · [Documentation index](docs/README.md) · [Copilot instructions](.github/copilot-instructions.md) | `git clone --branch main https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit.git` |
-| **Português (BR)** | [`portugues-br`](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/tree/portugues-br) | [Start here (pt-BR)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/portugues-br/00-START-HERE.md) · [Documentation index (pt-BR)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/portugues-br/docs/README.md) · [Copilot instructions (pt-BR)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/portugues-br/.github/copilot-instructions.md) | `git clone --branch portugues-br https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit.git` |
+| **English** | [`main`](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/tree/main) | [Empieza aquí (en)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/main/00-START-HERE.md) · [Índice de documentación (en)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/main/docs/README.md) · [Instrucciones de Copilot (en)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/main/.github/copilot-instructions.md) | `git clone --branch main https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit.git` |
+| **Português (BR)** | [`portugues-br`](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/tree/portugues-br) | [Empieza aquí (pt-BR)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/portugues-br/00-START-HERE.md) · [Índice de documentación (pt-BR)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/portugues-br/docs/README.md) · [Instrucciones de Copilot (pt-BR)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/portugues-br/.github/copilot-instructions.md) | `git clone --branch portugues-br https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit.git` |
+| **Español** | [`espanol`](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/tree/espanol) | [Empieza aquí](00-START-HERE.md) · [Índice de documentación](docs/README.md) · [Instrucciones de Copilot](.github/copilot-instructions.md) | `git clone --branch espanol https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit.git` |
 
-- Keep documentation and all Copilot primitive prose on `main` and `develop` in English, regardless of the conversation language.
-- Keep Brazilian Portuguese documentation and Copilot primitive prose on `portugues-br`; do not merge the translated documentation tree into `main`.
-- Preserve file names, paths, technical identifiers, and original Natural/Adabas sources when translating.
-- Add other languages to this table only after their branches exist. Native language names are allowed in the English language selector.
+- Mantén la documentación y toda la prosa de las primitivas de Copilot (agentes, prompts, instrucciones, skills y hooks) de `main` y `develop` en inglés, independientemente del idioma de la conversación.
+- Mantén la documentación y la prosa de las primitivas de Copilot en portugués de Brasil en `portugues-br` y en español en `espanol`; no integres el árbol de documentación traducida en `main` ni en `develop`.
+- Conserva los nombres de archivo, las rutas, los identificadores técnicos y las fuentes originales Natural/Adabas al traducir.
+- Añade otros idiomas a esta tabla solo después de que existan sus ramas. Se permiten los nombres nativos de los idiomas en el selector de la edición en inglés.
 
-Relative links keep you on the selected branch. Use the table above to change the documentation language.
+Los enlaces relativos te mantienen en la rama seleccionada. Usa la tabla anterior para cambiar el idioma de la documentación.
 
----
+Portal público del equipo: <https://workshop-gbb.github.io/datacorp-sifap-modernization-team-kit/> — [English (`en`)](https://workshop-gbb.github.io/datacorp-sifap-modernization-team-kit/en/) · [Português (BR) (`pt-br`)](https://workshop-gbb.github.io/datacorp-sifap-modernization-team-kit/pt-br/) · [Español (`es`)](https://workshop-gbb.github.io/datacorp-sifap-modernization-team-kit/es/).
 
-![SIFAP modernization journey: from Natural and Adabas to Java 21 and Next.js 15](assets/hero-sifap-journey.svg)
-
-**The mission in one sentence:** you and four teammates have **eight hours** to modernize the 29-year-old **Payment Inspection and Administration System (SIFAP)**, moving from legacy Natural/Adabas to Java 21 + Next.js 15, with full traceability from the modern code back to the original business rules.
-
-![Stage: overview](https://img.shields.io/badge/Stage-Overview-171717?style=flat-square) ![Duration: 8 hours](https://img.shields.io/badge/Duration-8%20hours-737373?style=flat-square) ![Audience: whole team](https://img.shields.io/badge/Audience-Whole%20team-A3A3A3?style=flat-square)
+El portal incluye cada Markdown íntegro, un catálogo con búsqueda, descargas originales y enlaces al repositorio. Puedes seguir las mismas instrucciones en el sitio o en GitHub.
 
 ---
 
-## Where to start (choose your profile)
+![Recorrido de modernización de SIFAP: de Natural y Adabas a Java 21 y Next.js 15](assets/hero-sifap-journey.svg)
 
-| I am... | Start here |
+**La misión en una frase:** tú y cuatro compañeros de equipo tienen **ocho horas** para modernizar el **Sistema de Fiscalización y Administración de Pagos (SIFAP)**, de 29 años, pasando del legado Natural/Adabas a Java 21 + Next.js 15, con trazabilidad completa desde el código moderno hasta las reglas de negocio originales.
+
+![Etapa: descripción general](https://img.shields.io/badge/Stage-Overview-171717?style=flat-square) ![Duración: 8 horas](https://img.shields.io/badge/Duration-8%20hours-737373?style=flat-square) ![Público: todo el equipo](https://img.shields.io/badge/Audience-Whole%20team-A3A3A3?style=flat-square)
+
+---
+
+## Por dónde empezar (elige tu perfil)
+
+| Soy... | Empieza aquí |
 |---|---|
-| **First time here or non-technical profile** | [`00-START-HERE.md`](00-START-HERE.md) - 15 guided minutes |
-| **Developer, I want the schedule** | [`00-TEAM-FLOW.md`](00-TEAM-FLOW.md) - 10 minutes |
-| **I want to understand the concepts first** | [`07-concepts/`](07-concepts/) - core concepts |
-| **I want to set up my environment** | [`00-SETUP.md`](00-SETUP.md) - laptop + Copilot |
-| **How does Git work in this workshop?** | [`00-GIT-WORKFLOW.md`](00-GIT-WORKFLOW.md) - one branch per persona |
-| **Something went wrong** | [`docs/troubleshooting.md`](docs/troubleshooting.md) |
-| **I am the team lead** | [`docs/CHECKLIST-LIDER.md`](docs/CHECKLIST-LIDER.md) - hour by hour |
-| **I want to avoid common mistakes** | [`docs/lessons-learned.md`](docs/lessons-learned.md) |
-| **I will give the demo** | [`docs/demo-script.md`](docs/demo-script.md) |
-| **I want to see the day's progress** | [`docs/STATUS.md`](docs/STATUS.md) |
+| **Es mi primera visita o tengo un perfil no técnico** | [`00-START-HERE.md`](00-START-HERE.md) - 15 minutos guiados |
+| **Desarrollador, quiero ver el cronograma** | [`00-TEAM-FLOW.md`](00-TEAM-FLOW.md) - 10 minutos |
+| **Quiero entender primero los conceptos** | [`07-concepts/`](07-concepts/) - conceptos fundamentales |
+| **Quiero configurar mi entorno** | [`00-SETUP.md`](00-SETUP.md) - portátil + Copilot |
+| **¿Cómo funciona Git en esta inmersión?** | [`00-GIT-WORKFLOW.md`](00-GIT-WORKFLOW.md) - una rama por persona |
+| **Algo salió mal** | [`docs/troubleshooting.md`](docs/troubleshooting.md) |
+| **Soy el líder del equipo** | [`docs/CHECKLIST-LIDER.md`](docs/CHECKLIST-LIDER.md) - hora por hora |
+| **Quiero evitar errores comunes** | [`docs/lessons-learned.md`](docs/lessons-learned.md) |
+| **Voy a presentar la demo** | [`docs/demo-script.md`](docs/demo-script.md) |
+| **Quiero ver el progreso del día** | [`docs/STATUS.md`](docs/STATUS.md) |
 
 ---
 
-## View the live legacy system
+## Consulta el sistema heredado en vivo
 
-SIFAP is not only reading material. A shared environment runs the real Natural/Adabas system with synthetic data. Participants receive **viewer-only** access to the beneficiary query screen; deployment and administration are outside the team exercise.
+SIFAP no es solo material de lectura. Un entorno compartido ejecuta el sistema real Natural/Adabas con datos sintéticos. Los participantes reciben acceso **solo como observadores** a la pantalla de consulta de beneficiarios; el despliegue y la administración quedan fuera del ejercicio del equipo.
 
-| What | Where |
+| Qué | Dónde |
 |---|---|
-| **Viewer terminal** | <https://sifap-lab-438k30.eastus2.cloudapp.azure.com/terminal/> |
-| **Username** | `viewer` |
-| **Password** | Shared privately by the facilitator; never committed |
-| **Allowed** | Query beneficiary data in the generated read-only `VIEWBENF` screen |
-| **Not allowed** | Adabas administration, Natural command line, registration, batch jobs, or infrastructure access |
+| **Terminal del visor** | <https://sifap-lab-438k30.eastus2.cloudapp.azure.com/terminal/> |
+| **Nombre de usuario** | `viewer` |
+| **Contraseña** | La persona facilitadora la comparte en privado; nunca se incluye en un commit |
+| **Permitido** | Consultar datos de beneficiarios en la pantalla generada de solo lectura `VIEWBENF` |
+| **No permitido** | Administración de Adabas, línea de comandos de Natural, registro, trabajos batch o acceso a la infraestructura |
 
 > [!IMPORTANT]
-> Use only the viewer credential. The environment is shared, holds synthetic data, and is managed outside this public repository. If the URL does not answer, ask the facilitator; do not try to deploy or repair the lab.
+> Usa solo la credencial de observador. El entorno es compartido, contiene datos sintéticos y se administra fuera de este repositorio público. Si la URL no responde, pregunta a la persona facilitadora; no intentes desplegar ni reparar el laboratorio.
 
-Full access instructions: [`docs/legacy-system-access.md`](docs/legacy-system-access.md).
+Instrucciones de acceso completas: [`docs/legacy-system-access.md`](docs/legacy-system-access.md).
 
 ---
 
-## How the workshop is organized
+## Cómo se organiza la inmersión
 
-The workshop has **four sequential stages** and **five persona pairs** that work in parallel inside each stage. The final goal is a working SIFAP 2.0 demo.
+La inmersión tiene **cuatro etapas secuenciales** y **cinco parejas de personas** que trabajan en paralelo dentro de cada etapa. El objetivo final es una demo funcional de SIFAP 2.0.
 
 ```mermaid
 %%{init: {'theme':'neutral','themeVariables':{'fontFamily':'ui-sans-serif, system-ui, sans-serif','primaryColor':'#F5F5F5','primaryTextColor':'#171717','primaryBorderColor':'#171717','lineColor':'#525252','secondaryColor':'#FFFFFF','tertiaryColor':'#FAFAFA','background':'#FFFFFF'}}}%%
@@ -77,131 +82,131 @@ flowchart LR
     classDef handoff fill:#FFFFFF,stroke:#525252,color:#171717
     classDef result fill:#FFFFFF,stroke:#171717,color:#171717,stroke-width:2px
 
-    E1["Stage 1<br/>Archaeology<br/>@archaeologist"]:::step
-    H1["Handoff H1<br/>5 min sync"]:::handoff
-    E2["Stage 2<br/>Specification<br/>@architect"]:::step
-    H2["Handoff H2<br/>5 min sync"]:::handoff
-    E3["Stage 3<br/>Implementation<br/>@builder"]:::step
-    H3["Handoff H3<br/>5 min sync"]:::handoff
-    E4["Stage 4<br/>Evolution<br/>@evolution"]:::step
-    R["SIFAP 2.0<br/>running"]:::result
+    E1["Etapa 1<br/>Arqueología<br/>@archaeologist"]:::step
+    H1["Transición H1<br/>Sincronización de 5 min"]:::handoff
+    E2["Etapa 2<br/>Especificación<br/>@architect"]:::step
+    H2["Transición H2<br/>Sincronización de 5 min"]:::handoff
+    E3["Etapa 3<br/>Implementación<br/>@builder"]:::step
+    H3["Transición H3<br/>Sincronización de 5 min"]:::handoff
+    E4["Etapa 4<br/>Evolución<br/>@evolution"]:::step
+    R["SIFAP 2.0<br/>en ejecución"]:::result
 
     E1 --> H1 --> E2 --> H2 --> E3 --> H3 --> E4 --> R
 ```
 
-- **Five people** = five persona pairs, each pair co-owns two SDLC roles
-- **Four stages** = each stage has a dedicated Copilot agent
-- **Handoffs (H1, H2, H3)** = a five-minute sync between the pair leaving the stage and the pair entering it
-- **CI green** = a passing integration pipeline validates every Pull Request
-- **Final goal** = a live demo of SIFAP 2.0
+- **Cinco personas** = cinco parejas de personas, cada pareja comparte la responsabilidad de dos roles del SDLC
+- **Cuatro etapas** = cada etapa tiene un agente de Copilot dedicado
+- **Transiciones (H1, H2, H3)** = sincronización de cinco minutos entre la pareja que deja una etapa y la que entra en la siguiente
+- **CI en verde** = un pipeline de integración aprobado valida cada pull request
+- **Objetivo final** = una demo en vivo de SIFAP 2.0
 
 ---
 
-## Kit structure (recommended reading order)
+## Estructura del kit (orden de lectura recomendado)
 
 ```text
 workspace/
-├── README.md                            <- you are here
-├── 00-START-HERE.md                     <- 15 min for anyone
-├── 00-SETUP.md                          <- set up laptop + Copilot
-├── 00-TEAM-FLOW.md                      <- canonical schedule for the day
-├── 00-SITEMAP.md                        <- visual map of the kit
-├── 00-GIT-WORKFLOW.md                   <- branches, PRs, merges
+├── README.md                            <- estás aquí
+├── 00-START-HERE.md                     <- 15 min para cualquier persona
+├── 00-SETUP.md                          <- configurar portátil + Copilot
+├── 00-TEAM-FLOW.md                      <- cronograma canónico del día
+├── 00-SITEMAP.md                        <- mapa visual del kit
+├── 00-GIT-WORKFLOW.md                   <- ramas, PR e integraciones
 │
-├── 01-archaeology/                      STAGE 1 - read legacy SIFAP
-│   ├── GUIDE.md                         (stage walkthrough)
-│   ├── LEGACY-EXPLORATION-CHECKLIST.md  (required gate before Stage 2)
-│   └── legacy-sifap/                    (24 Natural members + 4 DDMs + 1 FDT)
-├── 02-modern-spec/                      STAGE 2 - write EARS, ADRs, C4
-├── 03-implementation/                   STAGE 3 - Java + Next.js + tests
-├── 04-evolution/                        STAGE 4 - Agent mode + Terraform
+├── 01-archaeology/                      ETAPA 1 - leer el SIFAP heredado
+│   ├── GUIDE.md                         (guía paso a paso de la etapa)
+│   ├── LEGACY-EXPLORATION-CHECKLIST.md  (puerta obligatoria antes de la Etapa 2)
+│   └── legacy-sifap/                    (24 miembros Natural + 4 DDM + 1 FDT)
+├── 02-modern-spec/                      ETAPA 2 - escribir EARS, ADR y C4
+├── 03-implementation/                   ETAPA 3 - Java + Next.js + pruebas
+├── 04-evolution/                        ETAPA 4 - modo Agent + Terraform
 │
-├── 05-personas/                         10 personas (pick 2 = your pair)
-├── 06-stage-agents/                     4 Copilot agents (1 per stage)
-├── 07-concepts/                         core concepts (EARS, ADR, SDD, agents)
-├── 09-cheat-sheets/                     3 quick reference cards
+├── 05-personas/                         10 personas (elige 2 = tu pareja)
+├── 06-stage-agents/                     4 agentes de Copilot (1 por etapa)
+├── 07-concepts/                         conceptos fundamentales (EARS, ADR, SDD, agentes)
+├── 09-cheat-sheets/                     3 fichas de referencia rápida
 │
-├── docs/                                viewer access, FAQ, troubleshooting, ADRs
-├── assets/                              SVGs and diagrams
-└── specs/                               Spec-Kit artifacts created by the team
+├── docs/                                acceso al visor, preguntas frecuentes, solución de problemas y ADR
+├── assets/                              SVG y diagramas
+└── specs/                               artefactos de Spec-Kit creados por el equipo
 ```
 
 ---
 
-## The five pairs (choose yours)
+## Las cinco parejas (elige la tuya)
 
-Each person takes **one pair** (two personas) and keeps it all day.
+Cada integrante asume **una pareja** (dos personas) y la mantiene durante todo el día.
 
-| Pair | Personas | SDLC phase |
+| Pareja | Personas | Fase del SDLC |
 |---|---|---|
-| **1 - Vision** | Product Owner + Requirements Engineer | Discovery + Specification |
-| **2 - Architecture** | Enterprise Architect + Software Architect | Specification + Design |
-| **3 - Implementation** | Technical Lead + Developer | Implementation + Evolution |
-| **4 - Quality** | DBA + QA Engineer | Implementation (data + tests) |
-| **5 - Operations** | DevOps Engineer + Tech Writer | Cross-cutting + Evolution |
+| **1 - Visión** | Responsable de Producto + Especialista en Requisitos | Descubrimiento + Especificación |
+| **2 - Arquitectura** | Arquitecto Empresarial + Arquitecto de Software | Especificación + Diseño |
+| **3 - Implementación** | Líder Técnico + Desarrollador | Implementación + Evolución |
+| **4 - Calidad** | DBA + Ingeniero de Calidad | Implementación (datos + pruebas) |
+| **5 - Operaciones** | Ingeniero DevOps + Redactor Técnico | Transversal + Evolución |
 
-Details for each role: [`05-personas/OVERVIEW.md`](05-personas/OVERVIEW.md)
+Detalles de cada rol: [`05-personas/OVERVIEW.md`](05-personas/OVERVIEW.md)
 
 ---
 
-## Approved tools: use only these
+## Herramientas aprobadas: usa solo estas
 
 > [!IMPORTANT]
-> The workshop runs on a fixed stack. Mixing alternative tools fragments the team and breaks traceability from spec to code to tests.
+> La inmersión se realiza con un conjunto fijo de tecnologías. Mezclar herramientas alternativas fragmenta al equipo y rompe la trazabilidad de la especificación al código y a las pruebas.
 
-| Use | Do not use |
+| Usa | No uses |
 |---|---|
-| **VS Code** (or Insiders) | Cursor, Windsurf, IntelliJ, Eclipse |
+| **VS Code** (o Insiders) | Cursor, Windsurf, IntelliJ, Eclipse |
 | **GitHub Copilot** (Ask + Plan + Agent) | Cline, Continue, Aider, Codeium, Tabnine |
-| **GitHub Copilot CLI** (optional) | Web chat UIs for code generation |
-| **Official Spec-Kit** (`Specify CLI`) | Kiro, alternative SDD frameworks |
-| **GitHub** (Issues, PRs, Actions) | - |
-| **Docker / Docker Compose** | Legacy containerization from another repository |
-| **Terraform** (Azure provider) | `terraform apply` without review (use only `plan` until Stage 4) |
+| **GitHub Copilot CLI** (opcional) | Interfaces de chat web para generar código |
+| **Spec-Kit oficial** (`Specify CLI`) | Kiro, frameworks de SDD alternativos |
+| **GitHub** (Issues, PR, Actions) | - |
+| **Docker / Docker Compose** | Contenerización heredada de otro repositorio |
+| **Terraform** (proveedor de Azure) | `terraform apply` sin revisión (usa solo `plan` hasta la Etapa 4) |
 
-The full rationale and the CI checks: [`.github/copilot-instructions.md`](.github/copilot-instructions.md)
+La justificación completa y las verificaciones de CI: [`.github/copilot-instructions.md`](.github/copilot-instructions.md)
 
 ---
 
-## Two agent layers, both required
+## Dos capas de agentes, ambas obligatorias
 
-The kit includes **two layers** that cover different axes (role x stage). Use both.
+El kit incluye **dos capas** que cubren ejes diferentes (rol x etapa). Usa ambas.
 
-| Layer | What it is | When to load it | How to use it |
+| Capa | Qué es | Cuándo cargarla | Cómo usarla |
 |---|---|---|---|
-| [`05-personas/`](05-personas/) | Your persona kit (responsibilities, prompts, skills) | Once during setup | Read your two `PERSONA.md` files; agents/prompts/skills are already consolidated in `.github/` |
-| [`06-stage-agents/`](06-stage-agents/) | The current stage agent (`@archaeologist` -> `@evolution`) | At every stage | Use the agent picker in Copilot Chat |
+| [`05-personas/`](05-personas/) | Tu kit de persona (responsabilidades, prompts, skills) | Una vez, durante la configuración | Lee tus dos archivos `PERSONA.md`; los agentes, prompts y skills ya están consolidados en `.github/` |
+| [`06-stage-agents/`](06-stage-agents/) | El agente de la etapa actual (`@archaeologist` -> `@evolution`) | En cada etapa | Usa el selector de agentes de Copilot Chat |
 
-**They are not duplicates.** Persona = your individual role. Agent = the stage the whole team is in right now.
+**No son duplicados.** Persona = tu rol individual. Agente = la etapa en la que está todo el equipo en este momento.
 
-Full explanation: [`07-concepts/02-agents-and-personas.md`](07-concepts/02-agents-and-personas.md)
+Explicación completa: [`07-concepts/02-agents-and-personas.md`](07-concepts/02-agents-and-personas.md)
 
 ---
 
-## Git: each persona on its own branch
+## Git: cada persona en su propia rama
 
-Each pair works on **its own branch**, opens a **Pull Request** to `develop`, gets a review from the downstream pair, and merges. At the end of the day, the lead merges `develop -> main`.
+Cada pareja trabaja en **su propia rama**, abre una **pull request** hacia `develop`, recibe una revisión de la siguiente pareja e integra los cambios. Al final del día, el líder integra `develop -> main`.
 
 ```text
-spec/<NNN>-<feature>  <- Stage 2 (RE + SA)
-impl/<NNN>-<feature>  <- Stage 3 (Dev + DBA + QA, created from develop)
-infra/<componente>    <- Stage 4 (DevOps)
-docs/<topico>         <- Cross-cutting (TW)
-agent/<issue-NN>      <- Stage 4 (Copilot Agent)
+spec/<NNN>-<feature>  <- Etapa 2 (RE + SA)
+impl/<NNN>-<feature>  <- Etapa 3 (Dev + DBA + QA, creada desde develop)
+infra/<componente>    <- Etapa 4 (DevOps)
+docs/<topico>         <- Transversal (TW)
+agent/<issue-NN>      <- Etapa 4 (Copilot Agent)
 ```
 
-Details and emergency commands: [`00-GIT-WORKFLOW.md`](00-GIT-WORKFLOW.md)
+Detalles y comandos de emergencia: [`00-GIT-WORKFLOW.md`](00-GIT-WORKFLOW.md)
 
 ---
 
-## How to use this kit (3 steps)
+## Cómo usar este kit (3 pasos)
 
-### 1. Initial setup (one time, ~45 min)
+### 1. Configuración inicial (una sola vez, ~45 min)
 
-- [ ] **Set up your environment.** Follow [`00-SETUP.md`](00-SETUP.md).
+- [ ] **Configura tu entorno.** Sigue [`00-SETUP.md`](00-SETUP.md).
 
 ```bash
-# Clone and open in VS Code
+# Clonar y abrir en VS Code
 cd ~/Code
 git clone --branch main <YOUR-TEAM-REPOSITORY-URL> workshop-team-XX
 cd workshop-team-XX
@@ -210,93 +215,93 @@ code .
 ```
 
 > [!NOTE]
-> The kit does not include a ready-made prototype, bootstrap scripts, or inherited containerization. Each team creates `backend/`, `frontend/`, and the required container/infra files during Stage 3.
+> El kit no incluye un prototipo listo, scripts de arranque ni contenerización heredada. Cada equipo crea `backend/`, `frontend/` y los archivos de contenedores e infraestructura necesarios durante la Etapa 3.
 
-### 2. Warm-up (~30 min, each person)
+### 2. Preparación (~30 min, cada persona)
 
-- [ ] **Read the day's schedule.**
+- [ ] **Lee el cronograma del día.**
 
 ```bash
 cat 00-TEAM-FLOW.md
 ```
 
-- [ ] **Read the core concepts** (non-developers: start here).
+- [ ] **Lee los conceptos fundamentales** (si no desarrollas software, empieza aquí).
 
 ```bash
 cat 07-concepts/00-README.md
 ```
 
-- [ ] **Read your two personas.**
+- [ ] **Lee tus dos personas.**
 
 ```bash
 cat 05-personas/XX-persona-A/PERSONA.md
 cat 05-personas/YY-persona-B/PERSONA.md
 ```
 
-- [ ] **Validate that the Copilot kits are consolidated.**
+- [ ] **Valida que los kits de Copilot estén consolidados.**
 
 ```bash
 ls .github/agents .github/prompts .github/skills
 ```
 
-### 3. Workshop day: follow the four stages
+### 3. Día de la inmersión: sigue las cuatro etapas
 
-- [ ] `01-archaeology/GUIDE.md` - read the legacy code, extract rules
-- [ ] `02-modern-spec/GUIDE.md` - EARS, ADRs, C4
-- [ ] `03-implementation/GUIDE.md` - Java + Next.js + tests
-- [ ] `04-evolution/GUIDE.md` - Agent mode + Terraform
-
----
-
-## Why this matters
-
-Most modernization projects fail not because the team does not know how to write Java, but because it writes Java for the **wrong problem**. Teams modernize the brief, not the system. They lose 29 years of business rules buried in code that nobody reads.
-
-![Four pain points in legacy SIFAP](assets/sifap-pain-points.svg)
-
-This kit exists to prevent that:
-
-- The legacy code ships with the workshop (in [`01-archaeology/legacy-sifap/`](01-archaeology/legacy-sifap/))
-- Traceability (`source_legacy:`) is required by CI
-- H1, H2, and H3 handoffs are scheduled in the timeline
-- Roles are explicit (10 `PERSONA.md` files)
-- You do not need to **invent** the process, you need to **run** it
+- [ ] `01-archaeology/GUIDE.md` - leer el código heredado y extraer reglas
+- [ ] `02-modern-spec/GUIDE.md` - EARS, ADR y C4
+- [ ] `03-implementation/GUIDE.md` - Java + Next.js + pruebas
+- [ ] `04-evolution/GUIDE.md` - modo Agent + Terraform
 
 ---
 
-## Teaching principles behind this kit
+## Por qué importa
 
-Every document here follows five principles:
+La mayoría de los proyectos de modernización no fracasan porque el equipo no sepa escribir Java, sino porque escribe Java para el **problema equivocado**. Los equipos modernizan el resumen del proyecto, no el sistema. Pierden 29 años de reglas de negocio enterradas en código que nadie lee.
 
-1. **Context first** - where the concept fits in the SDLC and why it matters
-2. **Executable step by step** - commands, checklist, or a clear sequence
-3. **Concrete example** - always SIFAP examples, never abstractions
-4. **Definition of done** - how to know the step is complete
-5. **Troubleshooting** - where there is operational risk, there is a troubleshooting section
+![Cuatro puntos problemáticos del SIFAP heredado](assets/sifap-pain-points.svg)
+
+Este kit existe para evitarlo:
+
+- El código heredado se incluye en la inmersión (en [`01-archaeology/legacy-sifap/`](01-archaeology/legacy-sifap/))
+- La CI exige trazabilidad (`source_legacy:`)
+- Las transiciones H1, H2 y H3 están programadas en el cronograma
+- Los roles son explícitos (10 archivos `PERSONA.md`)
+- No necesitas **inventar** el proceso, necesitas **ejecutarlo**
 
 ---
 
-## Quick glossary
+## Principios didácticos de este kit
 
-| Term | Objective definition |
+Todos los documentos de este kit siguen cinco principios:
+
+1. **Primero el contexto** - dónde encaja el concepto en el SDLC y por qué importa
+2. **Pasos ejecutables** - comandos, una lista de verificación o una secuencia clara
+3. **Ejemplo concreto** - siempre ejemplos de SIFAP, nunca abstracciones
+4. **Definición de terminado** - cómo saber que el paso está completo
+5. **Solución de problemas** - donde hay riesgo operativo, hay una sección de solución de problemas
+
+---
+
+## Glosario rápido
+
+| Término | Definición objetiva |
 |---|---|
-| **EARS** | Standard notation for writing unambiguous requirements; each requirement follows a fixed template with condition, subject, action, and expected result |
-| **ADR** | Architecture Decision Record - a formal record of an architecture decision, including context, alternatives considered, and consequences |
-| **Spec-Kit** | Official GitHub toolkit for specification-driven development; it creates `spec.md`, `plan.md`, and `tasks.md` for each feature |
-| **Persona-kit** | Set of Copilot artifacts (agents, prompts, skills) that configures a persona for the workshop |
-| **Agent-kit** | Copilot agent for the current stage; each stage has a dedicated agent (`@archaeologist`, `@architect`, `@builder`, `@evolution`) |
-| **source_legacy** | Required field in each EARS requirement that points to the source `.NSP`/`.NSN` or `.ddm` file; CI checks it |
-| **Bounded context** | Domain boundary that groups concepts with a coherent meaning (for example: Payment, Benefit, Inspection in SIFAP) |
-| **CI green** | State in which the continuous integration pipeline passes all checks; required before merging a Pull Request |
+| **EARS** | Notación estándar para escribir requisitos sin ambigüedades; cada requisito sigue una plantilla fija con condición, sujeto, acción y resultado esperado |
+| **ADR** | Registro de decisión de arquitectura: registro formal de una decisión de arquitectura, que incluye contexto, alternativas consideradas y consecuencias |
+| **Spec-Kit** | Kit de herramientas oficial de GitHub para el desarrollo guiado por especificaciones; crea `spec.md`, `plan.md` y `tasks.md` para cada funcionalidad |
+| **Kit de persona** | Conjunto de artefactos de Copilot (agentes, prompts, skills) que configura una persona para la inmersión |
+| **Kit de agente** | Agente de Copilot para la etapa actual; cada etapa tiene un agente dedicado (`@archaeologist`, `@architect`, `@builder`, `@evolution`) |
+| **source_legacy** | Campo obligatorio en cada requisito EARS que apunta al archivo fuente `.NSP`/`.NSN` o `.ddm`; la CI lo verifica |
+| **Contexto delimitado** | Límite de dominio que agrupa conceptos con un significado coherente (por ejemplo: Pago, Beneficio y Fiscalización en SIFAP) |
+| **CI en verde** | Estado en el que el pipeline de integración continua supera todas las verificaciones; obligatorio antes de integrar una pull request |
 
-Full glossary with 30+ terms: [`07-concepts/03-visual-glossary.md`](07-concepts/03-visual-glossary.md)
+Glosario completo con más de 30 términos: [`07-concepts/03-visual-glossary.md`](07-concepts/03-visual-glossary.md)
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| - | [00 - Start here](00-START-HERE.md)<br/><sub>15-minute walkthrough for anyone.</sub> |
+| - | [00 - Empieza aquí](00-START-HERE.md)<br/><sub>Recorrido de 15 minutos para cualquier persona.</sub> |
 
-<sub>[Back to the kit index](README.md)</sub>
+<sub>[Volver al índice del kit](README.md)</sub>

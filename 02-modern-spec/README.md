@@ -1,49 +1,49 @@
-# Stage 2 — Specification
+# Etapa 2 — Especificación
 
-> **Path:** [Team Kit](../README.md) › **Stage 2 — Specification**
+> **Ruta:** [Kit del equipo](../README.md) › **Etapa 2 — Especificación**
 
-**In this stage, Pair 2 transforms legacy discoveries into traceable requirements, a technical plan, and implementable tasks using GitHub Spec-Kit.**
+**En esta etapa, la Pareja 2 transforma los descubrimientos del legado en requisitos trazables, un plan técnico y tareas implementables mediante GitHub Spec-Kit.**
 
-![Stage 2](https://img.shields.io/badge/Stage-2%20%C2%B7%20Specification-171717?style=flat-square) ![Led by Pair 2](https://img.shields.io/badge/Lead-Pair%202%20%28EA%2BSA%29-404040?style=flat-square) ![Deliverable Spec-Kit](https://img.shields.io/badge/Deliverable-Spec--Kit-737373?style=flat-square)
+![Etapa 2](https://img.shields.io/badge/Stage-2%20%C2%B7%20Specification-171717?style=flat-square) ![Liderada por la Pareja 2](https://img.shields.io/badge/Lead-Pair%202%20%28EA%2BSA%29-404040?style=flat-square) ![Entregable Spec-Kit](https://img.shields.io/badge/Deliverable-Spec--Kit-737373?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Pair 2 (Enterprise Architect + Software Architect) and the entire team |
-| **Prerequisites** | Stage 1 completed; H1 handoff accepted by the PO |
-| **Estimated time** | 60 min (14:00–15:00) |
-| **Stage** | Stage 2 — Specification |
-| **Expected outcome** | `specs/<NNN>-<feature>/spec.md`, `plan.md`, and `tasks.md` with traceable requirements |
+| **Público objetivo** | Pareja 2 (Arquitectura Empresarial + Arquitectura de Software) y todo el equipo |
+| **Prerrequisitos** | Etapa 1 completada; transición H1 aceptada por el PO |
+| **Tiempo estimado** | 60 min (14:00–15:00) |
+| **Etapa** | Etapa 2 — Especificación |
+| **Resultado esperado** | `specs/<NNN>-<feature>/spec.md`, `plan.md` y `tasks.md` con requisitos trazables |
 
 > [!IMPORTANT]
-> Formal requirements, plans, and tasks live in `specs/<NNN>-<feature>/spec.md`, `plan.md`, and `tasks.md`.
-> This folder contains only Stage 2 supporting material, templates and scope decisions, and does not replace the Spec-Kit artifacts.
+> Los requisitos formales, los planes y las tareas residen en `specs/<NNN>-<feature>/spec.md`, `plan.md` y `tasks.md`.
+> Esta carpeta contiene solo material de apoyo, plantillas y decisiones de alcance de la Etapa 2, y no reemplaza los artefactos de Spec-Kit.
 
 ---
 
-## Where this fits in the day's flow
+## Dónde encaja en el flujo del día
 
-![Day timeline: pre-event, 4 stages, and demo, with the three H1, H2, and H3 handoffs](../assets/timeline-stages.svg)
+![Cronograma del día: preparación previa, 4 etapas y demo, con las tres transiciones H1, H2 y H3](../assets/timeline-stages.svg)
 
-## Who works here
+## Quién trabaja aquí
 
-![Persona distribution by pair: vision, architecture, implementation, quality, and operations](../assets/personas-team.svg)
+![Distribución de personas por pareja: visión, arquitectura, implementación, calidad y operaciones](../assets/personas-team.svg)
 
-## Contents of this folder
+## Contenido de esta carpeta
 
-| File | Purpose |
+| Archivo | Propósito |
 |---|---|
-| [`GUIDE.md`](GUIDE.md) | Timed guide and artifact location rule |
-| [`scope-decisions.md`](scope-decisions.md) | Record of scope selection, deferrals, and open questions |
-| [`ADR-TEMPLATE.md`](ADR-TEMPLATE.md) | Support for an architectural decision that blocks the plan |
-| [`templates/ADR.template.md`](templates/ADR.template.md) | ADR template for use through `/generate-adr` |
-| [`templates/bounded-contexts.template.md`](templates/bounded-contexts.template.md) | Bounded context map template |
+| [`GUIDE.md`](GUIDE.md) | Guía con cronograma y regla de ubicación de artefactos |
+| [`scope-decisions.md`](scope-decisions.md) | Registro de selección del alcance, aplazamientos y preguntas abiertas |
+| [`ADR-TEMPLATE.md`](ADR-TEMPLATE.md) | Apoyo para una decisión de arquitectura que bloquea el plan |
+| [`templates/ADR.template.md`](templates/ADR.template.md) | Plantilla de ADR para usar mediante `/generate-adr` |
+| [`templates/bounded-contexts.template.md`](templates/bounded-contexts.template.md) | Plantilla de mapa de contextos delimitados |
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Stage 1 — Archaeology](../01-archaeology/README.md)<br/><sub>Archaeology summary and links to the detailed GUIDE.</sub> | [Stage 2 — GUIDE](GUIDE.md)<br/><sub>14:00–15:00 · Create spec.md, plan.md, and tasks.md for a thin feature.</sub> |
+| [Etapa 1 — Arqueología](../01-archaeology/README.md)<br/><sub>Resumen de la arqueología y enlaces a la GUÍA detallada.</sub> | [Etapa 2 — GUÍA](GUIDE.md)<br/><sub>14:00–15:00 · Crear spec.md, plan.md y tasks.md para una funcionalidad acotada.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

@@ -1,86 +1,87 @@
-# GitHub Copilot Instructions — Legacy Modernization Workshop
+# Instrucciones de GitHub Copilot — Inmersión de modernización de sistemas heredados
 
-> These instructions tell Copilot what your team is building, which stack to use,
-> which conventions to follow, and what NOT to do. They apply to the team's entire
-> repository.
+> Estas instrucciones indican a Copilot qué está construyendo el equipo, qué tecnologías usar,
+> qué convenciones seguir y qué NO hacer. Se aplican a todo el
+> repositorio del equipo.
 
-## Approved Tools — These Only
+## Herramientas aprobadas — Solo estas
 
-This workshop uses a **fixed toolchain**: VS Code, GitHub Copilot (Ask + Plan + Agent modes), GitHub Spec-Kit, GitHub, Docker / Docker Compose, and Terraform. Other AI assistants, IDEs, web chat UIs, and SDD frameworks are not permitted because mixing tools breaks specification → code → test traceability. Full table: [`README.md`](../README.md).
+Esta inmersión utiliza una **cadena de herramientas fija**: VS Code, GitHub Copilot (modos Ask + Plan + Agent), GitHub Spec-Kit, GitHub, Docker / Docker Compose y Terraform. No se permiten otros asistentes de IA, IDE, interfaces de chat web ni marcos de SDD, porque mezclar herramientas rompe la trazabilidad especificación → código → prueba. Tabla completa: [`README.md`](../README.md).
 
-## Project Context
+## Contexto del proyecto
 
-Modernization of the 29-year-old Natural/Adabas **SIFAP** legacy system (Payment Inspection and Administration System) to Java 21 + Next.js 15. Legacy code is in [`01-archaeology/legacy-sifap/`](../01-archaeology/legacy-sifap/): 24 Natural members, 4 `.ddm` DDMs, and 1 FDT listing. The [`natural-programs/`](../01-archaeology/legacy-sifap/natural-programs/README.md) README documents the 15-assigned / 9-supporting split.
+Modernización del sistema heredado Natural/Adabas **SIFAP** (Sistema de Fiscalización y Administración de Pagos), con 29 años de antigüedad, a Java 21 + Next.js 15. El código heredado está en [`01-archaeology/legacy-sifap/`](../01-archaeology/legacy-sifap/): 24 miembros Natural, 4 DDM `.ddm` y 1 listado FDT. El README de [`natural-programs/`](../01-archaeology/legacy-sifap/natural-programs/README.md) documenta la distribución de 15 asignados y 9 de apoyo.
 
-The kit uses **two agent layers** (one persona kit per person + one stage agent per team). See [`06-stage-agents/README.md`](../06-stage-agents/README.md) for details.
+El kit utiliza **dos capas de agentes** (un kit de persona por participante + un agente de etapa por equipo). Consulta los detalles en [`06-stage-agents/README.md`](../06-stage-agents/README.md).
 
-Use the skills in [`.github/skills/`](skills/) for specialized workflows. Copilot selects the relevant skill from its description; do not duplicate specialized workflows in these global instructions.
+Utiliza las habilidades de [`.github/skills/`](skills/) para los flujos de trabajo especializados. Copilot selecciona la habilidad pertinente a partir de su descripción; no dupliques flujos especializados en estas instrucciones globales.
 
-## Repository languages
+## Idiomas del repositorio
 
-- Keep documentation and all Copilot primitive prose (agents, prompts, instructions, skills, and hooks) on `main` and `develop` in English; publish Brazilian Portuguese on `portugues-br`.
-- Follow the target branch's language, not the conversation language. Never merge the translated documentation tree into `main`.
-- Preserve technical paths, identifiers, and legacy sources. Keep the [language selector](../README.md#repository-languages) linked to existing language branches and their instructions.
+- Mantén en inglés la documentación y toda la prosa de las primitivas de Copilot (agentes, prompts, instrucciones, habilidades y hooks) en `main` y `develop`; publica portugués de Brasil en `portugues-br` y español en `espanol`.
+- Sigue el idioma de la rama de destino, no el de la conversación. Nunca integres el árbol de documentación traducida en `main` ni en `develop`.
+- Conserva las rutas técnicas, los identificadores y las fuentes heredadas. Mantén el [selector de idioma](../README.md#idiomas-del-repositorio) enlazado a las ramas de idioma existentes y sus instrucciones.
+- El portal de documentación en `site/` usa Astro + React, independientemente de la aplicación SIFAP. Sus diccionarios de interfaz traducida se permiten en `main`; la documentación del repositorio permanece en inglés. Consulta [ADR-0002](../docs/adr/0002-trilingual-documentation-portal.md).
 
-## Target Stack
+## Tecnologías de destino
 
 - **Backend:** Java 21 + Spring Boot 3.3 + JPA/Hibernate + PostgreSQL 16
-- **Frontend:** Next.js 15 (App Router) + TypeScript 5 (strict) + Tailwind CSS + shadcn/ui
-- **Containers:** Docker + Docker Compose created by the team in Stage 3/4 when necessary
-- **IaC:** Terraform (Azure provider ~> 3.x)
+- **Frontend:** Next.js 15 (App Router) + TypeScript 5 (modo `strict`) + Tailwind CSS + shadcn/ui
+- **Contenedores:** Docker + Docker Compose creados por el equipo en las etapas 3/4 cuando sea necesario
+- **IaC:** Terraform (proveedor de Azure ~> 3.x)
 - **CI/CD:** GitHub Actions
-- **Testing:** JUnit 5 + Testcontainers (backend); Vitest + Testing Library (frontend)
+- **Pruebas:** JUnit 5 + Testcontainers (backend); Vitest + Testing Library (frontend)
 
-## Cross-Cutting Implementation Rules
+## Reglas transversales de implementación
 
-Detailed Java, TypeScript, database, security, infrastructure, and test rules live in [`.github/instructions/`](instructions/) and load automatically for matching paths.
+Las reglas detalladas de Java, TypeScript, bases de datos, seguridad, infraestructura y pruebas se encuentran en [`.github/instructions/`](instructions/) y se cargan automáticamente para las rutas correspondientes.
 
-- Use English class names and comments.
-- Path REST APIs as `/api/v1/{resource}`.
-- Validate inputs at every system boundary.
-- Never hardcode secrets, API keys, or credentials.
-- Never expose sensitive data (CPF, benefit amounts) in logs — mask it.
-- Configure CORS explicitly — no `*` wildcard in production.
-- Use Managed Identity for Azure service-to-service authentication.
-- Write tests during implementation, not after the fact.
+- Utiliza nombres de clases y comentarios en inglés.
+- Define las rutas de las API REST como `/api/v1/{resource}`.
+- Valida las entradas en todos los límites del sistema.
+- Nunca incorpores directamente secretos, claves de API ni credenciales en el código.
+- Nunca expongas datos sensibles (CPF, importes de prestaciones) en los registros; enmascáralos.
+- Configura CORS explícitamente; no utilices el comodín `*` en producción.
+- Utiliza identidades administradas (Managed Identity) para la autenticación entre servicios de Azure.
+- Escribe las pruebas durante la implementación, no después.
 
-## Spec-Driven Development (Spec-Kit)
+## Desarrollo guiado por especificaciones (Spec-Kit)
 
-- Every requirement uses **EARS notation** (Easy Approach to Requirements Syntax)
-- Every requirement has a unique **REQ-ID** in the `REQ-NNN` format
-- **Every requirement includes a `source_legacy:` line** pointing to legacy files or `[GREENFIELD] + justification.`
-  Use `01-archaeology/legacy-sifap/natural-programs/*.{NSP,NSN,NSS,NSA,NSL,NSC,NSM,jcl}` or `01-archaeology/legacy-sifap/adabas-ddms/*.{NSD,ddm,txt}` for legacy-backed requirements.
-  The `legacy-traceability` CI job rejects PRs that violate this rule. See [`01-archaeology/LEGACY-EXPLORATION-CHECKLIST.md`](../01-archaeology/LEGACY-EXPLORATION-CHECKLIST.md).
-- Tests trace to REQ-IDs through inline comments
-- Branch strategy: one prefix per persona/stage, each cut from `develop` (never from `spec/*`) and merged back `develop` → `main`; there is no `stage` branch.
-  - `spec/<NNN>-<feature>` — RE + SA, Stage 2
-  - `impl/<NNN>-<feature>` — Dev + DBA + QA, Stage 3
-  - `infra/<component>` — DevOps, Stage 4
-  - `docs/<topic>` — Tech Writer
+- Cada requisito utiliza la **notación EARS** (enfoque sencillo para la sintaxis de requisitos)
+- Cada requisito tiene un **REQ-ID** único con el formato `REQ-NNN`
+- **Cada requisito incluye una línea `source_legacy:`** que apunta a archivos heredados o contiene `[GREENFIELD] + justificación.`
+  Utiliza `01-archaeology/legacy-sifap/natural-programs/*.{NSP,NSN,NSS,NSA,NSL,NSC,NSM,jcl}` o `01-archaeology/legacy-sifap/adabas-ddms/*.{NSD,ddm,txt}` para los requisitos fundamentados en el sistema heredado.
+  El trabajo de CI `legacy-traceability` rechaza las PR que incumplen esta regla. Consulta [`01-archaeology/LEGACY-EXPLORATION-CHECKLIST.md`](../01-archaeology/LEGACY-EXPLORATION-CHECKLIST.md).
+- Las pruebas se vinculan a los REQ-ID mediante comentarios en línea
+- Estrategia de ramas: un prefijo por persona/etapa, siempre creado a partir de `develop` (nunca de `spec/*`) e integrado de vuelta en `develop` → `main`; no existe una rama `stage`.
+  - `spec/<NNN>-<feature>` — RE + SA, etapa 2
+  - `impl/<NNN>-<feature>` — Dev + DBA + QA, etapa 3
+  - `infra/<component>` — DevOps, etapa 4
+  - `docs/<topic>` — Redacción técnica
   - `agent/<issue-NN>` — Copilot Agent
-  - Do not collapse `impl/` — or any other prefix — into `spec/`.
-  - Full per-persona table: [`00-GIT-WORKFLOW.md`](../00-GIT-WORKFLOW.md)
-- Before writing EARS requirements in Stage 2, the pair MUST have read their assigned Natural programs (HARD GATE — see the checklist above)
+  - No conviertas `impl/`, ni ningún otro prefijo, en `spec/`.
+  - Tabla completa por persona: [`00-GIT-WORKFLOW.md`](../00-GIT-WORKFLOW.md)
+- Antes de escribir requisitos EARS en la etapa 2, la pareja DEBE haber leído los programas Natural que tiene asignados (PUERTA OBLIGATORIA; consulta la lista de verificación anterior)
 
-## Strict Rules — Do Not Do This
+## Reglas estrictas — No hagas esto
 
-- ❌ Do not assume a pre-existing application prototype, inherited containerization, or workshop infrastructure. `backend/`, `frontend/`, and `infra/` do not exist yet — the team creates only what its selected slice requires during Stages 3 and 4. The shared Natural/Adabas viewer is external and read-only; never try to provision or administer it from this repository.
-- ❌ Do not write an EARS requirement without `source_legacy:` — CI will reject the PR
-- ❌ Do not add dependencies without justification in an ADR
-- ❌ Do not write tests after the fact — write them during implementation
-- ❌ Do not expose secrets in commit messages, logs, or PR descriptions
-- ❌ Do not merge into `main` without at least one peer review
-- ❌ Do not skip guided handoff conversations during stage transitions (see [`00-TEAM-FLOW.md`](../00-TEAM-FLOW.md))
-- ❌ Do not create a root `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md`. This file is the single source of truth for repo-wide agent instructions; every Copilot surface that reads `AGENTS.md` also reads this file, and this file outranks it in precedence — a second file only adds drift risk. See [`docs/adr/0001-agent-instructions-single-source-of-truth.md`](../docs/adr/0001-agent-instructions-single-source-of-truth.md).
-- ❌ Do not add or edit a Copilot primitive (agent, prompt, instruction, skill, or hook) that does not follow [`PRIMITIVE-STANDARD.md`](PRIMITIVE-STANDARD.md); the `copilot-primitives` CI job enforces its structure.
+- ❌ No supongas que existe un prototipo previo de la aplicación, una contenerización heredada ni infraestructura de la inmersión. `backend/`, `frontend/` e `infra/` todavía no existen; el equipo crea únicamente lo que requiere la porción seleccionada durante las etapas 3 y 4. El visor compartido de Natural/Adabas es externo y de solo lectura; nunca intentes aprovisionarlo ni administrarlo desde este repositorio.
+- ❌ No escribas un requisito EARS sin `source_legacy:`; la CI rechazará la PR
+- ❌ No añadas dependencias sin justificarlas en un ADR
+- ❌ No escribas las pruebas después; escríbelas durante la implementación
+- ❌ No expongas secretos en mensajes de commit, registros ni descripciones de PR
+- ❌ No integres cambios en `main` sin al menos una revisión por pares
+- ❌ No omitas las conversaciones guiadas de traspaso durante las transiciones entre etapas (consulta [`00-TEAM-FLOW.md`](../00-TEAM-FLOW.md))
+- ❌ No crees un archivo `AGENTS.md`, `CLAUDE.md` ni `GEMINI.md` en la raíz. Este archivo es la única fuente de verdad para las instrucciones de agentes de todo el repositorio; toda superficie de Copilot que lee `AGENTS.md` también lee este archivo, y este tiene mayor precedencia. Un segundo archivo solo añade riesgo de divergencia. Consulta [`docs/adr/0001-agent-instructions-single-source-of-truth.md`](../docs/adr/0001-agent-instructions-single-source-of-truth.md).
+- ❌ No añadas ni edites una primitiva de Copilot (agente, prompt, instrucción, habilidad o hook) que no siga [`PRIMITIVE-STANDARD.md`](PRIMITIVE-STANDARD.md); el trabajo de CI `copilot-primitives` exige su estructura.
 
-## References
+## Referencias
 
-- Schedule + pairs: [`00-TEAM-FLOW.md`](../00-TEAM-FLOW.md)
-- Git workflow: [`00-GIT-WORKFLOW.md`](../00-GIT-WORKFLOW.md)
-- Copilot's 3 modes (Ask · Plan · Agent): [`09-cheat-sheets/copilot-3-modes.md`](../09-cheat-sheets/copilot-3-modes.md)
-- Persona kits (read 2 per person; active artifacts are already consolidated in `.github/`): [`05-personas/`](../05-personas/)
-- Stage agents: [`06-stage-agents/`](../06-stage-agents/)
-- SIFAP legacy system: [`01-archaeology/legacy-sifap/`](../01-archaeology/legacy-sifap/)
-- Live legacy viewer: [`docs/legacy-system-access.md`](../docs/legacy-system-access.md)
-- Spec-Kit SDD: <https://github.com/github/spec-kit>
+- Cronograma + parejas: [`00-TEAM-FLOW.md`](../00-TEAM-FLOW.md)
+- Flujo de trabajo Git: [`00-GIT-WORKFLOW.md`](../00-GIT-WORKFLOW.md)
+- Los 3 modos de Copilot (Ask · Plan · Agent): [`09-cheat-sheets/copilot-3-modes.md`](../09-cheat-sheets/copilot-3-modes.md)
+- Kits de persona (lee 2 por participante; los artefactos activos ya están consolidados en `.github/`): [`05-personas/`](../05-personas/)
+- Agentes de etapa: [`06-stage-agents/`](../06-stage-agents/)
+- Sistema heredado SIFAP: [`01-archaeology/legacy-sifap/`](../01-archaeology/legacy-sifap/)
+- Visor del sistema heredado en funcionamiento: [`docs/legacy-system-access.md`](../docs/legacy-system-access.md)
+- SDD con Spec-Kit: <https://github.com/github/spec-kit>

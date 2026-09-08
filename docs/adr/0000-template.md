@@ -1,118 +1,118 @@
 <!-- markdownlint-disable MD024 -->
 
-# ADR-NNNN: Short, Decisive Title
+# ADR-NNNN: título breve y concluyente
 
-> **Path:** [Team Kit](../../README.md) › [Docs](../README.md) › [ADRs](README.md) › **Template**
+> **Ruta:** [Kit del equipo](../../README.md) › [Documentación](../README.md) › [ADR](README.md) › **Plantilla**
 
 > [!NOTE]
-> This is the ADR template. Copy this file to `NNNN-your-title.md`, replacing `NNNN` with the next sequential number, such as `0007`. Replace each instruction block with the actual decision content.
+> Esta es la plantilla de ADR. Copia este archivo a `NNNN-your-title.md`, reemplazando `NNNN` por el siguiente número secuencial, como `0007`. Reemplaza cada bloque de instrucciones con el contenido real de la decisión.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Status** | proposed \| accepted \| deprecated \| superseded |
-| **Date** | YYYY-MM-DD |
-| **Authors** | Persona — Name |
-| **Supersedes** | ADR-NNNN \| N/A |
+| **Estado** | propuesto \| aceptado \| obsoleto \| sustituido |
+| **Fecha** | YYYY-MM-DD |
+| **Autores** | Persona — Nombre |
+| **Sustituye a** | ADR-NNNN \| N/A |
 
 ---
 
-## Context
+## Contexto
 
 > [!NOTE]
-> Describe the problem motivating this decision. Reference the business objective, legacy constraint, or stakeholder need. Be specific. Cite REQ-IDs or programs in `01-archaeology/legacy-sifap/` when relevant.
+> Describe el problema que motiva esta decisión. Haz referencia al objetivo de negocio, la restricción del legado o la necesidad de una parte interesada. Sé específico. Cita REQ-ID o programas de `01-archaeology/legacy-sifap/` cuando sea pertinente.
 
-_Complete this section._
+_Completa esta sección._
 
 ---
 
-## Decision
+## Decisión
 
 > [!NOTE]
-> State the proposed change in active voice. Use one or two paragraphs. Examples: "We will adopt …", "We will not migrate …".
+> Expresa el cambio propuesto en voz activa. Usa uno o dos párrafos. Ejemplos: "Adoptaremos …", "No migraremos …".
 
-_Complete this section._
+_Completa esta sección._
 
 ---
 
-## Alternatives considered
+## Alternativas consideradas
 
 > [!NOTE]
-> List at least two alternatives. Explain why each was rejected.
+> Enumera al menos dos alternativas. Explica por qué se rechazó cada una.
 
-| Alternative | Why it was rejected |
+| Alternativa | Por qué se rechazó |
 |---|---|
-| Option A | — |
-| Option B | — |
+| Opción A | — |
+| Opción B | — |
 
 ---
 
-## Consequences
+## Consecuencias
 
 > [!NOTE]
-> What becomes easier? What becomes harder? Are there new risks?
+> ¿Qué se vuelve más fácil? ¿Qué se vuelve más difícil? ¿Hay riesgos nuevos?
 
-- **Easier:** —
-- **Harder:** —
-- **Risks:** —
-- **Mitigations:** —
-
----
-
-## Related
-
-- REQ-IDs: —
-- ADRs: —
-- Legacy source files: —
+- **Más fácil:** —
+- **Más difícil:** —
+- **Riesgos:** —
+- **Mitigaciones:** —
 
 ---
 
-## References
+## Relaciones
+
+- REQ-ID: —
+- ADR: —
+- Archivos fuente del legado: —
+
+---
+
+## Referencias
 
 > [!NOTE]
-> Cite documents, RFCs, or research that informed the decision.
+> Cita documentos, RFC o investigaciones que sirvieron de base para la decisión.
 
 ---
 
 <details>
-<summary><strong>Completed example — ADR-0001: Adopt Flyway for database migrations</strong></summary>
+<summary><strong>Ejemplo completado — ADR-0001: adoptar Flyway para las migraciones de base de datos</strong></summary>
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Status** | accepted |
-| **Date** | 2026-05-12 |
-| **Authors** | DBA — Carla Souza |
-| **Supersedes** | N/A |
+| **Estado** | aceptado |
+| **Fecha** | 2026-05-12 |
+| **Autores** | DBA — Carla Souza |
+| **Sustituye a** | N/A |
 
-### Context
+### Contexto
 
-The legacy SIFAP uses Adabas, a non-relational database. The modernization adopts PostgreSQL 16. We need a controlled schema-evolution strategy that tracks changes, supports recovery after errors, and integrates with CI. Program `SIFAP-PAGTO.NSN` (lines 45–78) reveals that the monthly payment cycle requires at least three schema transformations over time.
+El SIFAP heredado usa Adabas, una base de datos no relacional. La modernización adopta PostgreSQL 16. Necesitamos una estrategia controlada de evolución del esquema que registre los cambios, permita recuperarse de errores y se integre con la CI. El programa `SIFAP-PAGTO.NSN` (líneas 45–78) revela que el ciclo mensual de pagos requiere al menos tres transformaciones del esquema a lo largo del tiempo.
 
-### Decision
+### Decisión
 
-We will adopt Flyway as the migration tool. Each schema change will be represented by a version-controlled `V<N>__description.sql` file in the repository. CI will run `mvn flyway:migrate` on every pull request to `develop`.
+Adoptaremos Flyway como herramienta de migración. Cada cambio del esquema estará representado por un archivo `V<N>__description.sql` bajo control de versiones en el repositorio. La CI ejecutará `mvn flyway:migrate` en cada pull request hacia `develop`.
 
-### Alternatives considered
+### Alternativas consideradas
 
-| Alternative | Why it was rejected |
+| Alternativa | Por qué se rechazó |
 |---|---|
-| Liquibase | More verbose XML format and a steeper learning curve for the team during this workshop |
-| Manual migrations | No traceability, automated rollback, or CI integration |
+| Liquibase | Formato XML más extenso y una curva de aprendizaje más pronunciada para el equipo durante esta inmersión |
+| Migraciones manuales | Sin trazabilidad, rollback automatizado ni integración con la CI |
 
-### Consequences
+### Consecuencias
 
-- Easier: complete traceability of schema changes; CI validates them before merge.
-- Harder: migration files are immutable after merge; every correction requires a new file.
-- Risks: accidentally editing an applied migration breaks Flyway.
-- Mitigations: branch protection on `develop` plus the rule documented in `troubleshooting.md`.
+- Más fácil: trazabilidad completa de los cambios del esquema; la CI los valida antes de la integración.
+- Más difícil: los archivos de migración son inmutables después de integrarlos; cada corrección requiere un archivo nuevo.
+- Riesgos: editar accidentalmente una migración aplicada provoca fallos en Flyway.
+- Mitigaciones: protección de la rama `develop` y la regla documentada en `troubleshooting.md`.
 
 </details>
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [ADRs — Index](README.md)<br/><sub>Index of recorded decisions.</sub> | [Modern Specification](../../02-modern-spec/GUIDE.md)<br/><sub>Where ADRs are produced.</sub> |
+| [ADR — Índice](README.md)<br/><sub>Índice de decisiones registradas.</sub> | [Especificación moderna](../../02-modern-spec/GUIDE.md)<br/><sub>Donde se generan los ADR.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Volver al índice del kit](../../README.md)</sub>

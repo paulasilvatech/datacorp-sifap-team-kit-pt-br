@@ -1,70 +1,70 @@
 ---
 name: "user-story-refine"
-description: "Use when refining backlog items, splitting epics, or validating INVEST criteria. Triggers include \"refine story\", \"split epic\", \"acceptance criteria\", \"user story\", and \"INVEST\"."
+description: "Úsala para refinar elementos del backlog, dividir épicas o validar los criterios INVEST. Los desencadenantes incluyen \"refinar historia\", \"dividir épica\", \"criterios de aceptación\", \"historia de usuario\" e \"INVEST\"."
 ---
-# User story refinement
+# Refinamiento de historias de usuario
 
-## When to invoke
+## Cuándo invocar
 
-- "This story is too big. Help me split it."
-- "Turn this feature description into user stories with acceptance criteria."
-- "Check if these stories are INVEST-compliant."
+- "Esta historia es demasiado grande. Ayúdame a dividirla."
+- "Convierte esta descripción de funcionalidad en historias de usuario con criterios de aceptación."
+- "Comprueba si estas historias cumplen los criterios INVEST."
 
-## Required inputs
+## Entradas obligatorias
 
-- Feature or epic description
-- Persona / user type
-- Business objective served by the feature
-- Any known constraints (regulatory, technical, UX)
+- Descripción de la funcionalidad o épica
+- Persona o tipo de usuario
+- Objetivo de negocio al que contribuye la funcionalidad
+- Restricciones conocidas (normativas, técnicas o de UX)
 
-## Refinement steps
+## Pasos de refinamiento
 
-1. **Confirm the outcome**. Every story must answer: which persona, what outcome, and why it matters.
-2. **Apply INVEST** (Independent, Negotiable, Valuable, Estimable, Small, Testable) to every draft.
-3. **Split vertically**, never horizontally. Prefer splits by workflow step, data variation, CRUD operation, happy path vs. edge path, business rule, or acceptance criterion.
-4. **Write acceptance criteria in Given/When/Then format**. Include a happy path, an edge case, and a failure case.
-5. **Trace to a REQ-ID**. Every story links to at least one requirement.
+1. **Confirma el resultado**. Cada historia debe responder: qué persona, qué resultado y por qué importa.
+2. **Aplica INVEST** (independiente, negociable, valiosa, estimable, pequeña y comprobable) a cada borrador.
+3. **Divide verticalmente**, nunca horizontalmente. Prefiere divisiones por paso del flujo de trabajo, variación de datos, operación CRUD, flujo exitoso frente a casos límite, regla de negocio o criterio de aceptación.
+4. **Escribe los criterios de aceptación en formato Dado/Cuando/Entonces**. Incluye un flujo exitoso, un caso límite y un caso de fallo.
+5. **Establece la trazabilidad a un REQ-ID**. Cada historia se enlaza al menos con un requisito.
 
-## Splitting patterns
+## Patrones de división
 
-Use these when a story is too large to finish in one iteration:
+Úsalos cuando una historia sea demasiado grande para completarla en una iteración:
 
-| Pattern | Split a story by... | Example |
+| Patrón | Divide una historia por... | Ejemplo |
 |---|---|---|
-| Workflow steps | Each step of a multi-step flow | Submit vs review vs approve |
-| Business rule | One rule per story | Standard rate vs exempt rate |
-| Data variation | Each input type or format | Domestic vs international address |
-| CRUD operation | Create, read, update, and delete separately | Add record before edit record |
-| Happy vs edge | Core path first, then edge cases | Valid input before rejected input |
-| Research spike | Split off the unknown as a timeboxed spike | Prototype the integration first |
+| Pasos del flujo de trabajo | Cada paso de un flujo de varios pasos | Enviar, revisar y aprobar por separado |
+| Regla de negocio | Una regla por historia | Tarifa estándar frente a tarifa exenta |
+| Variación de datos | Cada tipo o formato de entrada | Dirección nacional frente a internacional |
+| Operación CRUD | Crear, leer, actualizar y eliminar por separado | Añadir un registro antes de editarlo |
+| Flujo exitoso frente a casos límite | Primero el flujo principal y después los casos límite | Entrada válida antes de entrada rechazada |
+| Investigación acotada (spike) | Separar lo desconocido como una investigación con tiempo limitado | Crear primero un prototipo de la integración |
 
-## Antipatterns
+## Antipatrones
 
-- Stories written as tasks ("Add a button").
-- Acceptance criteria that describe UI instead of behavior.
-- Horizontal splits ("backend story" + "frontend story" for the same feature).
-- Missing REQ-ID link.
+- Historias escritas como tareas ("Añadir un botón").
+- Criterios de aceptación que describen la interfaz en lugar del comportamiento.
+- Divisiones horizontales ("historia de backend" + "historia de frontend" para la misma funcionalidad).
+- Ausencia de un enlace a un REQ-ID.
 
-## Output template
+## Plantilla de salida
 
 ```markdown
-### US-NNN: <short title>
-**As a** <persona>
-**I want** <capability>
-**So that** <business outcome>
+### US-NNN: <título breve>
+**Como** <persona>
+**Quiero** <capacidad>
+**Para** <resultado de negocio>
 
-**Acceptance criteria**
-- Given <context>, when <action>, then <result>
-- Given <edge>, when <action>, then <result>
+**Criterios de aceptación**
+- Dado <contexto>, cuando <acción>, entonces <resultado>
+- Dado <caso límite>, cuando <acción>, entonces <resultado>
 
-**Traces to**: REQ-001, REQ-042
-**Effort**: S / M / L
-**Dependencies**: US-NNN (if any)
+**Trazabilidad a**: REQ-001, REQ-042
+**Esfuerzo**: S / M / L
+**Dependencias**: US-NNN (si existen)
 ```
 
-## Quality gate
+## Puerta de calidad
 
-- [ ] The story satisfies every INVEST criterion.
-- [ ] Acceptance criteria are written in Given/When/Then and cover happy, edge, and failure paths.
-- [ ] The story is split vertically, not by architectural layer.
-- [ ] The story traces to at least one REQ-ID, and each linked REQ-ID carries a `source_legacy:` line (enforced by the `legacy-traceability` CI job).
+- [ ] La historia cumple todos los criterios INVEST.
+- [ ] Los criterios de aceptación se escriben en formato Dado/Cuando/Entonces y cubren flujos exitosos, casos límite y fallos.
+- [ ] La historia se divide verticalmente, no por capa arquitectónica.
+- [ ] La historia tiene trazabilidad al menos a un REQ-ID, y cada REQ-ID enlazado incluye una línea `source_legacy:` (exigida por el job de CI `legacy-traceability`).

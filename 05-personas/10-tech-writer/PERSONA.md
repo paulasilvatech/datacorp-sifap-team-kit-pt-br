@@ -1,159 +1,159 @@
-# Persona — Tech Writer
+# Persona — Redactor Técnico
 
-> **Track:** [Team Kit](../../README.md) › [Personas](../OVERVIEW.md) › [Tech Writer](README.md) › **PERSONA**
+> **Ruta:** [Kit del equipo](../../README.md) › [Personas](../OVERVIEW.md) › [Redactor Técnico](README.md) › **PERSONA**
 
-**Reference profile for the Tech Writer persona in the SIFAP modernization workshop.**
+**Perfil de referencia de la persona Redactor Técnico en la inmersión de modernización de SIFAP.**
 
-![Pair 5](https://img.shields.io/badge/Par-5%20%C2%B7%20Opera%C3%A7%C3%B5es-171717?style=flat-square) ![Leads Stage 4](https://img.shields.io/badge/Lidera-Est%C3%A1gio%204-404040?style=flat-square) ![Cross-cutting](https://img.shields.io/badge/Atua%C3%A7%C3%A3o-Transversal-737373?style=flat-square)
+![Pareja 5](https://img.shields.io/badge/Par-5%20%C2%B7%20Opera%C3%A7%C3%B5es-171717?style=flat-square) ![Lidera la Etapa 4](https://img.shields.io/badge/Lidera-Est%C3%A1gio%204-404040?style=flat-square) ![Transversal](https://img.shields.io/badge/Atua%C3%A7%C3%A3o-Transversal-737373?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Role** | Tech Writer (Technical Writer) |
-| **Pair** | Pair 5 — Operations (with DevOps Engineer) |
-| **Active stages** | All stages (cross-cutting); leads Stage 4 — Evolution (Agent report) |
-| **Artifacts produced** | Glossary, discovery report (Stage 1), formatted spec and ADRs (Stage 2), complete README and `docs/` (Stage 3), Agent experience report (Stage 4) |
-| **Artifacts consumed** | Decisions and code from every pair |
-| **Handoff to** | Facilitators—final Stage 4 report; Product Owner—readable glossary and reports |
+| **Rol** | Redactor Técnico (Tech Writer) |
+| **Pareja** | Pareja 5 — Operaciones (con el Ingeniero DevOps) |
+| **Etapas activas** | Todas las etapas (transversal); lidera la Etapa 4 — Evolución (informe del agente) |
+| **Artefactos producidos** | Glosario e informe de descubrimiento (Etapa 1), especificación y ADR con formato (Etapa 2), README y `docs/` completos (Etapa 3), informe de experiencia con el agente (Etapa 4) |
+| **Artefactos consumidos** | Decisiones y código de todas las parejas |
+| **Entrega a** | Personas facilitadoras — informe final de la Etapa 4; Responsable de Producto — glosario e informes legibles |
 
 ---
 
-## What this persona is
+## Qué es esta persona
 
-The Tech Writer transforms decisions and code into durable project memory. In the SIFAP (Payment Inspection and Administration System) modernization, this persona maintains the glossary of Natural/Adabas legacy terms (MU, PE, FDT, DDM, monthly cycle), formalizes architecture decisions as ADRs (Architecture Decision Records), and ensures that the README reflects the application's real state every hour of the workshop, not only at the end.
+El Redactor Técnico transforma las decisiones y el código en la memoria duradera del proyecto. En la modernización de SIFAP (Sistema de Fiscalización y Administración de Pagos), esta persona mantiene el glosario de términos del legado Natural/Adabas (MU, PE, FDT, DDM, ciclo mensual), formaliza las decisiones de arquitectura como ADR (registros de decisiones de arquitectura) y garantiza que el README refleje el estado real de la aplicación en cada hora de la inmersión, no solo al final.
 
-Why it matters: without a deliberate Tech Writer, ADRs remain empty files, the README stays at "TODO: add instructions," and knowledge discovered during the workshop disappears. The Tech Writer makes team learning traceable and transferable.
+Por qué importa: sin un Redactor Técnico que actúe de forma deliberada, los ADR siguen siendo archivos vacíos, el README permanece en "TODO: añadir instrucciones" y el conocimiento descubierto durante la inmersión desaparece. El Redactor Técnico hace trazable y transferible el aprendizaje del equipo.
 
-Within the Agentic Legacy Modernization framework, the Tech Writer works with the Documentation Agent in every phase, maintaining traceability and an audit trail of decisions.
+Dentro del marco Agentic Legacy Modernization, el Redactor Técnico trabaja con el agente de documentación en cada fase, manteniendo la trazabilidad y una traza de auditoría de las decisiones.
 
-## Where you work in the SDLC
+## Dónde trabajas en el SDLC
 
 ```mermaid
 %%{init: {'theme':'neutral','themeVariables':{'fontFamily':'ui-sans-serif, system-ui, sans-serif','primaryColor':'#F5F5F5','primaryTextColor':'#171717','primaryBorderColor':'#171717','lineColor':'#525252','secondaryColor':'#FFFFFF','tertiaryColor':'#FAFAFA','background':'#FFFFFF'}}}%%
 flowchart LR
     classDef step fill:#F5F5F5,stroke:#171717,color:#171717
     classDef active fill:#FFFFFF,stroke:#171717,color:#171717,stroke-width:2px
-    S1["Stage 1<br/>Archaeology"]:::active --> S2["Stage 2<br/>Specification"]:::active
-    S2 --> S3["Stage 3<br/>Implementation"]:::active
-    S3 --> S4["Stage 4<br/>Evolution"]:::active
+    S1["Etapa 1<br/>Arqueología"]:::active --> S2["Etapa 2<br/>Especificación"]:::active
+    S2 --> S3["Etapa 3<br/>Implementación"]:::active
+    S3 --> S4["Etapa 4<br/>Evolución"]:::active
 ```
 
-| Stage | Responsibility | Deliverable |
+| Etapa | Responsabilidad | Entregable |
 |---|---|---|
-| **1 — Archaeology** | Maintain the glossary and catalog in readable form; write the discovery report at the end | Stage 1 report |
-| **2 — Specification** | Review the spec for consistency, terminology, and clarity; format ADRs with the template | Spec and ADRs in standard format |
-| **3 — Implementation** | Turn the placeholder README into real documentation; record decisions under `docs/` as they emerge | Complete README + `docs/` |
-| **4 — Evolution** | Follow the Copilot Agent and write an honest experience report covering what worked, failed, and was learned | Final Stage 4 report |
+| **1 — Arqueología** | Mantener el glosario y el catálogo en un formato legible; escribir el informe de descubrimiento al final | Informe de la Etapa 1 |
+| **2 — Especificación** | Revisar la coherencia, terminología y claridad de la especificación; dar formato a los ADR con la plantilla | Especificación y ADR en formato estándar |
+| **3 — Implementación** | Convertir el README provisional en documentación real; registrar las decisiones en `docs/` a medida que surjan | README completo + `docs/` |
+| **4 — Evolución** | Acompañar a Copilot Agent y escribir un informe de experiencia honesto sobre lo que funcionó, falló y se aprendió | Informe final de la Etapa 4 |
 
-## Core responsibility
+## Responsabilidad principal
 
-Keep documentation alive throughout the day—not only at the end. Grow the README every hour, write ADRs when decisions are made, maintain the changelog, and keep terminology consistent throughout the workshop.
+Mantener viva la documentación durante todo el día, no solo al final. Ampliar el README cada hora, escribir ADR cuando se tomen decisiones, mantener el registro de cambios y usar terminología coherente durante toda la inmersión.
 
-## Key skills
+## Competencias clave
 
-- Technical writing in the Diátaxis style: tutorials, how-to guides, reference, explanation
-- ADR formalization: context, decision, consequences—no more and no less
-- Documentation-to-code traceability: real endpoints, commands, and environment variables
-- Drift detection between documentation and code using `/doc-drift`
-- Glossary maintenance and consistent terminology across the project
+- Redacción técnica al estilo Diátaxis: tutoriales, guías prácticas, referencia y explicación
+- Formalización de ADR: contexto, decisión y consecuencias, ni más ni menos
+- Trazabilidad de la documentación al código: endpoints, comandos y variables de entorno reales
+- Detección de desalineaciones entre la documentación y el código mediante `/doc-drift`
+- Mantenimiento del glosario y terminología coherente en todo el proyecto
 
-## Persona kit
+## Kit de la persona
 
-| Artifact | Path | Use |
+| Artefacto | Ruta | Uso |
 |---|---|---|
-| Tech Writer agent | `.github/agents/tech-writer.agent.md` | API docs, README, `CODEMAP.md`, changelog, and drift detection |
-| Prompt `/generate-docs` | `.github/prompts/persona-tech-writer-generate-docs.prompt.md` | Generate documentation from code |
-| Prompt `/update-codemap` | `.github/prompts/persona-tech-writer-update-codemap.prompt.md` | Update the code map |
-| Prompt `/doc-drift` | `.github/prompts/persona-tech-writer-doc-drift.prompt.md` | Detect divergence between docs and code |
+| Agente Redactor Técnico | `.github/agents/tech-writer.agent.md` | Documentación de API, README, `CODEMAP.md`, registro de cambios y detección de desalineaciones |
+| Prompt `/generate-docs` | `.github/prompts/persona-tech-writer-generate-docs.prompt.md` | Generar documentación a partir del código |
+| Prompt `/update-codemap` | `.github/prompts/persona-tech-writer-update-codemap.prompt.md` | Actualizar el mapa de código |
+| Prompt `/doc-drift` | `.github/prompts/persona-tech-writer-doc-drift.prompt.md` | Detectar divergencias entre documentación y código |
 
-## Copilot tools and modes
+## Herramientas y modos de Copilot
 
-| Tool / Mode | When to use |
+| Herramienta / Modo | Cuándo usarlo |
 |---|---|
-| **Copilot Ask** | Review style, clarity, and terminology consistency |
-| **Copilot Ask (long-form writing)** | Draft long technical documentation sections |
-| **Spec-Kit** (`/speckit.*`) | Keep Specify CLI-generated `spec.md`, `plan.md`, and `tasks.md` consistent with team documentation |
-| **GitHub MCP** | Commit to `docs/` while other pairs work on code |
+| **Copilot Ask** | Revisar el estilo, la claridad y la coherencia terminológica |
+| **Copilot Ask (redacción extensa)** | Redactar secciones largas de documentación técnica |
+| **Spec-Kit** (`/speckit.*`) | Mantener `spec.md`, `plan.md` y `tasks.md`, generados por Specify CLI, coherentes con la documentación del equipo |
+| **GitHub MCP** | Crear commits en `docs/` mientras las otras parejas trabajan en el código |
 
-## Recommended cheat sheets
+## Fichas de referencia recomendadas
 
-- [`09-cheat-sheets/spec-kit-workflow.md`](../../09-cheat-sheets/spec-kit-workflow.md) — Specify CLI generates `spec.md`, `plan.md`, and `tasks.md`; keep them consistent with documentation
-- [`09-cheat-sheets/model-routing.md`](../../09-cheat-sheets/model-routing.md) — Haiku 4.5 for style review; Sonnet 4.6 for content writing
+- [`09-cheat-sheets/spec-kit-workflow.md`](../../09-cheat-sheets/spec-kit-workflow.md) — Specify CLI genera `spec.md`, `plan.md` y `tasks.md`; mantenlos coherentes con la documentación
+- [`09-cheat-sheets/model-routing.md`](../../09-cheat-sheets/model-routing.md) — Haiku 4.5 para revisión de estilo; Sonnet 4.6 para redacción de contenido
 
-## Hourly checkpoints
+## Puntos de control por hora
 
-The Tech Writer is the team's most cross-cutting persona. To avoid waiting for something to document, follow these checkpoints:
+El Redactor Técnico es la persona más transversal del equipo. Para evitar esperar a tener algo que documentar, sigue estos puntos de control:
 
-| Period | What to do | Visible deliverable |
+| Período | Qué hacer | Entregable visible |
 |---|---|---|
-| 11:00–12:00 | Read the programs assigned to Pair 5 and record terms supporting the selected scope | Glossary with relevant terms |
-| 13:30–14:00 | Consolidate vocabulary and decisions needed for the thin feature | Support for the feature spec |
-| 14:00–15:00 | Review `spec.md`, `plan.md`, and `tasks.md` for clarity; record the scope decision | Consistent formal artifacts |
-| 15:00–16:10 | Document real endpoints and commands created by the prototype | Updated factual documentation |
-| 16:10–16:50 | Follow the Agent and write `agent-experience-report.md` in real time | Completed honest report |
+| 11:00–12:00 | Leer los programas asignados a la Pareja 5 y registrar los términos que sustentan el alcance seleccionado | Glosario con términos relevantes |
+| 13:30–14:00 | Consolidar el vocabulario y las decisiones necesarios para la funcionalidad acotada | Apoyo para la especificación de la funcionalidad |
+| 14:00–15:00 | Revisar la claridad de `spec.md`, `plan.md` y `tasks.md`; registrar la decisión de alcance | Artefactos formales coherentes |
+| 15:00–16:10 | Documentar los endpoints y comandos reales creados por el prototipo | Documentación factual actualizada |
+| 16:10–16:50 | Acompañar al agente y escribir `agent-experience-report.md` en tiempo real | Informe honesto completado |
 
 > [!NOTE]
-> If you have nothing to document after 30 minutes, ask the stage-leading pair: _"What did you decide in the last 30 minutes that has not been written down yet?"_ There is almost always something.
+> Si después de 30 minutos no tienes nada que documentar, pregunta a la pareja que lidera la etapa: _"¿Qué decidieron en los últimos 30 minutos que aún no se ha escrito?"_ Casi siempre hay algo.
 
-## How to perform well
+## Cómo desempeñarte bien
 
-- [ ] **Give every ADR context, decision, and consequences.** No more, no less.
-- [ ] **Evolve the README every hour.** Not only at the end of the day.
-- [ ] **Keep terminology consistent from start to finish.** If the project uses "cycle," do not use "round" in the next paragraph.
-- [ ] **Write an honest Stage 4 report.** Do not sell the Agent; document what worked and what failed.
+- [ ] **Incluye contexto, decisión y consecuencias en cada ADR.** Ni más ni menos.
+- [ ] **Haz evolucionar el README cada hora.** No solo al final del día.
+- [ ] **Mantén una terminología coherente de principio a fin.** Si el proyecto usa "ciclo", no uses "ronda" en el siguiente párrafo.
+- [ ] **Escribe un informe honesto de la Etapa 4.** No hagas publicidad del agente; documenta lo que funcionó y lo que falló.
 
-## Common mistakes and how to avoid them
+## Errores comunes y cómo evitarlos
 
-| Symptom | Cause | Correction |
+| Síntoma | Causa | Corrección |
 |---|---|---|
-| Nothing written by the end of Stage 3 | Waiting for code to be "ready" | Document in real time—capture each decision when it is made |
-| One-line ADRs | Confusing a record with a note | Use the template: context, decision, consequences |
-| README still says "TODO: add instructions" | Postponement | Start with: (1) what the system is, (2) how to run it, (3) available endpoints |
-| Agent report contains only praise | Positive bias | Document friction, manual interventions, hallucinations, and corrections |
+| No hay nada escrito al final de la Etapa 3 | Esperar a que el código esté "listo" | Documenta en tiempo real: registra cada decisión cuando se tome |
+| ADR de una sola línea | Confundir un registro con una nota | Usa la plantilla: contexto, decisión y consecuencias |
+| El README sigue diciendo "TODO: añadir instrucciones" | Aplazamiento | Empieza por: (1) qué es el sistema, (2) cómo ejecutarlo, (3) endpoints disponibles |
+| El informe del agente contiene solo elogios | Sesgo positivo | Documenta las dificultades, las intervenciones manuales, las alucinaciones y las correcciones |
 
-## Combinations with other personas
+## Combinaciones con otras personas
 
-| Combination | Note |
+| Combinación | Nota |
 |---|---|
-| **Tech Writer + Product Owner** | Document the project's why, vision, and purpose |
-| **Tech Writer + DevOps Engineer** | Document while the pipeline runs, producing a natural runbook |
-| **Tech Writer + Requirements Engineer** | Strong for small teams—structure and write clear requirements |
+| **Redactor Técnico + Responsable de Producto** | Documenta el porqué, la visión y el propósito del proyecto |
+| **Redactor Técnico + Ingeniero DevOps** | Documenta mientras se ejecuta el pipeline, produciendo un runbook de forma natural |
+| **Redactor Técnico + Especialista en Requisitos** | Muy útil para equipos pequeños: estructurar y escribir requisitos claros |
 
-## Ready-to-use prompts
+## Prompts listos para usar
 
-1. **(Ask)** _"Review this README and identify TODO sections, inconsistent terminology, and outdated information such as ports, credentials, and endpoints. Propose corrections."_
-2. **(Plan)** _"In ADR-001.md, plan how to complete Context, Decision, and Consequences using the template in `02-modern-spec/ADR-TEMPLATE.md`."_
-3. **(Ask)** _"Create an honest Copilot Agent experience report: what worked, what surprised us, and what failed. Use the template in `04-evolution/agent-experience-report.md`."_
+1. **(Ask)** _"Revisa este README e identifica secciones TODO, terminología incoherente e información desactualizada, como puertos, credenciales y endpoints. Propón correcciones."_
+2. **(Plan)** _"En ADR-001.md, planifica cómo completar Contexto, Decisión y Consecuencias usando la plantilla de `02-modern-spec/ADR-TEMPLATE.md`."_
+3. **(Ask)** _"Crea un informe honesto de experiencia con Copilot Agent: qué funcionó, qué nos sorprendió y qué falló. Usa la plantilla de `04-evolution/agent-experience-report.md`."_
 
-## Emergency defaults
+## Opciones de emergencia
 
-| Situation | What to do |
+| Situación | Qué hacer |
 |---|---|
-| ADR format is unknown | Open `02-modern-spec/ADR-TEMPLATE.md` and copy and complete the three required sections |
-| README is empty | Start with: (1) what the system is, (2) how to run it, (3) available endpoints |
-| Glossary is blocked | Ask Copilot: _"List every abbreviation found in the SIFAP `.NSN` files and expand each one."_ |
-| Agent report is empty | Open `04-evolution/agent-experience-report.md`; the template has ready-to-fill sections |
+| No se conoce el formato de ADR | Abre `02-modern-spec/ADR-TEMPLATE.md`, copia y completa las tres secciones obligatorias |
+| El README está vacío | Empieza por: (1) qué es el sistema, (2) cómo ejecutarlo, (3) endpoints disponibles |
+| El glosario está bloqueado | Pregunta a Copilot: _"Enumera todas las abreviaturas encontradas en los archivos `.NSN` de SIFAP y desarrolla el significado de cada una."_ |
+| El informe del agente está vacío | Abre `04-evolution/agent-experience-report.md`; la plantilla tiene secciones listas para completar |
 
-## Dependencies
+## Dependencias
 
-| Persona | Relationship | Artifact |
+| Persona | Relación | Artefacto |
 |---|---|---|
-| All pairs | You depend on them | Decisions and code to document |
-| Product Owner | Depends on you | Readable glossary and reports |
-| QA Engineer | Indirectly depends on you | Consistent terminology in the spec |
-| Facilitators | Depend on you | Final Stage 4 report |
+| Todas las parejas | Dependes de ellas | Decisiones y código que documentar |
+| Responsable de Producto | Depende de ti | Glosario e informes legibles |
+| Ingeniero de Calidad | Depende de ti indirectamente | Terminología coherente en la especificación |
+| Personas facilitadoras | Dependen de ti | Informe final de la Etapa 4 |
 
-## How you are evaluated
+## Cómo se te evalúa
 
-- **Rubric A2 — Spec:** consistent documentation and standardized terminology
-- **Rubric A7 — Agent:** honest, detailed Copilot Agent experience report
-- **Criterion:** README evolved every hour; ADRs have context, decision, and consequences; no section says TODO
+- **Rúbrica A2 — Especificación:** documentación coherente y terminología estandarizada
+- **Rúbrica A7 — Agente:** informe de experiencia con Copilot Agent honesto y detallado
+- **Criterio:** el README evolucionó cada hora; los ADR tienen contexto, decisión y consecuencias; ninguna sección dice TODO
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [DevOps Engineer — PERSONA](../09-devops-engineer/PERSONA.md)<br/><sub>Pair 5 — Operations — Terraform, GitHub Actions, and runbook.</sub> | [Stage 1 — Archaeology](../../01-archaeology/GUIDE.md)<br/><sub>11:00–12:00 — Read the legacy system and catalog business rules.</sub> |
+| [Ingeniero DevOps — PERSONA](../09-devops-engineer/PERSONA.md)<br/><sub>Pareja 5 — Operaciones — Terraform, GitHub Actions y runbook.</sub> | [Etapa 1 — Arqueología](../../01-archaeology/GUIDE.md)<br/><sub>11:00–12:00 — Leer el sistema heredado y catalogar reglas de negocio.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Volver al índice del kit](../../README.md)</sub>

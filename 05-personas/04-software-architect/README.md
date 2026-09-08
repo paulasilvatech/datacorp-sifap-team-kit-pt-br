@@ -1,81 +1,81 @@
-# Software Architect — Copilot Kit
+# Arquitecto de Software — Kit de Copilot
 
-> **Trail:** [Team Kit](../../README.md) › [Personas](../OVERVIEW.md) › **Software Architect**
+> **Ruta:** [Kit del equipo](../../README.md) › [Personas](../OVERVIEW.md) › **Arquitecto de Software**
 
-**Inventory of the Copilot kit for the Software Architect persona.** Lists the active artifacts, where they live under `.github/`, and best practices specific to this role.
+**Inventario del kit de Copilot para la persona Arquitecto de Software.** Enumera los artefactos activos, su ubicación dentro de `.github/` y las prácticas recomendadas específicas de este rol.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Person acting as Software Architect in the workshop |
-| **Pair** | 2 · Architecture (with the Enterprise Architect) |
-| **SDLC phase** | Design → Implementation Oversight |
-| **Prerequisites** | [PERSONA.md](PERSONA.md) read |
-| **Expected outcome** | Kit validated, prompts accessible in Copilot Chat |
+| **Público objetivo** | Quien desempeña el rol de Arquitecto de Software en la inmersión |
+| **Pareja** | 2 · Arquitectura (con el Arquitecto Empresarial) |
+| **Fase del SDLC** | Diseño → Supervisión de la implementación |
+| **Prerrequisitos** | Haber leído [PERSONA.md](PERSONA.md) |
+| **Resultado esperado** | Kit validado y prompts accesibles en Copilot Chat |
 
 > [!IMPORTANT]
-> Read [PERSONA.md](PERSONA.md) before continuing. The profile explains the mission, handoff, and evaluation rubrics.
+> Lee [PERSONA.md](PERSONA.md) antes de continuar. El perfil explica la misión, la transición y las rúbricas de evaluación.
 
 ---
 
-## Concept
+## Concepto
 
-The Software Architect owns the system's internal structure. This role defines how modules are organized, where bounded contexts (Domain-Driven Design boundaries) begin and end, and which abstractions are exposed. In SIFAP (Payment Inspection and Administration System), this role produces the technical plan the implementation team will follow — `CODEMAP.md`, the package structure, and internal design ADRs.
+El Arquitecto de Software es responsable de la estructura interna del sistema. Este rol define cómo se organizan los módulos, dónde empiezan y terminan los contextos delimitados (límites del diseño guiado por el dominio) y qué abstracciones se exponen. En SIFAP (Sistema de Fiscalización y Administración de Pagos), este rol elabora el plan técnico que seguirá el equipo de implementación: `CODEMAP.md`, la estructura de paquetes y los ADR de diseño interno.
 
 ---
 
-## Persona kit
+## Kit de la persona
 
-| **Artifact** | Type | Purpose |
+| **Artefacto** | Tipo | Propósito |
 |---|---|---|
-| `PERSONA.md` | Profile | Responsibilities, handoff, prompts, and rubric |
-| `.github/agents/software-architect.agent.md` | Agent | Software architecture |
+| `PERSONA.md` | Perfil | Responsabilidades, transición, prompts y rúbrica |
+| `.github/agents/software-architect.agent.md` | Agente | Arquitectura de software |
 | `.github/prompts/persona-software-architect-codemap.prompt.md` | Prompt | `/codemap` |
 | `.github/prompts/persona-software-architect-impl-plan.prompt.md` | Prompt | `/impl-plan` |
 | `.github/prompts/persona-software-architect-api-validate.prompt.md` | Prompt | `/api-validate` |
-| `.github/instructions/backend.instructions.md` | Instructions | Backend conventions |
-| `.github/instructions/frontend.instructions.md` | Instructions | Frontend conventions |
+| `.github/instructions/backend.instructions.md` | Instrucciones | Convenciones de backend |
+| `.github/instructions/frontend.instructions.md` | Instrucciones | Convenciones de frontend |
 
 ---
 
-## Where the artifacts live
+## Dónde residen los artefactos
 
-The active artifacts are consolidated under the root `.github/` directory:
+Los artefactos activos están consolidados en el directorio `.github/` de la raíz:
 
-| **Type** | Path |
+| **Tipo** | Ruta |
 |---|---|
-| Agents | `.github/agents/` |
+| Agentes | `.github/agents/` |
 | Prompts | `.github/prompts/persona-*.prompt.md` |
 | Skills | `.github/skills/` |
-| Instructions | `.github/instructions/` |
+| Instrucciones | `.github/instructions/` |
 
-Use this directory as the reference. Active files live only under the root `.github/` directory — edit them there when maintenance is needed.
+Usa este directorio como referencia. Los archivos activos residen solo en el directorio `.github/` de la raíz; edítalos allí cuando necesiten mantenimiento.
 
-If the kit includes `mcp.json` and the facilitator requests local MCP, copy only that file to `.vscode/mcp.json`.
-
----
-
-## Best practices
-
-- Prefer composition over inheritance, clear boundaries over generic abstractions, and clear data over clever code.
-- API contracts are a public commitment; break them only with versioning and a migration guide.
-- Keep business rules out of the database and framework.
-- A growing `util` directory usually indicates a missing bounded context.
+Si el kit incluye `mcp.json` y la persona facilitadora solicita MCP local, copia solo ese archivo a `.vscode/mcp.json`.
 
 ---
 
-## References
+## Prácticas recomendadas
 
-- [Clean Architecture — Robert C. Martin](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
-- [Domain-Driven Design — Eric Evans](https://www.domainlanguage.com/ddd/)
-- [Hexagonal Architecture — Alistair Cockburn](https://alistair.cockburn.us/hexagonal-architecture/)
-- [Microsoft .NET Architecture Guides](https://learn.microsoft.com/dotnet/architecture/)
+- Prefiere la composición a la herencia, los límites claros a las abstracciones genéricas y los datos claros al código ingenioso.
+- Los contratos de API son un compromiso público; rómpelos solo con versionado y una guía de migración.
+- Mantén las reglas de negocio fuera de la base de datos y del framework.
+- Un directorio `util` que crece suele indicar que falta un contexto delimitado.
 
 ---
 
-### Continue reading
+## Referencias
 
-| Previous | Next |
+- [Arquitectura limpia — Robert C. Martin](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+- [Diseño guiado por el dominio — Eric Evans](https://www.domainlanguage.com/ddd/)
+- [Arquitectura hexagonal — Alistair Cockburn](https://alistair.cockburn.us/hexagonal-architecture/)
+- [Guías de arquitectura de Microsoft .NET](https://learn.microsoft.com/dotnet/architecture/)
+
+---
+
+### Sigue leyendo
+
+| Anterior | Siguiente |
 |---|---|
-| [OVERVIEW](../OVERVIEW.md)<br/><sub>Table of the 10 personas.</sub> | [PERSONA.md](PERSONA.md)<br/><sub>Profile for this persona.</sub> |
+| [DESCRIPCIÓN GENERAL](../OVERVIEW.md)<br/><sub>Tabla de las 10 personas.</sub> | [PERSONA.md](PERSONA.md)<br/><sub>Perfil de esta persona.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

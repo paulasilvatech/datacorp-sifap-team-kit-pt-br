@@ -1,28 +1,28 @@
-# Dependency Map — Legacy SIFAP
+# Mapa de dependencias — SIFAP heredado
 
-> **Track:** [Team Kit](../README.md) › [Stage 1](README.md) › **Dependency Map**
+> **Ruta:** [Kit del equipo](../README.md) › [Etapa 1](README.md) › **Mapa de dependencias**
 
-**Artifact completed by the team during Stage 1 — Step 3.** Records the dependencies between Natural programs and Adabas DDMs that support the selected scope.
+**Artefacto que completa el equipo durante el Paso 3 de la Etapa 1.** Registra las dependencias entre programas Natural y DDM de Adabas que sustentan el alcance seleccionado.
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | All pairs, led by Pair 2 (Architecture) |
-| **Prerequisites** | Rules catalog with identified sources |
-| **Stage** | Stage 1 — Archaeology |
-| **Expected outcome** | Mermaid diagram and edge tables with `file:line` evidence |
+| **Público objetivo** | Todas las parejas, bajo el liderazgo de la Pareja 2 (Arquitectura) |
+| **Prerrequisitos** | Catálogo de reglas con fuentes identificadas |
+| **Etapa** | Etapa 1 — Arqueología |
+| **Resultado esperado** | Diagrama Mermaid y tablas de aristas con evidencia `file:line` |
 
 > [!IMPORTANT]
-> Map only dependencies that explain the selected scope: `.NSN` programs calling other programs (`CALLNAT`, `FETCH`) and programs accessing DDMs (`READ`, `FIND`, `STORE`, `UPDATE`, `DELETE`). Every edge must be supported by `file:line`—no inference without evidence. This map informs the carving hypotheses in [`discovery-report.md`](discovery-report.md).
+> Mapea solo las dependencias que explican el alcance seleccionado: programas `.NSN` que llaman a otros programas (`CALLNAT`, `FETCH`) y programas que acceden a DDM (`READ`, `FIND`, `STORE`, `UPDATE`, `DELETE`). Cada arista debe estar respaldada por `file:line`: no hagas inferencias sin evidencia. Este mapa sirve de base para las hipótesis de delimitación de [`discovery-report.md`](discovery-report.md).
 
 > [!NOTE]
-> Step-by-step guide: [`GUIDE.md`](GUIDE.md).
+> Guía paso a paso: [`GUIDE.md`](GUIDE.md).
 
-**Team**: <!-- fill in -->
-**Scope**: programs and DDMs that support the selected feature
+**Equipo**: <!-- completar -->
+**Alcance**: programas y DDM que sustentan la funcionalidad seleccionada
 
 ---
 
-## Mermaid diagram
+## Diagrama Mermaid
 
 ```mermaid
 %%{init: {'theme':'neutral','themeVariables':{'fontFamily':'ui-sans-serif, system-ui, sans-serif','primaryColor':'#F5F5F5','primaryTextColor':'#171717','primaryBorderColor':'#171717','lineColor':'#525252','secondaryColor':'#FFFFFF','tertiaryColor':'#FAFAFA','background':'#FFFFFF'}}}%%
@@ -32,49 +32,49 @@ flowchart TD
     classDef muted fill:#FAFAFA,stroke:#A3A3A3,color:#404040
     classDef result fill:#FFFFFF,stroke:#171717,color:#171717,stroke-width:2px
 
-    %% fill in: nodes = programs and DDMs; edges = calls and data access
-    %% syntax example:
+    %% completar: nodos = programas y DDM; aristas = llamadas y acceso a datos
+    %% ejemplo de sintaxis:
     %% PROGRAMA1 -->|"CALLNAT"| PROGRAMA2
     %% PROGRAMA1 -->|"READ"| DDM1[("DDM1")]
 ```
 
 ---
 
-## Program → Program edges
+## Aristas Programa → Programa
 
-| # | From | To | Type (`CALLNAT`/`FETCH`) | Evidence (`file:line`) |
+| # | Origen | Destino | Tipo (`CALLNAT`/`FETCH`) | Evidencia (`file:line`) |
 |---|---|---|---|---|
-| 1 | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
+| 1 | <!-- completar --> | <!-- completar --> | <!-- completar --> | <!-- completar --> |
 
 ---
 
-## Program → DDM edges
+## Aristas Programa → DDM
 
-| # | Program | DDM | Operation (`READ`/`FIND`/`STORE`/`UPDATE`/`DELETE`) | Evidence (`file:line`) |
+| # | Programa | DDM | Operación (`READ`/`FIND`/`STORE`/`UPDATE`/`DELETE`) | Evidencia (`file:line`) |
 |---|---|---|---|---|
-| 1 | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> | <!-- fill in --> |
+| 1 | <!-- completar --> | <!-- completar --> | <!-- completar --> | <!-- completar --> |
 
 ---
 
-## Observations
+## Observaciones
 
-- **Most connected programs (hubs):** <!-- fill in -->
-- **Isolated programs or dead code:** <!-- fill in -->
-- **Batch dependency order:** <!-- fill in -->
-
----
-
-## Definition of done
-
-- [ ] Every edge relevant to the scope cites `file:line`.
-- [ ] Mermaid diagram generated with the `%%{init:...}%%` header and a neutral palette.
+- **Programas con más conexiones (nodos centrales):** <!-- completar -->
+- **Programas aislados o código muerto:** <!-- completar -->
+- **Orden de dependencias batch:** <!-- completar -->
 
 ---
 
-### Continue reading
+## Definición de terminado
 
-| Previous | Next |
+- [ ] Cada arista relevante para el alcance cita `file:line`.
+- [ ] Diagrama Mermaid generado con el encabezado `%%{init:...}%%` y una paleta neutral.
+
+---
+
+### Sigue leyendo
+
+| Anterior | Siguiente |
 |---|---|
-| [Rules Catalog](business-rules-catalog.md)<br/><sub>Step 2 — rule extraction.</sub> | [Open Questions](mysteries-found.md)<br/><sub>Step 4 — uncertainty record.</sub> |
+| [Catálogo de reglas](business-rules-catalog.md)<br/><sub>Paso 2 — extracción de reglas.</sub> | [Preguntas abiertas](mysteries-found.md)<br/><sub>Paso 4 — registro de incertidumbres.</sub> |
 
-<sub>[Back to the kit index](../README.md)</sub>
+<sub>[Volver al índice del kit](../README.md)</sub>

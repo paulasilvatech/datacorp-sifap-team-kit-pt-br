@@ -1,49 +1,49 @@
 ---
 
-title: "Template: Open Questions Record"
-description: "Neutral structure for recording open questions through /catalog-mysteries"
-author: "Paula Silva, AI-Native Software Engineer, Americas Global Black Belt at Microsoft"
+title: "Plantilla: registro de preguntas abiertas"
+description: "Estructura neutral para registrar preguntas abiertas mediante /catalog-mysteries"
+author: "Paula Silva, ingeniera de software nativo de IA, Global Black Belt para las Américas en Microsoft"
 date: "2026-04-29"
 version: "1.0.0"
 status: "approved"
 tags: ["template", "mysteries", "archaeology", "stage-1"]
 ---
 
-# Template: Open Questions Record — Stage 1
+# Plantilla: registro de preguntas abiertas — Etapa 1
 
-> **Track:** [Team Kit](../../README.md) › [Stage 1](../README.md) › **Templates** › **mysteries-found**
+> **Ruta:** [Kit del equipo](../../README.md) › [Etapa 1](../README.md) › **Plantillas** › **mysteries-found**
 
-**Uncertainty record template for Stage 1.**
+**Plantilla de registro de incertidumbres para la Etapa 1.**
 
 > [!IMPORTANT]
-> **Traceability gate.** Do not turn a question into a conclusion, rule, or requirement without explicit human validation and `path:line` evidence.
+> **Puerta de trazabilidad.** No conviertas una pregunta en una conclusión, regla o requisito sin validación humana explícita y evidencia `path:line`.
 
 > [!NOTE]
-> **This file is a template.** Copy it to your team repository and complete it with real data. Do not edit the original.
+> **Este archivo es una plantilla.** Cópiala al repositorio de tu equipo y complétala con datos reales. No edites el original.
 
 ---
 
-## Record
+## Registro
 
-| Open question | Evidence (`path:line`) | Impact | Hypothesis (unconfirmed) | Responsible person/area | Status |
+| Pregunta abierta | Evidencia (`path:line`) | Impacto | Hipótesis (sin confirmar) | Persona/área responsable | Estado |
 |---|---|---|---|---|---|
-| <!-- fill in --> | <!-- fill in: path:line --> | <!-- fill in --> | <!-- fill in: unconfirmed --> | <!-- fill in --> | <!-- fill in: open / awaiting human validation / closed after human validation --> |
+| <!-- completar --> | <!-- completar: path:line --> | <!-- completar --> | <!-- completar: sin confirmar --> | <!-- completar --> | <!-- completar: abierta / pendiente de validación humana / cerrada tras validación humana --> |
 
 ---
 
-## Definition of done
+## Definición de terminado
 
-- [ ] Every question is recorded without an answer or conclusion.
-- [ ] Evidence uses the `path:line` format.
-- [ ] The hypothesis is marked as unconfirmed.
-- [ ] An owner is identified.
+- [ ] Cada pregunta se registra sin respuesta ni conclusión.
+- [ ] La evidencia usa el formato `path:line`.
+- [ ] La hipótesis está marcada como sin confirmar.
+- [ ] Se identifica una persona responsable.
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Stage 1 GUIDE](../GUIDE.md)<br/><sub>Step-by-step schedule.</sub> | [Team file](../mysteries-found.md)<br/><sub>Where you complete it.</sub> |
+| [GUÍA de la Etapa 1](../GUIDE.md)<br/><sub>Cronograma paso a paso.</sub> | [Archivo del equipo](../mysteries-found.md)<br/><sub>Donde debes completarlo.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Volver al índice del kit](../../README.md)</sub>

@@ -1,317 +1,319 @@
-# Copilot Primitive Standard
+# Estándar de primitivas de Copilot
 
-`.github/` holds this kit's Copilot **primitives**: agents, prompts, instructions, skills, and hooks. This file is the written, citable standard for how every one of them is structured, so a new primitive can match the existing set without reverse-engineering it. The gold-standard reference the team names is the archaeologist agent ([`archaeologist.agent.md`](agents/archaeologist.agent.md)); the patterns below are derived from it and its peers.
+`.github/` contiene las **primitivas** de Copilot de este kit: agentes, prompts, instrucciones, habilidades y hooks. Este archivo es el estándar escrito y citable que define cómo se estructura cada una, de modo que una nueva primitiva pueda ajustarse al conjunto existente sin tener que reconstruir sus reglas mediante ingeniería inversa. La referencia de excelencia que identifica el equipo es el agente de arqueología ([`archaeologist.agent.md`](agents/archaeologist.agent.md)); los patrones siguientes se derivan de él y de los demás agentes.
 
 > [!IMPORTANT]
-> The documentation style guide ([`../docs/DOC-STYLE-GUIDE.md`](../docs/DOC-STYLE-GUIDE.md), rule R4) deliberately governs `docs/` and the numbered stage folders **only** — never `.github/`. Copilot primitives follow *this* standard instead, so a documentation pass must not restructure a primitive as prose.
+> La guía de estilo de documentación ([`../docs/DOC-STYLE-GUIDE.md`](../docs/DOC-STYLE-GUIDE.md), regla R4) rige deliberadamente **solo** `docs/` y las carpetas numeradas de las etapas, nunca `.github/`. Las primitivas de Copilot siguen *este* estándar, por lo que una revisión de documentación no debe reestructurar una primitiva como texto narrativo.
 
-## The harness model
+## El modelo de infraestructura de soporte
 
-A primitive is one surface of the repository's agent harness. The model used by this team kit is:
+Una primitiva es una de las superficies de la infraestructura de soporte de agentes del repositorio. El modelo que utiliza este kit de equipo es:
 
 ```text
-Harness = Instructions + Constraints + Feedback + Memory + Evaluation + Governance
+Infraestructura de soporte = Instrucciones + Restricciones + Retroalimentación + Memoria + Evaluación + Gobernanza
 ```
 
-| Layer | Primitive that carries it |
+| Capa | Primitiva que la implementa |
 |---|---|
-| Instructions | `copilot-instructions.md`, `instructions/*.instructions.md` |
-| Constraints | `hooks/*.json` that block a tool call; instruction `applyTo` scoping |
-| Feedback | prompts and agents that run checks and report back |
-| Memory | Team-owned ADRs, specifications, tests, and Git history |
-| Evaluation | `workflows/spec-quality.yml` plus `scripts/validate-copilot-primitives.py` |
-| Governance | this standard, enforced by the `copilot-primitives` CI job |
+| Instrucciones | `copilot-instructions.md`, `instructions/*.instructions.md` |
+| Restricciones | `hooks/*.json` que bloquean una llamada a una herramienta; delimitación del alcance de instrucciones mediante `applyTo` |
+| Retroalimentación | Prompts y agentes que ejecutan verificaciones e informan de sus resultados |
+| Memoria | ADR, especificaciones, pruebas e historial de Git que pertenecen al equipo |
+| Evaluación | `workflows/spec-quality.yml` junto con `scripts/validate-copilot-primitives.py` |
+| Gobernanza | Este estándar, aplicado por el trabajo de CI `copilot-primitives` |
 
-Prefer updating an existing primitive over adding a near-duplicate one.
+Prioriza actualizar una primitiva existente en lugar de añadir otra casi idéntica.
 
-## Rules that apply to every primitive
+Los [metadatos de idioma](language.json) de la rama identifican su edición. El validador reconoce los encabezados estructurales equivalentes en español en `espanol`; traducir la prosa nunca cambia los esquemas del frontmatter ni los identificadores técnicos.
 
-### Markdown and style
+## Reglas aplicables a todas las primitivas
 
-- [ ] English on `main` and `develop`; Brazilian Portuguese on `portugues-br`, including primitive prose. Follow the [repository language policy](../README.md#repository-languages), preserving paths, identifiers, and schemas. No emojis; convey NOTE, TIP, IMPORTANT, WARNING, and CAUTION with GFM alerts such as `> [!NOTE]`.
-- [ ] Exactly one H1 (`#`) per file — the document title, below the frontmatter. The primitive validator enforces this; markdownlint's MD025 (multiple top-level headings) is disabled.
-- [ ] The blank line between the closing `---` and the H1 is optional, and both forms lint clean: agents, prompts, and skills omit it, while the instruction files keep one. MD022 does not fire on the frontmatter boundary and is not overridden, so match the sibling files in the same directory rather than forcing a churn-only diff.
-- [ ] Never skip a heading level; go `#`, then `##`, then `###`.
-- [ ] Every fenced code block declares a language (for example `java`, `json`, `text`, or `bash`) — a house convention upheld in review, since markdownlint's MD040 is disabled.
-- [ ] Use real GFM tables (with the `|---|` separator row) whenever there are two or more dimensions, and `- [ ]` checklists for anything the reader must verify.
-- [ ] End with exactly one trailing newline. No trailing whitespace, hard tabs, or consecutive blank lines.
-- [ ] Never disable a markdownlint rule inline with an HTML comment pragma (failure #2). The root [`../.markdownlint-cli2.jsonc`](../.markdownlint-cli2.jsonc) is the only lint config; an inline pragma duplicates it and burns context-window tokens for zero instructional value. The pragmas stripped from 158 files disabled exactly the rules that config already disables — pure redundancy that changed nothing but cost tokens.
+### Markdown y estilo
 
-### Content and accuracy
+- [ ] Inglés en `main` y `develop`; portugués de Brasil en `portugues-br`; español en `espanol`, incluida la prosa de las primitivas. Sigue la [política de idiomas del repositorio](../README.md#idiomas-del-repositorio) y conserva rutas, identificadores y esquemas. El idioma de la conversación no cambia el de la rama; nunca integres el árbol de documentación traducida en `main` ni en `develop`. No utilices emojis; representa NOTE, TIP, IMPORTANT, WARNING y CAUTION mediante alertas GFM como `> [!NOTE]`.
+- [ ] Exactamente un H1 (`#`) por archivo: el título del documento, debajo del frontmatter. El validador de primitivas lo exige; MD025 de markdownlint (varios encabezados de nivel superior) está deshabilitada.
+- [ ] La línea en blanco entre el `---` de cierre y el H1 es opcional y ambas formas superan el lint: los agentes, prompts y habilidades la omiten, mientras que los archivos de instrucciones conservan una. MD022 no se activa en el límite del frontmatter y no se anula, por lo que debes seguir el patrón de los archivos del mismo directorio en lugar de forzar cambios sin valor.
+- [ ] Nunca omitas un nivel de encabezado; utiliza `#`, después `##` y luego `###`.
+- [ ] Cada bloque de código delimitado declara un lenguaje (por ejemplo, `java`, `json`, `text` o `bash`): una convención del proyecto que se comprueba durante la revisión, ya que MD040 de markdownlint está deshabilitada.
+- [ ] Utiliza tablas GFM reales (con la fila separadora `|---|`) siempre que haya dos o más dimensiones, y listas `- [ ]` para todo lo que deba verificar quien lee.
+- [ ] Termina con exactamente un salto de línea final. No utilices espacios al final de las líneas, tabuladores ni líneas en blanco consecutivas.
+- [ ] Nunca deshabilites una regla de markdownlint en línea mediante una directiva en un comentario HTML (fallo #2). El archivo raíz [`../.markdownlint-cli2.jsonc`](../.markdownlint-cli2.jsonc) es la única configuración de lint; una directiva en línea la duplica y consume tokens de la ventana de contexto sin aportar ningún valor instructivo. Las directivas eliminadas de 158 archivos deshabilitaban exactamente las reglas que esa configuración ya deshabilita: pura redundancia que no cambiaba nada, pero consumía tokens.
 
-- [ ] **Cite the authoritative source for every convention** — do not restate it from the summary in `copilot-instructions.md`. Branch names come from [`../00-GIT-WORKFLOW.md`](../00-GIT-WORKFLOW.md); legacy-reading rules from [`instructions/natural-adabas.instructions.md`](instructions/natural-adabas.instructions.md); EARS and `source_legacy` from [`skills/ears-validate/SKILL.md`](skills/ears-validate/SKILL.md).
-- [ ] **Branch prefixes** (authoritative table in [`../00-GIT-WORKFLOW.md`](../00-GIT-WORKFLOW.md)): `spec/<NNN>-<feature>`, `impl/<NNN>-<feature>`, `infra/<component>`, `docs/<topic>`, and `agent/<issue-NN>` — each cut from `develop`. Never collapse `impl/` into `spec/` (failure #1).
-- [ ] **Never invent SIFAP facts.** A primitive teaches *how to discover* legacy behavior; it never states what a business rule is. The corpus under `01-archaeology/legacy-sifap/` is 24 Natural members (12 `.NSP`, 5 `.NSN`, 2 `.NSC`, 2 `.NSA`, 1 `.NSL`, 2 `.jcl`), 4 `.ddm` DDMs, and 1 FDT `.txt` listing. No `.NSD` file exists.
-- [ ] **Approved toolchain only.** Never recommend, install, or switch to Cursor, Windsurf, Codex, Cline, Continue, Aider, Codeium, Tabnine, IntelliJ, Eclipse, or Neovim; VS Code with GitHub Copilot is the only approved editor and assistant.
-- [ ] Call the event a workshop, never a `hackathon`.
-- [ ] Use the current English paths only; the retired Portuguese directory names are rejected by the validator's stale-path check (failure #5). `backend/` and `frontend/` do **not** exist yet (the team creates them in Stage 3); `infra/` **does** exist.
+### Contenido y precisión
 
-## Frontmatter by primitive type
+- [ ] **Cita la fuente autorizada de cada convención**; no la repitas a partir del resumen de `copilot-instructions.md`. Los nombres de las ramas provienen de [`../00-GIT-WORKFLOW.md`](../00-GIT-WORKFLOW.md); las reglas de lectura del sistema heredado, de [`instructions/natural-adabas.instructions.md`](instructions/natural-adabas.instructions.md); EARS y `source_legacy`, de [`skills/ears-validate/SKILL.md`](skills/ears-validate/SKILL.md).
+- [ ] **Prefijos de ramas** (tabla autorizada en [`../00-GIT-WORKFLOW.md`](../00-GIT-WORKFLOW.md)): `spec/<NNN>-<feature>`, `impl/<NNN>-<feature>`, `infra/<component>`, `docs/<topic>` y `agent/<issue-NN>`, todos creados a partir de `develop`. Nunca conviertas `impl/` en `spec/` (fallo #1).
+- [ ] **Nunca inventes hechos sobre SIFAP.** Una primitiva enseña *cómo descubrir* el comportamiento heredado; nunca establece cuál es una regla de negocio. El conjunto de fuentes de `01-archaeology/legacy-sifap/` contiene 24 miembros Natural (12 `.NSP`, 5 `.NSN`, 2 `.NSC`, 2 `.NSA`, 1 `.NSL`, 2 `.jcl`), 4 DDM `.ddm` y 1 listado FDT `.txt`. No existe ningún archivo `.NSD`.
+- [ ] **Solo la cadena de herramientas aprobada.** Nunca recomiendes, instales ni cambies a Cursor, Windsurf, Codex, Cline, Continue, Aider, Codeium, Tabnine, IntelliJ, Eclipse o Neovim; VS Code con GitHub Copilot es el único editor y asistente aprobado.
+- [ ] Llama al evento inmersión, nunca `hackathon`.
+- [ ] Utiliza únicamente las rutas actuales en inglés; la comprobación de rutas obsoletas del validador rechaza los nombres de directorio en portugués retirados (fallo #5). `backend/` y `frontend/` todavía **no** existen (el equipo los crea en la etapa 3); `infra/` **sí** existe.
 
-Frontmatter is a closed schema per type: an unknown, retired, or invalid key **fails the `copilot-primitives` gate**. Keys marked platform-specific are silently ignored on other surfaces, so they are safe to keep. Quote `name` and `description` string values — the established house convention, currently held by every agent, prompt, instruction, and skill in the kit.
+## Frontmatter por tipo de primitiva
 
-### Agent frontmatter
+El frontmatter tiene un esquema cerrado por tipo: una clave desconocida, retirada o no válida **hace fallar la puerta `copilot-primitives`**. Las claves marcadas como específicas de una plataforma se ignoran sin aviso en otras superficies, por lo que es seguro conservarlas. Escribe entre comillas los valores de cadena de `name` y `description`: es la convención establecida del proyecto, que actualmente siguen todos los agentes, prompts, instrucciones y habilidades del kit.
 
-File: `agents/<id>.agent.md`.
+### Frontmatter de agentes
 
-| Key | Notes |
+Archivo: `agents/<id>.agent.md`.
+
+| Clave | Notas |
 |---|---|
-| `name` | Agent id; conventionally present. Renaming an agent silently breaks every prompt that binds to it via `agent:`. |
-| `description` | The only key the gate strictly requires. |
-| `tools` | For example `[read, search, edit]`; add `execute` or `"github/*"` only when needed. |
-| `model` | Optional. |
-| `handoffs` | Stage agents only (VS Code only). Persona agents never use it. |
-| `target`, `user-invocable`, `disable-model-invocation`, `metadata`, `agents` | Optional. |
-| `mcp-servers` | GitHub.com and CLI only. |
-| `argument-hint` | VS Code only. |
+| `name` | Identificador del agente; presente por convención. Cambiar el nombre de un agente rompe sin aviso todos los prompts que se vinculan a él mediante `agent:`. |
+| `description` | La única clave que la puerta exige estrictamente. |
+| `tools` | Por ejemplo, `[read, search, edit]`; añade `execute` o `"github/*"` solo cuando sea necesario. |
+| `model` | Opcional. |
+| `handoffs` | Solo para agentes de etapa (solo en VS Code). Los agentes de persona nunca la utilizan. |
+| `target`, `user-invocable`, `disable-model-invocation`, `metadata`, `agents` | Opcionales. |
+| `mcp-servers` | Solo en GitHub.com y la CLI. |
+| `argument-hint` | Solo en VS Code. |
 
-The `infer:` key is retired — remove it.
+La clave `infer:` está retirada; elimínala.
 
 > [!NOTE]
-> Only the sequential **Stage** agents carry `handoffs`, and only when a next stage exists: `archaeologist -> architect -> builder` each hand off to the next, while the terminal Stage 4 agent (`evolution`) has none. No persona agent has `handoffs`.
+> Solo los agentes secuenciales de **etapa** incluyen `handoffs`, y únicamente cuando existe una etapa siguiente: `archaeologist -> architect -> builder` realiza cada uno el traspaso al siguiente, mientras que el agente terminal de la etapa 4 (`evolution`) no tiene ninguno. Ningún agente de persona tiene `handoffs`.
 
-### Prompt frontmatter
+### Frontmatter de prompts
 
-File: `prompts/<name>.prompt.md`. The slash-command name derives from the filename unless `name:` overrides it. Valid keys: `name`, `description`, `agent`, `model`, `tools`, `argument-hint`.
+Archivo: `prompts/<name>.prompt.md`. El nombre del comando con barra deriva del nombre del archivo, salvo que `name:` lo sustituya. Claves válidas: `name`, `description`, `agent`, `model`, `tools`, `argument-hint`.
 
-- `agent:` must resolve to a built-in (`ask`, `agent`, or `plan`) or a file in `agents/`.
-- `mode:` is stale (old chat-mode syntax, superseded by `agent:`) — remove it.
-- `tested_with:` is invented and does nothing — remove it.
+- `agent:` debe corresponder a un agente integrado (`ask`, `agent` o `plan`) o a un archivo en `agents/`.
+- `mode:` está obsoleta (sintaxis antigua de modos de chat, sustituida por `agent:`); elimínala.
+- `tested_with:` es inventada y no tiene ningún efecto; elimínala.
 
-### Instruction frontmatter
+### Frontmatter de instrucciones
 
-File: `instructions/<name>.instructions.md`. Valid keys: `applyTo`, `name`, `description`, `excludeAgent`.
+Archivo: `instructions/<name>.instructions.md`. Claves válidas: `applyTo`, `name`, `description`, `excludeAgent`.
 
-- Scope `applyTo` to concrete globs. `applyTo: "**"` injects the file into every request and **fails the gate**; many files competing for one path such as `**/*.tf` caused failure #6.
+- Delimita `applyTo` con patrones glob concretos. `applyTo: "**"` inserta el archivo en cada solicitud y **hace fallar la puerta**; muchos archivos que competían por una ruta como `**/*.tf` provocaron el fallo #6.
 
-### Repo-wide instructions (`copilot-instructions.md`)
+### Instrucciones de todo el repositorio (`copilot-instructions.md`)
 
-This file takes **no frontmatter** and is injected into every Chat, agent, and code-review request on every surface, so each line carries a recurring token cost. Keep it **at or under 100 lines**.
+Este archivo **no lleva frontmatter** y se inserta en cada solicitud de chat, agente y revisión de código en todas las superficies, por lo que cada línea supone un costo recurrente de tokens. Mantén su extensión **en 100 líneas o menos**.
 
-- Put only **broadly applicable** content here: project context, the target stack, cross-cutting rules, and the strict do-not list. GitHub's guidance is that instructions be "short, self-contained statements."
-- **Do not restate language- or path-specific rules.** Path-scoped files exist so you can "avoid overloading your repository-wide instructions"; Java, TypeScript, Terraform, database, and security detail belongs in `instructions/*.instructions.md`, which load automatically for matching paths.
-- Keep the **stack declaration** here even though scoped files repeat it: whether `applyTo` matches a directory that does not exist yet is undocumented, and `backend/` and `frontend/` are created only in Stage 3.
-- Avoid the documented anti-patterns: directives to go read another document, tool or extension routing, tone mandates, and response-length limits.
+- Incluye aquí únicamente contenido de **aplicación general**: contexto del proyecto, tecnologías de destino, reglas transversales y la lista estricta de prohibiciones. GitHub recomienda que las instrucciones sean «enunciados breves y autosuficientes».
+- **No repitas reglas específicas de un lenguaje o una ruta.** Los archivos con alcance por ruta existen para «evitar sobrecargar las instrucciones de todo el repositorio»; los detalles de Java, TypeScript, Terraform, bases de datos y seguridad pertenecen a `instructions/*.instructions.md`, que se cargan automáticamente para las rutas correspondientes.
+- Conserva aquí la **declaración de tecnologías**, aunque los archivos de alcance específico la repitan: no está documentado si `applyTo` coincide con un directorio que todavía no existe, y `backend/` y `frontend/` solo se crean en la etapa 3.
+- Evita los antipatrones documentados: órdenes de ir a leer otro documento, enrutamiento a herramientas o extensiones, imposiciones de tono y límites de extensión de las respuestas.
 
-### Skill frontmatter
+### Frontmatter de habilidades
 
-File: `skills/<dir>/SKILL.md`. Only `name` and `description` are valid.
+Archivo: `skills/<dir>/SKILL.md`. Solo son válidas `name` y `description`.
 
-- `name` **must exactly equal the parent directory name** (lowercase letters, digits, and hyphens; 64 characters max) or the skill silently fails to load (failure #4).
-- `description` must state **when to use** the skill, because it drives semantic auto-loading, and is capped at 1024 characters.
-- `license`, `allowed-tools`, `compatibility`, and `metadata` are **not** in the schema; remove them.
+- `name` **debe coincidir exactamente con el nombre del directorio padre** (letras minúsculas, dígitos y guiones; máximo 64 caracteres); de lo contrario, la habilidad no se carga y no se muestra ningún aviso (fallo #4).
+- `description` debe indicar **cuándo utilizar** la habilidad, porque dirige la carga automática semántica, y tiene un límite de 1024 caracteres.
+- `license`, `allowed-tools`, `compatibility` y `metadata` **no** forman parte del esquema; elimínalas.
 
-### Hook configuration
+### Configuración de hooks
 
-A hook is a flat JSON file at `hooks/<name>.json`. A nested `<name>/hooks.json` is **never discovered** and silently never runs (failure #3). The handler script lives in `hooks/<name>/` and must be executable.
+Un hook es un archivo JSON ubicado directamente en `hooks/<name>.json`. Un archivo anidado `<name>/hooks.json` **nunca se descubre** ni se ejecuta, sin que se muestre ningún aviso (fallo #3). El script del controlador se encuentra en `hooks/<name>/` y debe ser ejecutable.
 
-- `version` must be `1`; `hooks` maps an event to a list of handlers.
-- Events include `sessionStart`, `sessionEnd`, `userPromptSubmitted`, `preToolUse`, and `postToolUse`. A handler `type` is `command`, `http`, or `prompt`.
+- `version` debe ser `1`; `hooks` asocia un evento con una lista de controladores.
+- Los eventos incluyen `sessionStart`, `sessionEnd`, `userPromptSubmitted`, `preToolUse` y `postToolUse`. El `type` de un controlador es `command`, `http` o `prompt`.
 
-A `preToolUse` hook blocks a tool call by writing this object to stdout:
+Un hook `preToolUse` bloquea una llamada a una herramienta escribiendo este objeto en stdout:
 
 ```json
 {"permissionDecision":"deny","permissionDecisionReason":"..."}
 ```
 
-## Required body sections
+## Secciones obligatorias del cuerpo
 
-Section structure is machine-checked by `scripts/validate-copilot-primitives.py`. Use these headings, in order.
+`scripts/validate-copilot-primitives.py` comprueba automáticamente la estructura de las secciones. Utiliza estos encabezados, en este orden.
 
-| Primitive | Required `##` sections, in order |
+| Primitiva | Secciones `##` obligatorias, en orden |
 |---|---|
-| Agent | `Mission`, `Lead Personas`, `Operating Principles`, `What This Agent Knows`, `What This Agent Does NOT Know`, `Available Prompts`, a heading ending in `Definition of Done`, `Anti-Patterns This Agent Rejects`, `Spec-Kit Integration` |
-| Prompt | `Objective`, `When to Invoke`, `Preconditions`, `Inputs the Team Must Provide`, `What I Will Do`, `What I Will NOT Do`, `Output Format`, optional `Rules from <file>`, `Definition of Done`, `Prompt Body`, `Invocation Example` |
-| Instruction | concrete topic sections, then `Conventions`, `Do / Do Not`, `Checklist Before Opening a PR` |
-| Skill | `When to invoke`, a substantive procedure section, `Output template`, `Quality gate` |
+| Agente | `Misión`, `Personas líderes`, `Principios operativos`, `Lo que este agente sabe`, `Lo que este agente NO sabe`, `Prompts disponibles`, un encabezado que termine en `Definición de terminado`, `Antipatrones que este agente rechaza`, `Integración con Spec-Kit` |
+| Prompt | `Objetivo`, `Cuándo invocar`, `Precondiciones`, `Entradas que debe proporcionar el equipo`, `Lo que haré`, `Lo que NO haré`, `Formato de salida`, opcionalmente `Reglas de <file>`, `Definición de terminado`, `Cuerpo del prompt`, `Ejemplo de invocación` |
+| Instrucción | Secciones temáticas concretas y después `Convenciones`, `Qué hacer / Qué no hacer`, `Lista de verificación antes de abrir una PR` |
+| Habilidad | `Cuándo invocar`, una sección de procedimiento sustancial, `Plantilla de salida`, `Puerta de calidad` |
 
-## Skeletons
+## Estructuras iniciales
 
-Copy a skeleton, keep the frontmatter and section order, then replace every placeholder in angle brackets.
+Copia una estructura inicial, conserva el frontmatter y el orden de las secciones y después sustituye todos los marcadores de posición entre corchetes angulares.
 
-### Agent skeleton
+### Estructura inicial de un agente
 
 ````markdown
 ---
 name: "<agent-id>"
-description: "<Stage N or Persona> assistant — one line"
+description: "Asistente de <etapa N o persona> — una línea"
 tools: [read, search, edit]
-# handoffs:                 # Stage agents only, and only if a next stage exists
-#   - label: "Start Stage <N+1>"
+# handoffs:                 # Solo agentes de etapa, y únicamente si existe una etapa siguiente
+#   - label: "Iniciar la etapa <N+1>"
 #     agent: <next-agent-id>
-#     prompt: "<what the next agent does with this stage's artifacts>"
+#     prompt: "<qué hace el siguiente agente con los artefactos de esta etapa>"
 #     send: false
 ---
 # @<agent-id>-agent
 
-## Mission
+## Misión
 
-<What the agent helps the team do, and the boundary it will not cross.>
+<Qué ayuda a hacer el agente al equipo y qué límite no cruzará.>
 
-## Lead Personas
+## Personas líderes
 
-| Role | Involvement |
+| Rol | Participación |
 |------|-----------|
-| **<Persona>** | LEAD — <responsibility> |
+| **<Persona>** | LÍDER — <responsabilidad> |
 
-## Operating Principles
+## Principios operativos
 
-- **<Principle>.** <One or two sentences of judgment or routing.>
+- **<Principio>.** <Una o dos frases de criterio o enrutamiento.>
 
-## What This Agent Knows
+## Lo que este agente sabe
 
-<General, transferable patterns — never system-specific answers.>
+<Patrones generales y transferibles; nunca respuestas específicas del sistema.>
 
-## What This Agent Does NOT Know
+## Lo que este agente NO sabe
 
-<Everything that must emerge from the team's own investigation.>
+<Todo lo que debe surgir de la investigación del propio equipo.>
 
-## Available Prompts
+## Prompts disponibles
 
-| Command | Purpose |
+| Comando | Propósito |
 |---------|---------|
-| [`/<command>`](../prompts/<file>.prompt.md) | <purpose> |
+| [`/<command>`](../prompts/<file>.prompt.md) | <propósito> |
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] <verifiable outcome>
+- [ ] <resultado verificable>
 
-## Anti-Patterns This Agent Rejects
+## Antipatrones que este agente rechaza
 
-1. **<Anti-pattern>.** <Why it is rejected, and the redirect.>
+1. **<Antipatrón>.** <Por qué se rechaza y cuál es la alternativa indicada.>
 
-## Spec-Kit Integration
+## Integración con Spec-Kit
 
-<Where the agent sits in the /speckit.* flow.>
+<Dónde se sitúa el agente dentro del flujo /speckit.*.>
 ````
 
-A Stage agent may prefix the last-but-two heading with its stage, for example `## Stage 1 Definition of Done`.
+Un agente de etapa puede anteponer su etapa al antepenúltimo encabezado, por ejemplo, `## Etapa 1 Definición de terminado`.
 
-### Prompt skeleton
+### Estructura inicial de un prompt
 
-`## Prompt Body` is plain Markdown addressed to the agent in the second person — never a code fence. Open with a role line such as `You are the @<agent-id>.`, then drive the work with `**Step 1 — ...**`, `**Step 2 — ...**` bold step headers, each followed by bullets.
+`## Cuerpo del prompt` es Markdown sin bloque de código, dirigido al agente en segunda persona. Comienza con una línea de rol como `Eres el @<agent-id>.` y después guía el trabajo mediante encabezados de pasos en negrita `**Paso 1 — ...**`, `**Paso 2 — ...**`, cada uno seguido de viñetas.
 
 ````markdown
 ---
 name: "<slash-command>"
-description: "<one line>"
+description: "<una línea>"
 argument-hint: "<arg=... arg=...>"
 agent: "<agent-id>"
 tools: ["read", "search", "edit"]
 ---
 # /<slash-command>
 
-## Objective
+## Objetivo
 
-<The single outcome this prompt produces.>
+<El único resultado que produce este prompt.>
 
-## When to Invoke
+## Cuándo invocar
 
-## Preconditions
+## Precondiciones
 
-## Inputs the Team Must Provide
+## Entradas que debe proporcionar el equipo
 
-## What I Will Do
+## Lo que haré
 
-## What I Will NOT Do
+## Lo que NO haré
 
-## Output Format
+## Formato de salida
 
 ```markdown
-<the exact shape the prompt appends or emits>
+<la estructura exacta que añade o produce el prompt>
 ```
 
-## Definition of Done
+## Definición de terminado
 
-- [ ] <verifiable outcome>
+- [ ] <resultado verificable>
 
-## Prompt Body
+## Cuerpo del prompt
 
-You are the `@<agent-id>`. <One-line framing of the task.>
+Eres el `@<agent-id>`. <Encuadre de la tarea en una línea.>
 
-**Step 1 — <action>**
+**Paso 1 — <acción>**
 
-- <instruction>
+- <instrucción>
 
-**Step 2 — <action>**
+**Paso 2 — <acción>**
 
-- <instruction>
+- <instrucción>
 
-## Invocation Example
+## Ejemplo de invocación
 
 ```text
 /<slash-command> arg=<value>
 ```
 ````
 
-When the prompt depends on an instruction or skill, add an optional `## Rules from <file>` section that inlines the rules you enforce, immediately before `## Definition of Done`.
+Cuando el prompt dependa de una instrucción o habilidad, añade una sección opcional `## Reglas de <file>` que incluya las reglas que aplicas, inmediatamente antes de `## Definición de terminado`.
 
-### Instruction skeleton
+### Estructura inicial de una instrucción
 
 ````markdown
 ---
-description: "Use when <situation this file scopes>."
+description: "Utiliza cuando <situación que delimita el alcance de este archivo>."
 applyTo: "<glob>,<glob>"
 ---
 
-# <Topic> — Guide
+# <Tema> — Guía
 
-<One paragraph: what opens this file, what it covers, and which sibling instruction owns the rest.>
+<Un párrafo: qué activa este archivo, qué cubre y qué instrucción del mismo directorio se encarga del resto.>
 
-## <Concrete topic>
+## <Tema concreto>
 
-<Guidance with examples.>
+<Orientaciones con ejemplos.>
 
-## Conventions
+## Convenciones
 
-| Rule | Rationale |
+| Regla | Justificación |
 |---|---|
-| <rule> | <why> |
+| <regla> | <motivo> |
 
-## Do / Do Not
+## Qué hacer / Qué no hacer
 
-| Do | Do not |
+| Qué hacer | Qué no hacer |
 |---|---|
-| <do> | <do not> |
+| <qué hacer> | <qué no hacer> |
 
-## Checklist Before Opening a PR
+## Lista de verificación antes de abrir una PR
 
-- [ ] <verifiable item>
+- [ ] <elemento verificable>
 ````
 
-### Skill skeleton
+### Estructura inicial de una habilidad
 
-`name` must equal the `skills/<dir>/` directory name.
+`name` debe coincidir con el nombre del directorio `skills/<dir>/`.
 
 ````markdown
 ---
 name: "<dir>"
-description: "Use when <trigger>. Triggers include \"<keyword>\", \"<keyword>\"."
+description: "Utiliza cuando <condición de activación>. Los activadores incluyen \"<palabra clave>\", \"<palabra clave>\"."
 ---
-# <Skill title>
+# <Título de la habilidad>
 
-## When to invoke
+## Cuándo invocar
 
-- "<paraphrase a request that should load this skill>"
+- "<paráfrasis de una solicitud que debería cargar esta habilidad>"
 
-## <Substantive procedure>
+## <Procedimiento sustancial>
 
-<A checklist, table, or numbered steps — the operational core.>
+<Una lista de verificación, una tabla o pasos numerados: el núcleo operativo.>
 
-## Output template
+## Plantilla de salida
 
 ```markdown
-<the shape the skill produces>
+<la estructura que produce la habilidad>
 ```
 
-## Quality gate
+## Puerta de calidad
 
-- [ ] <objective pass/fail check>
+- [ ] <comprobación objetiva de aprobación o fallo>
 ````
 
-### Hook skeleton
+### Estructura inicial de un hook
 
-Flat file `hooks/<name>.json`, with the referenced script in `hooks/<name>/` and marked executable.
+Archivo ubicado directamente en `hooks/<name>.json`, con el script referenciado en `hooks/<name>/` y marcado como ejecutable.
 
 ```json
 {
@@ -330,21 +332,21 @@ Flat file `hooks/<name>.json`, with the referenced script in `hooks/<name>/` and
 }
 ```
 
-## How the standard is enforced
+## Cómo se aplica el estándar
 
-- The **`copilot-primitives`** job in [`workflows/spec-quality.yml`](workflows/spec-quality.yml) runs [`scripts/validate-copilot-primitives.py`](scripts/validate-copilot-primitives.py): frontmatter schemas, `prompt -> agent` and `handoff -> agent` integrity, one H1, a single trailing newline, relative-link resolution under `.github/`, banned pragmas, banned tooling, stale paths, and the required body sections above.
-- The **`markdown-lint`** job runs the root [`../.markdownlint-cli2.jsonc`](../.markdownlint-cli2.jsonc); **`spec-traceability`** and **`legacy-traceability`** enforce REQ-ID and `source_legacy` coverage.
-- That config disables `MD025` and `MD040` among others, so do not conflate the two gates: "exactly one H1" fails the primitive validator (never markdownlint), and "every fence declares a language" is a review convention, not a lint failure.
-- Every recurring mistake earns a named guardrail in code or CI and, when it changes a durable decision, an ADR. Facilitator postmortems and answer material stay outside this public repository.
+- El trabajo **`copilot-primitives`** de [`workflows/spec-quality.yml`](workflows/spec-quality.yml) ejecuta [`scripts/validate-copilot-primitives.py`](scripts/validate-copilot-primitives.py): esquemas de frontmatter, integridad de `prompt -> agent` y `handoff -> agent`, un H1, un único salto de línea final, resolución de enlaces relativos dentro de `.github/`, directivas prohibidas, herramientas prohibidas, rutas obsoletas y las secciones obligatorias del cuerpo indicadas anteriormente.
+- El trabajo **`markdown-lint`** ejecuta el archivo raíz [`../.markdownlint-cli2.jsonc`](../.markdownlint-cli2.jsonc); **`spec-traceability`** y **`legacy-traceability`** exigen la cobertura de REQ-ID y `source_legacy`.
+- Esa configuración deshabilita `MD025` y `MD040`, entre otras, así que no confundas las dos puertas: «exactamente un H1» hace fallar el validador de primitivas (nunca markdownlint), y «cada bloque de código delimitado declara un lenguaje» es una convención de revisión, no un fallo de lint.
+- Cada error recurrente recibe una protección con nombre en el código o en la CI y, cuando modifica una decisión duradera, un ADR. Los análisis posteriores de facilitación y el material de respuestas permanecen fuera de este repositorio público.
 
-Reference implementations to copy from: [`agents/archaeologist.agent.md`](agents/archaeologist.agent.md), [`prompts/stage-archaeologist-extract-business-rules.prompt.md`](prompts/stage-archaeologist-extract-business-rules.prompt.md), [`skills/ears-validate/SKILL.md`](skills/ears-validate/SKILL.md), and [`instructions/modular-monolith.instructions.md`](instructions/modular-monolith.instructions.md).
+Implementaciones de referencia de las que puedes partir: [`agents/archaeologist.agent.md`](agents/archaeologist.agent.md), [`prompts/stage-archaeologist-extract-business-rules.prompt.md`](prompts/stage-archaeologist-extract-business-rules.prompt.md), [`skills/ears-validate/SKILL.md`](skills/ears-validate/SKILL.md) e [`instructions/modular-monolith.instructions.md`](instructions/modular-monolith.instructions.md).
 
-## Authoring checklist
+## Lista de verificación de autoría
 
-- [ ] The primitive is in the right folder with the right suffix (`.agent.md`, `.prompt.md`, `.instructions.md`, `SKILL.md`, or a flat `hooks/<name>.json`).
-- [ ] Frontmatter uses only valid keys, with no retired (`infer`, `mode`) or invented (`tested_with`) keys, and a skill `name` that equals its directory.
-- [ ] All required body sections are present, in order.
-- [ ] Exactly one H1, no skipped heading levels, every fence has a language, one trailing newline, and no markdownlint pragma.
-- [ ] Every convention cites its authoritative document; no invented SIFAP facts; no banned tooling; English, no emojis.
-- [ ] Every relative link resolves on disk.
-- [ ] `python3 .github/scripts/validate-copilot-primitives.py` and `npx markdownlint-cli2 "<file>"` both report zero issues.
+- [ ] La primitiva está en la carpeta correcta y tiene el sufijo correcto (`.agent.md`, `.prompt.md`, `.instructions.md`, `SKILL.md` o un archivo ubicado directamente en `hooks/<name>.json`).
+- [ ] El frontmatter utiliza únicamente claves válidas, sin claves retiradas (`infer`, `mode`) ni inventadas (`tested_with`), y el `name` de cada habilidad coincide con su directorio.
+- [ ] Todas las secciones obligatorias del cuerpo están presentes, en orden.
+- [ ] Exactamente un H1, sin omitir niveles de encabezado, cada bloque de código delimitado con lenguaje, un salto de línea final y ninguna directiva de markdownlint.
+- [ ] Cada convención cita su documento autorizado; no hay hechos inventados sobre SIFAP ni herramientas prohibidas; el idioma corresponde a la rama de destino (inglés en `main` y `develop`, portugués de Brasil en `portugues-br`, español en `espanol`), sin emojis.
+- [ ] Todos los enlaces relativos se resuelven en el disco.
+- [ ] Tanto `python3 .github/scripts/validate-copilot-primitives.py` como `npx markdownlint-cli2 "<file>"` informan de cero problemas.

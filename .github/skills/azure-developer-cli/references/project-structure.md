@@ -1,34 +1,34 @@
-# Project structure and `azure.yaml`
+# Estructura del proyecto y `azure.yaml`
 
-## Recommended repository layout
+## Organización recomendada del repositorio
 
-Use this as a default, not as a reason to reorganize an already coherent repository:
+Usa esta organización como opción predeterminada, no como motivo para reorganizar un repositorio que ya sea coherente:
 
 ```text
 .
-|-- .azure/                         # Generated local AZD environment state; ignored
-|-- .devcontainer/                  # Optional reproducible developer environment
+|-- .azure/                         # Estado local generado del entorno AZD; ignorado
+|-- .devcontainer/                  # Entorno de desarrollo reproducible opcional
 |-- .github/
 |   |-- workflows/
-|       |-- azure-dev.yml           # Optional GitHub Actions pipeline
+|       |-- azure-dev.yml           # Canalización opcional de GitHub Actions
 |-- infra/
-|   |-- main.bicep                  # Bicep orchestration entry point
-|   |-- main.parameters.json        # AZD environment-to-Bicep parameter mapping
+|   |-- main.bicep                  # Punto de entrada de la orquestación Bicep
+|   |-- main.parameters.json        # Mapeo del entorno AZD a parámetros Bicep
 |   |-- modules/
-|       |-- core/                   # Shared platform resources
-|       |-- app/                    # Application-specific resources
+|       |-- core/                   # Recursos compartidos de plataforma
+|       |-- app/                    # Recursos específicos de aplicación
 |-- scripts/
-|   |-- azd/                        # Hook and deployment helper scripts
+|   |-- azd/                        # Scripts auxiliares de hooks y despliegue
 |-- src/
-|   |-- api/                        # Independently deployable service
-|   |-- web/                        # Independently deployable service
+|   |-- api/                        # Servicio desplegable de forma independiente
+|   |-- web/                        # Servicio desplegable de forma independiente
 |-- tests/
 |-- .gitignore
 |-- azure.yaml
 |-- README.md
 ```
 
-For Terraform, use a conventional `infra` layout:
+Para Terraform, usa una organización convencional de `infra`:
 
 ```text
 infra/
@@ -36,24 +36,24 @@ infra/
 |-- providers.tf
 |-- variables.tf
 |-- outputs.tf
-|-- provider.conf.json              # AZD remote backend configuration, when used
+|-- provider.conf.json              # Configuración del backend remoto de AZD, cuando se use
 |-- modules/
 ```
 
-### Structure rules
+### Reglas de estructura
 
-- Place `azure.yaml` at the project root.
-- Keep application source independent from deployment assets.
-- Keep the IaC entry point small; move resource details into modules.
-- Organize modules by responsibility or lifecycle, not one arbitrary file per resource.
-- Keep hook scripts outside `infra` unless a script belongs exclusively to an infrastructure layer.
-- Avoid committed environment-specific source trees such as `infra/dev`, `infra/test`, and `infra/prod`. Use parameters.
-- Keep tests near their normal language conventions; do not move them merely to fit this example.
-- Include `.devcontainer` only when it is maintained and tested.
+- Coloca `azure.yaml` en la raíz del proyecto.
+- Mantén el código fuente de la aplicación independiente de los recursos de despliegue.
+- Mantén pequeño el punto de entrada de IaC; lleva los detalles de recursos a módulos.
+- Organiza los módulos por responsabilidad o ciclo de vida, no con un archivo arbitrario por recurso.
+- Mantén los scripts de hooks fuera de `infra`, salvo que pertenezcan exclusivamente a una capa de infraestructura.
+- Evita incluir en commits árboles fuente específicos por entorno, como `infra/dev`, `infra/test` e `infra/prod`. Usa parámetros.
+- Mantén las pruebas conforme a las convenciones habituales de su lenguaje; no las muevas solo para encajar en este ejemplo.
+- Incluye `.devcontainer` solo si se mantiene y prueba.
 
-## `azure.yaml` baseline
+## Configuración base de `azure.yaml`
 
-Add the schema directive for editor validation:
+Añade la directiva de esquema para la validación del editor:
 
 ```yaml
 # yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
@@ -76,59 +76,59 @@ services:
     host: staticwebapp
 ```
 
-The explicit `infra` block is useful when clarity matters, even though Bicep, `infra`, and `main` are defaults.
+El bloque `infra` explícito es útil cuando importa la claridad, aunque Bicep, `infra` y `main` sean los valores predeterminados.
 
-## Manifest design checklist
+## Lista de verificación del diseño del manifiesto
 
-### Top-level configuration
+### Configuración de nivel superior
 
-- `name` is lowercase, starts and ends with an alphanumeric character, and uses only alphanumerics and hyphens.
-- `metadata.template` identifies the source template and version when the repository is distributed as a template.
-- `infra.provider`, `infra.path`, and `infra.module` match the actual repository.
-- `requiredVersions` is used when the project depends on a minimum AZD or extension version.
-- `workflows` overrides defaults only when deployment ordering genuinely requires it.
-- `state.remote` is configured at project scope when teams share AZD environments.
+- `name` está en minúsculas, empieza y termina con un carácter alfanumérico y solo usa caracteres alfanuméricos y guiones.
+- `metadata.template` identifica la plantilla de origen y su versión cuando el repositorio se distribuye como plantilla.
+- `infra.provider`, `infra.path` e `infra.module` se corresponden con el repositorio real.
+- Se usa `requiredVersions` cuando el proyecto depende de una versión mínima de AZD o de una extensión.
+- `workflows` sobrescribe los valores predeterminados solo cuando el orden de despliegue lo requiere realmente.
+- `state.remote` se configura en el ámbito del proyecto cuando los equipos comparten entornos AZD.
 
-### Services
+### Servicios
 
-- A service represents deployable application code, not a database, Key Vault, or other shared resource.
-- Service names are short, meaningful, and stable.
-- `project` points to the service root and uses a relative path.
-- `language`, `host`, `dist`, container, and remote-build settings match how the service is built.
-- A Container Apps service uses either `project` or `image`, not both.
-- `resourceName` is set only when standard AZD discovery through the `azd-service-name` tag is unavailable or intentionally bypassed.
-- Dependencies use supported `uses` relationships rather than implicit assumptions.
-- Environment variables use substitutions or IaC outputs rather than hard-coded environment values.
+- Un servicio representa código de aplicación desplegable, no una base de datos, Key Vault u otro recurso compartido.
+- Los nombres de servicio son breves, significativos y estables.
+- `project` apunta a la raíz del servicio y usa una ruta relativa.
+- `language`, `host`, `dist` y los ajustes de contenedor y compilación remota coinciden con la forma de compilar el servicio.
+- Un servicio de Container Apps usa `project` o `image`, no ambos.
+- `resourceName` se establece solo cuando el descubrimiento estándar de AZD mediante la etiqueta `azd-service-name` no está disponible o se omite de forma intencional.
+- Las dependencias usan relaciones `uses` admitidas en lugar de suposiciones implícitas.
+- Las variables de entorno usan sustituciones o salidas IaC en lugar de valores de entorno fijados en el código.
 
-### Resources and infrastructure
+### Recursos e infraestructura
 
-- Shared Azure resources stay in IaC.
-- Service modules and AZD service names align so resource discovery is predictable.
-- Custom resource group names include environment identity and comply with Azure naming constraints.
-- Infrastructure layers are reserved for independently provisioned units, different scopes, or hook-mediated dependencies.
-- Layer dependencies are explicit with `dependsOn` when AZD cannot infer them.
+- Los recursos compartidos de Azure permanecen en IaC.
+- Los módulos de servicio y los nombres de servicio de AZD se alinean para que el descubrimiento de recursos sea previsible.
+- Los nombres personalizados de grupos de recursos incluyen la identidad del entorno y cumplen las restricciones de nomenclatura de Azure.
+- Las capas de infraestructura se reservan para unidades aprovisionadas independientemente, ámbitos distintos o dependencias mediadas por hooks.
+- Las dependencias entre capas se hacen explícitas con `dependsOn` cuando AZD no puede deducirlas.
 
-### Pipelines and hooks
+### Canalizaciones y hooks
 
-- `pipeline.variables` contains nonsecret configuration.
-- `pipeline.secrets` is used only when the pipeline must store the resolved value instead of a Key Vault reference.
-- Root hooks handle project-wide work; service hooks handle one service.
-- Hook scripts use explicit shells and portable paths.
-- Hooks do not duplicate application tests or declarative IaC behavior.
+- `pipeline.variables` contiene configuración no secreta.
+- `pipeline.secrets` se usa solo cuando la canalización debe almacenar el valor resuelto en lugar de una referencia a Key Vault.
+- Los hooks de raíz gestionan el trabajo de todo el proyecto; los hooks de servicio gestionan un servicio.
+- Los scripts de hooks usan shells explícitos y rutas portables.
+- Los hooks no duplican pruebas de aplicación ni comportamiento declarativo de IaC.
 
-## README requirements for a reusable AZD project
+## Requisitos del README de un proyecto AZD reutilizable
 
-Document:
+Documenta:
 
-1. Architecture and deployed Azure services.
-2. Local prerequisites, including AZD and provider-specific tools.
-3. Authentication requirements.
-4. How to create or select an environment.
-5. Required nonsecret variables and how to set them.
-6. How secrets are supplied without exposing their values.
-7. How to run, test, provision, deploy, monitor, and troubleshoot.
-8. Expected cost-bearing resources.
-9. How to clean up safely.
-10. Any beta or preview dependencies, including Terraform or pipeline features when applicable.
+1. La arquitectura y los servicios de Azure desplegados.
+2. Los prerrequisitos locales, incluidos AZD y las herramientas específicas del proveedor.
+3. Los requisitos de autenticación.
+4. Cómo crear o seleccionar un entorno.
+5. Las variables no secretas obligatorias y cómo establecerlas.
+6. Cómo se proporcionan los secretos sin exponer sus valores.
+7. Cómo ejecutar, probar, aprovisionar, desplegar, supervisar y solucionar problemas.
+8. Los recursos previstos que generan costos.
+9. Cómo realizar la limpieza de forma segura.
+10. Las dependencias beta o en versión preliminar, incluidas funcionalidades de Terraform o canalizaciones cuando corresponda.
 
-Do not put actual subscription IDs, tenant IDs, secret names that reveal sensitive systems, or production endpoints in reusable documentation.
+No incluyas en documentación reutilizable ID reales de suscripción o inquilino, nombres de secretos que revelen sistemas sensibles ni puntos de conexión de producción.

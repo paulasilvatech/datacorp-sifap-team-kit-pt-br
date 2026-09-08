@@ -1,76 +1,76 @@
-# DevOps Engineer — Copilot Kit
+# Ingeniero DevOps — Kit de Copilot
 
-> **Track:** [Team Kit](../../README.md) › [Personas](../OVERVIEW.md) › **DevOps Engineer**
+> **Ruta:** [Kit del equipo](../../README.md) › [Personas](../OVERVIEW.md) › **Ingeniero DevOps**
 
-**Reference kit for the DevOps Engineer persona in the SIFAP modernization workshop.**
+**Kit de referencia para la persona Ingeniero DevOps en la inmersión de modernización de SIFAP.**
 
-![Persona](https://img.shields.io/badge/Persona-DevOps%20Engineer-171717?style=flat-square) ![Pair 5](https://img.shields.io/badge/Par-5%20%C2%B7%20Opera%C3%A7%C3%B5es-404040?style=flat-square) ![Stage 4](https://img.shields.io/badge/Est%C3%A1gio-4%20%C2%B7%20Evolu%C3%A7%C3%A3o-737373?style=flat-square)
+![Persona](https://img.shields.io/badge/Persona-DevOps%20Engineer-171717?style=flat-square) ![Pareja 5](https://img.shields.io/badge/Par-5%20%C2%B7%20Opera%C3%A7%C3%B5es-404040?style=flat-square) ![Etapa 4](https://img.shields.io/badge/Est%C3%A1gio-4%20%C2%B7%20Evolu%C3%A7%C3%A3o-737373?style=flat-square)
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
-| **Target audience** | Person taking the DevOps Engineer persona in the workshop |
-| **Focus** | GitHub Actions CI/CD, Terraform infrastructure as code for Azure, observability, and incident response |
-| **SDLC phase** | Cross-cutting—Stages 1 through 4; leads Stage 4 — Evolution |
-| **Expected outcome** | Green pipeline, reproducible build, valid `terraform plan`, and documented local execution |
+| **Público objetivo** | Quien asume la persona Ingeniero DevOps en la inmersión |
+| **Enfoque** | CI/CD con GitHub Actions, infraestructura como código con Terraform para Azure, observabilidad y respuesta a incidentes |
+| **Fase del SDLC** | Transversal: Etapas 1 a 4; lidera la Etapa 4 — Evolución |
+| **Resultado esperado** | Pipeline en verde, build reproducible, `terraform plan` válido y ejecución local documentada |
 
-Read first: [PERSONA.md](PERSONA.md).
+Lee primero: [PERSONA.md](PERSONA.md).
 
 ---
 
-## Concept
+## Concepto
 
-The DevOps Engineer owns the path from a code commit to something that runs reliably. In the SIFAP (Payment Inspection and Administration System) modernization workshop, this persona ensures that any team machine can start the local environment, GitHub Actions validates every PR, and Terraform describes the target Azure topology even when it is not applied during the workshop.
+El Ingeniero DevOps es responsable del recorrido desde un commit de código hasta algo que funcione de manera confiable. En la inmersión de modernización de SIFAP (Sistema de Fiscalización y Administración de Pagos), esta persona garantiza que cualquier máquina del equipo pueda iniciar el entorno local, que GitHub Actions valide cada PR y que Terraform describa la topología de destino en Azure, aunque no se aplique durante la inmersión.
 
-Why it matters: without a reliable pipeline, the Developer lacks fast feedback, the QA Engineer lacks a stable test environment, and the final demonstration risks failing because of the environment rather than the code.
+Por qué importa: sin un pipeline confiable, el Desarrollador no recibe retroalimentación rápida, el Ingeniero de Calidad no dispone de un entorno de pruebas estable y la demostración final corre el riesgo de fallar por el entorno, no por el código.
 
-## Persona kit
+## Kit de la persona
 
-All active artifacts live in the repository root `.github/` directory. This folder is a reference; edit the files under `.github/` when maintenance is needed.
+Todos los artefactos activos residen en el directorio `.github/` de la raíz del repositorio. Esta carpeta es una referencia; edita los archivos de `.github/` cuando necesiten mantenimiento.
 
-| File | Type | Purpose |
+| Archivo | Tipo | Propósito |
 |---|---|---|
-| `PERSONA.md` | Profile | DevOps Engineer responsibilities, stages, prompts, and rubrics |
-| `.github/agents/devops-engineer.agent.md` | Agent | CI/CD, infrastructure as code, monitoring, and incidents |
+| `PERSONA.md` | Perfil | Responsabilidades, etapas, prompts y rúbricas del Ingeniero DevOps |
+| `.github/agents/devops-engineer.agent.md` | Agente | CI/CD, infraestructura como código, monitoreo e incidentes |
 | `.github/prompts/persona-devops-engineer-pipeline.prompt.md` | Prompt | `/pipeline` |
 | `.github/prompts/persona-devops-engineer-iac-module.prompt.md` | Prompt | `/iac-module` |
 | `.github/prompts/persona-devops-engineer-incident-rca.prompt.md` | Prompt | `/incident-rca` |
-| `.github/instructions/cicd.instructions.md` | Instructions | CI/CD conventions |
-| `.github/instructions/infrastructure.instructions.md` | Instructions | Infrastructure conventions |
+| `.github/instructions/cicd.instructions.md` | Instrucciones | Convenciones de CI/CD |
+| `.github/instructions/infrastructure.instructions.md` | Instrucciones | Convenciones de infraestructura |
 
 > [!TIP]
-> If the facilitator requests a local MCP configuration and this kit has `mcp.json`, copy only that file to `.vscode/mcp.json`.
+> Si la persona facilitadora solicita una configuración MCP local y este kit tiene `mcp.json`, copia solo ese archivo a `.vscode/mcp.json`.
 
-## Where active artifacts live
+## Dónde residen los artefactos activos
 
-- Agents: `.github/agents/`
+- Agentes: `.github/agents/`
 - Prompts: `.github/prompts/persona-*.prompt.md`
 - Skills: `.github/skills/`
-- Instructions: `.github/instructions/`
+- Instrucciones: `.github/instructions/`
 
-## Best practices
+## Prácticas recomendadas
 
-- [ ] **Treat everything as code.** Infrastructure, configuration, policies, and runbooks must be versioned.
-- [ ] **Keep pipelines under 10 minutes.** Longer pipelines become bottlenecks; parallelize or remove redundant steps.
-- [ ] **Store secrets exclusively in a vault.** Never use a versioned `.env`, loose CI variables, or source code.
-- [ ] **Choose a deployment strategy based on rollback cost.** Blue/green and canary solve different problems.
+- [ ] **Trata todo como código.** La infraestructura, la configuración, las políticas y los runbooks deben estar versionados.
+- [ ] **Mantén los pipelines por debajo de 10 minutos.** Los pipelines más largos se convierten en cuellos de botella; paraleliza o elimina pasos redundantes.
+- [ ] **Guarda los secretos exclusivamente en un almacén de secretos.** Nunca uses un `.env` versionado, variables sueltas de CI ni código fuente.
+- [ ] **Elige una estrategia de despliegue según el costo del rollback.** Blue/green y canary resuelven problemas diferentes.
 
-## SIFAP example
+## Ejemplo de SIFAP
 
-In Stage 3, the DevOps Engineer creates `.github/workflows/ci.yml`, which runs on every push, configures Java 21 with Maven caching, runs `mvn test`, builds the backend Docker image, and publishes it to the registry. In parallel, they write `infra/networking/` and `infra/database/` Terraform modules describing Azure Database for PostgreSQL and the target VNet. `terraform plan` succeeds even if `apply` is not run that day.
+En la Etapa 3, el Ingeniero DevOps crea `.github/workflows/ci.yml`, que se ejecuta con cada push, configura Java 21 con caché de Maven, ejecuta `mvn test`, construye la imagen Docker del backend y la publica en el registro. En paralelo, escribe los módulos Terraform `infra/networking/` e `infra/database/` que describen Azure Database for PostgreSQL y la VNet de destino. `terraform plan` se ejecuta correctamente aunque no se ejecute `apply` ese día.
 
-## References
+## Referencias
 
-- [Terraform Best Practices](https://developer.hashicorp.com/terraform/language/style)
-- [GitHub Actions Hardening](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions)
+- [Prácticas recomendadas de Terraform](https://developer.hashicorp.com/terraform/language/style)
+- [Fortalecimiento de GitHub Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions)
 - [Azure Verified Modules](https://azure.github.io/Azure-Verified-Modules/)
 - [The DevOps Handbook — Gene Kim et al.](https://itrevolution.com/product/the-devops-handbook-second-edition/)
 
 ---
 
-### Continue reading
+### Sigue leyendo
 
-| Previous | Next |
+| Anterior | Siguiente |
 |---|---|
-| [Persona overview](../OVERVIEW.md)<br/><sub>Table of the 10 personas and their pairs.</sub> | [PERSONA.md](PERSONA.md)<br/><sub>Complete DevOps Engineer persona profile.</sub> |
+| [Descripción general de las personas](../OVERVIEW.md)<br/><sub>Tabla de las 10 personas y sus parejas.</sub> | [PERSONA.md](PERSONA.md)<br/><sub>Perfil completo de la persona Ingeniero DevOps.</sub> |
 
-<sub>[Back to the kit index](../../README.md)</sub>
+<sub>[Volver al índice del kit](../../README.md)</sub>
