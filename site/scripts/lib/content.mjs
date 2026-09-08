@@ -154,6 +154,10 @@ export function assertCoverage(editions, preserved = new Set()) {
     }
     if (edition.code !== "en") {
       for (const source of english.entries) {
+        if (source.path.startsWith("site/") && source.kind !== "document" &&
+            byPath.get(source.path)?.blob !== source.blob) {
+          throw new Error(`Portal engine differs in ${edition.code}: ${source.path}`);
+        }
         if (source.kind === "document" && !preserved.has(source.path)) {
           const translated = byPath.get(source.path);
           if (translated?.blob === source.blob) {

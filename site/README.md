@@ -36,7 +36,8 @@ npx playwright install chromium
 npm run test:browser
 ```
 
-The production build resolves all language branches to immutable commits. It fails for a missing edition, missing file, unchanged untranslated Markdown, unresolved link, invalid anchor or altered original download.
+The production build resolves all language branches to immutable commits. It fails for a missing edition, missing file, unchanged untranslated Markdown or prose, stale portal code, unresolved link, invalid anchor or altered original download.
+Keep the non-Markdown files under `site/` identical across the three branches when updating the shared portal engine.
 Reports are generated in `.generated/coverage.json` and `.generated/site-audit.json`.
 The browser tests exercise language switching, full Markdown access, search, responsive layout, contrast, reading state and reduced motion.
 

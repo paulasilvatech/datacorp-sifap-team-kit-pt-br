@@ -74,7 +74,9 @@ test("keeps the complete Markdown and the same source path when switching langua
   await expect(page.locator(".collection-card").first().locator("code")).toHaveText("00-START-HERE.md");
   await expect(page.getByRole("searchbox")).toHaveAttribute("placeholder", t("en").filterPlaceholder);
   await page.getByRole("searchbox").fill("00-START-HERE");
-  const entry = page.locator(".collection-card").filter({ hasText: "00-START-HERE.md" });
+  const entry = page.locator(".collection-card").filter({
+    has: page.locator("code").filter({ hasText: /^00-START-HERE\.md$/ }),
+  });
   await expect(entry).toHaveCount(1);
   await entry.click();
   for (const locale of ["es", "pt-br", "en"] as const) {

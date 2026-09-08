@@ -1,7 +1,8 @@
 import { defineConfig } from "@playwright/test";
 
 const published = new URL(process.env.SITE_URL ?? "http://127.0.0.1:4321/preview/");
-const baseURL = `http://127.0.0.1:4321${published.pathname.replace(/\/?$/, "/")}`;
+const liveURL = process.env.PORTAL_TEST_URL;
+const baseURL = liveURL ?? `http://127.0.0.1:4321${published.pathname.replace(/\/?$/, "/")}`;
 
 export default defineConfig({
   testDir: "./tests/browser",
@@ -16,7 +17,7 @@ export default defineConfig({
     { name: "desktop", use: { viewport: { width: 1440, height: 960 } } },
     { name: "mobile", use: { viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true } },
   ],
-  webServer: {
+  webServer: liveURL ? undefined : {
     command: "npm run preview -- --port 4321",
     url: `${baseURL}en/`,
     reuseExistingServer: !process.env.CI,

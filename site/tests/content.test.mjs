@@ -120,6 +120,13 @@ test("should reject a translated heading with an unchanged English document body
   assert.deepEqual(unchangedProseLines(`\`\`\`text\n${paragraph}\n\`\`\``, `\`\`\`text\n${paragraph}\n\`\`\``), []);
 });
 
+test("should reject a stale portal engine in a translated branch", () => {
+  // REQ-PORTAL-008, REQ-PORTAL-010
+  const make = (code, blob) => ({ code, entries: [{ path: "site/src/lib/i18n.ts", kind: "source", blob }] });
+  assert.doesNotThrow(() => assertCoverage([make("en", hash), make("es", hash), make("pt-br", hash)]));
+  assert.throws(() => assertCoverage([make("en", hash), make("es", otherHash), make("pt-br", hash)]), /engine differs/);
+});
+
 test("should reject route collisions before publishing", () => {
   // REQ-PORTAL-010
   const make = (code, blob) => ({ code, entries: [
