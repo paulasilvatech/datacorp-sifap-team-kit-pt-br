@@ -51,6 +51,7 @@ Una configuración de privacidad no disponible o ambigua detiene la publicación
 | `@astrojs/check`, TypeScript 5 y tipos de Node.js | Validación estricta de plantillas y TypeScript |
 | Runner de pruebas integrado de Node.js | Probar la ingestión Git, rutas, cobertura de idiomas y protecciones de despliegue sin otro framework de pruebas |
 | Playwright | Verificar en un navegador el sitio adaptable e interactivo, la navegación de idiomas, la búsqueda y el contraste |
+| `parse5` | Auditar nodos HTML reales sin confundir ejemplos escapados de Markdown/código con enlaces o IDs activos |
 
 Fijar las versiones resueltas en el lockfile.
 Usar Node.js 24 para el portal; no modificar los requisitos de runtime de la aplicación.
