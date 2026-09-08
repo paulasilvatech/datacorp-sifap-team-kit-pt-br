@@ -36,7 +36,8 @@ npx playwright install chromium
 npm run test:browser
 ```
 
-A compilação de produção resolve todas as branches de idioma para commits imutáveis. Ela falha se houver edição ou arquivo ausente, Markdown sem tradução, link não resolvido, âncora inválida ou download original alterado.
+A compilação de produção resolve todas as branches de idioma para commits imutáveis. Ela falha se houver edição ou arquivo ausente, Markdown ou prosa sem tradução, código do portal desatualizado, link não resolvido, âncora inválida ou download original alterado.
+Mantenha os arquivos que não são Markdown em `site/` idênticos nas três branches ao atualizar o motor compartilhado do portal.
 Os relatórios são gerados em `.generated/coverage.json` e `.generated/site-audit.json`.
 Os testes de navegador verificam troca de idioma, acesso ao Markdown integral, busca, layout responsivo, contraste, estado de leitura e movimento reduzido.
 

@@ -3,7 +3,7 @@ import PortalLayout from "../../layouts/PortalLayout.astro";
 import HeroArt from "../../components/HeroArt.astro";
 import StageExplorer from "../../components/StageExplorer";
 import Collection from "../../components/Collection";
-import { getCatalog, getEdition, siteHref } from "../../lib/catalog";
+import { getCatalog, getCatalogItems, getEdition, siteHref } from "../../lib/catalog";
 import { categories, t } from "../../lib/i18n";
 import { localeCodes } from "../../lib/model";
 export function getStaticPaths() { return localeCodes.map((locale) => ({ params: { locale }, props: { locale } })); }
@@ -25,7 +25,7 @@ const stages = stagePaths.map((path, index) => {
   return { title: categories[locale][stageCategories[index]], description: entry.description, href: entry.href, agent: agentNames[index] };
 });
 const people = edition.entries.filter((entry) => /^05-personas\/[^/]+\/PERSONA\.md$/.test(entry.path));
-const items = edition.entries.map(({ id, path, title, description, kind, category, href }) => ({ id, path, title, description, kind, category, href }));
+const items = getCatalogItems(locale);
 const terminalText = `$ git clone --branch ${edition.branch}\n  https://github.com/${catalog.repository}.git\n\n✓ ${edition.entries.length} ${words.files.toLowerCase()}\n✓ EN / ES / PT-BR\n↳ ${words.sourceCommit}: ${edition.commit.slice(0, 12)}`;
 ---
 <PortalLayout locale={locale} title={catalog.audience === "instructor" ? words.privateKit : words.kit}>
