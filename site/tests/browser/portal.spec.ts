@@ -71,6 +71,7 @@ test("searches the active edition using the keyboard-accessible dialog", async (
 test("keeps the complete Markdown and the same source path when switching languages", async ({ page, request }) => {
   // REQ-PORTAL-001, REQ-PORTAL-003, REQ-PORTAL-004, REQ-PORTAL-008
   await page.goto("en/library/");
+  await expect(page.locator(".collection-card").first().locator("code")).toHaveText("00-START-HERE.md");
   await expect(page.getByRole("searchbox")).toHaveAttribute("placeholder", t("en").filterPlaceholder);
   await page.getByRole("searchbox").fill("00-START-HERE");
   const entry = page.locator(".collection-card").filter({ hasText: "00-START-HERE.md" });

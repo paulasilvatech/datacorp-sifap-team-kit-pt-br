@@ -58,6 +58,18 @@ export function getEdition(locale: Locale): Edition {
   return edition;
 }
 
+export function getCatalogItems(locale: Locale): Array<Pick<Entry, "id" | "path" | "title" | "description" | "kind" | "category" | "href">> {
+  const starts = ["00-START-HERE.md", "00-SETUP.md", "00-TEAM-FLOW.md", "00-GIT-WORKFLOW.md", "README.md"];
+  const rank = (entry: Entry) => {
+    const start = starts.indexOf(entry.path);
+    if (start >= 0) return start;
+    return entry.kind === "document" ? 10 : 20;
+  };
+  return getEdition(locale).entries.toSorted((left, right) =>
+    rank(left) - rank(right) || left.path.localeCompare(right.path))
+    .map(({ id, path, title, description, kind, category, href }) => ({ id, path, title, description, kind, category, href }));
+}
+
 export function siteHref(locale: Locale, route = ""): string {
   const base = getCatalog().basePath;
   return `${base}${locale}/${route.replace(/^\/+|\/+$/g, "")}${route ? "/" : ""}`;
