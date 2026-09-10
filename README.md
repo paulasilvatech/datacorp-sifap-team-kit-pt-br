@@ -124,7 +124,7 @@ workspace/
 ├── 07-concepts/                         core concepts (EARS, ADR, SDD, agents)
 ├── 09-cheat-sheets/                     3 quick reference cards
 │
-├── docs/                                viewer access, FAQ, troubleshooting, ADRs
+├── docs/                                FAQ, troubleshooting, team runbook, ADRs
 ├── assets/                              SVGs and diagrams
 └── specs/                               Spec-Kit artifacts created by the team
 ```
