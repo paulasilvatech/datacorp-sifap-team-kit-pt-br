@@ -46,7 +46,7 @@ The branch's [language metadata](language.json) identifies its edition. The prim
 - [ ] **Never invent SIFAP facts.** A primitive teaches *how to discover* legacy behavior; it never states what a business rule is. The corpus under `01-archaeology/legacy-sifap/` is 24 Natural members (12 `.NSP`, 5 `.NSN`, 2 `.NSC`, 2 `.NSA`, 1 `.NSL`, 2 `.jcl`), 4 `.ddm` DDMs, and 1 FDT `.txt` listing. No `.NSD` file exists.
 - [ ] **Approved toolchain only.** Never recommend, install, or switch to Cursor, Windsurf, Codex, Cline, Continue, Aider, Codeium, Tabnine, IntelliJ, Eclipse, or Neovim; VS Code with GitHub Copilot is the only approved editor and assistant.
 - [ ] Call the event a workshop, never a `hackathon`.
-- [ ] Use the current English paths only; the retired Portuguese directory names are rejected by the validator's stale-path check (failure #5). `backend/` and `frontend/` do **not** exist yet (the team creates them in Stage 3); `infra/` **does** exist.
+- [ ] Use the current English paths only; the retired Portuguese directory names are rejected by the validator's stale-path check (failure #5). `backend/`, `frontend/`, and `infra/` do **not** exist yet; teams create only what their selected slice needs during Stages 3 and 4.
 
 ## Frontmatter by primitive type
 

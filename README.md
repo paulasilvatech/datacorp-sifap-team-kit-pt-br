@@ -14,8 +14,7 @@ Start at [`00-START-HERE.md`](00-START-HERE.md).
 | **Português (BR)** | [`portugues-br`](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/tree/portugues-br) | [Start here (pt-BR)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/portugues-br/00-START-HERE.md) · [Documentation index (pt-BR)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/portugues-br/docs/README.md) · [Copilot instructions (pt-BR)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/portugues-br/.github/copilot-instructions.md) | `git clone --branch portugues-br https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit.git` |
 | **Español** | [`espanol`](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/tree/espanol) | [Start here (ES)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/espanol/00-START-HERE.md) · [Documentation index (ES)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/espanol/docs/README.md) · [Copilot instructions (ES)](https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit/blob/espanol/.github/copilot-instructions.md) | `git clone --branch espanol https://github.com/workshop-gbb/datacorp-sifap-modernization-team-kit.git` |
 
-**Read the complete kit on the website:** [EN](https://workshop-gbb.github.io/datacorp-sifap-modernization-team-kit/en/) · [ES](https://workshop-gbb.github.io/datacorp-sifap-modernization-team-kit/es/) · [PT-BR](https://workshop-gbb.github.io/datacorp-sifap-modernization-team-kit/pt-br/).
-The portal includes every Markdown document in full, a searchable file catalog, original downloads and links back to the repository. You can follow the same instructions in either place.
+Read the complete participant kit directly in this repository, on GitHub or in VS Code. Use the branches above to choose the documentation language.
 
 - Keep documentation and all Copilot primitive prose on `main` and `develop` in English, regardless of the conversation language.
 - Keep Brazilian Portuguese documentation and Copilot primitive prose on `portugues-br`; do not merge the translated documentation tree into `main`.
@@ -52,22 +51,21 @@ Relative links keep you on the selected branch. Use the table above to change th
 
 ---
 
-## View the live legacy system
+## Participant kit scope
 
-SIFAP is not only reading material. A shared environment runs the real Natural/Adabas system with synthetic data. Participants receive **viewer-only** access to the beneficiary query screen; deployment and administration are outside the team exercise.
+This repository contains only the materials teams need to complete the exercises.
 
-| What | Where |
+| Included | Purpose |
 |---|---|
-| **Viewer terminal** | <https://sifap-lab-438k30.eastus2.cloudapp.azure.com/terminal/> |
-| **Username** | `viewer` |
-| **Password** | Shared privately by the facilitator; never committed |
-| **Allowed** | Query beneficiary data in the generated read-only `VIEWBENF` screen |
-| **Not allowed** | Adabas administration, Natural command line, registration, batch jobs, or infrastructure access |
+| Stage guides and persona kits | Guide each participant's work |
+| Local Natural sources, DDMs, FDT and historical documents | Supply evidence for discovery and exercise traceability |
+| Specification, decision, progress and presentation templates | Capture the team's own findings and deliverables |
+| Copilot primitives and CI checks | Support implementation and validation by participants |
 
 > [!IMPORTANT]
-> Use only the viewer credential. The environment is shared, holds synthetic data, and is managed outside this public repository. If the URL does not answer, ask the facilitator; do not try to deploy or repair the lab.
-
-Full access instructions: [`docs/legacy-system-access.md`](docs/legacy-system-access.md).
+> The website and its Pages publication belong to the instructor repository, not this kit.
+> Instructor demos, answer keys, running legacy or modern reference solutions, and environment access or administration instructions are not participant deliverables.
+> The local legacy corpus is reading material; each team builds its own solution.
 
 ---
 

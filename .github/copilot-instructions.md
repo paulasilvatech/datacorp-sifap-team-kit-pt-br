@@ -21,7 +21,12 @@ Use the skills in [`.github/skills/`](skills/) for specialized workflows. Copilo
 - Keep documentation and all Copilot primitive prose (agents, prompts, instructions, skills, and hooks) on `main` and `develop` in English; publish Brazilian Portuguese on `portugues-br` and Spanish on `espanol`.
 - Follow the target branch's language, not the conversation language. Never merge the translated documentation tree into `main`.
 - Preserve technical paths, identifiers, and legacy sources. Keep the [language selector](../README.md#repository-languages) linked to existing language branches and their instructions.
-- The documentation portal in `site/` uses Astro + React, independently of the SIFAP application. Its localized interface dictionaries are allowed on `main`; repository documentation remains English. See [ADR-0002](../docs/adr/0002-trilingual-documentation-portal.md).
+
+## Participant-only scope
+
+- Keep only exercise guides, templates, Copilot primitives and local source inputs in this kit.
+- The website, Pages publication, instructor demos, answer keys and reference solutions belong in the private instructor repository.
+- Do not publish access addresses, credentials or administration instructions for instructor environments. Teams build and document their own solution.
 
 ## Target Stack
 
@@ -65,7 +70,7 @@ Detailed Java, TypeScript, database, security, infrastructure, and test rules li
 
 ## Strict Rules — Do Not Do This
 
-- ❌ Do not assume a pre-existing application prototype, inherited containerization, or workshop infrastructure. `backend/`, `frontend/`, and `infra/` do not exist yet — the team creates only what its selected slice requires during Stages 3 and 4. The shared Natural/Adabas viewer is external and read-only; never try to provision or administer it from this repository.
+- ❌ Do not assume a pre-existing application prototype, inherited containerization, or workshop infrastructure. `backend/`, `frontend/`, and `infra/` do not exist yet — the team creates only what its selected slice requires during Stages 3 and 4. The local legacy sources are read-only exercise inputs, not a lab to provision or administer.
 - ❌ Do not write an EARS requirement without `source_legacy:` — CI will reject the PR
 - ❌ Do not add dependencies without justification in an ADR
 - ❌ Do not write tests after the fact — write them during implementation
@@ -83,5 +88,4 @@ Detailed Java, TypeScript, database, security, infrastructure, and test rules li
 - Persona kits (read 2 per person; active artifacts are already consolidated in `.github/`): [`05-personas/`](../05-personas/)
 - Stage agents: [`06-stage-agents/`](../06-stage-agents/)
 - SIFAP legacy system: [`01-archaeology/legacy-sifap/`](../01-archaeology/legacy-sifap/)
-- Live legacy viewer: [`docs/legacy-system-access.md`](../docs/legacy-system-access.md)
 - Spec-Kit SDD: <https://github.com/github/spec-kit>

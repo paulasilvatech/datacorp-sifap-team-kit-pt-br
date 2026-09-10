@@ -45,7 +45,7 @@
 - [ ] **11:45** — Every pair has recorded evidence and questions from its assigned programs.
 
 > [!TIP]
-> **Mysteries use a denominator of 20** (four per pair). The answer key **does not live in this repository** because the repository is public; facilitators receive it through a private channel. Never project the answer key. A hint does not reduce the score, but a pair blocked for more than 40 minutes does — provide the hint.
+> **Mysteries use a denominator of 20** (four per pair). Record the team's evidence without anticipating answers. If a pair is blocked for more than 40 minutes, ask for a hint to continue the investigation.
 
 ### 13:30–14:00 · Stage 1 — Synthesis and Handoff H1
 

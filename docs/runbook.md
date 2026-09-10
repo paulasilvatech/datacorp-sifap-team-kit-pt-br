@@ -1,11 +1,12 @@
-# Runbook
+# Team Runbook Template
 
 ![Runbook Type](https://img.shields.io/badge/Type-Runbook-171717?style=flat-square)
 ![Owner DevOps](https://img.shields.io/badge/Owner-DevOps-737373?style=flat-square)
 
 > **Path:** [Team Kit](../README.md) › [Docs](README.md) › **Runbook**
 
-**Operational guide for running, verifying, and diagnosing the workshop environment.**
+**Template for documenting how to run, verify and diagnose the participants' own solution.**
+Fill it in with the team's commands and evidence; it does not describe or grant access to instructor environments.
 
 | Field | Value |
 |---|---|
@@ -37,7 +38,7 @@ After creating the prototype, document:
 | Backend health | — |
 | Swagger UI | — |
 | Local frontend | — |
-| Demonstration credentials | — |
+| How to configure local authentication, without recording passwords | — |
 
 ---
 
@@ -58,7 +59,7 @@ cd backend && ./mvnw test
 - [ ] **Run frontend tests** (when `frontend/` exists):
 
 ```bash
-cd frontend && npm test
+cd frontend && pnpm test
 ```
 
 ---
@@ -77,19 +78,16 @@ CI runs automatically on pushes to `main`, `develop`, `spec/**`, and `impl/**`.
 
 ---
 
-## Azure — Stage 4
+## Team-created infrastructure — Stage 4
 
-Stage 4 is when the team applies Terraform to a sandbox subscription provided by the facilitators.
+The kit does not include provisioned resources, state files or a configured subscription.
+If the team's scope includes infrastructure, follow the [Stage 4 guide](../04-evolution/GUIDE.md) and document only what the team creates.
 
-> [!CAUTION]
-> Each team has a single subscription quota. Tag every resource with `team=workshop-XX` or `apply` will fail.
-
-```bash
-cd infra
-terraform init
-terraform plan -var-file=envs/dev/terraform.tfvars
-terraform apply -var-file=envs/dev/terraform.tfvars
-```
+- [ ] Record the modules and configuration files that actually exist.
+- [ ] Record validation commands and the plan review outcome.
+- [ ] Confirm permissions and limits before deploying.
+- [ ] Describe authentication without committing secrets, tokens or state files.
+- [ ] If nothing was deployed, state that limitation instead of presenting an environment as ready.
 
 ---
 
@@ -100,8 +98,8 @@ terraform apply -var-file=envs/dev/terraform.tfvars
 | Local environment hangs | Port 5432, 8080, or 3000 is already in use | Run `lsof -i :5432` and stop the process | Service starts without a port error |
 | `mvn verify` fails in Testcontainers | Docker is not running | Start Docker Desktop | Tests pass on the next run |
 | `pnpm test` fails on snapshots | Component was intentionally changed | Run `pnpm test -- -u` to update snapshots | Tests pass after the update |
-| `terraform apply` is rejected | The resource lacks the `team=` tag | Add the tag to the failing resource | `terraform plan` has no validation errors |
-| GitHub Actions cannot access Azure | OIDC subject declaration mismatch | Run `az ad sp create-for-rbac` again for the team | Workflow passes on the next run |
+| Infrastructure plan is rejected | Configuration does not meet the team's authorized limits or policies | Read the diagnostic and review the plan before deploying | The reviewed plan passes validation |
+| GitHub Actions cannot access Azure | Authentication does not match the team's repository, branch or environment | Check the authorized OIDC configuration and ask the access owner for help | The workflow authenticates without committed secrets |
 
 ---
 

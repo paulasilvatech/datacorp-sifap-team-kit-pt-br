@@ -15,14 +15,14 @@
 **/.next/
 **/.pnpm-store/
 
-# Generated documentation portal output
-site/dist/
-site/.astro/
-site/.generated/
-site/public/content-raw/
-site/public/content-media/
-site/playwright-report/
-site/test-results/
+# Outside the participant kit's scope
+/site/
+/demo-html/
+/decks/
+
+# Personal editor connections and permissions are not distributed with the kit.
+/.vscode/settings.json
+/.vscode/mcp.json
 
 # Python
 .legacy-docs-venv/
@@ -35,8 +35,7 @@ site/test-results/
 # Logs
 *.log
 
-# Facilitator materials — answer keys and solutions must NEVER enter this repository (it is public).
-# Keep your local copy; distribute it to facilitators through a private channel.
+# Instructor answer keys and solutions do not belong in the public participant kit.
 **/*FACILITATOR*.md
 **/*GABARITO*.md
 **/*-RESPOSTAS.md

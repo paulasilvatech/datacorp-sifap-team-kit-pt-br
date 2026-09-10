@@ -29,7 +29,7 @@
 |---|---|
 | [`adr/`](adr/) | Architecture decision records (one file per decision) |
 | [`../01-archaeology/glossary.md`](../01-archaeology/glossary.md) | Domain glossary — completed during Stage 1 |
-| [`legacy-system-access.md`](legacy-system-access.md) | Viewer-only access to the shared Natural/Adabas system |
+| [`demo-script.md`](demo-script.md) | Outline for presenting the team's own work, not a ready-made demo |
 | [`4-agents-explained.md`](4-agents-explained.md) | Explanation of the four stage agents and their relationship to persona kits |
 | [`persona-agent-matrix.md`](persona-agent-matrix.md) | Matrix showing who leads, supports, or observes at each stage |
 | [`sdlc-flow-guide.md`](sdlc-flow-guide.md) | Complete flow of the day, handoffs, and deliverables |
