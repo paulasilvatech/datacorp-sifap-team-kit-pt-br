@@ -35,8 +35,8 @@ All active artifacts live in the repository root `.github/` directory. This fold
 | `.github/prompts/persona-tech-writer-update-codemap.prompt.md` | Prompt | `/update-codemap` |
 | `.github/prompts/persona-tech-writer-doc-drift.prompt.md` | Prompt | `/doc-drift` |
 
-> [!TIP]
-> If the facilitator requests a local MCP configuration and this kit has `mcp.json`, copy only that file to `.vscode/mcp.json`.
+> [!NOTE]
+> Edit and review the team's Markdown directly in the repository. This participant persona does not distribute a Pages deployment server; website publication belongs to the instructor repository.
 
 ## Where active artifacts live
 

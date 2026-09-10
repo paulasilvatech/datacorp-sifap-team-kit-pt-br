@@ -4,6 +4,8 @@
 
 **Structure for the workshop's final presentation** — the team defines the content based on what it produced.
 
+This is a participant template for organizing the team's own evidence, not a ready-made demonstration or an instructor script.
+
 | Field | Value |
 |---|---|
 | **Target audience** | The entire team, especially the Product Owner |

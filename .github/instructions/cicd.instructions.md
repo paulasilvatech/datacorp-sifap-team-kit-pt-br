@@ -19,8 +19,6 @@ This file activates when you edit workflows under `.github/workflows/`, composit
 | `spec-quality.yml` · `markdown-lint` | `markdownlint-cli2` over `**/*.md` | Yes |
 | `spec-quality.yml` · `spec-traceability` | Reports REQ-IDs in `specs/` not yet referenced by a test (emits `::warning::`) | No |
 | `spec-quality.yml` · `legacy-traceability` | Every REQ-ID in `specs/` must carry a valid `source_legacy:` line | Yes |
-| `pages.yml` · `build` | Resolves three language snapshots, runs portal unit/browser tests and rejects incomplete files, links, anchors or original downloads | Yes |
-| `pages.yml` · `deploy` | Rechecks Pages visibility before deployment; a private repository cannot publish publicly or with unknown access | Yes |
 
 > [!IMPORTANT]
 > `legacy-traceability` fails the build; `spec-traceability` only warns. See [`requirements.instructions.md`](requirements.instructions.md) for the exact `source_legacy:` format the gate accepts.

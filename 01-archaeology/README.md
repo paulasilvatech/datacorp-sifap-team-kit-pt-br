@@ -18,7 +18,7 @@
 > **Read first:** [`LEGACY-EXPLORATION-CHECKLIST.md`](LEGACY-EXPLORATION-CHECKLIST.md) — mandatory gate before starting Stage 2. No EARS requirement is accepted without traceability to legacy code.
 
 > [!TIP]
-> **The system is running, not just archived.** The same data you are about to study can be queried through the shared viewer terminal at <https://sifap-lab-438k30.eastus2.cloudapp.azure.com/terminal/>. Sign in as `viewer` with the password shared privately by the facilitator. Reading the source is still the gate; the live screen only makes the evidence concrete.
+> **Use the local corpus as evidence.** Natural sources, DDMs, the FDT and historical documents are in [`legacy-sifap/`](legacy-sifap/). This stage does not require access to a running system.
 
 ---
 
@@ -57,7 +57,7 @@ All 5 pairs work in parallel, each responsible for 3 Natural programs. Pair 1 (V
 
 The legacy code is in [`legacy-sifap/`](legacy-sifap/) (shared by the kit).
 
-The shared Azure lab is operated outside this repository. Participants do not receive deployment or administration material; use the read-only viewer described in [`docs/legacy-system-access.md`](../docs/legacy-system-access.md).
+These files are read-only exercise inputs. Do not modify them or use them to provision a lab; record findings in the stage artifacts.
 
 ---
 

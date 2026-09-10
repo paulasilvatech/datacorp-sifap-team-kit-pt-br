@@ -2,13 +2,13 @@
 
 > **Path:** [Team Kit](../README.md) › [Docs](README.md) › **STATUS**
 
-**Real-time workshop tracking dashboard:** stage status, handoffs, and daily metrics.
+**Team progress template:** fill in stage status, handoffs and daily metrics using the team's evidence. This document does not report the availability of external environments.
 
 ![Dashboard](https://img.shields.io/badge/Dashboard-Daily%20status-171717?style=flat-square) ![Update](https://img.shields.io/badge/Update-every%2030%20min-737373?style=flat-square) ![Owner](https://img.shields.io/badge/Owner-Technical%20Lead-A3A3A3?style=flat-square)
 
 | Field | Value |
 |---|---|
-| **Target audience** | Technical Lead (updates) and facilitator (reads at a glance) |
+| **Target audience** | Technical Lead (updates) and other team participants (read) |
 | **Update frequency** | Every 30 minutes or at each stage transition |
 | **Expected outcome** | One-page view of what is ready, in progress, and blocked |
 

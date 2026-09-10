@@ -116,19 +116,6 @@ jobs:
                           )
                       )
 
-          portal_tests = Path("site/tests")
-          if portal_tests.is_dir():
-              for path in portal_tests.rglob("*"):
-                  if path.is_file() and is_test_file(path):
-                      try:
-                          test_source = path.read_text(encoding="utf-8")
-                      except UnicodeDecodeError:
-                          print(f"::warning file={path}::Skipping non-UTF-8 test input in the advisory REQ-ID report.")
-                          continue
-                      test_requirements.update(
-                          requirement_reference_pattern.findall(test_source)
-                      )
-
           missing = sorted(spec_requirements - test_requirements)
           if missing:
               print(
